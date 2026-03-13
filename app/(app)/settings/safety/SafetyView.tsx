@@ -48,7 +48,7 @@ function SafetyView({
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="mb-4 text-lg font-semibold text-[var(--foreground)]">
+      <h1 className="mb-4 text-lg font-semibold text-zinc-900">
         Safety &amp; Budgets
       </h1>
 
@@ -85,7 +85,7 @@ function SafetyView({
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-2">
-              <label className="text-sm text-[var(--muted-foreground)]">
+              <label className="text-sm text-zinc-500">
                 Alert at {alert}% of daily budget
               </label>
               <input
@@ -95,7 +95,7 @@ function SafetyView({
                 step="5"
                 value={alert}
                 onChange={(e) => setAlert(parseInt(e.target.value))}
-                className="w-full accent-[var(--foreground)]"
+                className="w-full accent-zinc-900"
               />
             </div>
           </CardContent>
@@ -107,16 +107,16 @@ function SafetyView({
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-3">
-              <label className="flex items-center gap-2 text-sm text-[var(--foreground)]">
+              <label className="flex items-center gap-2 text-sm text-zinc-900">
                 <input
                   type="checkbox"
                   checked={cbEnabled}
                   onChange={(e) => setCbEnabled(e.target.checked)}
-                  className="accent-[var(--foreground)]"
+                  className="accent-zinc-900"
                 />
                 Enable circuit breaker
               </label>
-              <p className="text-xs text-[var(--muted-foreground)]">
+              <p className="text-xs text-zinc-500">
                 Automatically pause all agents if daily spend exceeds threshold.
               </p>
               {cbEnabled && (

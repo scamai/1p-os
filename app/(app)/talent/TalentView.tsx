@@ -60,7 +60,7 @@ function TalentView({ listings }: TalentViewProps) {
 
   return (
     <div>
-      <h1 className="mb-4 text-lg font-semibold text-[var(--foreground)]">
+      <h1 className="mb-4 text-lg font-semibold text-zinc-900">
         Agent Marketplace
       </h1>
 
@@ -68,7 +68,7 @@ function TalentView({ listings }: TalentViewProps) {
         <TeamTemplates onInstall={handleInstallTemplate} />
       </div>
 
-      <h2 className="mb-4 text-base font-semibold text-[var(--foreground)]">
+      <h2 className="mb-4 text-base font-semibold text-zinc-900">
         All Agents
       </h2>
       <MarketplaceGrid listings={listings} onHire={handleHire} />

@@ -36,17 +36,17 @@ function AgentDetailView({ agent }: { agent: AgentInfo }) {
     <div className="mx-auto max-w-2xl">
       <div className="mb-6">
         <div className="flex items-center gap-2">
-          <h1 className="text-xl font-bold text-[var(--foreground)]">
+          <h1 className="text-xl font-bold text-zinc-900">
             {agent.name}
           </h1>
           <Badge variant="outline">{agent.category}</Badge>
         </div>
-        <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+        <p className="mt-1 text-sm text-zinc-500">
           by {agent.author}
         </p>
       </div>
 
-      <div className="mb-6 flex items-center gap-4 text-sm text-[var(--muted-foreground)]">
+      <div className="mb-6 flex items-center gap-4 text-sm text-zinc-500">
         <span>{agent.installCount.toLocaleString()} installs</span>
         <span>{agent.rating}/5 rating</span>
         <span className="font-mono">{agent.estimatedDailyCost}</span>
@@ -54,7 +54,7 @@ function AgentDetailView({ agent }: { agent: AgentInfo }) {
 
       <Card className="mb-6">
         <CardContent className="p-4">
-          <p className="text-sm text-[var(--foreground)]">
+          <p className="text-sm text-zinc-900">
             {agent.longDescription}
           </p>
         </CardContent>
@@ -62,16 +62,16 @@ function AgentDetailView({ agent }: { agent: AgentInfo }) {
 
       {agent.capabilities.length > 0 && (
         <div className="mb-6">
-          <h2 className="mb-2 text-sm font-semibold text-[var(--foreground)]">
+          <h2 className="mb-2 text-sm font-semibold text-zinc-900">
             Capabilities
           </h2>
           <ul className="flex flex-col gap-1">
             {agent.capabilities.map((cap, i) => (
               <li
                 key={i}
-                className="flex items-start gap-2 text-sm text-[var(--muted-foreground)]"
+                className="flex items-start gap-2 text-sm text-zinc-500"
               >
-                <span className="text-[var(--success)]">+</span>
+                <span className="text-zinc-900 font-semibold">+</span>
                 {cap}
               </li>
             ))}
@@ -81,14 +81,14 @@ function AgentDetailView({ agent }: { agent: AgentInfo }) {
 
       {agent.permissions.length > 0 && (
         <div className="mb-6">
-          <h2 className="mb-2 text-sm font-semibold text-[var(--foreground)]">
+          <h2 className="mb-2 text-sm font-semibold text-zinc-900">
             Permissions Required
           </h2>
           <ul className="flex flex-col gap-1">
             {agent.permissions.map((perm, i) => (
               <li
                 key={i}
-                className="flex items-start gap-2 text-sm text-[var(--muted-foreground)]"
+                className="flex items-start gap-2 text-sm text-zinc-500"
               >
                 <span>-</span>
                 {perm}

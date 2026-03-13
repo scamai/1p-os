@@ -42,10 +42,10 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        <h1 className="mb-1 text-xl font-bold text-[var(--foreground)]">
+        <h1 className="mb-1 text-xl font-bold text-zinc-900">
           1P
         </h1>
-        <p className="mb-6 text-sm text-[var(--muted-foreground)]">
+        <p className="mb-6 text-sm text-zinc-500">
           Sign in to your account
         </p>
 
@@ -68,7 +68,7 @@ export default function LoginPage() {
           />
 
           {error && (
-            <p className="text-xs text-[var(--destructive)]">{error}</p>
+            <p className="text-xs text-zinc-700">{error}</p>
           )}
 
           <Button type="submit" loading={loading}>
@@ -76,11 +76,11 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <p className="mt-4 text-center text-xs text-[var(--muted-foreground)]">
+        <p className="mt-4 text-center text-xs text-zinc-500">
           Don&apos;t have an account?{" "}
           <Link
             href="/auth/signup"
-            className="text-[var(--foreground)] underline underline-offset-2"
+            className="text-zinc-900 underline underline-offset-2"
           >
             Sign up
           </Link>

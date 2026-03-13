@@ -2,15 +2,15 @@ import * as React from "react";
 
 const variants = {
   default:
-    "bg-[var(--muted)] text-[var(--foreground)]",
+    "bg-zinc-50 text-zinc-900",
   success:
-    "bg-[var(--success)]/15 text-[var(--success)]",
+    "bg-zinc-100 text-zinc-700",
   warning:
-    "bg-[var(--warning)]/15 text-[var(--warning)]",
+    "bg-zinc-200 text-zinc-600",
   destructive:
-    "bg-[var(--destructive)]/15 text-[var(--destructive)]",
+    "bg-zinc-200 text-zinc-700",
   outline:
-    "border border-[var(--border)] text-[var(--muted-foreground)] bg-transparent",
+    "border border-zinc-200 text-zinc-500 bg-transparent",
 } as const;
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {

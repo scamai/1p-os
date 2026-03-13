@@ -29,7 +29,7 @@ function HistoryView({ entries }: { entries: AuditEntry[] }) {
 
   return (
     <div>
-      <h1 className="mb-4 text-lg font-semibold text-[var(--foreground)]">
+      <h1 className="mb-4 text-lg font-semibold text-zinc-900">
         History
       </h1>
 
@@ -38,7 +38,7 @@ function HistoryView({ entries }: { entries: AuditEntry[] }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search audit log..."
-          className="h-9 flex-1 rounded-md border border-[var(--border)] bg-transparent px-3 text-sm text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+          className="h-9 flex-1 rounded-md border border-zinc-200 bg-transparent px-3 text-sm text-zinc-900 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-900"
         />
         <div className="flex gap-1">
           {categories.map((cat) => (
@@ -47,8 +47,8 @@ function HistoryView({ entries }: { entries: AuditEntry[] }) {
               onClick={() => setFilter(cat)}
               className={`rounded-md px-2 py-1 text-xs font-medium capitalize transition-colors ${
                 filter === cat
-                  ? "bg-[var(--foreground)] text-[var(--background)]"
-                  : "text-[var(--muted-foreground)] hover:bg-[var(--muted)]"
+                  ? "bg-zinc-900 text-white"
+                  : "text-zinc-500 hover:bg-zinc-100"
               }`}
             >
               {cat}
@@ -59,26 +59,26 @@ function HistoryView({ entries }: { entries: AuditEntry[] }) {
 
       {filtered.length === 0 ? (
         <div className="py-12 text-center">
-          <p className="text-sm text-[var(--muted-foreground)]">
+          <p className="text-sm text-zinc-500">
             No audit entries found.
           </p>
         </div>
       ) : (
-        <div className="flex flex-col divide-y divide-[var(--border)]">
+        <div className="flex flex-col divide-y divide-zinc-200">
           {filtered.map((entry) => (
             <div key={entry.id} className="flex items-start gap-3 py-3">
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-[var(--foreground)]">
+                  <span className="text-sm font-medium text-zinc-900">
                     {entry.action}
                   </span>
                   <Badge variant="outline">{entry.category}</Badge>
                 </div>
-                <p className="mt-0.5 text-xs text-[var(--muted-foreground)]">
+                <p className="mt-0.5 text-xs text-zinc-500">
                   {entry.agentName} &middot; {entry.details}
                 </p>
               </div>
-              <span className="shrink-0 text-xs text-[var(--muted-foreground)]">
+              <span className="shrink-0 text-xs text-zinc-500">
                 {new Date(entry.createdAt).toLocaleString()}
               </span>
             </div>

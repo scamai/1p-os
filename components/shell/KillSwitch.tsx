@@ -51,14 +51,14 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
           }}
           className={`rounded-md border p-3 text-left transition-colors ${
             level === "one"
-              ? "border-[var(--destructive)] bg-[var(--destructive)]/10"
-              : "border-[var(--border)] hover:border-[var(--destructive)]/50"
+              ? "border-zinc-400 bg-zinc-100"
+              : "border-zinc-200 hover:border-zinc-400"
           }`}
         >
-          <p className="text-sm font-medium text-[var(--foreground)]">
+          <p className="text-sm font-medium text-zinc-900">
             Pause One Agent
           </p>
-          <p className="text-xs text-[var(--muted-foreground)]">
+          <p className="text-xs text-zinc-500">
             Stop a specific agent immediately.
           </p>
         </button>
@@ -67,7 +67,7 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
           <select
             value={selectedAgent}
             onChange={(e) => setSelectedAgent(e.target.value)}
-            className="rounded-md border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
+            className="rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900"
           >
             <option value="">Select agent...</option>
             {agents.map((a) => (
@@ -85,14 +85,14 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
           }}
           className={`rounded-md border p-3 text-left transition-colors ${
             level === "all"
-              ? "border-[var(--destructive)] bg-[var(--destructive)]/10"
-              : "border-[var(--border)] hover:border-[var(--destructive)]/50"
+              ? "border-zinc-400 bg-zinc-100"
+              : "border-zinc-200 hover:border-zinc-400"
           }`}
         >
-          <p className="text-sm font-medium text-[var(--foreground)]">
+          <p className="text-sm font-medium text-zinc-900">
             Pause All Agents
           </p>
-          <p className="text-xs text-[var(--muted-foreground)]">
+          <p className="text-xs text-zinc-500">
             Stop all agents. Tasks in progress will finish gracefully.
           </p>
         </button>
@@ -104,14 +104,14 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
           }}
           className={`rounded-md border p-3 text-left transition-colors ${
             level === "lockdown"
-              ? "border-[var(--destructive)] bg-[var(--destructive)]/10"
-              : "border-[var(--border)] hover:border-[var(--destructive)]/50"
+              ? "border-zinc-400 bg-zinc-100"
+              : "border-zinc-200 hover:border-zinc-400"
           }`}
         >
-          <p className="text-sm font-medium text-[var(--foreground)]">
+          <p className="text-sm font-medium text-zinc-900">
             Full Lockdown
           </p>
-          <p className="text-xs text-[var(--muted-foreground)]">
+          <p className="text-xs text-zinc-500">
             Kill everything. No agents run until you manually unlock.
           </p>
         </button>

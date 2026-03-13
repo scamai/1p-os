@@ -1,167 +1,219 @@
-import { SupabaseClient } from '@supabase/supabase-js';
-import { executeAgent } from '@/lib/agents/runtime';
-import { getUnprocessedMessages, markProcessed } from '@/lib/agents/message-bus';
+/**
+ * Agent Orchestrator — coordinates multi-agent workflows.
+ *
+ * Manages agent spawning, delegation, and result aggregation.
+ * Inspired by OpenClaw's subagent spawn/send/yield pattern.
+ */
 
-interface AgentRow {
+import { sessionManager } from "@/lib/agents/sessions";
+import { agentMemory } from "@/lib/agents/memory";
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+export interface AgentTask {
   id: string;
-  business_id: string;
-  status: string;
-  triggers: AgentTriggerConfig[];
+  parentAgentId: string;
+  childAgentId: string;
+  sessionId: string;
+  instruction: string;
+  status: "pending" | "running" | "completed" | "failed" | "yielded";
+  result?: string;
+  error?: string;
+  createdAt: string;
+  completedAt?: string;
 }
 
-interface AgentTriggerConfig {
-  type: 'schedule' | 'event' | 'message';
-  schedule?: string; // cron expression
-  event_type?: string;
-  last_run?: string;
+export interface WorkflowStep {
+  agentId: string;
+  instruction: string;
+  dependsOn?: string[]; // task IDs that must complete first
 }
 
-export async function processAgentTriggers(
-  businessId: string,
-  supabase: SupabaseClient
-): Promise<void> {
-  try {
-    const { data: agents, error } = await supabase
-      .from('agents')
-      .select('id, business_id, status, triggers')
-      .eq('business_id', businessId)
-      .in('status', ['idle', 'active']);
-
-    if (error) throw error;
-    if (!agents || agents.length === 0) return;
-
-    for (const agent of agents as AgentRow[]) {
-      // Process unread messages
-      const messages = await getUnprocessedMessages(agent.id, supabase);
-      for (const msg of messages) {
-        await executeAgent(
-          agent.id,
-          {
-            type: 'message',
-            data: { message: msg },
-            chain_id: msg.chain_id ?? undefined,
-            chain_depth: (msg.chain_depth ?? 0) + 1,
-          },
-          supabase
-        );
-        await markProcessed(msg.id, supabase);
-      }
-
-      // Check scheduled triggers
-      if (agent.triggers && Array.isArray(agent.triggers)) {
-        for (const trigger of agent.triggers) {
-          if (trigger.type === 'schedule' && shouldRunSchedule(trigger)) {
-            await executeAgent(
-              agent.id,
-              { type: 'schedule', data: { schedule: trigger.schedule } },
-              supabase
-            );
-          }
-        }
-      }
-    }
-  } catch (error) {
-    console.error('[agents/orchestrator] processAgentTriggers failed:', error);
-  }
+export interface Workflow {
+  id: string;
+  name: string;
+  steps: WorkflowStep[];
+  status: "pending" | "running" | "completed" | "failed";
+  createdAt: string;
 }
 
-export async function handleEvent(
-  businessId: string,
-  eventType: string,
-  eventData: Record<string, unknown>,
-  supabase: SupabaseClient
-): Promise<void> {
-  try {
-    const { data: agents, error } = await supabase
-      .from('agents')
-      .select('id, business_id, status, triggers')
-      .eq('business_id', businessId)
-      .in('status', ['idle', 'active']);
+// ---------------------------------------------------------------------------
+// AgentOrchestrator
+// ---------------------------------------------------------------------------
 
-    if (error) throw error;
-    if (!agents || agents.length === 0) return;
+export class AgentOrchestrator {
+  private tasks = new Map<string, AgentTask>();
+  private workflows = new Map<string, Workflow>();
 
-    const matchingAgents = (agents as AgentRow[]).filter((agent) =>
-      agent.triggers?.some(
-        (t) => t.type === 'event' && t.event_type === eventType
-      )
+  /**
+   * Spawn a child agent task — one agent delegates work to another.
+   */
+  spawn(
+    parentAgentId: string,
+    childAgentId: string,
+    instruction: string,
+  ): AgentTask {
+    const session = sessionManager.create(childAgentId, "orchestrator");
+    const task: AgentTask = {
+      id: crypto.randomUUID(),
+      parentAgentId,
+      childAgentId,
+      sessionId: session.id,
+      instruction,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+    };
+
+    this.tasks.set(task.id, task);
+
+    // Send the instruction as a cross-agent message
+    sessionManager.crossAgentSend(
+      session.id,
+      childAgentId,
+      instruction,
     );
 
-    const results = await Promise.allSettled(
-      matchingAgents.map((agent) =>
-        executeAgent(
-          agent.id,
-          { type: 'event', event_type: eventType, data: eventData },
-          supabase
-        )
-      )
-    );
-
-    for (const result of results) {
-      if (result.status === 'rejected') {
-        console.error('[agents/orchestrator] Agent execution failed during event handling:', result.reason);
-      }
-    }
-  } catch (error) {
-    console.error('[agents/orchestrator] handleEvent failed:', error);
-  }
-}
-
-export async function runScheduledAgents(
-  supabase: SupabaseClient
-): Promise<void> {
-  try {
-    const { data: businesses, error } = await supabase
-      .from('businesses')
-      .select('id')
-      .eq('status', 'active');
-
-    if (error) throw error;
-    if (!businesses || businesses.length === 0) return;
-
-    for (const business of businesses) {
-      await processAgentTriggers(business.id, supabase);
-    }
-  } catch (error) {
-    console.error('[agents/orchestrator] runScheduledAgents failed:', error);
-  }
-}
-
-function shouldRunSchedule(trigger: AgentTriggerConfig): boolean {
-  if (!trigger.schedule) return false;
-
-  const lastRun = trigger.last_run ? new Date(trigger.last_run) : null;
-  const now = new Date();
-
-  if (!lastRun) return true;
-
-  // Simple interval-based check: parse common cron-like patterns
-  const schedule = trigger.schedule;
-
-  if (schedule === '* * * * *') {
-    // Every minute
-    return now.getTime() - lastRun.getTime() >= 60_000;
+    return task;
   }
 
-  if (schedule.startsWith('*/')) {
-    // Every N minutes: */5 * * * *
-    const parts = schedule.split(' ');
-    const minutes = parseInt(parts[0].replace('*/', ''), 10);
-    if (!isNaN(minutes)) {
-      return now.getTime() - lastRun.getTime() >= minutes * 60_000;
+  /**
+   * Mark a task as running.
+   */
+  startTask(taskId: string): void {
+    const task = this.tasks.get(taskId);
+    if (task) {
+      task.status = "running";
     }
   }
 
-  // Hourly: 0 * * * *
-  if (schedule === '0 * * * *') {
-    return now.getTime() - lastRun.getTime() >= 3_600_000;
+  /**
+   * Complete a task with a result.
+   */
+  completeTask(taskId: string, result: string): void {
+    const task = this.tasks.get(taskId);
+    if (task) {
+      task.status = "completed";
+      task.result = result;
+      task.completedAt = new Date().toISOString();
+
+      // Store the result in the parent agent's memory for future reference
+      agentMemory.add(task.parentAgentId, "", {
+        content: `Task delegated to agent ${task.childAgentId}: "${task.instruction}" — Result: ${result}`,
+        category: "event",
+        importance: 0.6,
+      });
+
+      // Send result back to parent agent
+      sessionManager.crossAgentSend(
+        task.sessionId,
+        task.parentAgentId,
+        `[Task completed] ${result}`,
+      );
+    }
   }
 
-  // Daily: 0 9 * * * (at 9am)
-  if (/^0 \d{1,2} \* \* \*$/.test(schedule)) {
-    return now.getTime() - lastRun.getTime() >= 86_400_000;
+  /**
+   * Fail a task with an error.
+   */
+  failTask(taskId: string, error: string): void {
+    const task = this.tasks.get(taskId);
+    if (task) {
+      task.status = "failed";
+      task.error = error;
+      task.completedAt = new Date().toISOString();
+    }
   }
 
-  // Default: check if at least 1 hour has passed
-  return now.getTime() - lastRun.getTime() >= 3_600_000;
+  /**
+   * Yield a task — agent pauses and can resume later.
+   */
+  yieldTask(taskId: string, partialResult: string): void {
+    const task = this.tasks.get(taskId);
+    if (task) {
+      task.status = "yielded";
+      task.result = partialResult;
+    }
+  }
+
+  /**
+   * Get all tasks for a parent agent.
+   */
+  getChildTasks(parentAgentId: string): AgentTask[] {
+    return Array.from(this.tasks.values())
+      .filter((t) => t.parentAgentId === parentAgentId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  /**
+   * Get a specific task.
+   */
+  getTask(taskId: string): AgentTask | undefined {
+    return this.tasks.get(taskId);
+  }
+
+  /**
+   * Check if all dependencies for a workflow step are met.
+   */
+  private areDependenciesMet(step: WorkflowStep): boolean {
+    if (!step.dependsOn || step.dependsOn.length === 0) return true;
+    return step.dependsOn.every((depId) => {
+      const task = this.tasks.get(depId);
+      return task?.status === "completed";
+    });
+  }
+
+  /**
+   * Create a multi-step workflow.
+   */
+  createWorkflow(name: string, steps: WorkflowStep[]): Workflow {
+    const workflow: Workflow = {
+      id: crypto.randomUUID(),
+      name,
+      steps,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+    };
+    this.workflows.set(workflow.id, workflow);
+    return workflow;
+  }
+
+  /**
+   * Get next runnable steps in a workflow.
+   */
+  getReadySteps(workflowId: string): WorkflowStep[] {
+    const workflow = this.workflows.get(workflowId);
+    if (!workflow) return [];
+    return workflow.steps.filter((step) => this.areDependenciesMet(step));
+  }
+
+  /**
+   * List all workflows.
+   */
+  listWorkflows(): Workflow[] {
+    return Array.from(this.workflows.values());
+  }
+
+  /**
+   * List all tasks.
+   */
+  listTasks(filters?: { status?: AgentTask["status"]; agentId?: string }): AgentTask[] {
+    let tasks = Array.from(this.tasks.values());
+    if (filters?.status) {
+      tasks = tasks.filter((t) => t.status === filters.status);
+    }
+    if (filters?.agentId) {
+      tasks = tasks.filter(
+        (t) => t.parentAgentId === filters.agentId || t.childAgentId === filters.agentId,
+      );
+    }
+    return tasks.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
 }
+
+// ---------------------------------------------------------------------------
+// Singleton
+// ---------------------------------------------------------------------------
+
+export const orchestrator = new AgentOrchestrator();

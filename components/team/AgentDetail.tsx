@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { Button } from "@/components/ui/Button";
 import { AgentStatusDot, type AgentStatus } from "@/components/company/AgentStatusDot";
 import { AgentStats } from "@/components/team/AgentStats";
@@ -22,6 +23,7 @@ interface AgentDetailProps {
   onClose: () => void;
   onChat: (agentId: string) => void;
   onTogglePause: (agentId: string) => void;
+  onDelete?: (agentId: string) => void;
 }
 
 function AgentDetail({
@@ -29,23 +31,25 @@ function AgentDetail({
   onClose,
   onChat,
   onTogglePause,
+  onDelete,
 }: AgentDetailProps) {
+  const [confirmDelete, setConfirmDelete] = React.useState(false);
   const isPaused = agent.status === "paused";
 
   return (
-    <div className="fixed inset-y-0 right-0 z-40 flex w-full max-w-sm flex-col border-l border-[var(--border)] bg-[var(--background)] shadow-xl">
-      <div className="flex items-center justify-between border-b border-[var(--border)] p-4">
+    <div className="fixed inset-y-0 right-0 z-40 flex w-full max-w-sm flex-col border-l border-zinc-200 bg-white shadow-xl">
+      <div className="flex items-center justify-between border-b border-zinc-200 p-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--muted)] text-sm font-medium text-[var(--foreground)]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 text-sm font-medium text-zinc-900">
             {agent.initial}
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-[var(--foreground)]">
+            <h3 className="text-sm font-semibold text-zinc-900">
               {agent.name}
             </h3>
             <div className="flex items-center gap-1.5">
               <AgentStatusDot status={agent.status} />
-              <span className="text-xs text-[var(--muted-foreground)]">
+              <span className="text-xs text-zinc-500">
                 {agent.role} &middot; {agent.level}
               </span>
             </div>
@@ -53,7 +57,7 @@ function AgentDetail({
         </div>
         <button
           onClick={onClose}
-          className="rounded-sm p-1 text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+          className="rounded-sm p-1 text-zinc-500 hover:text-zinc-900"
         >
           <svg
             width="14"
@@ -79,17 +83,17 @@ function AgentDetail({
         />
 
         <div className="mt-6">
-          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-[var(--muted-foreground)]">
+          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-zinc-500">
             Recent Activity
           </h4>
           {agent.activityLog.length === 0 ? (
-            <p className="text-xs text-[var(--muted-foreground)]">
+            <p className="text-xs text-zinc-500">
               No recent activity.
             </p>
           ) : (
             <div className="flex flex-col gap-2">
               {agent.activityLog.map((entry, i) => (
-                <p key={i} className="text-xs text-[var(--muted-foreground)]">
+                <p key={i} className="text-xs text-zinc-500">
                   {entry}
                 </p>
               ))}
@@ -98,23 +102,51 @@ function AgentDetail({
         </div>
       </div>
 
-      <div className="flex gap-2 border-t border-[var(--border)] p-4">
-        <Button
-          variant="outline"
-          size="sm"
-          className="flex-1"
-          onClick={() => onChat(agent.id)}
-        >
-          Chat
-        </Button>
-        <Button
-          variant={isPaused ? "default" : "destructive"}
-          size="sm"
-          className="flex-1"
-          onClick={() => onTogglePause(agent.id)}
-        >
-          {isPaused ? "Resume" : "Pause"}
-        </Button>
+      <div className="border-t border-zinc-200 p-4">
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            onClick={() => onChat(agent.id)}
+          >
+            Chat
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1"
+            onClick={() => onTogglePause(agent.id)}
+          >
+            {isPaused ? "Resume" : "Pause"}
+          </Button>
+        </div>
+        {confirmDelete ? (
+          <div className="mt-3 flex items-center justify-between rounded-md border border-zinc-200 px-3 py-2">
+            <span className="text-xs text-zinc-500">Delete {agent.name}?</span>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="text-xs text-zinc-500 hover:text-zinc-700"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => onDelete?.(agent.id)}
+                className="text-xs text-zinc-900 hover:underline"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            onClick={() => setConfirmDelete(true)}
+            className="mt-3 text-xs text-zinc-600 transition-colors hover:text-zinc-500"
+          >
+            Delete Agent
+          </button>
+        )}
       </div>
     </div>
   );

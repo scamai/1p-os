@@ -1,5 +1,33 @@
+interface AgentCostData {
+  agentId?: string;
+  name: string;
+  role?: string;
+  cost: number;
+  tasks?: number;
+  hoursSaved?: number;
+  efficiencyScore?: number;
+  dailyBudget?: number;
+  monthlyBudget?: number;
+}
+
 interface CostByAgentProps {
-  agents: { name: string; cost: number }[];
+  agents: AgentCostData[];
+}
+
+function getBudgetColor(cost: number, budget: number): string {
+  if (budget <= 0) return "bg-zinc-100";
+  const ratio = cost / budget;
+  if (ratio >= 1) return "bg-zinc-900";
+  if (ratio >= 0.8) return "bg-zinc-600";
+  return "bg-zinc-400";
+}
+
+function getBudgetTextColor(cost: number, budget: number): string {
+  if (budget <= 0) return "text-zinc-500";
+  const ratio = cost / budget;
+  if (ratio >= 1) return "text-zinc-900 font-bold";
+  if (ratio >= 0.8) return "text-zinc-700";
+  return "text-zinc-500";
 }
 
 function CostByAgent({ agents }: CostByAgentProps) {
@@ -8,32 +36,71 @@ function CostByAgent({ agents }: CostByAgentProps) {
 
   if (sorted.length === 0) {
     return (
-      <p className="py-4 text-sm text-[var(--muted-foreground)]">
+      <p className="py-4 text-sm text-zinc-500">
         No cost data yet.
       </p>
     );
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      {sorted.map((agent) => (
-        <div key={agent.name} className="flex flex-col gap-1">
-          <div className="flex items-center justify-between text-xs">
-            <span className="text-[var(--foreground)]">{agent.name}</span>
-            <span className="font-mono text-[var(--muted-foreground)]">
-              ${agent.cost.toFixed(2)}
-            </span>
+    <div className="flex flex-col gap-3">
+      {sorted.map((agent) => {
+        const budget = agent.monthlyBudget ?? agent.dailyBudget ?? 0;
+        const barColor = getBudgetColor(agent.cost, budget);
+        const costColor = getBudgetTextColor(agent.cost, budget);
+
+        return (
+          <div key={agent.agentId ?? agent.name} className="flex flex-col gap-1">
+            {/* Row: name, role, cost */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-zinc-900">
+                  {agent.name}
+                </span>
+                {agent.role && (
+                  <span className="rounded bg-zinc-50 px-1.5 py-0.5 text-[10px] text-zinc-500">
+                    {agent.role}
+                  </span>
+                )}
+              </div>
+              <span className={`font-mono font-semibold ${costColor}`}>
+                ${agent.cost.toFixed(2)}
+              </span>
+            </div>
+
+            {/* Cost bar */}
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-50">
+              <div
+                className={`h-full rounded-full transition-all ${barColor}`}
+                style={{
+                  width: `${maxCost > 0 ? (agent.cost / maxCost) * 100 : 0}%`,
+                }}
+              />
+            </div>
+
+            {/* Stats row */}
+            <div className="flex items-center gap-3 text-[10px] text-zinc-500">
+              {agent.tasks !== undefined && (
+                <span>{agent.tasks} tasks</span>
+              )}
+              {agent.hoursSaved !== undefined && agent.hoursSaved > 0 && (
+                <span>{agent.hoursSaved}h saved</span>
+              )}
+              {agent.efficiencyScore !== undefined &&
+                agent.efficiencyScore > 0 && (
+                  <span>
+                    efficiency: {agent.efficiencyScore.toFixed(1)} hrs/$
+                  </span>
+                )}
+              {budget > 0 && (
+                <span className="ml-auto">
+                  budget: ${budget.toFixed(2)}
+                </span>
+              )}
+            </div>
           </div>
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--muted)]">
-            <div
-              className="h-full rounded-full bg-[var(--foreground)] transition-all"
-              style={{
-                width: `${(agent.cost / maxCost) * 100}%`,
-              }}
-            />
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

@@ -41,12 +41,12 @@ function AgentChat({
 
   return (
     <div className="flex h-full flex-col">
-      <div className="border-b border-[var(--border)] px-4 py-3">
+      <div className="border-b border-zinc-200 px-4 py-3">
         <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--muted)] text-xs font-medium text-[var(--foreground)]">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-100 text-xs font-medium text-zinc-900">
             {agentInitial}
           </div>
-          <span className="text-sm font-medium text-[var(--foreground)]">
+          <span className="text-sm font-medium text-zinc-900">
             {agentName}
           </span>
         </div>
@@ -54,7 +54,7 @@ function AgentChat({
 
       <div className="flex-1 overflow-y-auto p-4">
         {messages.length === 0 && (
-          <p className="py-8 text-center text-sm text-[var(--muted-foreground)]">
+          <p className="py-8 text-center text-sm text-zinc-500">
             Start a conversation with {agentName}.
           </p>
         )}
@@ -67,8 +67,8 @@ function AgentChat({
               <div
                 className={`max-w-[80%] rounded-lg px-3 py-2 text-sm ${
                   msg.role === "user"
-                    ? "bg-[var(--foreground)] text-[var(--background)]"
-                    : "bg-[var(--muted)] text-[var(--foreground)]"
+                    ? "bg-zinc-100 text-zinc-900"
+                    : "bg-zinc-50 text-zinc-900"
                 }`}
               >
                 {msg.content}
@@ -77,7 +77,7 @@ function AgentChat({
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="rounded-lg bg-[var(--muted)] px-3 py-2 text-sm text-[var(--muted-foreground)]">
+              <div className="rounded-lg bg-zinc-50 px-3 py-2 text-sm text-zinc-500">
                 Thinking...
               </div>
             </div>
@@ -88,13 +88,13 @@ function AgentChat({
 
       <form
         onSubmit={handleSubmit}
-        className="flex gap-2 border-t border-[var(--border)] p-3"
+        className="flex gap-2 border-t border-zinc-200 p-3"
       >
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type a message..."
-          className="h-9 flex-1 rounded-md border border-[var(--border)] bg-transparent px-3 text-sm text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+          className="h-9 flex-1 rounded-md border border-zinc-200 bg-transparent px-3 text-sm text-zinc-900 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-300"
         />
         <Button type="submit" size="sm" disabled={!input.trim() || loading}>
           Send

@@ -13,18 +13,18 @@ function MorningBrief({ summary }: MorningBriefProps) {
   if (!summary || dismissed) return null;
 
   return (
-    <Card className="mb-4 border-[var(--muted-foreground)]/20">
+    <Card className="mb-4 border-zinc-500/20">
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="mb-1 text-xs font-medium uppercase tracking-wider text-[var(--muted-foreground)]">
+            <p className="mb-1 text-xs font-medium uppercase tracking-wider text-zinc-500">
               Morning Brief
             </p>
-            <p className="text-sm text-[var(--foreground)]">{summary}</p>
+            <p className="text-sm text-zinc-900">{summary}</p>
           </div>
           <button
             onClick={() => setDismissed(true)}
-            className="shrink-0 rounded-sm p-1 text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
+            className="shrink-0 rounded-sm p-1 text-zinc-500 transition-colors hover:text-zinc-900"
           >
             <svg
               width="12"

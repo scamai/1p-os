@@ -24,9 +24,9 @@ function AgentStats({
   return (
     <div className="grid grid-cols-2 gap-3">
       {stats.map((s) => (
-        <div key={s.label} className="rounded-md bg-[var(--muted)] p-3">
-          <p className="text-xs text-[var(--muted-foreground)]">{s.label}</p>
-          <p className="mt-0.5 text-sm font-semibold text-[var(--foreground)]">
+        <div key={s.label} className="rounded-md bg-zinc-50 p-3">
+          <p className="text-xs text-zinc-500">{s.label}</p>
+          <p className="mt-0.5 text-sm font-semibold text-zinc-900">
             {s.value}
           </p>
         </div>

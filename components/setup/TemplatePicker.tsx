@@ -79,10 +79,10 @@ interface TemplatePickerProps {
 function TemplatePicker({ selected, onSelect }: TemplatePickerProps) {
   return (
     <div>
-      <h2 className="mb-1 text-lg font-semibold text-[var(--foreground)]">
+      <h2 className="mb-1 text-lg font-semibold text-zinc-900">
         Choose a template
       </h2>
-      <p className="mb-6 text-sm text-[var(--muted-foreground)]">
+      <p className="mb-6 text-sm text-zinc-500">
         Pick the one closest to what you do. You can customize later.
       </p>
 
@@ -92,20 +92,20 @@ function TemplatePicker({ selected, onSelect }: TemplatePickerProps) {
             key={t.id}
             className={`cursor-pointer transition-all ${
               selected === t.id
-                ? "border-[var(--foreground)] ring-1 ring-[var(--ring)]"
+                ? "border-zinc-900 ring-1 ring-zinc-300"
                 : ""
             }`}
             onClick={() => onSelect(t.id)}
           >
             <CardContent className="p-4">
               <div className="mb-2 text-2xl">{t.icon}</div>
-              <h3 className="text-sm font-semibold text-[var(--foreground)]">
+              <h3 className="text-sm font-semibold text-zinc-900">
                 {t.name}
               </h3>
-              <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+              <p className="mt-1 text-xs text-zinc-500">
                 {t.description}
               </p>
-              <div className="mt-3 flex items-center gap-3 text-xs text-[var(--muted-foreground)]">
+              <div className="mt-3 flex items-center gap-3 text-xs text-zinc-500">
                 <span>{t.agentCount} agents</span>
                 <span>{t.estimatedCost}</span>
               </div>

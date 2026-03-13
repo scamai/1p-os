@@ -36,7 +36,7 @@ function SettingsView({
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="mb-4 text-lg font-semibold text-[var(--foreground)]">
+      <h1 className="mb-4 text-lg font-semibold text-zinc-900">
         Settings
       </h1>
 
@@ -72,14 +72,20 @@ function SettingsView({
           <CardContent>
             <div className="flex flex-col gap-2">
               <Link
+                href="/settings/keys"
+                className="rounded-md px-3 py-2 text-sm text-zinc-900 transition-colors hover:bg-zinc-100"
+              >
+                AI Infrastructure &amp; API Keys
+              </Link>
+              <Link
                 href="/settings/safety"
-                className="rounded-md px-3 py-2 text-sm text-[var(--foreground)] transition-colors hover:bg-[var(--muted)]"
+                className="rounded-md px-3 py-2 text-sm text-zinc-900 transition-colors hover:bg-zinc-100"
               >
                 Safety &amp; Budgets
               </Link>
               <Link
                 href="/settings/models"
-                className="rounded-md px-3 py-2 text-sm text-[var(--foreground)] transition-colors hover:bg-[var(--muted)]"
+                className="rounded-md px-3 py-2 text-sm text-zinc-900 transition-colors hover:bg-zinc-100"
               >
                 Model Routing
               </Link>

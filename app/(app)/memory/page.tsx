@@ -56,10 +56,10 @@ export default function MemoryPage() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="mb-4 text-lg font-semibold text-[var(--foreground)]">
+      <h1 className="mb-4 text-lg font-semibold text-zinc-900">
         Business Memory
       </h1>
-      <p className="mb-6 text-sm text-[var(--muted-foreground)]">
+      <p className="mb-6 text-sm text-zinc-500">
         Search what your agents know about your business.
       </p>
 
@@ -68,11 +68,11 @@ export default function MemoryPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search memories..."
-          className="h-9 flex-1 rounded-md border border-[var(--border)] bg-transparent px-3 text-sm text-[var(--foreground)] placeholder:text-[var(--muted-foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
+          className="h-9 flex-1 rounded-md border border-zinc-200 bg-transparent px-3 text-sm text-zinc-900 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-900"
         />
         <button
           type="submit"
-          className="h-9 rounded-md bg-[var(--foreground)] px-4 text-sm font-medium text-[var(--background)] transition-opacity hover:opacity-90"
+          className="h-9 rounded-md bg-zinc-900 px-4 text-sm font-medium text-white transition-opacity hover:opacity-90"
         >
           Search
         </button>
@@ -86,7 +86,7 @@ export default function MemoryPage() {
 
       {!loading && searched && results.length === 0 && (
         <div className="py-12 text-center">
-          <p className="text-sm text-[var(--muted-foreground)]">
+          <p className="text-sm text-zinc-500">
             No memories found for &quot;{search}&quot;.
           </p>
         </div>
@@ -100,16 +100,16 @@ export default function MemoryPage() {
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-[var(--foreground)]">
+                      <span className="text-sm font-semibold text-zinc-900">
                         {entry.key}
                       </span>
                       <Badge variant="outline">{entry.category}</Badge>
                     </div>
-                    <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+                    <p className="mt-1 text-sm text-zinc-500">
                       {entry.value}
                     </p>
                   </div>
-                  <span className="shrink-0 text-xs text-[var(--muted-foreground)]">
+                  <span className="shrink-0 text-xs text-zinc-500">
                     {new Date(entry.updatedAt).toLocaleDateString()}
                   </span>
                 </div>
@@ -121,7 +121,7 @@ export default function MemoryPage() {
 
       {!searched && !loading && (
         <div className="py-12 text-center">
-          <p className="text-sm text-[var(--muted-foreground)]">
+          <p className="text-sm text-zinc-500">
             Search to explore your business knowledge base.
           </p>
         </div>

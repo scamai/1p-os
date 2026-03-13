@@ -5,25 +5,11 @@ import { BudgetControls } from "@/components/costs/BudgetControls";
 import { WhatIfCalculator } from "@/components/costs/WhatIfCalculator";
 
 interface CostsViewProps {
-  totalSpent: number;
-  budgetRemaining: number;
-  projectedMonthly: number;
-  agentCosts: { name: string; cost: number }[];
-  dailyCosts: { date: string; cost: number }[];
-  currentAgentCount: number;
-  avgCostPerAgent: number;
   globalDailyBudget: number;
   globalMonthlyBudget: number;
 }
 
 function CostsView({
-  totalSpent,
-  budgetRemaining,
-  projectedMonthly,
-  agentCosts,
-  dailyCosts,
-  currentAgentCount,
-  avgCostPerAgent,
   globalDailyBudget,
   globalMonthlyBudget,
 }: CostsViewProps) {
@@ -34,7 +20,7 @@ function CostsView({
     agentOverrides: { agentId: string; agentName: string; dailyBudget: number }[];
   }) => {
     await fetch("/api/safety/budget", {
-      method: "POST",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
@@ -42,18 +28,12 @@ function CostsView({
 
   return (
     <div>
-      <h1 className="mb-4 text-lg font-semibold text-[var(--foreground)]">
+      <h1 className="mb-4 text-lg font-semibold text-zinc-900">
         Costs
       </h1>
 
       <div className="flex flex-col gap-6">
-        <CostDashboard
-          totalSpent={totalSpent}
-          budgetRemaining={budgetRemaining}
-          projectedMonthly={projectedMonthly}
-          agentCosts={agentCosts}
-          dailyCosts={dailyCosts}
-        />
+        <CostDashboard />
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <BudgetControls
@@ -64,11 +44,7 @@ function CostsView({
             onSave={handleSaveBudget}
           />
 
-          <WhatIfCalculator
-            currentAgentCount={currentAgentCount}
-            currentDailyCost={totalSpent}
-            avgCostPerAgent={avgCostPerAgent}
-          />
+          <WhatIfCalculator />
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ function Card({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] transition-colors hover:border-[var(--muted-foreground)]/20 ${className}`}
+      className={`rounded-lg border border-zinc-200 bg-white text-zinc-900 transition-colors hover:border-zinc-500/20 ${className}`}
       {...props}
     >
       {children}
@@ -34,7 +34,7 @@ function CardTitle({
 }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h3
-      className={`text-sm font-semibold leading-none tracking-tight text-[var(--foreground)] ${className}`}
+      className={`text-sm font-semibold leading-none tracking-tight text-zinc-900 ${className}`}
       {...props}
     >
       {children}
@@ -49,7 +49,7 @@ function CardDescription({
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-      className={`text-sm text-[var(--muted-foreground)] ${className}`}
+      className={`text-sm text-zinc-500 ${className}`}
       {...props}
     >
       {children}

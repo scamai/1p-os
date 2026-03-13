@@ -23,30 +23,84 @@ export default async function AppLayout({
     .eq("owner_id", user.id)
     .single();
 
-  // Fetch agents for sidebar
+  const businessId = business?.id ?? "";
+
+  // Fetch agents
   const { data: agents } = await supabase
     .from("agents")
     .select("id, name, status")
-    .eq("business_id", business?.id ?? "")
+    .eq("business_id", businessId)
     .order("name");
 
+  // Fetch sidebar counts in parallel
+  const [
+    { count: pendingDecisions },
+    { count: overdueInvoices },
+    { count: activeRelationships },
+    { count: activeProjects },
+    { count: activeAgents },
+    { count: documentCount },
+  ] = await Promise.all([
+    supabase
+      .from("decision_cards")
+      .select("*", { count: "exact", head: true })
+      .eq("business_id", businessId)
+      .eq("status", "pending"),
+    supabase
+      .from("invoices")
+      .select("*", { count: "exact", head: true })
+      .eq("business_id", businessId)
+      .eq("status", "overdue"),
+    supabase
+      .from("relationships")
+      .select("*", { count: "exact", head: true })
+      .eq("business_id", businessId),
+    supabase
+      .from("projects")
+      .select("*", { count: "exact", head: true })
+      .eq("business_id", businessId)
+      .eq("status", "active"),
+    supabase
+      .from("agents")
+      .select("*", { count: "exact", head: true })
+      .eq("business_id", businessId)
+      .neq("status", "paused"),
+    supabase
+      .from("documents")
+      .select("*", { count: "exact", head: true })
+      .eq("business_id", businessId),
+  ]);
+
   const headerProps = {
-    revenue: business?.revenue ?? 0,
-    freedomHours: business?.freedom_hours ?? 0,
+    businessName: business?.name ?? business?.business_name ?? undefined,
     healthScore: business?.health_score ?? 100,
     costToday: business?.cost_today ?? 0,
     budgetDaily: business?.budget_daily ?? 5,
   };
 
-  const sidebarAgents = (agents ?? []).map((a: { id: string; name: string; status: string }) => ({
-    id: a.id,
-    name: a.name,
-    initial: a.name.charAt(0).toUpperCase(),
-    status: a.status as "working" | "needs_input" | "idle" | "error" | "paused",
-  }));
+  const sidebarCounts = {
+    pendingDecisions: pendingDecisions ?? 0,
+    overdueInvoices: overdueInvoices ?? 0,
+    activeRelationships: activeRelationships ?? 0,
+    activeProjects: activeProjects ?? 0,
+    activeAgents: activeAgents ?? 0,
+    documentCount: documentCount ?? 0,
+  };
+
+  const agentList = (agents ?? []).map(
+    (a: { id: string; name: string; status: string }) => ({
+      id: a.id,
+      name: a.name,
+      status: a.status,
+    })
+  );
 
   return (
-    <AppShell headerProps={headerProps} agents={sidebarAgents}>
+    <AppShell
+      headerProps={headerProps}
+      agents={agentList}
+      sidebarCounts={sidebarCounts}
+    >
       {children}
     </AppShell>
   );

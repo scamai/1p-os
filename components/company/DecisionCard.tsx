@@ -21,10 +21,10 @@ interface DecisionCardProps {
 }
 
 const urgencyColors: Record<Urgency, string> = {
-  low: "bg-gray-500",
-  medium: "bg-[var(--warning)]",
-  high: "bg-orange-500",
-  critical: "bg-[var(--destructive)]",
+  low: "bg-zinc-300",
+  medium: "bg-zinc-400",
+  high: "bg-zinc-600",
+  critical: "bg-zinc-900",
 };
 
 function DecisionCard({
@@ -37,14 +37,14 @@ function DecisionCard({
   onAction,
 }: DecisionCardProps) {
   return (
-    <div className="flex overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--background)] transition-colors hover:border-[var(--muted-foreground)]/20">
+    <div className="flex overflow-hidden rounded-lg border border-zinc-200 bg-white transition-colors hover:border-zinc-500/20">
       <div className={`w-1 shrink-0 ${urgencyColors[urgency]}`} />
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div>
-          <h3 className="text-sm font-semibold text-[var(--foreground)]">
+          <h3 className="text-sm font-semibold text-zinc-900">
             {title}
           </h3>
-          <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+          <p className="mt-1 text-sm text-zinc-500">
             {description}
           </p>
         </div>

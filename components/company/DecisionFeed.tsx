@@ -24,7 +24,7 @@ function DecisionFeed({ cards, onAction }: DecisionFeedProps) {
   if (cards.length === 0) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center py-20">
-        <p className="text-sm text-[var(--muted-foreground)]">
+        <p className="text-sm text-zinc-500">
           All clear. Your business is running.
         </p>
       </div>
@@ -35,7 +35,7 @@ function DecisionFeed({ cards, onAction }: DecisionFeedProps) {
     <div className="flex flex-col gap-3">
       {pending.length === 0 && (
         <div className="py-8 text-center">
-          <p className="text-sm text-[var(--muted-foreground)]">
+          <p className="text-sm text-zinc-500">
             All clear. Nothing needs your attention.
           </p>
         </div>
@@ -49,7 +49,7 @@ function DecisionFeed({ cards, onAction }: DecisionFeedProps) {
         <div className="mt-4">
           <button
             onClick={() => setDoneOpen((prev) => !prev)}
-            className="flex items-center gap-2 text-xs text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)]"
+            className="flex items-center gap-2 text-xs text-zinc-500 transition-colors hover:text-zinc-900"
           >
             <svg
               className={`h-3 w-3 transition-transform ${doneOpen ? "rotate-90" : ""}`}
