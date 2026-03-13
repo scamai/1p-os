@@ -19,7 +19,10 @@ INSERT INTO auth.users (
   email, encrypted_password, email_confirmed_at,
   raw_app_meta_data, raw_user_meta_data,
   created_at, updated_at,
-  confirmation_token, recovery_token
+  confirmation_token, recovery_token,
+  email_change, email_change_token_new, email_change_token_current,
+  phone, phone_change, phone_change_token,
+  reauthentication_token, is_sso_user, is_anonymous
 ) VALUES (
   '00000000-0000-0000-0000-000000000001',
   '00000000-0000-0000-0000-000000000000',
@@ -31,7 +34,10 @@ INSERT INTO auth.users (
   '{"provider":"email","providers":["email"]}'::jsonb,
   '{"full_name":"Demo Founder"}'::jsonb,
   NOW(), NOW(),
-  '', ''
+  '', '',
+  '', '', '',
+  '', '', '',
+  '', false, false
 ) ON CONFLICT (id) DO NOTHING;
 
 -- Also insert identity so login works
