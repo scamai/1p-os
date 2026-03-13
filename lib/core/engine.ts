@@ -41,7 +41,7 @@ const INTENT_RULES: IntentRule[] = [
         home: '/', hq: '/', dashboard: '/',
         money: '/finance', finance: '/finance', invoices: '/finance', billing: '/finance',
         sales: '/sales', pipeline: '/sales', leads: '/sales', proposals: '/sales',
-        people: '/people', contacts: '/people', clients: '/people',
+        people: '/crm', contacts: '/crm', clients: '/crm', crm: '/crm',
         work: '/work', tasks: '/work', projects: '/work',
         team: '/team', agents: '/team',
         talent: '/talent', marketplace: '/talent', hire: '/talent',
@@ -103,7 +103,7 @@ const INTENT_RULES: IntentRule[] = [
   // Add person
   {
     keywords: ['add contact', 'add person', 'add client', 'add lead', 'new contact', 'new client', 'new lead'],
-    action: 'add_person',
+    action: 'add_contact',
     extract: (input) => {
       const nameMatch = input.match(/(?:named?|called?)\s+([A-Z][a-zA-Z\s]+?)(?:\s+as|\s*$)/i);
       const typeMatch = input.match(/\b(client|lead|contractor|vendor|partner)\b/i);

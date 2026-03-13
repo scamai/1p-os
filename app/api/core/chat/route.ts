@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { getAnthropicClient } from '@/lib/ai/client';
 import { parseIntent } from '@/lib/core';
 import { ContextEngine } from '@/lib/context/engine';
+import { agentMemory } from '@/lib/agents/memory';
 
 const ChatSchema = z.object({
   message: z.string().min(1).max(5000),
@@ -190,6 +191,17 @@ If the user asks you to DO something (create, send, update, delete), tell them e
 
     const textBlock = response.content.find(block => block.type === 'text');
     const reply = textBlock?.text ?? 'No response generated.';
+
+    // Auto-extract memories from the business chat (non-blocking)
+    // Uses a synthetic "core-chat" agent ID to scope business-level memories
+    agentMemory
+      .addFromConversation('core-chat', business.id, [
+        { role: 'user', content: message },
+        { role: 'assistant', content: reply },
+      ])
+      .catch((err) => {
+        console.error('[core/chat] Memory extraction failed:', err);
+      });
 
     return NextResponse.json({
       reply,

@@ -132,16 +132,16 @@ const BUILTIN_TOOL_DEFINITIONS: ToolDefinition[] = [
 /**
  * Execute a built-in tool (fallback when gateway tools unavailable).
  */
-function executeBuiltinTool(
+async function executeBuiltinTool(
   toolName: string,
   toolInput: Record<string, unknown>,
   agentId: string,
   businessId: string,
   sessionId: string,
-): unknown {
+): Promise<unknown> {
   switch (toolName) {
     case "search_memory": {
-      const results = agentMemory.search(
+      const results = await agentMemory.searchAsync(
         agentId,
         toolInput.query as string,
         5,
@@ -153,7 +153,7 @@ function executeBuiltinTool(
       }));
     }
     case "store_memory": {
-      const entry = agentMemory.add(agentId, businessId, {
+      const entry = await agentMemory.addAsync(agentId, businessId, {
         content: toolInput.content as string,
         category: toolInput.category as
           | "fact"
@@ -417,8 +417,8 @@ export class AgentRunner {
         industry: undefined,
       });
 
-    // Inject relevant memories into the system prompt
-    const relevantMemories = agentMemory.getRelevant(agentId, message, 3);
+    // Inject relevant memories into the system prompt (semantic search via mem0)
+    const relevantMemories = await agentMemory.getRelevantAsync(agentId, message, 3);
     const memoryBlock =
       relevantMemories.length > 0
         ? `\n\n## Relevant Memories\n${relevantMemories
@@ -693,7 +693,7 @@ export class AgentRunner {
       }
     }
 
-    // ── 7–8. Record to session ─────────────────────────────────────────
+    // ── 7–8. Record to session + extract memories ─────────────────────
 
     if (finalText) {
       sessionManager.addMessage(sessionId, {
@@ -701,6 +701,16 @@ export class AgentRunner {
         content: finalText,
         tokenCount: totalOutput,
       });
+
+      // Auto-extract memories from the conversation (non-blocking)
+      agentMemory
+        .addFromConversation(agentId, businessId, [
+          { role: "user", content: message },
+          { role: "assistant", content: finalText },
+        ])
+        .catch((err) => {
+          console.error("[runner] Memory extraction failed:", err);
+        });
     }
 
     const costUsd = estimateCost(selectedModel, totalInput, totalOutput);

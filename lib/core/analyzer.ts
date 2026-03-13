@@ -239,7 +239,7 @@ export async function analyzeForSection(
       break;
     }
 
-    case 'people': {
+    case 'crm': {
       const { data: relationships } = await supabase
         .from('relationships')
         .select('id, name, type, updated_at')
@@ -260,7 +260,7 @@ export async function analyzeForSection(
             priority: 'low',
             title: `${stale.length} contact${stale.length > 1 ? 's' : ''} not updated in 30+ days`,
             detail: stale.map(r => r.name).join(', '),
-            section: 'people',
+            section: 'crm',
           });
         }
       }

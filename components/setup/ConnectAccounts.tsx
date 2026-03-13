@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+// --- Types ---
 
 export interface ConnectedAccount {
   id: string;
@@ -25,7 +25,6 @@ interface AccountOption {
 }
 
 const ACCOUNT_OPTIONS: AccountOption[] = [
-  // Email
   {
     id: "gmail",
     name: "Gmail",
@@ -42,7 +41,6 @@ const ACCOUNT_OPTIONS: AccountOption[] = [
     authType: "oauth",
     category: "email",
   },
-  // Calendar
   {
     id: "google_calendar",
     name: "Google Calendar",
@@ -51,7 +49,6 @@ const ACCOUNT_OPTIONS: AccountOption[] = [
     authType: "oauth",
     category: "calendar",
   },
-  // Chat
   {
     id: "slack",
     name: "Slack",
@@ -90,7 +87,6 @@ const ACCOUNT_OPTIONS: AccountOption[] = [
       { key: "access_token", label: "Access Token", placeholder: "Your access token" },
     ],
   },
-  // Storage
   {
     id: "google_drive",
     name: "Google Drive",
@@ -107,7 +103,6 @@ const ACCOUNT_OPTIONS: AccountOption[] = [
     authType: "oauth",
     category: "storage",
   },
-  // SMS
   {
     id: "twilio",
     name: "SMS (Twilio)",
@@ -133,7 +128,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 
 const CATEGORY_ORDER = ["email", "calendar", "chat", "storage", "sms"];
 
-// ─── Component ───────────────────────────────────────────────────────────────
+// --- Component ---
 
 interface ConnectAccountsProps {
   connected: ConnectedAccount[];
@@ -153,9 +148,6 @@ function ConnectAccounts({
   const [expandedApiKey, setExpandedApiKey] = React.useState<string | null>(null);
   const [apiKeyValues, setApiKeyValues] = React.useState<Record<string, Record<string, string>>>({});
 
-  const isConnected = (id: string) =>
-    connected.some((c) => c.provider === id && c.status === "active");
-
   const getConnected = (id: string) =>
     connected.find((c) => c.provider === id);
 
@@ -163,18 +155,19 @@ function ConnectAccounts({
 
   return (
     <div>
-      <h2 className="mb-1 text-lg font-semibold text-zinc-900">
-        Connect your accounts
-      </h2>
-      <p className="mb-2 text-sm text-zinc-500">
-        Give your AI team access to your tools. They can read, send, and manage on your behalf.
-        All actions go through the safety pipeline.
-      </p>
-      {connectedCount > 0 && (
-        <div className="mb-4">
-          <Badge variant="success">{connectedCount} connected</Badge>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-lg font-semibold text-zinc-900">
+            Connect your accounts
+          </h2>
+          <p className="mt-0.5 text-sm text-zinc-500">
+            Give your AI team access to your tools. All actions go through the safety pipeline.
+          </p>
         </div>
-      )}
+        {connectedCount > 0 && (
+          <Badge variant="success">{connectedCount} connected</Badge>
+        )}
+      </div>
 
       <div className="flex flex-col gap-6">
         {CATEGORY_ORDER.map((cat) => {
@@ -183,7 +176,7 @@ function ConnectAccounts({
 
           return (
             <div key={cat}>
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
+              <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
                 {CATEGORY_LABELS[cat]}
               </p>
               <div className="flex flex-col gap-1">
@@ -194,7 +187,7 @@ function ConnectAccounts({
 
                   return (
                     <div key={option.id}>
-                      <div className="flex items-center justify-between rounded-lg border border-zinc-200 px-3 py-2.5 transition-colors hover:bg-zinc-50">
+                      <div className="flex items-center justify-between rounded-lg border border-zinc-200 px-3 py-2.5 transition-colors hover:bg-zinc-50/50">
                         <div className="flex items-center gap-3">
                           <svg
                             width="16"
@@ -258,7 +251,6 @@ function ConnectAccounts({
                         </div>
                       </div>
 
-                      {/* API key fields inline */}
                       {isExpanded && option.fields && (
                         <div className="ml-7 mt-1 mb-2 rounded-lg border border-zinc-200 bg-zinc-50 p-3">
                           <div className="flex flex-col gap-2">
@@ -288,7 +280,7 @@ function ConnectAccounts({
                               }}
                               className="text-xs self-start"
                             >
-                              Save & Connect
+                              Save
                             </Button>
                           </div>
                         </div>
@@ -302,10 +294,10 @@ function ConnectAccounts({
         })}
       </div>
 
-      <div className="mt-6 rounded-lg bg-zinc-50 border border-zinc-200 p-3">
-        <p className="text-[10px] text-zinc-500">
-          Credentials are encrypted with AES-256-GCM. Sensitive actions (sending emails, payments) always require your approval.
-          You can connect more accounts anytime in Settings &rarr; Channels.
+      <div className="mt-6 rounded-lg border border-zinc-100 bg-zinc-50 p-3">
+        <p className="text-[10px] text-zinc-400">
+          Credentials are encrypted with AES-256-GCM. Sensitive actions always require your approval.
+          You can connect more accounts anytime in Settings.
         </p>
       </div>
     </div>

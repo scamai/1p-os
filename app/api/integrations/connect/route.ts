@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import { buildAuthUrl } from "@/lib/integrations/oauth";
 import { getProvider } from "@/lib/integrations/providers";
 import { encrypt } from "@/lib/encryption";
+import { appendLog } from "@/lib/integrations/md-logger";
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
@@ -51,10 +52,19 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    await appendLog({
+      action: "connect",
+      provider: providerId,
+      actor: user.id,
+      details: credentials ? `${provider.name} connected via API key` : `${provider.name} configure requested (no credentials provided)`,
+      metadata: { authType: "api_key", hasCredentials: !!credentials },
+    });
+
     return NextResponse.json({
       authType: "api_key",
       provider: providerId,
-      message: `${provider.name} connected`,
+      connected: !!credentials,
+      message: credentials ? `${provider.name} connected` : `Credentials required`,
     });
   }
 
@@ -71,6 +81,13 @@ export async function POST(req: NextRequest) {
     const redirectUri = `${appUrl}/api/integrations/callback`;
 
     const url = buildAuthUrl(providerId, state, redirectUri);
+
+    await appendLog({
+      action: "connect_oauth_start",
+      provider: providerId,
+      actor: user.id,
+      details: `OAuth flow initiated for ${provider.name}`,
+    });
 
     return NextResponse.json({ url, authType: "oauth2" });
   } catch (err) {

@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import { decrypt } from "@/lib/encryption";
 import { exchangeCode, encryptCredentials, type StoredCredentials } from "@/lib/integrations/oauth";
 import { getProvider } from "@/lib/integrations/providers";
+import { appendLog } from "@/lib/integrations/md-logger";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -95,11 +96,27 @@ export async function GET(req: NextRequest) {
       { onConflict: "business_id,provider" }
     );
 
+    await appendLog({
+      action: "connect",
+      provider: statePayload.provider,
+      actor: user.id,
+      details: `${provider.name} connected via OAuth — ${email ?? "no email"}`,
+      metadata: { email, scopes: provider.oauth.scopes },
+    });
+
     return NextResponse.redirect(
       `${appUrl}/channels?connected=${statePayload.provider}&email=${encodeURIComponent(email ?? "")}`
     );
   } catch (err) {
     console.error("OAuth callback error:", err);
+
+    await appendLog({
+      action: "connect_error",
+      provider: statePayload.provider,
+      actor: user.id,
+      details: `OAuth callback failed: ${err instanceof Error ? err.message : "unknown"}`,
+    });
+
     return NextResponse.redirect(`${appUrl}/channels?error=token_exchange_failed`);
   }
 }

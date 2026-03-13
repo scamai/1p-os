@@ -1,6 +1,5 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 
 interface Strategy {
@@ -74,69 +73,48 @@ function ModelStrategyPicker({
         This controls which AI models your agents use. You can change this anytime.
       </p>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-1.5">
         {strategies.map((s) => {
           const costs = estimateCost(s.baseDailyCost, agentCount);
           const isCurrent = currentStrategy === s.id;
           const isRecommended = s.id === "balanced";
+          const isSelected = selected === s.id;
 
           return (
-            <Card
+            <button
               key={s.id}
-              className={`cursor-pointer transition-all ${
-                selected === s.id
-                  ? "border-zinc-900 ring-1 ring-zinc-300"
-                  : ""
-              }`}
+              type="button"
               onClick={() => onSelect(s.id)}
+              className={`flex items-center justify-between rounded-lg border px-4 py-3 text-left transition-all ${
+                isSelected
+                  ? "border-zinc-900 bg-zinc-50"
+                  : "border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50/50"
+              }`}
             >
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-semibold text-zinc-900">
-                        {s.name}
-                      </h3>
-                      {isCurrent && (
-                        <Badge variant="success">Current</Badge>
-                      )}
-                      {isRecommended && !isCurrent && (
-                        <Badge variant="default">Recommended</Badge>
-                      )}
-                    </div>
-                    <p className="mt-1 text-xs text-zinc-500">
-                      {s.description}
-                    </p>
-                    <p className="mt-2 text-xs text-zinc-500">
-                      Recommended for: {s.recommendedFor}
-                    </p>
-                  </div>
-                  <div className="ml-4 shrink-0 text-right">
-                    <div className="text-sm font-mono font-semibold text-zinc-900">
-                      ${costs.daily}/day
-                    </div>
-                    <div className="text-xs font-mono text-zinc-500">
-                      ~${costs.monthly}/mo
-                    </div>
-                  </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-zinc-900">
+                    {s.name}
+                  </span>
+                  {isCurrent && (
+                    <Badge variant="success">Current</Badge>
+                  )}
+                  {isRecommended && !isCurrent && (
+                    <span className="text-[10px] text-zinc-400">Recommended</span>
+                  )}
+                  {isSelected && (
+                    <svg className="h-3.5 w-3.5 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
                 </div>
-                <div className="mt-3 flex items-center gap-2">
-                  <div
-                    className={`h-4 w-4 rounded-full border-2 ${
-                      selected === s.id
-                        ? "border-zinc-900 bg-zinc-900"
-                        : "border-zinc-200"
-                    }`}
-                  >
-                    {selected === s.id && (
-                      <div className="flex h-full items-center justify-center">
-                        <div className="h-1.5 w-1.5 rounded-full bg-white" />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                <p className="mt-0.5 text-xs text-zinc-500">{s.description}</p>
+              </div>
+              <div className="ml-4 shrink-0 text-right">
+                <p className="text-xs font-mono text-zinc-600">${costs.daily}/day</p>
+                <p className="text-[11px] font-mono text-zinc-400">~${costs.monthly}/mo</p>
+              </div>
+            </button>
           );
         })}
       </div>
@@ -162,28 +140,17 @@ function ModelStrategyPicker({
                     selected === s.id ? "bg-zinc-50" : ""
                   }`}
                 >
-                  <td className="px-3 py-2 font-medium text-zinc-900">
-                    {s.name}
-                    {s.id === "balanced" && (
-                      <span className="ml-1.5 text-zinc-500">*</span>
-                    )}
-                  </td>
-                  <td className="px-3 py-2 text-right font-mono text-zinc-900">
-                    ${costs.daily}
-                  </td>
-                  <td className="px-3 py-2 text-right font-mono text-zinc-900">
-                    ${costs.monthly}
-                  </td>
-                  <td className="px-3 py-2 text-right text-zinc-500">
-                    {s.qualityRating}
-                  </td>
+                  <td className="px-3 py-2 font-medium text-zinc-900">{s.name}</td>
+                  <td className="px-3 py-2 text-right font-mono text-zinc-900">${costs.daily}</td>
+                  <td className="px-3 py-2 text-right font-mono text-zinc-900">${costs.monthly}</td>
+                  <td className="px-3 py-2 text-right text-zinc-500">{s.qualityRating}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <div className="px-3 py-1.5 text-[10px] text-zinc-500 bg-zinc-50">
-          * Recommended &middot; Estimates based on {agentCount} agent{agentCount !== 1 ? "s" : ""}
+        <div className="px-3 py-1.5 text-[10px] text-zinc-400 bg-zinc-50">
+          Estimates based on {agentCount} agent{agentCount !== 1 ? "s" : ""}
         </div>
       </div>
     </div>

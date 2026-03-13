@@ -40,6 +40,9 @@ const PROVIDER_CATALOG: Omit<ApiKeyEntry, "value">[] = [
   // Gateways
   { id: "openrouter", provider: "openrouter", label: "OpenRouter", envVar: "OPENROUTER_API_KEY", category: "Gateway" },
 
+  // Integrations (500+ apps)
+  { id: "composio", provider: "composio", label: "Composio (500+ apps)", envVar: "COMPOSIO_API_KEY", category: "Integrations" },
+
   // Voice & TTS
   { id: "elevenlabs", provider: "elevenlabs", label: "ElevenLabs", envVar: "ELEVENLABS_API_KEY", category: "Voice" },
   { id: "fish-audio", provider: "fish-audio", label: "Fish Audio", envVar: "FISH_AUDIO_API_KEY", category: "Voice" },
@@ -78,7 +81,7 @@ const PROVIDER_CATALOG: Omit<ApiKeyEntry, "value">[] = [
   { id: "jina", provider: "jina", label: "Jina AI", envVar: "JINA_API_KEY", category: "Search" },
 ];
 
-const CATEGORIES = ["LLM", "Gateway", "Voice", "Image", "Video", "Music", "Search"];
+const CATEGORIES = ["LLM", "Gateway", "Integrations", "Voice", "Image", "Video", "Music", "Search"];
 
 interface ApiKeySetupProps {
   keys: Record<string, string>;

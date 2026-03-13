@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
 
 /**
  * GET /api/core — Get proactive insights + quick status.
- * ?section=hq|finance|sales|people|work|team|all
+ * ?section=hq|finance|sales|crm|work|team|all
  */
 export async function GET(request: NextRequest) {
   try {

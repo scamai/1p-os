@@ -16,8 +16,8 @@ const InvoiceForm = React.lazy(() =>
 const ExpenseForm = React.lazy(() =>
   import("@/components/forms/ExpenseForm").then((m) => ({ default: m.ExpenseForm }))
 );
-const PersonForm = React.lazy(() =>
-  import("@/components/forms/PersonForm").then((m) => ({ default: m.PersonForm }))
+const ContactForm = React.lazy(() =>
+  import("@/components/forms/PersonForm").then((m) => ({ default: m.ContactForm }))
 );
 const ProjectForm = React.lazy(() =>
   import("@/components/forms/ProjectForm").then((m) => ({ default: m.ProjectForm }))
@@ -31,7 +31,7 @@ const DocumentUploadForm = React.lazy(() =>
 type ActiveForm =
   | "invoice"
   | "expense"
-  | "person"
+  | "contact"
   | "project"
   | "document"
   | null;
@@ -39,7 +39,7 @@ type ActiveForm =
 const formTitles: Record<Exclude<ActiveForm, null>, string> = {
   invoice: "New Invoice",
   expense: "Log Expense",
-  person: "Add Person",
+  contact: "Add Contact",
   project: "New Project",
   document: "Upload Document",
 };
@@ -77,7 +77,7 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
       "/": "hq",
       "/finance": "finance",
       "/sales": "sales",
-      "/people": "people",
+      "/crm": "crm",
       "/work": "work",
       "/team": "team",
       "/talent": "team",
@@ -147,8 +147,8 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
         case "new_expense":
           setActiveForm("expense");
           break;
-        case "add_person":
-          setActiveForm("person");
+        case "add_contact":
+          setActiveForm("contact");
           break;
         case "new_project":
           setActiveForm("project");
@@ -217,7 +217,7 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
       >
         {activeForm === "invoice" && <InvoiceForm onClose={() => setActiveForm(null)} />}
         {activeForm === "expense" && <ExpenseForm onClose={() => setActiveForm(null)} />}
-        {activeForm === "person" && <PersonForm onClose={() => setActiveForm(null)} />}
+        {activeForm === "contact" && <ContactForm onClose={() => setActiveForm(null)} />}
         {activeForm === "project" && <ProjectForm onClose={() => setActiveForm(null)} />}
         {activeForm === "document" && <DocumentUploadForm onClose={() => setActiveForm(null)} />}
       </React.Suspense>

@@ -152,6 +152,7 @@ export type ContextPermission =
   | 'relationships'
   | 'deadlines'
   | 'invoices'
+  | 'documents'
   | 'memory'
   | 'preferences'
   | 'agent_data'
@@ -165,6 +166,9 @@ export type AgentAction =
   | 'create_memory'
   | 'update_agent_data'
   | 'create_achievement'
+  | 'upload_document'
+  | 'read_document'
+  | 'share_document'
   | string;
 
 export type AgentSource = 'custom' | 'template' | 'marketplace';
@@ -399,6 +403,56 @@ export interface TemplateDeadline {
   type: DeadlineType;
   recurring: 'annual' | 'quarterly' | 'monthly' | 'weekly';
 }
+
+// -----------------------------------------------------------------------------
+// Document / Vault Types
+// -----------------------------------------------------------------------------
+
+export type DocumentAccessLevel = 'owner' | 'restricted' | 'internal' | 'team';
+export type DocumentSource = 'upload' | 'gmail' | 'google_drive' | 'outlook' | 'slack' | 'notion' | 'dropbox' | 'agent';
+export type DocumentCategory = 'contract' | 'receipt' | 'report' | 'legal' | 'tax' | 'proposal' | 'invoice' | 'correspondence' | 'other';
+
+export interface Document {
+  id: UUID;
+  business_id: UUID;
+  name: string;
+  file_type: string;
+  file_size_bytes: number;
+  storage_path: string | null;
+  category: DocumentCategory;
+  tags: string[];
+  description: string | null;
+  access_level: DocumentAccessLevel;
+  created_by_user_id: UUID | null;
+  created_by_agent_id: UUID | null;
+  allowed_agent_ids: UUID[];
+  source: DocumentSource;
+  source_integration_id: UUID | null;
+  source_external_id: string | null;
+  source_url: string | null;
+  source_synced_at: Timestamp | null;
+  linked_entity_type: string | null;
+  linked_entity_id: UUID | null;
+  created_at: Timestamp;
+  updated_at: Timestamp;
+}
+
+export interface DocumentAccessLogEntry {
+  id: UUID;
+  document_id: UUID;
+  business_id: UUID;
+  accessed_by_user_id: UUID | null;
+  accessed_by_agent_id: UUID | null;
+  action: 'view' | 'download' | 'share' | 'edit';
+  created_at: Timestamp;
+}
+
+export type CreateDocument = Pick<Document, 'name'> &
+  Partial<Pick<Document, 'file_type' | 'category' | 'tags' | 'description' | 'access_level' | 'allowed_agent_ids' | 'source' | 'linked_entity_type' | 'linked_entity_id'>>;
+
+export type UpdateDocument = Partial<
+  Pick<Document, 'name' | 'category' | 'tags' | 'description' | 'access_level' | 'allowed_agent_ids' | 'linked_entity_type' | 'linked_entity_id'>
+>;
 
 // -----------------------------------------------------------------------------
 // Business Context (assembled for agent consumption)

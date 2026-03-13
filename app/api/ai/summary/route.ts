@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
-const SectionSchema = z.enum(['hq', 'finance', 'sales', 'people', 'work', 'team', 'vault']);
+const SectionSchema = z.enum(['hq', 'finance', 'sales', 'crm', 'work', 'team', 'vault']);
 
 // Template-based summaries — no AI needed.
 // The data already tells the story; just format it.
@@ -77,7 +77,7 @@ async function generateSummary(
       return `${leadCount} active lead${leadCount > 1 ? 's' : ''} in pipeline.`;
     }
 
-    case 'people': {
+    case 'crm': {
       const { data: relationships } = await supabase
         .from('relationships')
         .select('type')

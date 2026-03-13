@@ -43,7 +43,7 @@ const ACTION_RULES: Array<{
     display: (p) => `Log expense${p.amount ? `: $${p.amount}` : ''}${p.category ? ` (${p.category})` : ''}`,
   },
   {
-    action: 'add_person',
+    action: 'add_contact',
     keywords: ['add person', 'new person', 'add client', 'new client', 'add contact', 'add lead', 'new lead', 'add contractor'],
     extract: (input) => {
       const typeMatch = input.match(/\b(client|lead|contractor|contact|person)\b/i);

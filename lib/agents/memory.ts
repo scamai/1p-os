@@ -1,9 +1,14 @@
 /**
  * Agent Memory — long-term knowledge storage and retrieval for agents.
  *
- * Provides persistent (in-memory for dev) storage of facts, preferences,
- * relationships, events, and insights that agents accumulate over time.
+ * Uses mem0 for semantic, LLM-powered memory with vector search,
+ * automatic fact extraction, deduplication, and conflict resolution.
+ *
+ * Falls back to a simple in-memory store when mem0 dependencies
+ * (Supabase + OpenAI embeddings) are not configured.
  */
+
+import { mem0Memory, type Mem0AgentMemory } from "./mem0";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -31,7 +36,7 @@ type MemoryInput = Pick<MemoryEntry, "category" | "content"> &
 
 /**
  * Naive keyword-overlap similarity between two strings.
- * Returns a score in [0, 1].
+ * Returns a score in [0, 1]. Used by the fallback in-memory store.
  */
 function textSimilarity(a: string, b: string): number {
   const normalize = (s: string): Set<string> =>
@@ -57,13 +62,24 @@ function textSimilarity(a: string, b: string): number {
 }
 
 // ---------------------------------------------------------------------------
-// AgentMemory
+// Check if mem0 is available (env vars configured)
 // ---------------------------------------------------------------------------
 
-export class AgentMemory {
-  private store = new Map<string, MemoryEntry[]>(); // agentId -> entries
+function isMem0Available(): boolean {
+  return !!(
+    process.env.NEXT_PUBLIC_SUPABASE_URL &&
+    process.env.SUPABASE_SERVICE_ROLE_KEY &&
+    process.env.OPENAI_API_KEY &&
+    process.env.ANTHROPIC_API_KEY
+  );
+}
 
-  // ── Write ────────────────────────────────────────────────────────────────
+// ---------------------------------------------------------------------------
+// InMemoryAgentMemory — fallback when mem0 deps are not configured
+// ---------------------------------------------------------------------------
+
+class InMemoryAgentMemory {
+  private store = new Map<string, MemoryEntry[]>();
 
   add(agentId: string, businessId: string, input: MemoryInput): MemoryEntry {
     const now = new Date().toISOString();
@@ -88,11 +104,8 @@ export class AgentMemory {
     return entry;
   }
 
-  // ── Read ─────────────────────────────────────────────────────────────────
-
   list(agentId: string, category?: MemoryEntry["category"]): MemoryEntry[] {
     const entries = this.store.get(agentId) ?? [];
-
     const filtered = category
       ? entries.filter((e) => e.category === category)
       : entries;
@@ -103,9 +116,6 @@ export class AgentMemory {
     );
   }
 
-  /**
-   * Search memories by text similarity (keyword matching).
-   */
   search(agentId: string, query: string, limit = 10): MemoryEntry[] {
     const candidates = this.store.get(agentId) ?? [];
 
@@ -118,7 +128,6 @@ export class AgentMemory {
       .sort((a, b) => b.score - a.score)
       .slice(0, limit);
 
-    // Touch accessed entries
     const now = new Date().toISOString();
     for (const { entry } of scored) {
       entry.lastAccessedAt = now;
@@ -128,42 +137,29 @@ export class AgentMemory {
     return scored.map((s) => s.entry);
   }
 
-  /**
-   * Get memories relevant to a given context string.
-   * Combines text similarity with importance weighting.
-   */
   getRelevant(agentId: string, context: string, limit = 5): MemoryEntry[] {
     return this.search(agentId, context, limit);
   }
 
-  // ── Delete ───────────────────────────────────────────────────────────────
-
   remove(id: string): void {
-    for (const [agentId, entries] of this.store) {
+    for (const [, entries] of this.store) {
       const idx = entries.findIndex((e) => e.id === id);
       if (idx !== -1) {
         entries.splice(idx, 1);
-        this.store.set(agentId, entries);
         return;
       }
     }
   }
 
-  /**
-   * Prune least important / least accessed memories to stay under a cap.
-   */
   prune(agentId: string, maxEntries = 200): number {
     const entries = this.store.get(agentId) ?? [];
-
     if (entries.length <= maxEntries) return 0;
 
-    // Score each entry: higher = more worth keeping
     const scored = entries.map((entry) => ({
       entry,
       keepScore:
         entry.importance * 0.5 +
         Math.min(entry.accessCount / 20, 0.3) +
-        // Recency bonus: entries from the last 24h get +0.2
         (Date.now() - new Date(entry.lastAccessedAt).getTime() < 86_400_000
           ? 0.2
           : 0),
@@ -176,6 +172,152 @@ export class AgentMemory {
     this.store.set(agentId, toKeep);
 
     return removed;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// AgentMemory — unified interface that delegates to mem0 or fallback
+// ---------------------------------------------------------------------------
+
+export class AgentMemory {
+  private fallback = new InMemoryAgentMemory();
+  private mem0: Mem0AgentMemory | null = null;
+
+  constructor() {
+    if (isMem0Available()) {
+      this.mem0 = mem0Memory;
+    }
+  }
+
+  // ── Write ──────────────────────────────────────────────────────────────
+
+  add(agentId: string, businessId: string, input: MemoryInput): MemoryEntry {
+    // Synchronous return for backward compat — fire mem0 add in background
+    const entry = this.fallback.add(agentId, businessId, input);
+
+    if (this.mem0) {
+      this.mem0.add(agentId, businessId, input).catch((err) => {
+        console.error("[mem0] Background add failed:", err);
+      });
+    }
+
+    return entry;
+  }
+
+  /**
+   * Async add — returns the mem0 result when available, otherwise fallback.
+   */
+  async addAsync(
+    agentId: string,
+    businessId: string,
+    input: MemoryInput,
+  ): Promise<MemoryEntry> {
+    if (this.mem0) {
+      return this.mem0.add(agentId, businessId, input);
+    }
+    return this.fallback.add(agentId, businessId, input);
+  }
+
+  /**
+   * Extract and store memories from a full conversation.
+   * Only available with mem0 — no-op with fallback.
+   */
+  async addFromConversation(
+    agentId: string,
+    businessId: string,
+    messages: Array<{ role: string; content: string }>,
+  ): Promise<void> {
+    if (this.mem0) {
+      await this.mem0.addFromConversation(agentId, businessId, messages);
+    }
+  }
+
+  // ── Read ───────────────────────────────────────────────────────────────
+
+  list(agentId: string, category?: MemoryEntry["category"]): MemoryEntry[] {
+    return this.fallback.list(agentId, category);
+  }
+
+  /**
+   * Async list — uses mem0 semantic storage when available.
+   */
+  async listAsync(
+    agentId: string,
+    category?: MemoryEntry["category"],
+  ): Promise<MemoryEntry[]> {
+    if (this.mem0) {
+      return this.mem0.list(agentId, category);
+    }
+    return this.fallback.list(agentId, category);
+  }
+
+  search(agentId: string, query: string, limit = 10): MemoryEntry[] {
+    return this.fallback.search(agentId, query, limit);
+  }
+
+  /**
+   * Async semantic search — uses mem0 vector similarity when available.
+   */
+  async searchAsync(
+    agentId: string,
+    query: string,
+    limit = 10,
+  ): Promise<MemoryEntry[]> {
+    if (this.mem0) {
+      return this.mem0.search(agentId, query, limit);
+    }
+    return this.fallback.search(agentId, query, limit);
+  }
+
+  getRelevant(agentId: string, context: string, limit = 5): MemoryEntry[] {
+    return this.fallback.getRelevant(agentId, context, limit);
+  }
+
+  /**
+   * Async relevant memories — uses mem0 vector similarity when available.
+   */
+  async getRelevantAsync(
+    agentId: string,
+    context: string,
+    limit = 5,
+  ): Promise<MemoryEntry[]> {
+    if (this.mem0) {
+      return this.mem0.getRelevant(agentId, context, limit);
+    }
+    return this.fallback.getRelevant(agentId, context, limit);
+  }
+
+  // ── Delete ─────────────────────────────────────────────────────────────
+
+  remove(id: string): void {
+    this.fallback.remove(id);
+
+    if (this.mem0) {
+      this.mem0.remove(id).catch((err) => {
+        console.error("[mem0] Background remove failed:", err);
+      });
+    }
+  }
+
+  /**
+   * Get memory change history (mem0 only).
+   */
+  async history(memoryId: string): Promise<unknown[]> {
+    if (this.mem0) {
+      return this.mem0.history(memoryId);
+    }
+    return [];
+  }
+
+  prune(agentId: string, maxEntries = 200): number {
+    return this.fallback.prune(agentId, maxEntries);
+  }
+
+  /**
+   * Whether mem0 (semantic memory) is active.
+   */
+  get isSemanticEnabled(): boolean {
+    return this.mem0 !== null;
   }
 }
 

@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { appendLog } from "@/lib/integrations/md-logger";
 
 export async function GET() {
   const supabase = await createClient();
@@ -57,11 +58,27 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: "No business" }, { status: 404 });
   }
 
+  // Fetch provider info before deleting for the log
+  const { data: integration } = await supabase
+    .from("integrations")
+    .select("provider, label")
+    .eq("id", integrationId)
+    .eq("business_id", business.id)
+    .single();
+
   await supabase
     .from("integrations")
     .delete()
     .eq("id", integrationId)
     .eq("business_id", business.id);
+
+  await appendLog({
+    action: "disconnect",
+    provider: integration?.provider ?? "unknown",
+    actor: user.id,
+    details: `Disconnected ${integration?.provider ?? "unknown"} (${integration?.label ?? integrationId})`,
+    metadata: { integrationId },
+  });
 
   return NextResponse.json({ success: true });
 }

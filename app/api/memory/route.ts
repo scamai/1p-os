@@ -22,7 +22,11 @@ const DeleteSchema = z.object({
   id: z.string().min(1),
 });
 
-// GET — search memories
+const HistorySchema = z.object({
+  id: z.string().min(1),
+});
+
+// GET — search memories (semantic search via mem0 when available)
 export async function GET(req: NextRequest) {
   const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -40,13 +44,19 @@ export async function GET(req: NextRequest) {
   }
 
   if (query) {
-    const results = agentMemory.search(agentId, query, limit);
+    const results = await agentMemory.searchAsync(agentId, query, limit);
     const filtered = category ? results.filter(r => r.category === category) : results;
-    return NextResponse.json({ memories: filtered });
+    return NextResponse.json({
+      memories: filtered,
+      semantic: agentMemory.isSemanticEnabled,
+    });
   }
 
-  const results = agentMemory.list(agentId, category || undefined);
-  return NextResponse.json({ memories: results.slice(0, limit) });
+  const results = await agentMemory.listAsync(agentId, category || undefined);
+  return NextResponse.json({
+    memories: results.slice(0, limit),
+    semantic: agentMemory.isSemanticEnabled,
+  });
 }
 
 // POST — store a memory
@@ -72,7 +82,7 @@ export async function POST(req: NextRequest) {
 
   const businessId = profile?.business_id ?? user.id;
 
-  const entry = agentMemory.add(parsed.data.agentId, businessId, {
+  const entry = await agentMemory.addAsync(parsed.data.agentId, businessId, {
     content: parsed.data.content,
     category: parsed.data.category,
     importance: parsed.data.importance,
@@ -98,4 +108,22 @@ export async function DELETE(req: NextRequest) {
 
   agentMemory.remove(parsed.data.id);
   return NextResponse.json({ removed: true });
+}
+
+// PATCH — get memory history (mem0 only)
+export async function PATCH(req: NextRequest) {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const body = await req.json();
+  const parsed = HistorySchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+  }
+
+  const history = await agentMemory.history(parsed.data.id);
+  return NextResponse.json({ history });
 }

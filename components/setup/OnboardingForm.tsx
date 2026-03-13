@@ -151,22 +151,14 @@ function OnboardingForm({ onSubmit, loading = false, templateId = "general" }: O
 
   return (
     <form onSubmit={handleSubmit} className="flex max-w-md flex-col gap-4">
-      {/* Time estimate banner */}
-      <div className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-2.5">
-        <div className="text-base">&#9889;</div>
-        <div>
-          <p className="text-sm font-semibold text-zinc-900">
-            30 seconds to launch
-          </p>
-          <p className="text-xs text-zinc-500">
-            Just a few details and your AI team is ready
-          </p>
-        </div>
+      <div>
+        <h2 className="text-lg font-semibold text-zinc-900">
+          Tell us about your business
+        </h2>
+        <p className="mt-0.5 text-sm text-zinc-500">
+          Just a few details and your AI team is ready.
+        </p>
       </div>
-
-      <h2 className="text-lg font-semibold text-zinc-900">
-        Tell us about your business
-      </h2>
 
       <Input
         label="Business name"
@@ -211,24 +203,24 @@ function OnboardingForm({ onSubmit, loading = false, templateId = "general" }: O
 
       {/* Agent preview */}
       <div className="rounded-lg border border-zinc-200 p-3">
-        <p className="mb-2 text-xs font-semibold text-zinc-500 uppercase tracking-wider">
-          Your AI Team ({agents.length} agents)
+        <p className="mb-2 text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">
+          Your AI Team — {agents.length} agents
         </p>
-        <div className="flex flex-col gap-1.5">
+        <div className="flex flex-col gap-1">
           {agents.map((agent) => (
             <div
               key={agent.name}
-              className="flex items-center justify-between text-sm"
+              className="flex items-center justify-between py-0.5"
             >
-              <span className="text-zinc-900">{agent.name}</span>
-              <span className="text-xs text-zinc-500 capitalize">
-                {agent.role}
+              <span className="text-xs text-zinc-700">{agent.name}</span>
+              <span className="text-[11px] text-zinc-400 capitalize">
+                {agent.role.replace("-", " ")}
               </span>
             </div>
           ))}
         </div>
-        <div className="mt-3 border-t border-zinc-200 pt-2 text-xs text-zinc-500">
-          Estimated daily cost: <span className="font-mono font-semibold text-zinc-900">${estimatedDailyCost}</span> (with balanced strategy)
+        <div className="mt-2 border-t border-zinc-100 pt-2 text-[11px] text-zinc-400">
+          Est. <span className="font-mono text-zinc-600">${estimatedDailyCost}/day</span> with balanced strategy
         </div>
       </div>
 

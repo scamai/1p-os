@@ -4,12 +4,12 @@ import * as React from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 
-interface PersonFormProps {
+interface ContactFormProps {
   onClose: () => void;
   prefill?: Record<string, any>;
 }
 
-function PersonForm({ onClose, prefill }: PersonFormProps) {
+function ContactForm({ onClose, prefill }: ContactFormProps) {
   const [name, setName] = React.useState(prefill?.name ?? "");
   const [email, setEmail] = React.useState(prefill?.email ?? "");
   const [type, setType] = React.useState(prefill?.type ?? "client");
@@ -26,7 +26,7 @@ function PersonForm({ onClose, prefill }: PersonFormProps) {
         const res = await fetch("/api/ai/prefill", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ form_type: "person" }),
+          body: JSON.stringify({ form_type: "contact" }),
         });
         if (!res.ok) return;
         const data = await res.json();
@@ -54,12 +54,12 @@ function PersonForm({ onClose, prefill }: PersonFormProps) {
     setError(null);
 
     try {
-      const res = await fetch("/api/people", {
+      const res = await fetch("/api/crm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, type, company, notes }),
       });
-      if (!res.ok) throw new Error("Failed to create person");
+      if (!res.ok) throw new Error("Failed to create contact");
       onClose();
     } catch {
       setError("Something went wrong. Please try again.");
@@ -120,11 +120,13 @@ function PersonForm({ onClose, prefill }: PersonFormProps) {
           Cancel
         </Button>
         <Button type="submit" loading={loading}>
-          Add Person
+          Add Contact
         </Button>
       </div>
     </form>
   );
 }
 
-export { PersonForm };
+export { ContactForm };
+/** @deprecated Use ContactForm instead */
+export const PersonForm = ContactForm;

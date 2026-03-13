@@ -679,6 +679,156 @@ toolRegistry.register({
   },
 });
 
+// -----------------------------------------------------------------------------
+// Composio Tools — Bridge 500+ app integrations into the agent tool system
+// -----------------------------------------------------------------------------
+
+toolRegistry.register({
+  name: 'composio_list_tools',
+  description: 'List available Composio tools from 500+ connected apps (GitHub, Slack, Notion, etc.)',
+  category: 'data',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      toolkit: { type: 'string', description: 'Filter by toolkit slug (e.g., github, gmail, slack, notion)' },
+      limit: { type: 'number', description: 'Max tools to return (default: 20)' },
+    },
+  },
+  execute: async (input) => {
+    try {
+      const { getComposioClient } = await import('@/lib/integrations/composio');
+      const client = getComposioClient();
+      if (!client) {
+        return {
+          type: 'error' as const,
+          content: 'Composio is not configured. Add COMPOSIO_API_KEY to enable 500+ app integrations.',
+        };
+      }
+
+      const tools = await client.listTools({
+        toolkits: input.toolkit ? [input.toolkit as string] : undefined,
+        limit: (input.limit as number) ?? 20,
+      });
+
+      return {
+        type: 'json' as const,
+        content: JSON.stringify({
+          count: tools.length,
+          tools: tools.map((t) => ({
+            slug: t.slug,
+            name: t.name,
+            description: t.description,
+            toolkit: t.toolkitSlug,
+          })),
+        }),
+      };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      return { type: 'error' as const, content: `composio_list_tools failed: ${message}` };
+    }
+  },
+});
+
+toolRegistry.register({
+  name: 'composio_execute',
+  description: 'Execute a Composio tool (e.g., GMAIL_SEND_EMAIL, GITHUB_CREATE_ISSUE, SLACK_SEND_MESSAGE)',
+  category: 'execute',
+  inputSchema: {
+    type: 'object',
+    required: ['toolSlug', 'input'],
+    properties: {
+      toolSlug: {
+        type: 'string',
+        description: 'Composio tool slug (e.g., GMAIL_SEND_EMAIL, GITHUB_CREATE_REPO, NOTION_CREATE_PAGE)',
+      },
+      input: {
+        type: 'object',
+        description: 'Tool-specific input parameters',
+      },
+    },
+  },
+  ownerOnly: true,
+  execute: async (input, context) => {
+    try {
+      const { getComposioClient } = await import('@/lib/integrations/composio');
+      const client = getComposioClient();
+      if (!client) {
+        return {
+          type: 'error' as const,
+          content: 'Composio is not configured. Add COMPOSIO_API_KEY to enable 500+ app integrations.',
+        };
+      }
+
+      const toolSlug = input.toolSlug as string;
+      const toolInput = (input.input as Record<string, unknown>) ?? {};
+
+      // Use businessId as the Composio userId for scoping
+      const result = await client.executeTool(toolSlug, context.businessId, toolInput);
+
+      if (!result.success) {
+        return {
+          type: 'error' as const,
+          content: `Composio tool "${toolSlug}" failed: ${result.error}`,
+        };
+      }
+
+      return {
+        type: 'json' as const,
+        content: JSON.stringify({
+          tool: toolSlug,
+          result: result.data,
+        }),
+      };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      return { type: 'error' as const, content: `composio_execute failed: ${message}` };
+    }
+  },
+});
+
+toolRegistry.register({
+  name: 'composio_connections',
+  description: 'List connected Composio accounts and available app integrations',
+  category: 'data',
+  inputSchema: {
+    type: 'object',
+    properties: {
+      userId: { type: 'string', description: 'User ID to list connections for' },
+    },
+  },
+  execute: async (input, context) => {
+    try {
+      const { getComposioClient } = await import('@/lib/integrations/composio');
+      const client = getComposioClient();
+      if (!client) {
+        return {
+          type: 'error' as const,
+          content: 'Composio is not configured.',
+        };
+      }
+
+      const userId = (input.userId as string) ?? context.businessId;
+      const connections = await client.listConnectedAccounts(userId);
+
+      return {
+        type: 'json' as const,
+        content: JSON.stringify({
+          count: connections.length,
+          connections: connections.map((c) => ({
+            id: c.id,
+            app: c.toolkitSlug,
+            status: c.status,
+            connectedAt: c.createdAt,
+          })),
+        }),
+      };
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Unknown error';
+      return { type: 'error' as const, content: `composio_connections failed: ${message}` };
+    }
+  },
+});
+
 toolRegistry.register({
   name: 'send_to_agent',
   description: 'Send a message to another agent',

@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { generateStructured } from '@/lib/ai/client';
 import { getChatPrompt } from '@/lib/ai/prompts';
 import { ChatResponseSchema } from '@/lib/ai/structured';
+import { agentMemory } from '@/lib/agents/memory';
 
 const ChatInputSchema = z.object({
   agentId: z.string().uuid(),
@@ -88,6 +89,16 @@ export async function POST(request: NextRequest) {
         content: chatResponse.responseText,
       },
     ]);
+
+    // Auto-extract memories from the conversation (non-blocking)
+    agentMemory
+      .addFromConversation(agentId, agent.business_id, [
+        { role: 'user', content: message },
+        { role: 'assistant', content: chatResponse.responseText },
+      ])
+      .catch((err) => {
+        console.error('[ai/chat] Memory extraction failed:', err);
+      });
 
     return NextResponse.json({ response: chatResponse }, { status: 200 });
   } catch (error) {

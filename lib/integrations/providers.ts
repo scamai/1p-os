@@ -7,8 +7,8 @@ export interface ProviderConfig {
   id: string;
   name: string;
   icon: string;
-  category: "email" | "chat" | "sms" | "social" | "webhook" | "calendar" | "storage";
-  authType: "oauth2" | "api_key" | "webhook";
+  category: "email" | "chat" | "sms" | "social" | "webhook" | "calendar" | "storage" | "platform";
+  authType: "oauth2" | "api_key" | "webhook" | "composio";
   oauth?: {
     authUrl: string;
     tokenUrl: string;
@@ -154,6 +154,17 @@ export const PROVIDERS: Record<string, ProviderConfig> = {
       scopes: [],
     },
     description: "Read and write Notion pages and databases",
+  },
+
+  // ─── Composio (500+ app integrations) ──────────────────────────────────────
+  composio: {
+    id: "composio",
+    name: "Composio (500+ Apps)",
+    icon: "zap",
+    category: "platform",
+    authType: "composio",
+    description:
+      "Connect 500+ apps — GitHub, Jira, Salesforce, HubSpot, Notion, Linear, Stripe, and more. Agents discover and use tools automatically.",
   },
 };
 

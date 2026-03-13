@@ -42,7 +42,7 @@ function saveRecentCommand(item: CommandItem) {
 
 const staticActions: CommandItem[] = [
   { id: "new_invoice", label: "New Invoice", category: "actions", action: "new_invoice" },
-  { id: "add_person", label: "Add Client", category: "actions", action: "add_person" },
+  { id: "add_contact", label: "Add Contact", category: "actions", action: "add_contact" },
   { id: "new_expense", label: "Log Expense", category: "actions", action: "new_expense" },
   { id: "new_project", label: "New Project", category: "actions", action: "new_project" },
   { id: "upload_document", label: "Upload Document", category: "actions", action: "upload_document" },
@@ -63,10 +63,23 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const recognitionRef = React.useRef<any>(null);
 
-  const startVoice = React.useCallback(() => {
+  const startVoice = React.useCallback(async () => {
     const SpeechRecognition =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) return;
+    if (!SpeechRecognition) {
+      setInlineResponse("Speech recognition is not supported in this browser.");
+      return;
+    }
+
+    // Request microphone permission explicitly before starting recognition
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      // Stop the stream immediately — we just needed the permission grant
+      stream.getTracks().forEach((t) => t.stop());
+    } catch {
+      setInlineResponse("Microphone access denied. Please allow microphone permissions and try again.");
+      return;
+    }
 
     const recognition = new SpeechRecognition();
     recognition.lang = "en-US";
@@ -83,7 +96,16 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
     };
 
     recognition.onend = () => setListening(false);
-    recognition.onerror = () => setListening(false);
+    recognition.onerror = (event: any) => {
+      setListening(false);
+      if (event.error === "not-allowed") {
+        setInlineResponse("Microphone access denied. Check your browser permissions.");
+      } else if (event.error === "no-speech") {
+        setInlineResponse("No speech detected. Try again.");
+      } else if (event.error !== "aborted") {
+        setInlineResponse(`Voice error: ${event.error}`);
+      }
+    };
 
     recognitionRef.current = recognition;
     recognition.start();

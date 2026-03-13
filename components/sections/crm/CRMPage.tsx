@@ -4,14 +4,14 @@ import * as React from "react";
 import { TabBar } from "@/components/shared/TabBar";
 
 const TABS = ["All", "Clients", "Leads", "Contractors"] as const;
-type PeopleTab = (typeof TABS)[number];
+type CRMTab = (typeof TABS)[number];
 
-type PersonType = "Client" | "Lead" | "Contractor";
+type ContactType = "Client" | "Lead" | "Contractor";
 
-interface Person {
+interface Contact {
   id: string;
   name: string;
-  type: PersonType;
+  type: ContactType;
   lastInteraction: string;
   lastAgent: string;
   totalRevenue: number;
@@ -20,7 +20,7 @@ interface Person {
   status: string;
 }
 
-const PEOPLE: Person[] = [
+const CONTACTS: Contact[] = [
   {
     id: "1", name: "Sarah Chen", type: "Client", lastInteraction: "Today",
     lastAgent: "Support Agent", totalRevenue: 12500, email: "sarah@acme.co",
@@ -59,7 +59,7 @@ const PEOPLE: Person[] = [
   },
 ];
 
-function PersonRow({ person, expanded, onToggle }: { person: Person; expanded: boolean; onToggle: () => void }) {
+function ContactRow({ contact, expanded, onToggle }: { contact: Contact; expanded: boolean; onToggle: () => void }) {
   return (
     <>
       <div
@@ -68,27 +68,27 @@ function PersonRow({ person, expanded, onToggle }: { person: Person; expanded: b
       >
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-900 text-xs font-medium text-white">
-            {person.name.charAt(0)}
+            {contact.name.charAt(0)}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <p className="text-[13px] font-medium text-zinc-900">{person.name}</p>
+              <p className="text-[13px] font-medium text-zinc-900">{contact.name}</p>
               <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] text-zinc-500">
-                {person.type}
+                {contact.type}
               </span>
-              {person.status !== "Active" && (
-                <span className="text-[10px] text-zinc-400">{person.status}</span>
+              {contact.status !== "Active" && (
+                <span className="text-[10px] text-zinc-400">{contact.status}</span>
               )}
             </div>
             <p className="text-[11px] text-zinc-400">
-              Last: {person.lastAgent} · {person.lastInteraction}
+              Last: {contact.lastAgent} · {contact.lastInteraction}
             </p>
           </div>
         </div>
         <div className="text-right">
-          {person.totalRevenue > 0 && (
+          {contact.totalRevenue > 0 && (
             <p className="font-mono text-[13px] text-zinc-900">
-              ${person.totalRevenue.toLocaleString()}
+              ${contact.totalRevenue.toLocaleString()}
             </p>
           )}
         </div>
@@ -99,16 +99,16 @@ function PersonRow({ person, expanded, onToggle }: { person: Person; expanded: b
           <div className="grid grid-cols-2 gap-4 text-[12px]">
             <div>
               <p className="text-[11px] text-zinc-400">Email</p>
-              <p className="mt-0.5 text-zinc-600">{person.email}</p>
+              <p className="mt-0.5 text-zinc-600">{contact.email}</p>
             </div>
             <div>
               <p className="text-[11px] text-zinc-400">Last Agent</p>
-              <p className="mt-0.5 text-zinc-600">{person.lastAgent}</p>
+              <p className="mt-0.5 text-zinc-600">{contact.lastAgent}</p>
             </div>
           </div>
           <div className="mt-3">
             <p className="text-[11px] text-zinc-400">Notes</p>
-            <p className="mt-0.5 text-[12px] text-zinc-600">{person.notes}</p>
+            <p className="mt-0.5 text-[12px] text-zinc-600">{contact.notes}</p>
           </div>
         </div>
       )}
@@ -120,32 +120,32 @@ function dispatchAppAction(action: string) {
   window.dispatchEvent(new CustomEvent("app-action", { detail: { action } }));
 }
 
-interface PeoplePageProps {
+interface CRMPageProps {
   onAction?: (action: string) => void;
 }
 
-function PeoplePage({ onAction }: PeoplePageProps) {
-  const [activeTab, setActiveTab] = React.useState<PeopleTab>("All");
+function CRMPage({ onAction }: CRMPageProps) {
+  const [activeTab, setActiveTab] = React.useState<CRMTab>("All");
   const [expandedId, setExpandedId] = React.useState<string | null>(null);
   const handleAction = onAction ?? dispatchAppAction;
 
-  const filtered = PEOPLE.filter((p) => {
+  const filtered = CONTACTS.filter((c) => {
     if (activeTab === "All") return true;
-    if (activeTab === "Clients") return p.type === "Client";
-    if (activeTab === "Leads") return p.type === "Lead";
-    if (activeTab === "Contractors") return p.type === "Contractor";
+    if (activeTab === "Clients") return c.type === "Client";
+    if (activeTab === "Leads") return c.type === "Lead";
+    if (activeTab === "Contractors") return c.type === "Contractor";
     return true;
   });
 
   return (
     <div className="mx-auto max-w-3xl">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-zinc-900">People</h1>
+        <h1 className="text-lg font-semibold text-zinc-900">CRM</h1>
         <button
           className="text-[13px] text-zinc-500 transition-colors hover:text-zinc-900"
-          onClick={() => handleAction("add_person")}
+          onClick={() => handleAction("add_contact")}
         >
-          + Add Person
+          + Add Contact
         </button>
       </div>
 
@@ -154,19 +154,19 @@ function PeoplePage({ onAction }: PeoplePageProps) {
         <div>
           <p className="text-[11px] text-zinc-500">Clients</p>
           <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">
-            {PEOPLE.filter(p => p.type === "Client").length}
+            {CONTACTS.filter(c => c.type === "Client").length}
           </p>
         </div>
         <div>
           <p className="text-[11px] text-zinc-500">Active Leads</p>
           <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">
-            {PEOPLE.filter(p => p.type === "Lead").length}
+            {CONTACTS.filter(c => c.type === "Lead").length}
           </p>
         </div>
         <div>
           <p className="text-[11px] text-zinc-500">Total Revenue</p>
           <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">
-            ${PEOPLE.reduce((s, p) => s + p.totalRevenue, 0).toLocaleString()}
+            ${CONTACTS.reduce((s, c) => s + c.totalRevenue, 0).toLocaleString()}
           </p>
         </div>
       </div>
@@ -175,21 +175,21 @@ function PeoplePage({ onAction }: PeoplePageProps) {
         <TabBar
           tabs={TABS as unknown as string[]}
           active={activeTab}
-          onChange={(tab) => setActiveTab(tab as PeopleTab)}
+          onChange={(tab) => setActiveTab(tab as CRMTab)}
         />
       </div>
       <div className="mt-6">
-        {filtered.map((person) => (
-          <PersonRow
-            key={person.id}
-            person={person}
-            expanded={expandedId === person.id}
-            onToggle={() => setExpandedId(expandedId === person.id ? null : person.id)}
+        {filtered.map((contact) => (
+          <ContactRow
+            key={contact.id}
+            contact={contact}
+            expanded={expandedId === contact.id}
+            onToggle={() => setExpandedId(expandedId === contact.id ? null : contact.id)}
           />
         ))}
         {filtered.length === 0 && (
           <div className="py-8 text-center text-[13px] text-zinc-500">
-            No people found.
+            No contacts found.
           </div>
         )}
       </div>
@@ -197,4 +197,4 @@ function PeoplePage({ onAction }: PeoplePageProps) {
   );
 }
 
-export { PeoplePage };
+export { CRMPage };

@@ -3,13 +3,15 @@ import { checkCircuitBreaker, recordFailure } from '@/lib/safety/circuit-breaker
 import { checkBudget, recordCost } from '@/lib/safety/cost-budget';
 import { checkLoopDetection } from '@/lib/safety/loop-detector';
 import { ContextEngine } from '@/lib/context/engine';
-import { routeTask, classifyTask } from '@/lib/efficiency/task-router';
+import { routeTask, classifyTask, reportRoutingOutcome } from '@/lib/efficiency/task-router';
+import type { RoutingDecision } from '@/lib/efficiency/llm-router';
 import { getAgentSystemPrompt } from '@/lib/ai/prompts';
 import { generateText } from '@/lib/ai/client';
 import { validateAction } from '@/lib/safety/action-validator';
 import { requiresHumanApproval, createDecisionCard } from '@/lib/safety/human-gate';
 import { logAudit } from '@/lib/safety/audit-logger';
 import { sendMessage } from '@/lib/agents/message-bus';
+import { agentMemory } from '@/lib/agents/memory';
 
 // Token Efficiency Engine modules — imported dynamically to handle
 // the case where they might not be available yet during rollout.
@@ -121,6 +123,7 @@ export async function executeAgent(
   let tokensSavedByOptimizer = 0;
   let cacheHit = false;
   let deduplicated = false;
+  let routingDecision: RoutingDecision | undefined;
 
   try {
     // Load agent
@@ -248,10 +251,15 @@ export async function executeAgent(
       }
     }
 
-    // ── Step 6: Classify task and route to optimal model ──
+    // ── Step 6: Classify task and route to optimal model (LLMRouter) ──
     const taskDescription = trigger.type + ' ' + JSON.stringify(trigger.data ?? {});
     const complexity = classifyTask(taskDescription);
-    const modelConfig = await routeTask(trigger.type, complexity, agent.business_id, supabase);
+    const routeResult = await routeTask(trigger.type, complexity, agent.business_id, supabase, {
+      query: taskDescription,
+      agentRole: agent.role,
+    });
+    const modelConfig = routeResult;
+    routingDecision = routeResult.routingDecision;
 
     // ── Step 7: Build prompt with context ──
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -377,6 +385,10 @@ export async function executeAgent(
         cacheHit,
         deduplicated,
         triggerPriority: trigger.priority ?? 'immediate',
+        routingMethod: routingDecision?.method,
+        difficultyScore: routingDecision?.difficultyScore,
+        routingConfidence: routingDecision?.confidence,
+        routingLatencyMs: routingDecision?.latencyMs,
       },
     }, supabase);
 
@@ -411,6 +423,19 @@ export async function executeAgent(
       deduplicator.registerComplete(dedupKey, executionResult);
     }
 
+    // ── Step 16c: Auto-extract memories from trigger + response ──
+    agentMemory
+      .addFromConversation(agentId, agent.business_id, [
+        { role: "user", content: `Trigger: ${trigger.type}. Data: ${JSON.stringify(trigger.data ?? {})}` },
+        { role: "assistant", content: `Executed action: ${action}. Result: ${JSON.stringify(actionResult ?? {})}` },
+      ])
+      .catch((err) => {
+        console.error("[runtime] Memory extraction failed:", err);
+      });
+
+    // ── Step 16b: Report routing outcome to LLMRouter learning loop ──
+    reportRoutingOutcome(routingDecision, true);
+
     // ── Step 17: Send messages to other agents if needed ──
     if (messages && Array.isArray(messages)) {
       for (const msg of messages) {
@@ -438,6 +463,10 @@ export async function executeAgent(
       }
     }
 
+    // Report routing failure to LLMRouter learning loop
+    if (routingDecision) {
+      try { reportRoutingOutcome(routingDecision, false); } catch { /* best effort */ }
+    }
     // Record failure for circuit breaker
     try { await recordFailure(agentId, supabase); } catch { /* best effort */ }
     console.error('[agents/runtime] executeAgent failed:', error);

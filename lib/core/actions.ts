@@ -71,8 +71,8 @@ async function addPerson(params: Record<string, unknown>, supabase: SupabaseClie
     .select()
     .single();
 
-  if (error) return { success: false, message: `Failed to add person: ${error.message}` };
-  return { success: true, message: `Added ${params.name ?? 'contact'}`, data, navigate: '/people' };
+  if (error) return { success: false, message: `Failed to add contact: ${error.message}` };
+  return { success: true, message: `Added ${params.name ?? 'contact'}`, data, navigate: '/crm' };
 }
 
 async function createAgent(params: Record<string, unknown>, supabase: SupabaseClient, businessId: string): Promise<ActionResult> {
@@ -186,9 +186,9 @@ export const ACTION_REGISTRY: Record<string, ActionDef> = {
     requiresApproval: false,
     execute: createExpense,
   },
-  add_person: {
-    id: 'add_person',
-    description: 'Add a person/contact',
+  add_contact: {
+    id: 'add_contact',
+    description: 'Add a contact',
     category: 'create',
     requiresApproval: false,
     execute: addPerson,

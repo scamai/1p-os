@@ -1,5 +1,11 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { MODELS, getModelsByTier, type ModelConfig } from '@/lib/efficiency/model-registry';
+import {
+  routeWithLLMRouter,
+  recordRoutingOutcome,
+  type RoutingContext,
+  type RoutingDecision,
+} from '@/lib/efficiency/llm-router';
 
 export type TaskComplexity = 'routine' | 'moderate' | 'complex';
 export type RoutingStrategy = 'cost-optimized' | 'balanced' | 'quality-first';
@@ -59,12 +65,24 @@ export function classifyTask(taskDescription: string): TaskComplexity {
   return 'moderate';
 }
 
+/**
+ * Route a task to the optimal model using LLMRouter.
+ *
+ * This is the main entry point. It first tries LLMRouter (sidecar → embedded
+ * difficulty estimator) for intelligent, ML-aware routing. Falls back to the
+ * original tier-based logic if LLMRouter returns no result.
+ */
 export async function routeTask(
   taskType: string,
   complexity: TaskComplexity,
   businessId: string,
-  supabase: SupabaseClient
-): Promise<ModelConfig> {
+  supabase: SupabaseClient,
+  options?: {
+    query?: string;
+    agentRole?: string;
+    maxBudgetPerCall?: number;
+  }
+): Promise<ModelConfig & { routingDecision?: RoutingDecision }> {
   // Fetch routing strategy from safety_config
   const { data: config } = await supabase
     .from('safety_config')
@@ -73,12 +91,40 @@ export async function routeTask(
     .single();
 
   const strategy: RoutingStrategy = config?.routing_strategy ?? 'balanced';
+
+  // ── LLMRouter: intelligent routing ──
+  const routingCtx: RoutingContext = {
+    query: options?.query ?? `${taskType} ${complexity}`,
+    taskType,
+    agentRole: options?.agentRole,
+    strategy,
+    maxBudgetPerCall: options?.maxBudgetPerCall,
+  };
+
+  try {
+    const decision = await routeWithLLMRouter(routingCtx);
+    if (decision.modelConfig) {
+      return { ...decision.modelConfig, routingDecision: decision };
+    }
+  } catch (err) {
+    console.warn('[task-router] LLMRouter failed, falling back to tier-based routing:', err);
+  }
+
+  // ── Fallback: original tier-based routing ──
+  return routeTaskByTier(complexity, strategy);
+}
+
+/**
+ * Original tier-based routing logic, kept as fallback.
+ */
+function routeTaskByTier(
+  complexity: TaskComplexity,
+  strategy: RoutingStrategy
+): ModelConfig {
   const targetTier = COMPLEXITY_TO_TIER[strategy][complexity];
 
-  // Get models for the target tier
   let candidates = getModelsByTier(targetTier);
 
-  // Fallback: if no models in tier, try adjacent tiers
   if (candidates.length === 0) {
     candidates = getModelsByTier('medium');
   }
@@ -86,7 +132,6 @@ export async function routeTask(
     candidates = Object.values(MODELS);
   }
 
-  // Sort by cost (input + output) ascending for cost optimization
   if (strategy === 'cost-optimized') {
     candidates.sort(
       (a, b) =>
@@ -94,10 +139,8 @@ export async function routeTask(
         (b.costPerInputToken + b.costPerOutputToken)
     );
   } else if (strategy === 'quality-first') {
-    // Prefer lower latency among same-tier models
     candidates.sort((a, b) => a.latencyMs - b.latencyMs);
   } else {
-    // Balanced: sort by a composite score
     candidates.sort((a, b) => {
       const costA = a.costPerInputToken + a.costPerOutputToken;
       const costB = b.costPerInputToken + b.costPerOutputToken;
@@ -108,4 +151,16 @@ export async function routeTask(
   }
 
   return candidates[0]!;
+}
+
+/**
+ * Record whether a routing decision led to a successful outcome.
+ * This feeds the LLMRouter's learning loop so future routing improves.
+ */
+export function reportRoutingOutcome(
+  decision: RoutingDecision | undefined,
+  success: boolean
+): void {
+  if (!decision) return;
+  recordRoutingOutcome(decision.difficultyScore, decision.modelId, success);
 }
