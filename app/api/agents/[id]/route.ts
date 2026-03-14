@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const UpdateAgentSchema = z.object({
   name: z.string().min(1).max(100).optional(),
   role: z.string().min(1).max(100).optional(),
@@ -66,7 +68,7 @@ export async function GET(
       .eq('action', 'agent_run');
 
     const { count: pendingDecisions } = await supabase
-      .from('decisions')
+      .from('decision_cards')
       .select('*', { count: 'exact', head: true })
       .eq('agent_id', id)
       .eq('status', 'pending');

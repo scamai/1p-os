@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
+
 // Department classification based on agent role keywords
 function classifyDepartment(role: string): { name: string; icon: string; color: string } {
   const r = role.toLowerCase();

@@ -13,7 +13,7 @@ export default async function SafetyPage() {
   const { data: business } = await supabase
     .from("businesses")
     .select("id, budget_daily, budget_monthly, alert_threshold, circuit_breaker_enabled, circuit_breaker_threshold")
-    .eq("owner_id", user.id)
+    .eq("user_id", user.id)
     .single();
 
   return (

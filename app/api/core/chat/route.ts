@@ -6,6 +6,8 @@ import { parseIntent } from '@/lib/core';
 import { ContextEngine } from '@/lib/context/engine';
 import { agentMemory } from '@/lib/agents/memory';
 
+export const dynamic = 'force-dynamic';
+
 const ChatSchema = z.object({
   message: z.string().min(1).max(5000),
   history: z.array(z.object({
@@ -113,7 +115,7 @@ export async function POST(request: NextRequest) {
       supabase.from('agents').select('name, role, status, tasks_completed').eq('business_id', business.id),
       supabase.from('invoices').select('client_name, amount, status, due_date').eq('business_id', business.id).order('created_at', { ascending: false }).limit(10),
       supabase.from('audit_log').select('action, actor, created_at').eq('business_id', business.id).order('created_at', { ascending: false }).limit(20),
-      supabase.from('decisions').select('*', { count: 'exact', head: true }).eq('business_id', business.id).eq('status', 'pending'),
+      supabase.from('decision_cards').select('*', { count: 'exact', head: true }).eq('business_id', business.id).eq('status', 'pending'),
       supabase.from('audit_log').select('cost').eq('business_id', business.id).gte('created_at', `${today}T00:00:00`),
     ]);
 

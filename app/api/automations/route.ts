@@ -11,6 +11,8 @@ import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
 import { appendLog } from "@/lib/integrations/md-logger";
 
+export const dynamic = 'force-dynamic';
+
 // ─── Validation ──────────────────────────────────────────────────────────────
 
 const CreateJobSchema = z.object({

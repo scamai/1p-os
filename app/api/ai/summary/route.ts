@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const SectionSchema = z.enum(['hq', 'finance', 'sales', 'crm', 'work', 'team', 'vault']);
 
 // Template-based summaries — no AI needed.
@@ -21,7 +23,7 @@ async function generateSummary(
   switch (section) {
     case 'hq': {
       const { count: pendingDecisions } = await supabase
-        .from('decisions')
+        .from('decision_cards')
         .select('*', { count: 'exact', head: true })
         .eq('business_id', businessId)
         .eq('status', 'pending');
@@ -102,12 +104,19 @@ async function generateSummary(
       const nextWeek = new Date();
       nextWeek.setDate(nextWeek.getDate() + 7);
 
-      const { count: milestones } = await supabase
-        .from('milestones')
-        .select('*', { count: 'exact', head: true })
-        .eq('business_id', businessId)
-        .gte('due_date', today)
-        .lte('due_date', nextWeek.toISOString().split('T')[0]);
+      // TODO: table not yet in migrations — milestones table doesn't exist
+      let milestones: number | null = 0;
+      try {
+        const { count } = await supabase
+          .from('milestones')
+          .select('*', { count: 'exact', head: true })
+          .eq('business_id', businessId)
+          .gte('due_date', today)
+          .lte('due_date', nextWeek.toISOString().split('T')[0]);
+        milestones = count;
+      } catch {
+        // milestones table may not exist yet
+      }
 
       const active = activeProjects ?? 0;
       const upcoming = milestones ?? 0;

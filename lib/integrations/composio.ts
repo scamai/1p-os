@@ -17,8 +17,7 @@ let _composioInstance: ComposioClient | null = null;
  * Lazily imports @composio/core so the app still boots without it configured.
  */
 export class ComposioClient {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private sdk: any = null;
+  private sdk: any = null; // Composio SDK instance, lazily loaded
   private apiKey: string;
 
   constructor(apiKey: string) {

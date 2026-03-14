@@ -69,6 +69,16 @@ function BotIcon() {
   );
 }
 
+function BoxIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+      <line x1="12" y1="22.08" x2="12" y2="12" />
+    </svg>
+  );
+}
+
 function FileTextIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -235,15 +245,16 @@ const ALL_NAV_ITEMS: NavItemDef[] = [
   { id: "finance", icon: <DollarIcon />, label: "Finance", href: "/finance", countKey: "overdueInvoices" },
   { id: "sales", icon: <TagIcon />, label: "Sales", href: "/sales" },
   { id: "crm", icon: <UsersIcon />, label: "CRM", href: "/crm", countKey: "activeRelationships" },
+  { id: "products", icon: <BoxIcon />, label: "Products", href: "/products" },
   { id: "work", icon: <ClipboardIcon />, label: "Work", href: "/work", countKey: "activeProjects" },
-  { id: "team", icon: <BotIcon />, label: "Team", href: "/team", countKey: "activeAgents" },
+  { id: "team", icon: <BotIcon />, label: "Agents", href: "/team", countKey: "activeAgents" },
   { id: "vault", icon: <FileTextIcon />, label: "Vault", href: "/vault", countKey: "documentCount" },
   { id: "channels", icon: <MessageIcon />, label: "Channels", href: "/channels" },
   { id: "operations", icon: <OrgChartIcon />, label: "Operations", href: "/operations" },
   { id: "automations", icon: <BoltIcon />, label: "Automations", href: "/automations" },
   { id: "memory", icon: <BrainIcon />, label: "Memory", href: "/memory" },
   { id: "canvas", icon: <CanvasIcon />, label: "Canvas", href: "/canvas" },
-  { id: "talent", icon: <StoreIcon />, label: "Talent", href: "/talent" },
+  { id: "talent", icon: <StoreIcon />, label: "Agent Market", href: "/talent" },
   { id: "setup", icon: <TemplateIcon />, label: "Setup", href: "/setup" },
 ];
 

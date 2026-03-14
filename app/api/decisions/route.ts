@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const QuerySchema = z.object({
   status: z.enum(['pending', 'completed', 'all']).default('pending'),
   limit: z.coerce.number().int().min(1).max(100).default(50),
@@ -44,7 +46,7 @@ export async function GET(request: NextRequest) {
     }
 
     let query = supabase
-      .from('decisions')
+      .from('decision_cards')
       .select('*', { count: 'exact' })
       .eq('business_id', business.id)
       .order('created_at', { ascending: false })

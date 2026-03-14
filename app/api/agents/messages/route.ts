@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const QuerySchema = z.object({
   chainId: z.string().uuid().optional(),
   agentId: z.string().uuid().optional(),

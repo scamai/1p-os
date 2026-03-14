@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const ResolveDecisionSchema = z.object({
   decision: z.string().min(1),
 });
@@ -37,7 +39,7 @@ export async function PATCH(
 
     // Verify ownership and fetch decision
     const { data: existing, error: fetchError } = await supabase
-      .from('decisions')
+      .from('decision_cards')
       .select('*, businesses!inner(user_id)')
       .eq('id', id)
       .single();
@@ -62,7 +64,7 @@ export async function PATCH(
 
     // Update the decision
     const { data: updated, error: updateError } = await supabase
-      .from('decisions')
+      .from('decision_cards')
       .update({
         status: 'completed',
         decided_at: new Date().toISOString(),

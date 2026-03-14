@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { runAutomation } from '@/lib/core';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * POST /api/core/automation — Run automation rules.
  * All rules are deterministic (no AI). Can be called by cron or manually.

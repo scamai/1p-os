@@ -164,6 +164,31 @@ function dispatchAppAction(action: string) {
   window.dispatchEvent(new CustomEvent("app-action", { detail: { action } }));
 }
 
+/** Highlight matching terms in text */
+function HighlightMatch({ text, query }: { text: string; query: string }) {
+  if (!query.trim()) return <>{text}</>;
+
+  const terms = query.toLowerCase().trim().split(/\s+/);
+  // Build regex that matches any of the terms
+  const escaped = terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const regex = new RegExp(`(${escaped.join("|")})`, "gi");
+  const parts = text.split(regex);
+
+  return (
+    <>
+      {parts.map((part, i) =>
+        regex.test(part) ? (
+          <mark key={i} className="bg-amber-100 text-amber-900 rounded-sm px-0.5">
+            {part}
+          </mark>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </>
+  );
+}
+
 // --- Component ---
 
 interface VaultPageProps {
@@ -174,8 +199,10 @@ function VaultPage({ onAction }: VaultPageProps) {
   const [activeTab, setActiveTab] = React.useState<CategoryTab>("All");
   const [expandedId, setExpandedId] = React.useState<string | null>(null);
   const [isDragOver, setIsDragOver] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
   const [sourceFilter, setSourceFilter] = React.useState<DocSource | "all">("all");
   const [accessFilter, setAccessFilter] = React.useState<AccessLevel | "all">("all");
+  const searchRef = React.useRef<HTMLInputElement>(null);
 
   // Access control modal
   const [accessModalDoc, setAccessModalDoc] = React.useState<VaultDoc | null>(null);
@@ -184,14 +211,62 @@ function VaultPage({ onAction }: VaultPageProps) {
 
   const handleAction = onAction ?? dispatchAppAction;
 
-  // Filter docs
-  const filtered = MOCK_DOCS.filter((doc) => {
-    const catFilter = TAB_TO_CATEGORY[activeTab];
-    if (catFilter && doc.category !== catFilter) return false;
-    if (sourceFilter !== "all" && doc.source !== sourceFilter) return false;
-    if (accessFilter !== "all" && doc.access_level !== accessFilter) return false;
-    return true;
-  });
+  // Global keyboard shortcut: / to focus search
+  React.useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "/" && !e.metaKey && !e.ctrlKey && document.activeElement?.tagName !== "INPUT") {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+      if (e.key === "Escape" && document.activeElement === searchRef.current) {
+        setSearchQuery("");
+        searchRef.current?.blur();
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, []);
+
+  // Filter docs — search + category + source + access
+  const filtered = React.useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+
+    return MOCK_DOCS.filter((doc) => {
+      // Category tab filter
+      const catFilter = TAB_TO_CATEGORY[activeTab];
+      if (catFilter && doc.category !== catFilter) return false;
+
+      // Source filter
+      if (sourceFilter !== "all" && doc.source !== sourceFilter) return false;
+
+      // Access filter
+      if (accessFilter !== "all" && doc.access_level !== accessFilter) return false;
+
+      // Search query — match across multiple fields
+      if (q) {
+        const searchable = [
+          doc.name,
+          doc.description ?? "",
+          doc.category,
+          CATEGORY_LABELS[doc.category],
+          doc.linked_to,
+          doc.created_by,
+          SOURCE_LABELS[doc.source],
+          ...doc.tags,
+          doc.file_type,
+          doc.created_at,
+        ]
+          .join(" ")
+          .toLowerCase();
+
+        // Support multi-word queries: all terms must match
+        const terms = q.split(/\s+/);
+        if (!terms.every((term) => searchable.includes(term))) return false;
+      }
+
+      return true;
+    });
+  }, [searchQuery, activeTab, sourceFilter, accessFilter]);
 
   // Source counts for filter
   const sourceCounts = React.useMemo(() => {
@@ -264,8 +339,57 @@ function VaultPage({ onAction }: VaultPageProps) {
         </div>
       </div>
 
+      {/* Search */}
+      <div className="mt-6">
+        <div className="relative">
+          <svg
+            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="1.5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+            />
+          </svg>
+          <input
+            ref={searchRef}
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search files by name, tag, type, content..."
+            className="w-full rounded-lg border border-zinc-200 bg-white py-2.5 pl-10 pr-10 text-[13px] text-zinc-900 placeholder:text-zinc-400 transition-colors focus:border-zinc-400 focus:outline-none"
+          />
+          {searchQuery ? (
+            <button
+              onClick={() => { setSearchQuery(""); searchRef.current?.focus(); }}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-300 hover:text-zinc-500"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            </button>
+          ) : (
+            <kbd className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-zinc-200 px-1.5 py-0.5 font-mono text-[10px] text-zinc-400">
+              /
+            </kbd>
+          )}
+        </div>
+
+        {/* Search result count */}
+        {searchQuery && (
+          <p className="mt-2 text-[11px] text-zinc-400">
+            {filtered.length} {filtered.length === 1 ? "file" : "files"} found
+            {searchQuery && <> for &ldquo;{searchQuery}&rdquo;</>}
+          </p>
+        )}
+      </div>
+
       {/* Filters row */}
-      <div className="mt-6 flex flex-wrap items-center gap-3">
+      <div className="mt-4 flex flex-wrap items-center gap-3">
         <TabBar
           tabs={CATEGORY_TABS as unknown as string[]}
           active={activeTab}
@@ -345,7 +469,9 @@ function VaultPage({ onAction }: VaultPageProps) {
 
                   {/* Name + meta */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] text-zinc-700 truncate">{doc.name}</p>
+                    <p className="text-[13px] text-zinc-700 truncate">
+                      <HighlightMatch text={doc.name} query={searchQuery} />
+                    </p>
                     <div className="flex items-center gap-2 mt-0.5">
                       <span className="text-[10px] text-zinc-400">{CATEGORY_LABELS[doc.category]}</span>
                       {doc.linked_to && (
@@ -402,7 +528,9 @@ function VaultPage({ onAction }: VaultPageProps) {
                       {doc.description && (
                         <div className="col-span-2">
                           <p className="text-[10px] text-zinc-400 uppercase tracking-wider mb-0.5">Description</p>
-                          <p className="text-zinc-600">{doc.description}</p>
+                          <p className="text-zinc-600">
+                            <HighlightMatch text={doc.description!} query={searchQuery} />
+                          </p>
                         </div>
                       )}
                       {doc.tags.length > 0 && (
@@ -411,7 +539,7 @@ function VaultPage({ onAction }: VaultPageProps) {
                           <div className="flex flex-wrap gap-1">
                             {doc.tags.map((tag) => (
                               <span key={tag} className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] text-zinc-600">
-                                {tag}
+                                <HighlightMatch text={tag} query={searchQuery} />
                               </span>
                             ))}
                           </div>

@@ -10,6 +10,8 @@ import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { execApprovalManager } from '@/lib/security/exec-approvals';
 
+export const dynamic = 'force-dynamic';
+
 // -----------------------------------------------------------------------------
 // Validation Schemas
 // -----------------------------------------------------------------------------

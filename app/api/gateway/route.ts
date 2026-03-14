@@ -18,6 +18,8 @@ import { encodeSSE } from '@/lib/gateway/protocol';
 import type { ToolCategory, ToolContext } from '@/lib/gateway/tools';
 import type { AutomationJob } from '@/lib/gateway/automation';
 
+export const dynamic = 'force-dynamic';
+
 // -----------------------------------------------------------------------------
 // Validation Schemas
 // -----------------------------------------------------------------------------

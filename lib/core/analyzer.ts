@@ -32,7 +32,7 @@ export async function analyzeForSection(
     case 'all': {
       // Pending decisions
       const { count: pendingDecisions } = await supabase
-        .from('decisions')
+        .from('decision_cards')
         .select('*', { count: 'exact', head: true })
         .eq('business_id', businessId)
         .eq('status', 'pending');

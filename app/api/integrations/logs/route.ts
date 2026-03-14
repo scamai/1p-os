@@ -13,6 +13,8 @@ import {
   exportAllLogs,
 } from "@/lib/integrations/md-logger";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   const supabase = await createClient();
   const {

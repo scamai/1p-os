@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const GetContextQuerySchema = z.object({
   scope: z.string().min(1),
 });
@@ -47,7 +49,7 @@ export async function GET(request: NextRequest) {
     }
 
     const { data: context, error } = await supabase
-      .from('business_context')
+      .from('business_memory')
       .select('*')
       .eq('business_id', business.id)
       .eq('scope', scope)
@@ -110,7 +112,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { data: context, error } = await supabase
-      .from('business_context')
+      .from('business_memory')
       .upsert(
         {
           business_id: business.id,

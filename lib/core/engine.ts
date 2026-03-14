@@ -324,7 +324,7 @@ export async function getQuickStatus(
     { data: costRecords },
   ] = await Promise.all([
     supabase
-      .from('decisions')
+      .from('decision_cards')
       .select('*', { count: 'exact', head: true })
       .eq('business_id', businessId)
       .eq('status', 'pending'),

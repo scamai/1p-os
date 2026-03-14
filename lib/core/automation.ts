@@ -56,7 +56,7 @@ const RULES: AutomationRule[] = [
 
       // Create a decision card for the owner
       for (const invoice of overdue) {
-        await supabase.from('decisions').insert({
+        await supabase.from('decision_cards').insert({
           business_id: ctx.businessId,
           type: 'follow_up',
           title: `Follow up on overdue invoice — ${invoice.client_name} ($${invoice.amount})`,
@@ -180,7 +180,7 @@ export async function runAutomation(
     { data: safetyConfig },
   ] = await Promise.all([
     supabase.from('agents').select('id, name, status, role').eq('business_id', businessId),
-    supabase.from('decisions').select('*', { count: 'exact', head: true }).eq('business_id', businessId).eq('status', 'pending'),
+    supabase.from('decision_cards').select('*', { count: 'exact', head: true }).eq('business_id', businessId).eq('status', 'pending'),
     supabase.from('invoices').select('id').eq('business_id', businessId).eq('status', 'sent').lt('due_date', today),
     supabase.from('audit_log').select('cost').eq('business_id', businessId).gte('created_at', `${today}T00:00:00`),
     supabase.from('safety_config').select('global_daily_budget').eq('business_id', businessId).single(),

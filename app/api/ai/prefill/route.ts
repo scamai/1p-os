@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const PrefillInputSchema = z.object({
   form_type: z.enum(['invoice', 'expense', 'person', 'project', 'agent']),
   context_hint: z.string().max(500).optional(),

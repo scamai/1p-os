@@ -10,6 +10,8 @@ import { exchangeCode, encryptCredentials, type StoredCredentials } from "@/lib/
 import { getProvider } from "@/lib/integrations/providers";
 import { appendLog } from "@/lib/integrations/md-logger";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");

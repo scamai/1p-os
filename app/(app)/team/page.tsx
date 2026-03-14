@@ -13,7 +13,7 @@ export default async function TeamPage() {
   const { data: business } = await supabase
     .from("businesses")
     .select("id")
-    .eq("owner_id", user.id)
+    .eq("user_id", user.id)
     .single();
 
   const { data: agents } = await supabase

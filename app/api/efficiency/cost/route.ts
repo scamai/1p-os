@@ -7,6 +7,8 @@ import {
   getProjectedMonthlyCost,
 } from '@/lib/efficiency/cost-tracker';
 
+export const dynamic = 'force-dynamic';
+
 const QuerySchema = z.object({
   period: z.enum(['today', 'this_week', 'this_month']).default('today'),
   view: z
@@ -87,7 +89,7 @@ export async function GET(request: NextRequest) {
 
     // Fetch raw cost records for the period
     const { data: costRecords, error } = await supabase
-      .from('cost_records')
+      .from('cost_snapshots')
       .select('*')
       .eq('business_id', business.id)
       .gte('created_at', periodStart)
@@ -103,14 +105,19 @@ export async function GET(request: NextRequest) {
 
     const records = costRecords ?? [];
 
-    // Fetch efficiency metrics (tokens saved, deduplication, batching)
-    const { data: efficiencyRecords } = await supabase
-      .from('efficiency_events')
-      .select('event_type, tokens_saved, cost_saved_usd')
-      .eq('business_id', business.id)
-      .gte('created_at', periodStart);
+    // TODO: table not yet in migrations — efficiency_events table doesn't exist
+    let effEvents: Array<{ event_type: string; tokens_saved: number | null; cost_saved_usd: number | null }> = [];
+    try {
+      const { data: efficiencyRecords } = await supabase
+        .from('efficiency_events')
+        .select('event_type, tokens_saved, cost_saved_usd')
+        .eq('business_id', business.id)
+        .gte('created_at', periodStart);
 
-    const effEvents = efficiencyRecords ?? [];
+      effEvents = efficiencyRecords ?? [];
+    } catch {
+      // efficiency_events table may not exist yet
+    }
     const tokensSavedByCache = effEvents
       .filter((e) => e.event_type === 'cache_hit')
       .reduce((sum, e) => sum + (e.tokens_saved ?? 0), 0);

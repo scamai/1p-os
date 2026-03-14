@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const CreateInvoiceSchema = z.object({
   client_name: z.string().min(1).max(200),
   client_email: z.string().email(),

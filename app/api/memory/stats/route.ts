@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/memory/stats — Aggregated memory statistics for visualization.
  *

@@ -44,7 +44,7 @@ let deduplicator: {
 
 // Attempt to load efficiency modules — gracefully degrade if not available
 try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+
   const cacheModule = require('@/lib/efficiency/context-cache');
   contextCache = cacheModule.contextCache ?? null;
 } catch {
@@ -52,7 +52,7 @@ try {
 }
 
 try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+
   const optimizerModule = require('@/lib/efficiency/prompt-optimizer');
   promptOptimizer = optimizerModule.promptOptimizer ?? null;
 } catch {
@@ -60,7 +60,7 @@ try {
 }
 
 try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+
   const schedulerModule = require('@/lib/efficiency/batch-scheduler');
   batchScheduler = schedulerModule.batchScheduler ?? null;
 } catch {
@@ -68,7 +68,7 @@ try {
 }
 
 try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
+
   const dedupModule = require('@/lib/efficiency/deduplicator');
   deduplicator = dedupModule.deduplicator ?? null;
 } catch {
@@ -262,8 +262,7 @@ export async function executeAgent(
     routingDecision = routeResult.routingDecision;
 
     // ── Step 7: Build prompt with context ──
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let systemPrompt = getAgentSystemPrompt(agent.role, context as any);
+    let systemPrompt = getAgentSystemPrompt(agent.role, context as Record<string, unknown>);
     let userPrompt = `Trigger: ${trigger.type}\nData: ${JSON.stringify(trigger.data ?? {})}\n\nRespond with a JSON object containing: { "action": string, "params": object, "messages": [{ "to_agent_id": string, "type": string, "content": string }] (optional) }`;
 
     // ── Step 8: Optimize prompt (compress, scope, reduce few-shots) ──

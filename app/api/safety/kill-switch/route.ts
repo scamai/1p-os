@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const ActivateKillSwitchSchema = z.object({
   level: z.number().int().min(1).max(3),
   agentId: z.string().uuid().optional(),

@@ -10,6 +10,8 @@ import {
   isComposioEnabled,
 } from "@/lib/integrations/composio";
 
+export const dynamic = 'force-dynamic';
+
 // ---------------------------------------------------------------------------
 // GET — List toolkits, tools, or connected accounts
 // ---------------------------------------------------------------------------

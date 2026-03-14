@@ -6,6 +6,8 @@ import { getChatPrompt } from '@/lib/ai/prompts';
 import { ChatResponseSchema } from '@/lib/ai/structured';
 import { agentMemory } from '@/lib/agents/memory';
 
+export const dynamic = 'force-dynamic';
+
 const ChatInputSchema = z.object({
   agentId: z.string().uuid(),
   message: z.string().min(1).max(10000),
@@ -49,7 +51,7 @@ export async function POST(request: NextRequest) {
 
     // Load recent chat history for context
     const { data: recentMessages } = await supabase
-      .from('chat_messages')
+      .from('agent_messages')
       .select('role, content')
       .eq('agent_id', agentId)
       .eq('user_id', user.id)
@@ -73,7 +75,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Store the user message and agent response
-    await supabase.from('chat_messages').insert([
+    await supabase.from('agent_messages').insert([
       {
         agent_id: agentId,
         user_id: user.id,

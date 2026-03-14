@@ -9,6 +9,8 @@ import {
 import { MODELS } from '@/lib/efficiency/model-registry';
 import type { RoutingStrategy } from '@/lib/efficiency/task-router';
 
+export const dynamic = 'force-dynamic';
+
 const QuerySchema = z.object({
   action: z.enum(['hire_agent', 'run_task', 'add_agents', 'change_strategy']),
   role: z.string().optional(),
@@ -75,7 +77,7 @@ export async function GET(request: NextRequest) {
 
     // Check for historical data to determine confidence
     const { count: historicalCount } = await supabase
-      .from('cost_records')
+      .from('cost_snapshots')
       .select('id', { count: 'exact', head: true })
       .eq('business_id', business.id);
 

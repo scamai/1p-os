@@ -111,14 +111,15 @@ export async function installMarketplaceAgent(
       supabase
     );
 
-    // Link installed agent to marketplace source
+    // Track marketplace source on the agent record itself
+    // (installed_agents table doesn't exist — use agents table with source column)
     await supabase
-      .from('installed_agents')
-      .insert({
-        business_id: businessId,
-        agent_id: agent.id,
+      .from('agents')
+      .update({
+        source: 'marketplace',
         marketplace_agent_id: marketplaceAgentId,
-      });
+      })
+      .eq('id', agent.id);
 
     // Increment install count
     await supabase.rpc('increment_marketplace_installs', {
@@ -137,15 +138,7 @@ export async function uninstallMarketplaceAgent(
   supabase: SupabaseClient
 ): Promise<void> {
   try {
-    // Remove the link
-    const { error: linkError } = await supabase
-      .from('installed_agents')
-      .delete()
-      .eq('agent_id', agentId);
-
-    if (linkError) throw linkError;
-
-    // Delete the agent (soft delete)
+    // Soft delete the agent (no separate installed_agents table)
     const { error: agentError } = await supabase
       .from('agents')
       .update({ status: 'deleted', updated_at: new Date().toISOString() })

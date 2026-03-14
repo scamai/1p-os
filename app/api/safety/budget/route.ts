@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const UpdateBudgetSchema = z.object({
   global_daily_budget: z.number().nonnegative().optional(),
   global_monthly_budget: z.number().nonnegative().optional(),
@@ -70,13 +72,13 @@ export async function GET() {
     monthStart.setHours(0, 0, 0, 0);
 
     const { data: dailyRecords } = await supabase
-      .from('cost_records')
+      .from('cost_snapshots')
       .select('cost, agent_id')
       .eq('business_id', business.id)
       .gte('created_at', todayStart.toISOString());
 
     const { data: monthlyRecords } = await supabase
-      .from('cost_records')
+      .from('cost_snapshots')
       .select('cost, agent_id')
       .eq('business_id', business.id)
       .gte('created_at', monthStart.toISOString());

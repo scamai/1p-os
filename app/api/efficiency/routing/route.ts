@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const UpdateRoutingSchema = z.object({
   strategy: z.enum(['quality', 'balanced', 'savings']),
 });

@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import Stripe from 'stripe';
 
+export const dynamic = 'force-dynamic';
+
 const SendInvoiceSchema = z.object({
   invoiceId: z.string().uuid(),
 });

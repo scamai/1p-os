@@ -108,7 +108,7 @@ export const ACHIEVEMENT_DEFINITIONS: AchievementDefinition[] = [
     icon: 'shield',
     check: async (businessId, supabase) => {
       const { count } = await supabase
-        .from('compliance_deadlines')
+        .from('deadlines')
         .select('*', { count: 'exact', head: true })
         .eq('business_id', businessId)
         .eq('missed', true);

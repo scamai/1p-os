@@ -159,7 +159,7 @@ function ChannelsPage() {
       });
       window.history.replaceState({}, "", "/channels");
     }
-  }, [fetchIntegrations]);
+  }, [fetchIntegrations, fetchComposioConnections]);
 
   // ─── OAuth connect ──────────────────────────────────────────────────────────
   const handleOAuthConnect = async (providerId: string) => {

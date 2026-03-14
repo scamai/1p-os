@@ -10,6 +10,8 @@ import { getProvider } from "@/lib/integrations/providers";
 import { encrypt } from "@/lib/encryption";
 import { appendLog } from "@/lib/integrations/md-logger";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

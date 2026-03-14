@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { processCommand, getInsights, getQuickStatus } from '@/lib/core';
 
+export const dynamic = 'force-dynamic';
+
 const CommandSchema = z.object({
   input: z.string().min(1).max(2000),
 });

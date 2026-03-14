@@ -477,8 +477,7 @@ export class AgentRunner {
     let iterations = 0;
 
     // Working copy of messages for the loop
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const workingMessages: any[] = [...anthropicMessages];
+    const workingMessages: any[] = [...anthropicMessages]; // Anthropic MessageParam[]
 
     while (iterations < MAX_TOOL_ITERATIONS) {
       iterations++;

@@ -51,26 +51,28 @@ export async function flagAgent(
   supabase: SupabaseClient
 ): Promise<{ disabled: boolean }> {
   try {
-    // Record the flag
-    const { error: flagError } = await supabase
-      .from('marketplace_flags')
-      .insert({
-        marketplace_agent_id: marketplaceAgentId,
-        reason,
-        created_at: new Date().toISOString(),
-      });
+    // Increment flag_count on the marketplace_agents table
+    // (marketplace_flags table doesn't exist — track flags inline)
+    const { data: agentData, error: fetchError } = await supabase
+      .from('marketplace_agents')
+      .select('flag_count')
+      .eq('id', marketplaceAgentId)
+      .single();
 
-    if (flagError) throw flagError;
+    if (fetchError) throw fetchError;
 
-    // Count total flags
-    const { count, error: countError } = await supabase
-      .from('marketplace_flags')
-      .select('*', { count: 'exact', head: true })
-      .eq('marketplace_agent_id', marketplaceAgentId);
+    const flagCount = ((agentData?.flag_count as number) ?? 0) + 1;
 
-    if (countError) throw countError;
+    const { error: updateError } = await supabase
+      .from('marketplace_agents')
+      .update({
+        flag_count: flagCount,
+        last_flag_reason: reason,
+        last_flag_at: new Date().toISOString(),
+      })
+      .eq('id', marketplaceAgentId);
 
-    const flagCount = count ?? 0;
+    if (updateError) throw updateError;
 
     // Auto-disable at threshold
     if (flagCount >= AUTO_DISABLE_FLAG_THRESHOLD) {

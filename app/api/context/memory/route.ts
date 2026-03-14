@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 
+export const dynamic = 'force-dynamic';
+
 const SearchQuerySchema = z.object({
   q: z.string().min(1),
   limit: z.coerce.number().int().min(1).max(50).default(20),

@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { getAgentSystemPrompt } from '@/lib/ai/prompts';
 
+export const dynamic = 'force-dynamic';
+
 const SetupInputSchema = z.object({
   template: z.string().min(1),
   businessName: z.string().min(1),

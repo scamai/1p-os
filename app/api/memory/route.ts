@@ -3,6 +3,8 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { agentMemory } from "@/lib/agents/memory";
 
+export const dynamic = 'force-dynamic';
+
 const SearchSchema = z.object({
   agentId: z.string().min(1),
   query: z.string().min(1),

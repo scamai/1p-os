@@ -7,6 +7,8 @@ import {
   getModelsAsLLMRouterCandidates,
 } from '@/lib/efficiency/llm-router';
 
+export const dynamic = 'force-dynamic';
+
 const TestRouteSchema = z.object({
   query: z.string().min(1).max(2000),
   taskType: z.string().optional(),

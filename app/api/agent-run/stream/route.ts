@@ -14,6 +14,8 @@ import { agentRunner } from "@/lib/agents/runner";
 import { sessionManager } from "@/lib/agents/sessions";
 import type { AgentRunEvent } from "@/lib/agents/runner";
 
+export const dynamic = 'force-dynamic';
+
 // ---------------------------------------------------------------------------
 // Input validation
 // ---------------------------------------------------------------------------

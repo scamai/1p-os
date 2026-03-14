@@ -17,7 +17,6 @@ export const MOCK_USER = {
 export const MOCK_BUSINESS = {
   id: "00000000-0000-0000-0000-000000000010",
   user_id: MOCK_USER.id,
-  owner_id: MOCK_USER.id,
   name: "Acme Studios",
   business_name: "Acme Studios",
   health_score: 87,
@@ -72,9 +71,6 @@ export function createMockSupabaseClient() {
       delete: () => ({ eq: () => ({ eq: async () => ({ error: null }) }) }),
       eq: (_col: string, val: unknown) => {
         if (table === "businesses" && _col === "user_id") {
-          chain.data = [MOCK_BUSINESS];
-        }
-        if (table === "businesses" && _col === "owner_id") {
           chain.data = [MOCK_BUSINESS];
         }
         return self;
