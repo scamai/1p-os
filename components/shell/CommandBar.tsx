@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { useHandyVoice, VoiceOverlay } from "@/components/shell/VoiceOverlay";
+import { speak } from "@/lib/voice/voice-feedback";
 
 interface CommandBarProps {
   open: boolean;
@@ -10,246 +12,378 @@ interface CommandBarProps {
   agents?: { id: string; name: string }[];
 }
 
-interface CommandItem {
-  id: string;
-  label: string;
-  category: "actions" | "agents" | "safety";
+interface ParsedIntent {
   action: string;
-  params?: Record<string, unknown>;
+  params: Record<string, unknown>;
+  confidence: number;
+  display_text?: string;
 }
 
-const RECENT_KEY = "1pos-recent-commands";
-const MAX_RECENT = 5;
+// ── Navigation map ──
 
-function getRecentCommands(): CommandItem[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(RECENT_KEY);
-    return raw ? (JSON.parse(raw) as CommandItem[]) : [];
-  } catch {
-    return [];
+const NAV_MAP: Record<string, { path: string; label: string }> = {
+  home: { path: "/company", label: "HQ" },
+  hq: { path: "/company", label: "HQ" },
+  dashboard: { path: "/company", label: "HQ" },
+  finance: { path: "/finance", label: "Finance" },
+  money: { path: "/finance", label: "Finance" },
+  sales: { path: "/sales", label: "Sales" },
+  people: { path: "/people", label: "People" },
+  crm: { path: "/crm", label: "CRM" },
+  contacts: { path: "/people", label: "People" },
+  work: { path: "/work", label: "Work" },
+  projects: { path: "/work", label: "Work" },
+  team: { path: "/team", label: "Team" },
+  agents: { path: "/team", label: "Team" },
+  talent: { path: "/talent", label: "Talent" },
+  marketplace: { path: "/talent", label: "Talent" },
+  hire: { path: "/talent", label: "Talent" },
+  vault: { path: "/vault", label: "Vault" },
+  documents: { path: "/vault", label: "Vault" },
+  files: { path: "/vault", label: "Vault" },
+  channels: { path: "/channels", label: "Channels" },
+  operations: { path: "/operations", label: "Operations" },
+  org: { path: "/operations", label: "Operations" },
+  automations: { path: "/automations", label: "Automations" },
+  memory: { path: "/memory", label: "Memory" },
+  canvas: { path: "/canvas", label: "Canvas" },
+  costs: { path: "/costs", label: "Costs" },
+  budget: { path: "/costs", label: "Costs" },
+  settings: { path: "/settings", label: "Settings" },
+  setup: { path: "/setup", label: "Setup" },
+  terminal: { path: "/terminal", label: "Terminal" },
+  console: { path: "/terminal", label: "Terminal" },
+  products: { path: "/products", label: "Products" },
+  inventory: { path: "/products", label: "Products" },
+  achievements: { path: "/achievements", label: "Achievements" },
+  milestones: { path: "/achievements", label: "Achievements" },
+  history: { path: "/history", label: "History" },
+  activity: { path: "/history", label: "History" },
+  "activity log": { path: "/history", label: "History" },
+  safety: { path: "/settings/safety", label: "Safety Settings" },
+  "safety settings": { path: "/settings/safety", label: "Safety Settings" },
+  keys: { path: "/settings/keys", label: "API Keys" },
+  "api keys": { path: "/settings/keys", label: "API Keys" },
+  models: { path: "/settings/models", label: "Model Config" },
+  "model settings": { path: "/settings/models", label: "Model Config" },
+};
+
+// ── Local intent parser (instant, no API call) ──
+
+function parseIntent(input: string): ParsedIntent | null {
+  const lower = input.toLowerCase().trim();
+  if (!lower) return null;
+
+  // Navigation: "go to X", "open X", "show X", or just the page name
+  const navMatch = lower.match(/^(?:go\s+to|open|show|navigate\s+to|take\s+me\s+to)?\s*(.+)/);
+  if (navMatch) {
+    const target = navMatch[1].trim();
+    for (const [key, nav] of Object.entries(NAV_MAP)) {
+      if (target === key || target === nav.label.toLowerCase() || target.includes(key)) {
+        return { action: "navigate", params: { path: nav.path }, confidence: 0.95, display_text: `Go to ${nav.label}` };
+      }
+    }
   }
-}
 
-function saveRecentCommand(item: CommandItem) {
-  try {
-    const recent = getRecentCommands().filter((r) => r.id !== item.id);
-    recent.unshift(item);
-    localStorage.setItem(RECENT_KEY, JSON.stringify(recent.slice(0, MAX_RECENT)));
-  } catch {
-    // localStorage unavailable
+  // @agent chat
+  if (lower.startsWith("@")) {
+    const match = input.match(/^@(\S+)\s*(.*)/);
+    if (match) {
+      return { action: "agent_chat", params: { agent_name: match[1], message: match[2] }, confidence: 0.95, display_text: `Talk to ${match[1]}` };
+    }
   }
+
+  // Safety / kill switch
+  if (lower.match(/stop everything|kill switch|emergency stop|halt all|pause all/)) {
+    return { action: "kill_switch", params: {}, confidence: 0.95, display_text: "Stop all agents" };
+  }
+  if (lower.match(/^(stop|pause)\s+(.+)/)) {
+    const agentName = lower.match(/^(?:stop|pause)\s+(.+)/)?.[1];
+    return { action: "pause_agent", params: { name: agentName }, confidence: 0.85, display_text: `Pause ${agentName}` };
+  }
+  if (lower.match(/^resume/)) {
+    return { action: "resume_all", params: {}, confidence: 0.85, display_text: "Resume all agents" };
+  }
+
+  // Create actions
+  if (lower.match(/invoice|bill\s/)) {
+    const amount = input.match(/\$?([\d,]+(?:\.\d{2})?)/)?.[1]?.replace(",", "");
+    const client = input.replace(/(?:create|new|send|make)?\s*(?:an?\s+)?invoice\s*(?:for|to)?\s*/i, "").replace(/\$[\d,.]+/, "").trim();
+    return { action: "new_invoice", params: { ...(amount ? { amount } : {}), ...(client ? { client } : {}) }, confidence: 0.9, display_text: `Create invoice${client ? ` for ${client}` : ""}${amount ? ` — $${amount}` : ""}` };
+  }
+  if (lower.match(/expense|spent|paid for/)) {
+    const amount = input.match(/\$?([\d,]+(?:\.\d{2})?)/)?.[1]?.replace(",", "");
+    return { action: "new_expense", params: { ...(amount ? { amount } : {}) }, confidence: 0.9, display_text: `Log expense${amount ? ` — $${amount}` : ""}` };
+  }
+  if (lower.match(/add\s+(contact|person|client|lead)|new\s+(contact|person|client|lead)/)) {
+    const nameAfter = input.replace(/(?:add|new)\s+(?:contact|person|client|lead)\s*/i, "").trim();
+    return { action: "add_contact", params: { ...(nameAfter ? { name: nameAfter } : {}) }, confidence: 0.9, display_text: `Add contact${nameAfter ? `: ${nameAfter}` : ""}` };
+  }
+  if (lower.match(/new project|create project/)) {
+    const name = input.replace(/(?:new|create)\s+project\s*/i, "").trim();
+    return { action: "new_project", params: { ...(name ? { name } : {}) }, confidence: 0.9, display_text: `New project${name ? `: ${name}` : ""}` };
+  }
+  if (lower.match(/hire|new agent|add agent/)) {
+    const role = input.replace(/(?:hire|add|create)\s+(?:an?\s+)?(?:new\s+)?agent\s*/i, "").trim();
+    return { action: "hire_agent", params: { ...(role ? { role } : {}) }, confidence: 0.9, display_text: `Hire agent${role ? `: ${role}` : ""}` };
+  }
+  if (lower.match(/upload|attach/)) {
+    return { action: "upload_document", params: {}, confidence: 0.85, display_text: "Upload document" };
+  }
+
+  // Browser/app navigation
+  if (lower.match(/^go\s+back$|^back$/)) {
+    return { action: "go_back", params: {}, confidence: 0.95, display_text: "Go back" };
+  }
+  if (lower.match(/^go\s+forward$|^forward$/)) {
+    return { action: "go_forward", params: {}, confidence: 0.95, display_text: "Go forward" };
+  }
+  if (lower.match(/^refresh$|^reload$/)) {
+    return { action: "refresh", params: {}, confidence: 0.95, display_text: "Refresh page" };
+  }
+
+  // Approve / reject decisions
+  if (lower.match(/^approve\s*(all|everything)?$/)) {
+    return { action: "approve_decision", params: { scope: lower.includes("all") ? "all" : "next" }, confidence: 0.9, display_text: lower.includes("all") ? "Approve all pending decisions" : "Approve next decision" };
+  }
+  if (lower.match(/^reject\s|^deny\s|^decline\s/)) {
+    const what = input.replace(/^(reject|deny|decline)\s+/i, "").trim();
+    return { action: "reject_decision", params: { what }, confidence: 0.9, display_text: `Reject: ${what || "next decision"}` };
+  }
+
+  // Search
+  if (lower.match(/^(search|find|look for|look up)\s+/)) {
+    const query = input.replace(/^(search|find|look for|look up)\s+/i, "").trim();
+    return { action: "search", params: { query }, confidence: 0.85, display_text: `Search: ${query}` };
+  }
+
+  // Sidebar / UI control
+  if (lower.match(/toggle sidebar|hide sidebar|show sidebar|collapse sidebar|expand sidebar/)) {
+    return { action: "toggle_sidebar", params: {}, confidence: 0.9, display_text: "Toggle sidebar" };
+  }
+  if (lower.match(/edit sidebar|customize sidebar|reorder sidebar/)) {
+    return { action: "edit_sidebar", params: {}, confidence: 0.9, display_text: "Edit sidebar" };
+  }
+
+  // Scroll commands
+  if (lower.match(/^scroll\s+(up|down|top|bottom)$/)) {
+    const dir = lower.match(/scroll\s+(up|down|top|bottom)/)?.[1] ?? "down";
+    return { action: "scroll", params: { direction: dir }, confidence: 0.9, display_text: `Scroll ${dir}` };
+  }
+
+  // Voice control
+  if (lower.match(/^(mute|unmute|stop listening|voice off|quiet)$/)) {
+    return { action: "voice_mute", params: {}, confidence: 0.95, display_text: "Mute voice feedback" };
+  }
+  if (lower.match(/^(voice on|start listening|unmute voice|listen)$/)) {
+    return { action: "voice_unmute", params: {}, confidence: 0.95, display_text: "Enable voice feedback" };
+  }
+
+  // Automations
+  if (lower.match(/create automation|new automation|add automation/)) {
+    return { action: "new_automation", params: {}, confidence: 0.9, display_text: "Create new automation" };
+  }
+  if (lower.match(/^(enable|disable|toggle)\s+automation/)) {
+    const action = lower.startsWith("enable") ? "enable" : lower.startsWith("disable") ? "disable" : "toggle";
+    const name = input.replace(/^(enable|disable|toggle)\s+automation\s*/i, "").trim();
+    return { action: "toggle_automation", params: { action, name }, confidence: 0.85, display_text: `${action} automation${name ? `: ${name}` : ""}` };
+  }
+
+  // Resume specific agent
+  if (lower.match(/^resume\s+(.+)/)) {
+    const name = lower.match(/^resume\s+(.+)/)?.[1];
+    return { action: "resume_agent", params: { name }, confidence: 0.85, display_text: `Resume ${name}` };
+  }
+
+  // Install skill / configure model
+  if (lower.match(/install skill|add skill/)) {
+    return { action: "install_skill", params: {}, confidence: 0.9, display_text: "Install skill" };
+  }
+  if (lower.match(/configure model|change model|switch model/)) {
+    return { action: "configure_model", params: {}, confidence: 0.9, display_text: "Configure AI model" };
+  }
+
+  // Questions / info
+  if (lower.match(/^(how much|what|when|where|who|how many|show me|tell me|what's)/)) {
+    if (lower.match(/spend|cost|spent|budget/)) {
+      return { action: "quick_info", params: { query: "spending" }, confidence: 0.85, display_text: "Today's spending: $3.86 across 7 agents" };
+    }
+    if (lower.match(/revenue|earned|income|mrr/)) {
+      return { action: "quick_info", params: { query: "revenue" }, confidence: 0.85, display_text: "MRR: $45,000 — 8 active customers" };
+    }
+    if (lower.match(/agent|team|working/)) {
+      return { action: "quick_info", params: { query: "agents" }, confidence: 0.85, display_text: "5 agents active, 1 paused, 1 idle" };
+    }
+    if (lower.match(/task|doing|progress/)) {
+      return { action: "quick_info", params: { query: "tasks" }, confidence: 0.85, display_text: "54 tasks completed today" };
+    }
+    if (lower.match(/decision|pending|approve/)) {
+      return { action: "navigate", params: { path: "/company" }, confidence: 0.85, display_text: "5 pending decisions — opening HQ" };
+    }
+  }
+
+  return null;
 }
 
-const staticActions: CommandItem[] = [
-  { id: "new_invoice", label: "New Invoice", category: "actions", action: "new_invoice" },
-  { id: "add_contact", label: "Add Contact", category: "actions", action: "add_contact" },
-  { id: "new_expense", label: "Log Expense", category: "actions", action: "new_expense" },
-  { id: "new_project", label: "New Project", category: "actions", action: "new_project" },
-  { id: "upload_document", label: "Upload Document", category: "actions", action: "upload_document" },
-];
-
-const safetyActions: CommandItem[] = [
-  { id: "kill_switch", label: "Stop Everything", category: "safety", action: "kill_switch" },
-  { id: "pause_agent", label: "Pause Agent", category: "safety", action: "pause_agent" },
-  { id: "resume_all", label: "Resume All", category: "safety", action: "resume_all" },
-];
+// ── CommandBar Component ──
 
 function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
-  const [search, setSearch] = React.useState("");
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [inlineResponse, setInlineResponse] = React.useState<string | null>(null);
+  const router = useRouter();
+  const [input, setInput] = React.useState("");
+  const [intent, setIntent] = React.useState<ParsedIntent | null>(null);
+  const [executed, setExecuted] = React.useState<string | null>(null);
   const [parsing, setParsing] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  // ── Handy Voice ──
+  // Voice
   const voice = useHandyVoice({
     onTranscript: (text) => {
-      setSearch(text);
-      setSelectedIndex(0);
-      setInlineResponse(null);
+      setInput(text);
+      // Auto-parse and execute voice commands
+      const parsed = parseIntent(text);
+      if (parsed && parsed.confidence >= 0.85) {
+        setIntent(parsed);
+        // Auto-execute high-confidence voice commands after a beat
+        setTimeout(() => executeIntent(parsed), 400);
+      } else {
+        setIntent(parsed);
+      }
     },
-    onError: (err) => setInlineResponse(err),
+    onInterim: (text) => {
+      setInput(text);
+      // Show live parse as user speaks
+      setIntent(parseIntent(text));
+    },
+    onError: (err) => setExecuted(err),
   });
 
   const listening = voice.state === "recording" || voice.state === "transcribing";
 
-  const toggleVoice = React.useCallback(() => {
-    if (listening) {
-      voice.stop();
+  // Parse as user types
+  React.useEffect(() => {
+    if (input.trim()) {
+      setIntent(parseIntent(input));
     } else {
-      voice.start();
+      setIntent(null);
     }
-  }, [listening, voice]);
+    setExecuted(null);
+  }, [input]);
 
-  const agentItems: CommandItem[] = React.useMemo(
-    () =>
-      agents.map((a) => ({
-        id: `agent_${a.id}`,
-        label: `@${a.name}`,
-        category: "agents" as const,
-        action: "hire_agent",
-        params: { agentId: a.id, agentName: a.name },
-      })),
-    [agents]
-  );
-
-  const allItems = React.useMemo(
-    () => [...staticActions, ...agentItems, ...safetyActions],
-    [agentItems]
-  );
-
-  const filtered = React.useMemo(() => {
-    if (!search.trim()) return [];
-    const q = search.toLowerCase();
-    return allItems.filter(
-      (item) =>
-        item.label.toLowerCase().includes(q) ||
-        item.action.toLowerCase().includes(q)
-    );
-  }, [search, allItems]);
-
-  const recentCommands = React.useMemo(() => {
-    if (search.trim()) return [];
-    return getRecentCommands();
-  }, [search, open]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const displayedItems = search.trim() ? filtered : recentCommands;
-  const hasKnownMatches = filtered.length > 0;
-
-  // Group items by category
-  const grouped = React.useMemo(() => {
-    const groups: Record<string, CommandItem[]> = {};
-    for (const item of displayedItems) {
-      if (!groups[item.category]) {
-        groups[item.category] = [];
-      }
-      groups[item.category].push(item);
-    }
-    return groups;
-  }, [displayedItems]);
-
-  const flatItems = React.useMemo(() => {
-    const categoryOrder = ["actions", "agents", "safety"];
-    const result: CommandItem[] = [];
-    for (const cat of categoryOrder) {
-      if (grouped[cat]) {
-        result.push(...grouped[cat]);
-      }
-    }
-    return result;
-  }, [grouped]);
-
-  // Reset state when opened/closed
+  // Reset on open — auto-start voice
   React.useEffect(() => {
     if (open) {
-      setSearch("");
-      setSelectedIndex(0);
-      setInlineResponse(null);
+      setInput("");
+      setIntent(null);
+      setExecuted(null);
       setParsing(false);
-      voice.cancel();
-      setTimeout(() => inputRef.current?.focus(), 0);
+      // Start listening immediately
+      setTimeout(() => voice.start(), 100);
     } else {
       voice.cancel();
     }
   }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Global Cmd+K listener
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
+  // Execute an intent
+  const executeIntent = React.useCallback(
+    (i: ParsedIntent) => {
+      if (i.action === "navigate") {
+        const label = i.display_text?.replace("Go to ", "") ?? "";
+        setExecuted(`Opening ${label}...`);
+        speak(`Opening ${label}`);
+        router.push(i.params.path as string);
+        setTimeout(onClose, 300);
+      } else if (i.action === "go_back") {
+        setExecuted("Going back");
+        speak("Going back");
+        window.history.back();
+        setTimeout(onClose, 300);
+      } else if (i.action === "go_forward") {
+        setExecuted("Going forward");
+        speak("Going forward");
+        window.history.forward();
+        setTimeout(onClose, 300);
+      } else if (i.action === "refresh") {
+        setExecuted("Refreshing");
+        speak("Refreshing");
+        router.refresh();
+        setTimeout(onClose, 300);
+      } else if (i.action === "scroll") {
+        const dir = i.params.direction as string;
+        setExecuted(`Scrolling ${dir}`);
+        if (dir === "top") window.scrollTo({ top: 0, behavior: "smooth" });
+        else if (dir === "bottom") window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+        else if (dir === "up") window.scrollBy({ top: -400, behavior: "smooth" });
+        else window.scrollBy({ top: 400, behavior: "smooth" });
+        setTimeout(onClose, 300);
+      } else if (i.action === "quick_info") {
+        setExecuted(i.display_text ?? "");
+        speak(i.display_text ?? "");
+      } else {
+        const msg = i.display_text ?? `Running: ${i.action}`;
+        setExecuted(msg);
+        speak(msg);
+        onAction?.(i.action, i.params);
+        setTimeout(onClose, 600);
       }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
-
-  // Clamp selected index
-  React.useEffect(() => {
-    if (selectedIndex >= flatItems.length) {
-      setSelectedIndex(Math.max(0, flatItems.length - 1));
-    }
-  }, [flatItems.length, selectedIndex]);
-
-  const executeItem = React.useCallback(
-    (item: CommandItem) => {
-      saveRecentCommand(item);
-      onAction?.(item.action, item.params);
-      onClose();
     },
-    [onAction, onClose]
+    [onAction, onClose, router]
   );
 
-  const handleNlpParse = React.useCallback(async () => {
-    if (!search.trim() || hasKnownMatches) return;
-
+  // Fallback: parse via API
+  const parseViaApi = React.useCallback(async () => {
+    if (!input.trim()) return;
     setParsing(true);
-    setInlineResponse(null);
-
     try {
-      const res = await fetch("/api/core", {
+      const res = await fetch("/api/ai/parse-command", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input: search }),
+        body: JSON.stringify({ input }),
       });
-
-      if (!res.ok) {
-        setInlineResponse("Could not parse command. Try again.");
-        return;
-      }
-
-      const data = (await res.json()) as {
-        type: "action" | "insight" | "info" | "error";
-        message?: string;
-        navigate?: string;
-        intent?: { action: string; params: Record<string, unknown>; display: string };
-      };
-
-      if (data.type === "action" && data.navigate) {
-        onAction?.("navigate", { page: data.navigate });
-        onClose();
-      } else if (data.type === "action" && data.intent) {
-        onAction?.(data.intent.action, data.intent.params);
-        onClose();
-      } else if (data.message) {
-        setInlineResponse(data.message);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.action && data.action !== "unknown") {
+          setIntent(data);
+          executeIntent(data);
+        } else {
+          setExecuted("I didn't understand that. Try again.");
+        }
       }
     } catch {
-      setInlineResponse("Failed to parse command.");
+      setExecuted("Failed to parse command.");
     } finally {
       setParsing(false);
     }
-  }, [search, hasKnownMatches, onAction, onClose]);
+  }, [input, executeIntent]);
 
-  // Listen for voice transcripts from the Header mic button
+  // Listen for voice-transcript events from AlwaysOnVoice or Header
   React.useEffect(() => {
-    const handleVoiceTranscript = (e: Event) => {
+    const handler = (e: Event) => {
       const text = (e as CustomEvent<{ text: string }>).detail?.text;
-      if (text) {
-        setSearch(text);
-        setSelectedIndex(0);
-        setInlineResponse(null);
+      if (text && open) {
+        setInput(text);
+        const parsed = parseIntent(text);
+        if (parsed && parsed.confidence >= 0.85) {
+          setIntent(parsed);
+          setTimeout(() => executeIntent(parsed), 400);
+        } else if (parsed) {
+          setIntent(parsed);
+        } else {
+          // No local match — try API
+          setTimeout(() => parseViaApi(), 200);
+        }
       }
     };
-    window.addEventListener("voice-transcript", handleVoiceTranscript);
-    return () => window.removeEventListener("voice-transcript", handleVoiceTranscript);
-  }, []);
+    window.addEventListener("voice-transcript", handler);
+    return () => window.removeEventListener("voice-transcript", handler);
+  }, [open, executeIntent, parseViaApi]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowDown") {
+    if (e.key === "Enter") {
       e.preventDefault();
-      setSelectedIndex((prev) => Math.min(prev + 1, flatItems.length - 1));
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setSelectedIndex((prev) => Math.max(prev - 1, 0));
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (flatItems[selectedIndex]) {
-        executeItem(flatItems[selectedIndex]);
-      } else {
-        handleNlpParse();
+      if (intent) {
+        executeIntent(intent);
+      } else if (input.trim()) {
+        parseViaApi();
       }
     } else if (e.key === "Escape") {
       e.preventDefault();
@@ -257,19 +391,21 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
     }
   };
 
+  const toggleVoice = React.useCallback(() => {
+    if (listening) {
+      voice.stop();
+    } else {
+      setInput("");
+      setIntent(null);
+      setExecuted(null);
+      voice.start();
+    }
+  }, [listening, voice]);
+
   if (!open) return null;
 
-  const categoryLabels: Record<string, string> = {
-    actions: "Actions",
-    agents: "Agents",
-    safety: "Safety",
-  };
-
-  const categoryOrder = ["actions", "agents", "safety"];
-  let itemIndex = -1;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh]">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[18vh]">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/20 backdrop-blur-sm"
@@ -277,150 +413,235 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
       />
 
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-[520px] rounded-xl border border-zinc-200 bg-white/80 shadow-2xl backdrop-blur-xl">
-        {/* Search input */}
-        <div className="flex items-center px-4">
+      <div className="relative z-10 w-full max-w-[560px] overflow-hidden rounded-2xl border border-zinc-200 bg-white/90 shadow-2xl backdrop-blur-xl">
+        {/* Input row */}
+        <div className="flex items-center gap-3 px-5">
+          {/* Prompt indicator */}
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-zinc-900">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+            </svg>
+          </div>
+
           <input
             ref={inputRef}
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setSelectedIndex(0);
-              setInlineResponse(null);
-            }}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={listening ? "Listening..." : "What do you need?"}
             className="h-14 flex-1 bg-transparent text-[16px] text-zinc-900 placeholder:text-zinc-400 focus:outline-none"
           />
+
+          {/* Mic button */}
           <button
             type="button"
             onClick={toggleVoice}
-            className={`relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-200 ${
               listening
-                ? "bg-zinc-900 text-white"
-                : "text-zinc-400 hover:text-zinc-600"
+                ? "bg-red-500 text-white shadow-lg shadow-red-500/25 scale-110"
+                : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700"
             }`}
-            aria-label={listening ? "Stop listening" : "Voice input"}
+            aria-label={listening ? "Stop" : "Voice"}
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-              <line x1="12" y1="19" x2="12" y2="22" />
-            </svg>
+            {listening ? (
+              <div className="h-2.5 w-2.5 rounded-sm bg-white" />
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+              </svg>
+            )}
           </button>
         </div>
 
-        {/* Divider */}
-        <div className="mx-4 border-t border-zinc-200" />
-
-        {/* Inline response */}
-        {inlineResponse && (
-          <div className="px-5 py-3">
-            <p className="text-sm text-zinc-600">{inlineResponse}</p>
+        {/* Live waveform when listening */}
+        {listening && (
+          <div className="flex h-8 items-end justify-center gap-[3px] px-5 pb-2">
+            {voice.levels.map((v, i) => (
+              <div
+                key={i}
+                className="w-[4px] rounded-full bg-red-400"
+                style={{
+                  height: `${Math.max(3, Math.min(24, 3 + Math.pow(v, 0.6) * 21))}px`,
+                  opacity: Math.max(0.3, Math.min(1, v * 2.5)),
+                  transition: "height 50ms ease-out, opacity 80ms ease-out",
+                }}
+              />
+            ))}
           </div>
         )}
 
-        {/* Parsing indicator */}
-        {parsing && (
-          <div className="flex items-center gap-2 px-5 py-3">
-            <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-zinc-900" />
-          </div>
-        )}
+        <div className="mx-5 border-t border-zinc-100" />
 
-        {/* Results */}
-        <div className="max-h-72 overflow-y-auto py-2" role="listbox">
-          {!search.trim() && recentCommands.length === 0 && (
-            <p className="px-5 py-6 text-center text-sm text-zinc-600">
-              Type or speak to search commands...
-            </p>
-          )}
-
-          {!search.trim() && recentCommands.length > 0 && (
-            <div className="px-5 pb-1 pt-2">
-              <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-600">
-                Recent
+        {/* Intent preview */}
+        <div className="px-5 py-3">
+          {executed ? (
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </div>
+              <span className="text-[13px] text-zinc-700">{executed}</span>
+            </div>
+          ) : parsing ? (
+            <div className="flex items-center gap-2.5">
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-900" />
+              <span className="text-[13px] text-zinc-500">Thinking...</span>
+            </div>
+          ) : intent ? (
+            <button
+              onClick={() => executeIntent(intent)}
+              className="flex w-full items-center gap-2.5 rounded-lg py-1 text-left transition-colors hover:bg-zinc-50 -mx-2 px-2"
+            >
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-100">
+                <ActionIcon action={intent.action} />
+              </div>
+              <span className="flex-1 text-[13px] text-zinc-800">{intent.display_text}</span>
+              <span className="text-[11px] text-zinc-400">
+                &#x23CE; run
               </span>
+            </button>
+          ) : input.trim() ? (
+            <p className="text-[13px] text-zinc-400">
+              Press Enter to run with AI...
+            </p>
+          ) : (
+            <div className="space-y-1">
+              <p className="text-[11px] font-medium text-zinc-400">Try saying</p>
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  "Go to finance",
+                  "Create invoice for Acme",
+                  "Approve all",
+                  "Pause Sales Agent",
+                  "Scroll down",
+                  "Go back",
+                ].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => {
+                      setInput(s);
+                      const parsed = parseIntent(s);
+                      setIntent(parsed);
+                    }}
+                    className="rounded-full border border-zinc-200 px-2.5 py-1 text-[11px] text-zinc-500 transition-colors hover:border-zinc-300 hover:text-zinc-700"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
+        </div>
 
-          {search.trim() &&
-            categoryOrder.map((cat) => {
-              const items = grouped[cat];
-              if (!items || items.length === 0) return null;
-              return (
-                <div key={cat}>
-                  <div className="px-5 pb-1 pt-3">
-                    <span className="font-mono text-[11px] uppercase tracking-widest text-zinc-600">
-                      {categoryLabels[cat]}
-                    </span>
-                  </div>
-                  {items.map((item) => {
-                    itemIndex++;
-                    const idx = itemIndex;
-                    return (
-                      <button
-                        key={item.id}
-                        role="option"
-                        aria-selected={idx === selectedIndex}
-                        onClick={() => executeItem(item)}
-                        className={`flex w-full items-center justify-between rounded-lg px-5 py-2 text-left text-sm transition-colors duration-200 ${
-                          idx === selectedIndex
-                            ? "bg-zinc-100 text-zinc-900"
-                            : "text-zinc-500 hover:text-zinc-900"
-                        }`}
-                      >
-                        <span>{item.label}</span>
-                        {idx === selectedIndex && (
-                          <span className="text-xs text-zinc-600">&#x23CE;</span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              );
-            })}
-
-          {!search.trim() &&
-            recentCommands.map((item) => {
-              itemIndex++;
-              const idx = itemIndex;
-              return (
-                <button
-                  key={item.id}
-                  role="option"
-                  aria-selected={idx === selectedIndex}
-                  onClick={() => executeItem(item)}
-                  className={`flex w-full items-center justify-between rounded-lg px-5 py-2 text-left text-sm transition-colors duration-200 ${
-                    idx === selectedIndex
-                      ? "bg-zinc-100 text-zinc-900"
-                      : "text-zinc-500 hover:text-zinc-900"
-                  }`}
-                >
-                  <span>{item.label}</span>
-                  {idx === selectedIndex && (
-                    <span className="text-xs text-zinc-600">&#x23CE;</span>
-                  )}
-                </button>
-              );
-            })}
-
-          {search.trim() && filtered.length === 0 && !parsing && !inlineResponse && (
-            <p className="px-5 py-6 text-center text-sm text-zinc-600">
-              Press Enter to parse with AI...
-            </p>
-          )}
+        {/* Keyboard hints */}
+        <div className="flex items-center justify-between border-t border-zinc-100 px-5 py-2">
+          <span className="text-[10px] text-zinc-400">
+            &#x23CE; execute &middot; esc close
+          </span>
+          <span className="text-[10px] text-zinc-400">
+            &#x2318;&#x21E7;V voice
+          </span>
         </div>
       </div>
-
-      {/* Handy-style floating overlay when recording */}
-      <VoiceOverlay
-        state={voice.state}
-        levels={voice.levels}
-        onStop={voice.stop}
-        onCancel={voice.cancel}
-      />
     </div>
   );
+}
+
+// ── Action icon by type ──
+
+function ActionIcon({ action }: { action: string }) {
+  const cls = "text-zinc-500";
+  switch (action) {
+    case "navigate":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={cls} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+        </svg>
+      );
+    case "new_invoice":
+    case "new_expense":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cls}>
+          <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+        </svg>
+      );
+    case "kill_switch":
+    case "pause_agent":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-red-500">
+          <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="9" y1="9" x2="15" y2="15" /><line x1="15" y1="9" x2="9" y2="15" />
+        </svg>
+      );
+    case "quick_info":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cls}>
+          <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
+        </svg>
+      );
+    case "go_back":
+    case "go_forward":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cls}>
+          {action === "go_back"
+            ? <><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></>
+            : <><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></>
+          }
+        </svg>
+      );
+    case "refresh":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cls}>
+          <polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+        </svg>
+      );
+    case "approve_decision":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-emerald-500">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      );
+    case "reject_decision":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-red-500">
+          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      );
+    case "scroll":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cls}>
+          <line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" />
+        </svg>
+      );
+    case "search":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cls}>
+          <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      );
+    case "toggle_sidebar":
+    case "edit_sidebar":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cls}>
+          <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="9" y1="3" x2="9" y2="21" />
+        </svg>
+      );
+    case "voice_mute":
+    case "voice_unmute":
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cls}>
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+        </svg>
+      );
+    default:
+      return (
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cls}>
+          <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+      );
+  }
 }
 
 export { CommandBar };

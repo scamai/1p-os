@@ -76,12 +76,23 @@ export function createMockSupabaseClient() {
         return self;
       },
       neq: () => self,
+      gt: () => self,
       gte: () => self,
+      lt: () => self,
       lte: () => self,
+      like: () => self,
+      ilike: () => self,
+      is: () => self,
       in: () => self,
+      not: () => self,
+      or: () => self,
+      filter: () => self,
+      match: () => self,
       order: () => self,
       limit: () => self,
       range: () => self,
+      maybeSingle: async () => ({ data: null, error: null }),
+      csv: () => self,
       single: async () => {
         const data = Array.isArray(chain.data) ? chain.data[0] ?? null : chain.data;
         return { data, error: null };

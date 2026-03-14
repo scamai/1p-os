@@ -9,6 +9,7 @@ import { Sidebar } from "@/components/shell/Sidebar";
 import { InlineFormSheet } from "@/components/shell/InlineFormSheet";
 import { AIWizard, type WizardIntent } from "@/components/shell/AIWizard";
 import { CoreBanner } from "@/components/shell/CoreBanner";
+import { AlwaysOnVoice } from "@/components/shell/AlwaysOnVoice";
 
 const InvoiceForm = React.lazy(() =>
   import("@/components/forms/InvoiceForm").then((m) => ({ default: m.InvoiceForm }))
@@ -70,6 +71,8 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
   const [commandBarOpen, setCommandBarOpen] = React.useState(false);
   const [activeForm, setActiveForm] = React.useState<ActiveForm>(null);
   const [wizardIntent, setWizardIntent] = React.useState<WizardIntent | null>(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
+  const [sidebarEditMode, setSidebarEditMode] = React.useState(false);
 
   // Map pathname to section name for CoreBanner
   const currentSection = React.useMemo(() => {
@@ -130,6 +133,9 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
           // These are handled server-side by the core, just refresh
           router.refresh();
           break;
+        case "resume_all":
+          fetch("/api/agents/resume-all", { method: "POST" }).then(() => router.refresh());
+          break;
         // AI wizard flows
         case "hire_agent":
           setWizardIntent("hire_agent");
@@ -158,6 +164,54 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
           break;
         case "kill_switch":
           setKillSwitchOpen(true);
+          break;
+        // Sidebar control
+        case "toggle_sidebar":
+          setSidebarCollapsed((prev) => !prev);
+          window.dispatchEvent(new CustomEvent("sidebar-toggle"));
+          break;
+        case "edit_sidebar":
+          setSidebarEditMode((prev) => !prev);
+          window.dispatchEvent(new CustomEvent("sidebar-edit-toggle"));
+          break;
+        // Decision actions
+        case "approve_decision":
+          fetch("/api/decisions/approve", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ scope: params?.scope ?? "next" }),
+          }).then(() => router.refresh());
+          break;
+        case "reject_decision":
+          fetch("/api/decisions/reject", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ what: params?.what }),
+          }).then(() => router.refresh());
+          break;
+        // Search
+        case "search":
+          if (params?.query) {
+            router.push(`/company?q=${encodeURIComponent(params.query as string)}`);
+          }
+          break;
+        // Automations
+        case "new_automation":
+          router.push("/automations?new=1");
+          break;
+        case "toggle_automation":
+          fetch("/api/automations/toggle", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(params),
+          }).then(() => router.refresh());
+          break;
+        // Voice control
+        case "voice_mute":
+          window.dispatchEvent(new CustomEvent("voice-control", { detail: { action: "mute" } }));
+          break;
+        case "voice_unmute":
+          window.dispatchEvent(new CustomEvent("voice-control", { detail: { action: "unmute" } }));
           break;
         default:
           break;
@@ -273,6 +327,12 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
       >
         {renderFormContent()}
       </InlineFormSheet>
+
+      {/* Always-on voice control — listens globally without CommandBar */}
+      <AlwaysOnVoice
+        onAction={handleCommandAction}
+        onOpenCommandBar={() => setCommandBarOpen(true)}
+      />
 
       {/* AI Wizard — conversational flows */}
       {wizardIntent && (
