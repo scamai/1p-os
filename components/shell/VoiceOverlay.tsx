@@ -17,31 +17,17 @@ export function useHandyVoice(opts: HandyVoiceOptions = {}) {
     new Array(opts.bars ?? 9).fill(0)
   );
   const [transcript, setTranscript] = React.useState("");
+  const [progress, setProgress] = React.useState(0);
   const voiceRef = React.useRef<ReturnType<typeof createHandyVoice> | null>(
     null
   );
 
-  // Recreate voice engine when opts change
   const optsRef = React.useRef(opts);
   optsRef.current = opts;
 
-  const getVoice = React.useCallback(() => {
-    if (!voiceRef.current) {
-      voiceRef.current = createHandyVoice(
-        setState,
-        setLevels,
-        (t) => {
-          setTranscript(t);
-          optsRef.current.onTranscript?.(t);
-        },
-        optsRef.current
-      );
-    }
-    return voiceRef.current;
-  }, []);
+  // Web Speech API needs no preloading — ready instantly
 
   const start = React.useCallback(async () => {
-    // Recreate each time to pick up latest opts
     voiceRef.current = createHandyVoice(
       setState,
       setLevels,
@@ -49,92 +35,139 @@ export function useHandyVoice(opts: HandyVoiceOptions = {}) {
         setTranscript(t);
         optsRef.current.onTranscript?.(t);
       },
-      optsRef.current
+      {
+        ...optsRef.current,
+        onModelProgress: (p) => {
+          setProgress(p);
+          optsRef.current.onModelProgress?.(p);
+        },
+      }
     );
     await voiceRef.current.start();
   }, []);
 
   const stop = React.useCallback(() => {
-    getVoice().stop();
-  }, [getVoice]);
+    voiceRef.current?.stop();
+  }, []);
 
   const cancel = React.useCallback(() => {
-    getVoice().cancel();
-  }, [getVoice]);
+    voiceRef.current?.cancel();
+  }, []);
 
-  return { state, levels, transcript, start, stop, cancel };
+  return { state, levels, transcript, progress, start, stop, cancel };
 }
 
-// ── Overlay Component (Handy-style floating pill) ──
+// ── Global keyboard shortcut hook ──
+
+export function useVoiceShortcut(
+  onTranscript: (text: string) => void,
+  enabled = true
+) {
+  const voice = useHandyVoice({
+    onTranscript,
+    onError: (err) => console.warn("[Voice]", err),
+  });
+
+  React.useEffect(() => {
+    if (!enabled) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd+Shift+V or Ctrl+Shift+V to toggle
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "v") {
+        e.preventDefault();
+        if (voice.state === "idle" || voice.state === "error") {
+          voice.start();
+        } else if (voice.state === "recording") {
+          voice.stop();
+        }
+      }
+      // Escape to cancel
+      if (e.key === "Escape" && voice.state === "recording") {
+        voice.cancel();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [enabled, voice]);
+
+  return voice;
+}
+
+// ── Overlay Component ──
 
 interface VoiceOverlayProps {
   state: VoiceState;
   levels: number[];
+  progress?: number;
+  onStop?: () => void;
   onCancel: () => void;
 }
 
-export function VoiceOverlay({ state, levels, onCancel }: VoiceOverlayProps) {
+export function VoiceOverlay({
+  state,
+  levels,
+  progress = 0,
+  onStop,
+  onCancel,
+}: VoiceOverlayProps) {
   if (state === "idle" || state === "error") return null;
 
   return (
     <div className="fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 animate-in fade-in slide-in-from-bottom-2 duration-200">
-      <div className="flex h-9 items-center gap-1.5 rounded-full bg-zinc-900/90 px-3 shadow-lg backdrop-blur-sm">
-        {/* Mic icon */}
+      <div className="flex h-10 items-center gap-2 rounded-full bg-zinc-900/95 px-4 shadow-xl backdrop-blur-sm ring-1 ring-white/10">
+        {/* Mic dot / spinner */}
         <div className="flex h-5 w-5 items-center justify-center">
           {state === "recording" ? (
-            <div className="h-2 w-2 animate-pulse rounded-full bg-red-400" />
+            <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]" />
+          ) : state === "loading" ? (
+            <div className="h-3.5 w-3.5 animate-spin rounded-full border-[1.5px] border-zinc-600 border-t-zinc-300" />
           ) : (
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              className="animate-pulse text-zinc-400"
-            >
-              <path
-                d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <path
-                d="M19 10v2a7 7 0 0 1-14 0v-2"
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-            </svg>
+            <div className="h-2 w-2 animate-pulse rounded-full bg-amber-400" />
           )}
         </div>
 
-        {/* Audio bars or status text */}
-        <div className="flex h-6 items-end gap-[3px]">
+        {/* Audio bars or status */}
+        <div className="flex h-7 items-end gap-[3px] min-w-[60px]">
           {state === "recording" ? (
             levels.map((v, i) => (
               <div
                 key={i}
-                className="w-[5px] rounded-sm bg-zinc-300"
+                className="w-[4px] rounded-sm bg-zinc-300"
                 style={{
-                  height: `${Math.max(3, Math.min(20, 3 + Math.pow(v, 0.7) * 17))}px`,
-                  opacity: Math.max(0.25, v * 1.7),
-                  transition: "height 60ms ease-out, opacity 120ms ease-out",
+                  height: `${Math.max(3, Math.min(22, 3 + Math.pow(v, 0.6) * 19))}px`,
+                  opacity: Math.max(0.3, Math.min(1, v * 2)),
+                  transition: "height 50ms ease-out, opacity 80ms ease-out",
                 }}
               />
             ))
           ) : (
-            <span className="px-1 text-[11px] text-zinc-400">
-              {state === "loading"
-                ? "Loading model..."
-                : state === "transcribing"
-                  ? "Transcribing..."
-                  : "Error"}
+            <span className="flex items-center gap-1.5 px-0.5 text-[11px] text-zinc-400">
+              {state === "loading" ? (
+                <>
+                  Loading{progress > 0 && progress < 100 ? ` ${progress}%` : "..."}
+                </>
+              ) : (
+                "Processing..."
+              )}
             </span>
           )}
         </div>
 
-        {/* Cancel button */}
-        {state === "recording" && (
+        {/* Stop / Cancel buttons */}
+        <div className="flex items-center gap-1 ml-1">
+          {state === "recording" && onStop && (
+            <button
+              onClick={onStop}
+              className="flex h-6 items-center gap-1 rounded-full bg-zinc-700/80 px-2.5 text-[10px] font-medium text-zinc-300 transition-colors hover:bg-zinc-600 hover:text-white"
+            >
+              Done
+            </button>
+          )}
           <button
             onClick={onCancel}
-            className="ml-1 flex h-5 w-5 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-700 hover:text-zinc-300"
+            className="flex h-5 w-5 items-center justify-center rounded-full text-zinc-500 transition-colors hover:bg-zinc-700 hover:text-zinc-300"
+            title="Cancel (Esc)"
           >
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
               <path
@@ -145,13 +178,20 @@ export function VoiceOverlay({ state, levels, onCancel }: VoiceOverlayProps) {
               />
             </svg>
           </button>
+        </div>
+
+        {/* Shortcut hint */}
+        {state === "recording" && (
+          <span className="text-[9px] text-zinc-600 ml-1 hidden sm:inline">
+            ⌘⇧V
+          </span>
         )}
       </div>
     </div>
   );
 }
 
-// ── Mic Button (reusable, drop into any input) ──
+// ── Mic Button (drop into any input) ──
 
 interface MicButtonProps {
   onTranscript: (text: string) => void;
@@ -179,7 +219,8 @@ export function MicButton({
             ? "bg-zinc-900 text-white"
             : "text-zinc-400 hover:text-zinc-600"
         } ${className}`}
-        aria-label={isActive ? "Stop listening" : "Voice input"}
+        aria-label={isActive ? "Stop listening" : "Voice input (⌘⇧V)"}
+        title={isActive ? "Stop listening" : "Voice input (⌘⇧V)"}
       >
         <svg
           width="16"
@@ -200,6 +241,8 @@ export function MicButton({
       <VoiceOverlay
         state={voice.state}
         levels={voice.levels}
+        progress={voice.progress}
+        onStop={voice.stop}
         onCancel={voice.cancel}
       />
     </>

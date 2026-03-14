@@ -93,7 +93,7 @@ export async function GET() {
     .order("created_at", { ascending: false })
     .limit(50);
 
-  const recentMemories = (recentRaw ?? []).map((m) => ({
+  const recentMemories = (recentRaw ?? []).map((m: { id: string; metadata: Record<string, unknown> | null; created_at: string; updated_at: string }) => ({
     id: m.id,
     content: m.metadata?.data ?? m.metadata?.memory ?? "",
     category: m.metadata?.category ?? "uncategorized",
@@ -126,11 +126,11 @@ export async function GET() {
 
   // Sort combined by date
   recentMemories.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    (a: { createdAt: string }, b: { createdAt: string }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
 
   // Load agent names for display
-  const agentIds = [...new Set(recentMemories.map((m) => m.agentId).filter((id) => id !== "unknown" && id !== "system" && id !== "core-chat"))];
+  const agentIds = [...new Set(recentMemories.map((m: { agentId: string }) => m.agentId).filter((id: string) => id !== "unknown" && id !== "system" && id !== "core-chat"))];
   const { data: agentRows } = agentIds.length > 0
     ? await supabase.from("agents").select("id, name").in("id", agentIds)
     : { data: [] };
@@ -152,7 +152,7 @@ export async function GET() {
       count,
     })),
     timeline,
-    recentMemories: recentMemories.slice(0, 50).map((m) => ({
+    recentMemories: recentMemories.slice(0, 50).map((m: { agentId: string; id: string; content: string; category: string; importance: number; createdAt: string; updatedAt: string }) => ({
       ...m,
       agentName: agentNameMap.get(m.agentId) ?? m.agentId,
     })),

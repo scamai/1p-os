@@ -416,6 +416,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
       <VoiceOverlay
         state={voice.state}
         levels={voice.levels}
+        onStop={voice.stop}
         onCancel={voice.cancel}
       />
     </div>

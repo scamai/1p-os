@@ -179,7 +179,7 @@ export async function GET(request: NextRequest) {
 
       const currentCount = currentAgents?.length ?? 0;
       const currentMonthlySpend = (currentAgents ?? []).reduce(
-        (sum, a) => sum + (a.spent_this_month_usd ?? 0),
+        (sum: number, a: { spent_this_month_usd: number | null }) => sum + (a.spent_this_month_usd ?? 0),
         0
       );
 
@@ -226,7 +226,7 @@ export async function GET(request: NextRequest) {
 
       const agents = currentAgents ?? [];
       const currentMonthlySpend = agents.reduce(
-        (sum, a) => sum + (a.spent_this_month_usd ?? 0),
+        (sum: number, a: { spent_this_month_usd: number | null }) => sum + (a.spent_this_month_usd ?? 0),
         0
       );
 
@@ -238,7 +238,7 @@ export async function GET(request: NextRequest) {
       ];
 
       const projections = strategies.map((s) => {
-        const estimated = agents.reduce((sum, a) => {
+        const estimated = agents.reduce((sum: number, a: { role: string | null; spent_this_month_usd: number | null }) => {
           const daily = estimateAgentDailyCost(a.role ?? 'operations', s);
           return sum + daily * 30;
         }, 0);

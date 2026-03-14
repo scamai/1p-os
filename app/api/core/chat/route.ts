@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
       supabase.from('audit_log').select('cost').eq('business_id', business.id).gte('created_at', `${today}T00:00:00`),
     ]);
 
-    const costToday = costRecords?.reduce((s, r) => s + (r.cost ?? 0), 0) ?? 0;
+    const costToday = costRecords?.reduce((s: number, r: { cost: number }) => s + (r.cost ?? 0), 0) ?? 0;
 
     // ── Step 3: Build rich context for AI ──
     const businessSnapshot = `
@@ -129,18 +129,18 @@ export async function POST(request: NextRequest) {
 - Goals: ${business.goals?.join(', ') ?? 'None set'}
 
 ## Agents (${agents?.length ?? 0})
-${agents?.map(a => `- ${a.name} (${a.role}) — ${a.status}, ${a.tasks_completed ?? 0} tasks completed`).join('\n') ?? 'No agents hired yet.'}
+${agents?.map((a: { name: string; role: string; status: string; tasks_completed: number | null }) => `- ${a.name} (${a.role}) — ${a.status}, ${a.tasks_completed ?? 0} tasks completed`).join('\n') ?? 'No agents hired yet.'}
 
 ## Financials
 - Invoices: ${recentInvoices?.length ?? 0} recent
-${recentInvoices?.map(i => `  - ${i.client_name}: $${i.amount} (${i.status}${i.status === 'sent' && i.due_date < today ? ' — OVERDUE' : ''})`).join('\n') ?? '  No invoices.'}
+${recentInvoices?.map((i: { client_name: string; amount: number; status: string; due_date: string }) => `  - ${i.client_name}: $${i.amount} (${i.status}${i.status === 'sent' && i.due_date < today ? ' — OVERDUE' : ''})`).join('\n') ?? '  No invoices.'}
 - Cost today: $${costToday.toFixed(2)}
 
 ## Pending
 - ${pendingDecisions ?? 0} decisions awaiting your approval
 
 ## Recent Activity
-${recentActivity?.slice(0, 10).map(a => `- ${a.actor}: ${a.action} (${new Date(a.created_at).toLocaleString()})`).join('\n') ?? 'No recent activity.'}
+${recentActivity?.slice(0, 10).map((a: { actor: string; action: string; created_at: string }) => `- ${a.actor}: ${a.action} (${new Date(a.created_at).toLocaleString()})`).join('\n') ?? 'No recent activity.'}
 
 ## Relationships
 ${context.relationships?.slice(0, 10).map((r: Record<string, unknown>) => `- ${r.name} (${r.type})`).join('\n') ?? 'No contacts yet.'}

@@ -48,7 +48,7 @@ export async function GET() {
     }
 
     // Strip join metadata before returning
-    const cleaned = agents.map(({ businesses: _businesses, ...agent }) => agent);
+    const cleaned = agents.map(({ businesses: _businesses, ...agent }: { businesses: unknown; [key: string]: unknown }) => agent);
 
     return NextResponse.json({ agents: cleaned }, { status: 200 });
   } catch (error) {

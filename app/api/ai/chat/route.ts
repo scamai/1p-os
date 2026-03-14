@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
       ? '\n\n## Recent Conversation History\n' +
         recentMessages
           .reverse()
-          .map((m) => `${m.role}: ${m.content}`)
+          .map((m: { role: string; content: string }) => `${m.role}: ${m.content}`)
           .join('\n')
       : '';
 

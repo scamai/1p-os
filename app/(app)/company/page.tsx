@@ -130,7 +130,7 @@ export default async function CompanyPage() {
       metrics={{
         revenueMtd,
         spendToday,
-        activeAgents: agentList.filter((a) => a.status === "active").length,
+        activeAgents: agentList.filter((a: { status: string }) => a.status === "active").length,
         pendingDecisions: pendingDecisionCount ?? 0,
         pipelineLeads: pipelineCount ?? 0,
       }}

@@ -50,7 +50,7 @@ async function generateSummary(
         .eq('business_id', businessId)
         .eq('status', 'paid');
 
-      const revenue = paidInvoices?.reduce((s, i) => s + (i.amount ?? 0), 0) ?? 0;
+      const revenue = paidInvoices?.reduce((s: number, i: { amount: number }) => s + (i.amount ?? 0), 0) ?? 0;
 
       const { data: overdueInvoices } = await supabase
         .from('invoices')
@@ -60,7 +60,7 @@ async function generateSummary(
         .lt('due_date', today);
 
       const overdue = overdueInvoices?.length ?? 0;
-      const overdueAmt = overdueInvoices?.reduce((s, i) => s + (i.amount ?? 0), 0) ?? 0;
+      const overdueAmt = overdueInvoices?.reduce((s: number, i: { amount: number }) => s + (i.amount ?? 0), 0) ?? 0;
 
       const parts: string[] = [`${formatCurrency(revenue)} revenue`];
       if (overdue > 0) parts.push(`${overdue} overdue (${formatCurrency(overdueAmt)})`);
@@ -89,7 +89,7 @@ async function generateSummary(
       if (total === 0) return 'No contacts yet.';
 
       const counts: Record<string, number> = {};
-      relationships?.forEach((r) => { counts[r.type] = (counts[r.type] ?? 0) + 1; });
+      relationships?.forEach((r: { type: string }) => { counts[r.type] = (counts[r.type] ?? 0) + 1; });
       const parts = Object.entries(counts).map(([t, c]) => `${c} ${t}${c > 1 ? 's' : ''}`);
       return `${total} contacts: ${parts.join(', ')}.`;
     }
@@ -131,7 +131,7 @@ async function generateSummary(
         .eq('business_id', businessId);
 
       const total = agents?.length ?? 0;
-      const active = agents?.filter((a) => a.status === 'active').length ?? 0;
+      const active = agents?.filter((a: { status: string }) => a.status === 'active').length ?? 0;
 
       const { data: costRecords } = await supabase
         .from('audit_log')
@@ -139,7 +139,7 @@ async function generateSummary(
         .eq('business_id', businessId)
         .gte('created_at', `${today}T00:00:00`);
 
-      const costToday = costRecords?.reduce((s, r) => s + (r.cost ?? 0), 0) ?? 0;
+      const costToday = costRecords?.reduce((s: number, r: { cost: number }) => s + (r.cost ?? 0), 0) ?? 0;
 
       if (total === 0) return 'No agents hired yet.';
       return `${total} agent${total > 1 ? 's' : ''} (${active} active). $${costToday.toFixed(2)} spent today.`;

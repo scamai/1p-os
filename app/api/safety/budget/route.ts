@@ -83,8 +83,8 @@ export async function GET() {
       .eq('business_id', business.id)
       .gte('created_at', monthStart.toISOString());
 
-    const dailySpend = (dailyRecords ?? []).reduce((sum, r) => sum + (r.cost ?? 0), 0);
-    const monthlySpend = (monthlyRecords ?? []).reduce((sum, r) => sum + (r.cost ?? 0), 0);
+    const dailySpend = (dailyRecords ?? []).reduce((sum: number, r: { cost: number | null }) => sum + (r.cost ?? 0), 0);
+    const monthlySpend = (monthlyRecords ?? []).reduce((sum: number, r: { cost: number | null }) => sum + (r.cost ?? 0), 0);
 
     // Per-agent spend
     const agentDailySpend: Record<string, number> = {};
@@ -109,7 +109,7 @@ export async function GET() {
           daily_spend: Math.round(dailySpend * 100) / 100,
           monthly_spend: Math.round(monthlySpend * 100) / 100,
         },
-        agents: (agents ?? []).map((agent) => ({
+        agents: (agents ?? []).map((agent: { id: string; name: string; role: string; budget: Record<string, unknown> | null }) => ({
           id: agent.id,
           name: agent.name,
           role: agent.role,

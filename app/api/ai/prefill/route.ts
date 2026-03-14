@@ -125,7 +125,7 @@ async function prefillAgent(
     .select('role')
     .eq('business_id', businessId);
 
-  const existingRoles = new Set(agents?.map(a => a.role?.toLowerCase()) ?? []);
+  const existingRoles = new Set(agents?.map((a: { role: string | null }) => a.role?.toLowerCase()) ?? []);
   const allRoles = ['sales', 'customer support', 'content & marketing', 'operations', 'finance', 'development'];
   const missing = allRoles.find(r => !existingRoles.has(r));
 

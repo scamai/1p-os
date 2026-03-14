@@ -1,9 +1,11 @@
 /**
  * Local Whisper Client
  * ====================
- * Manages the Whisper Web Worker and provides a simple async API.
- * The worker is created lazily and only in the browser — it is never
- * imported server-side, so onnxruntime-node is never bundled.
+ * Manages the Whisper Web Worker (/public/whisper-worker.js) and provides
+ * a simple async API. Uses whisper-base.en by default for Whisperflow-level
+ * accuracy, running entirely in the browser via Transformers.js WASM.
+ *
+ * Model downloads once (~50MB), cached in IndexedDB, works offline after.
  */
 
 export type WhisperStatus = 'idle' | 'loading' | 'ready' | 'transcribing' | 'error';
@@ -18,6 +20,8 @@ let currentStatus: WhisperStatus = 'idle';
 let resolveTranscribe: ((text: string) => void) | null = null;
 let rejectTranscribe: ((err: Error) => void) | null = null;
 let statusCallbacks: WhisperCallbacks = {};
+let modelReady = false;
+let modelReadyResolve: (() => void) | null = null;
 
 function getWorker(): Worker {
   if (typeof window === 'undefined') {
@@ -25,71 +29,8 @@ function getWorker(): Worker {
   }
 
   if (!worker) {
-    // Create worker inline — avoids top-level import of @huggingface/transformers
-    // which would pull onnxruntime-node into the server bundle.
-    const workerCode = `
-      import { pipeline, env } from '@huggingface/transformers';
-
-      if (env.backends?.onnx?.wasm) {
-        env.backends.onnx.wasm.proxy = false;
-      }
-
-      let whisperPipeline = null;
-      let loading = false;
-      const DEFAULT_MODEL = 'onnx-community/whisper-tiny.en';
-
-      async function loadModel(modelId = DEFAULT_MODEL) {
-        if (whisperPipeline || loading) return;
-        loading = true;
-        self.postMessage({ type: 'status', status: 'loading', message: 'Loading Whisper model...' });
-        try {
-          whisperPipeline = await pipeline('automatic-speech-recognition', modelId, {
-            dtype: 'q4',
-            device: 'wasm',
-            progress_callback: (p) => {
-              if (p.progress !== undefined) {
-                self.postMessage({ type: 'progress', progress: p.progress, file: p.file });
-              }
-            },
-          });
-          self.postMessage({ type: 'status', status: 'ready', message: 'Whisper model ready' });
-        } catch (err) {
-          self.postMessage({ type: 'error', error: 'Failed to load model: ' + (err.message || err) });
-        } finally {
-          loading = false;
-        }
-      }
-
-      async function transcribe(audioData) {
-        if (!whisperPipeline) await loadModel();
-        if (!whisperPipeline) {
-          self.postMessage({ type: 'error', error: 'Model not loaded' });
-          return;
-        }
-        self.postMessage({ type: 'status', status: 'transcribing' });
-        try {
-          const result = await whisperPipeline(audioData, {
-            language: 'en',
-            task: 'transcribe',
-            chunk_length_s: 30,
-            stride_length_s: 5,
-          });
-          const text = Array.isArray(result) ? result.map(r => r.text).join(' ') : result.text;
-          self.postMessage({ type: 'result', text: text.trim() });
-        } catch (err) {
-          self.postMessage({ type: 'error', error: 'Transcription failed: ' + (err.message || err) });
-        }
-      }
-
-      self.onmessage = (event) => {
-        const { type, audio, model } = event.data;
-        if (type === 'load') loadModel(model);
-        else if (type === 'transcribe') transcribe(audio);
-      };
-    `;
-
-    const blob = new Blob([workerCode], { type: 'application/javascript' });
-    worker = new Worker(URL.createObjectURL(blob), { type: 'module' });
+    // Use the worker file from public/ — proper module worker, no blob URL issues
+    worker = new Worker('/whisper-worker.js', { type: 'module' });
 
     worker.onmessage = (event) => {
       const { type, status, message, progress, file, text, error } = event.data;
@@ -98,6 +39,11 @@ function getWorker(): Worker {
         case 'status':
           currentStatus = status;
           statusCallbacks.onStatus?.(status, message);
+          if (status === 'ready') {
+            modelReady = true;
+            modelReadyResolve?.();
+            modelReadyResolve = null;
+          }
           break;
         case 'progress':
           statusCallbacks.onProgress?.(progress, file);
@@ -110,6 +56,7 @@ function getWorker(): Worker {
           statusCallbacks.onStatus?.('ready');
           break;
         case 'error':
+          console.error('[Whisper]', error);
           if (rejectTranscribe) {
             rejectTranscribe(new Error(error));
             resolveTranscribe = null;
@@ -120,17 +67,42 @@ function getWorker(): Worker {
           break;
       }
     };
+
+    worker.onerror = (e) => {
+      console.error('[Whisper Worker Error]', e);
+      currentStatus = 'error';
+      statusCallbacks.onStatus?.('error', e.message);
+      if (rejectTranscribe) {
+        rejectTranscribe(new Error(e.message));
+        resolveTranscribe = null;
+        rejectTranscribe = null;
+      }
+    };
   }
   return worker;
 }
 
 /**
- * Pre-load the Whisper model (downloads ~40MB on first use, cached after).
+ * Pre-load the Whisper model so first transcription is instant.
+ * Call on app mount — the ~50MB model is cached in IndexedDB after first download.
  */
 export function preloadWhisper(callbacks?: WhisperCallbacks): void {
   if (typeof window === 'undefined') return;
+  if (modelReady) return;
   if (callbacks) statusCallbacks = callbacks;
   getWorker().postMessage({ type: 'load' });
+}
+
+/**
+ * Wait until the model is ready.
+ */
+export function waitForModel(): Promise<void> {
+  if (modelReady) return Promise.resolve();
+  return new Promise((resolve) => {
+    modelReadyResolve = resolve;
+    // Trigger load if not already started
+    preloadWhisper();
+  });
 }
 
 /**
@@ -141,7 +113,14 @@ export function getWhisperStatus(): WhisperStatus {
 }
 
 /**
- * Transcribe audio samples. Handles resampling to 16kHz mono.
+ * Is the model downloaded and ready?
+ */
+export function isModelReady(): boolean {
+  return modelReady;
+}
+
+/**
+ * Transcribe audio blob. Handles decoding and resampling to 16kHz mono.
  */
 export async function transcribeLocal(
   audioBlob: Blob,
@@ -152,29 +131,44 @@ export async function transcribeLocal(
   // Decode audio to raw samples at 16kHz
   const audioCtx = new AudioContext({ sampleRate: 16000 });
   const arrayBuf = await audioBlob.arrayBuffer();
-  const decoded = await audioCtx.decodeAudioData(arrayBuf);
+
+  let decoded: AudioBuffer;
+  try {
+    decoded = await audioCtx.decodeAudioData(arrayBuf);
+  } catch {
+    // Some browsers can't decode webm — try with default sample rate and resample
+    const fallbackCtx = new AudioContext();
+    decoded = await fallbackCtx.decodeAudioData(arrayBuf.slice(0));
+    await fallbackCtx.close();
+  }
 
   // Get mono channel
   let samples = decoded.getChannelData(0);
 
-  // If not 16kHz, resample
+  // Resample to 16kHz if needed
   if (decoded.sampleRate !== 16000) {
     samples = resample(samples, decoded.sampleRate, 16000) as Float32Array<ArrayBuffer>;
   }
+
+  // Close the temp context
+  await audioCtx.close();
 
   // Send to worker
   return new Promise((resolve, reject) => {
     resolveTranscribe = resolve;
     rejectTranscribe = reject;
+
+    // Transfer the buffer for zero-copy
+    const float32 = new Float32Array(samples);
     getWorker().postMessage(
-      { type: 'transcribe', audio: samples },
-      [samples.buffer]
+      { type: 'transcribe', audio: float32 },
+      [float32.buffer]
     );
   });
 }
 
 /**
- * Simple linear resampling.
+ * Linear resampling — good enough for speech.
  */
 function resample(
   samples: Float32Array,

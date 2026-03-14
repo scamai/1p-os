@@ -107,8 +107,8 @@ export async function GET() {
   const departments = Array.from(deptMap.values());
 
   // Build workflow connections from agent messages
-  const agentNameMap = new Map(agents.map((a: { id: string; name: string }) => [a.id, a.name]));
-  const agentRoleMap = new Map(agents.map((a: { id: string; role: string }) => [a.id, a.role]));
+  const agentNameMap = new Map<string, string>(agents.map((a: { id: string; name: string }) => [a.id, a.name]));
+  const agentRoleMap = new Map<string, string>(agents.map((a: { id: string; role: string }) => [a.id, a.role]));
 
   // Group messages by chain to infer workflows
   const chainMap = new Map<string, Array<{
@@ -124,20 +124,25 @@ export async function GET() {
   for (const msg of messages) {
     if (!msg.from_agent_id || !msg.to_agent_id || !msg.chain_id) continue;
 
-    const fromName = agentNameMap.get(msg.from_agent_id) ?? "Unknown";
-    const toName = agentNameMap.get(msg.to_agent_id) ?? "Unknown";
-    const fromDept = classifyDepartment(agentRoleMap.get(msg.from_agent_id) ?? "").name;
-    const toDept = classifyDepartment(agentRoleMap.get(msg.to_agent_id) ?? "").name;
+    const fromId = String(msg.from_agent_id);
+    const toId = String(msg.to_agent_id);
+    const chainId = String(msg.chain_id);
+    const msgType = String(msg.message_type);
 
-    if (!chainMap.has(msg.chain_id)) {
-      chainMap.set(msg.chain_id, []);
+    const fromName = agentNameMap.get(fromId) ?? "Unknown";
+    const toName = agentNameMap.get(toId) ?? "Unknown";
+    const fromDept = classifyDepartment(agentRoleMap.get(fromId) ?? "").name;
+    const toDept = classifyDepartment(agentRoleMap.get(toId) ?? "").name;
+
+    if (!chainMap.has(chainId)) {
+      chainMap.set(chainId, []);
     }
-    chainMap.get(msg.chain_id)!.push({
-      from: msg.from_agent_id,
-      to: msg.to_agent_id,
+    chainMap.get(chainId)!.push({
+      from: fromId,
+      to: toId,
       fromName,
       toName,
-      type: msg.message_type,
+      type: msgType,
       fromDept,
       toDept,
     });
