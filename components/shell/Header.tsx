@@ -1,5 +1,8 @@
+"use client";
+
 import { HealthScore } from "@/components/company/HealthScore";
 import { CostIndicator } from "@/components/company/CostIndicator";
+import { MicButton } from "@/components/shell/VoiceOverlay";
 
 interface HeaderProps {
   businessName?: string;
@@ -8,6 +11,7 @@ interface HeaderProps {
   budgetDaily?: number;
   onKillSwitch?: () => void;
   onOpenCommandBar?: () => void;
+  onVoiceTranscript?: (text: string) => void;
 }
 
 function Header({
@@ -17,6 +21,7 @@ function Header({
   budgetDaily = 5,
   onKillSwitch,
   onOpenCommandBar,
+  onVoiceTranscript,
 }: HeaderProps) {
   return (
     <header className="flex h-12 items-center justify-between px-6">
@@ -33,6 +38,12 @@ function Header({
 
       {/* Right: command bar, cost, health, kill switch */}
       <div className="flex items-center gap-4">
+        {/* Mic button — always visible */}
+        <MicButton
+          onTranscript={(text) => onVoiceTranscript?.(text)}
+          className="h-8 w-8"
+        />
+
         <button
           onClick={onOpenCommandBar}
           className="hidden items-center rounded-md border border-zinc-200 px-2 py-0.5 text-xs text-zinc-600 transition-colors duration-200 hover:text-zinc-500 sm:flex"

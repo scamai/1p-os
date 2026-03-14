@@ -236,6 +236,14 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
           budgetDaily={headerProps.budgetDaily}
           onKillSwitch={() => setKillSwitchOpen(true)}
           onOpenCommandBar={() => setCommandBarOpen(true)}
+          onVoiceTranscript={(text) => {
+            // Open command bar with the voice transcript and auto-process
+            setCommandBarOpen(true);
+            // Dispatch a custom event so CommandBar can pick up the transcript
+            window.dispatchEvent(
+              new CustomEvent("voice-transcript", { detail: { text } })
+            );
+          }}
         />
 
         <main className="flex-1 overflow-y-auto p-4 md:p-8">

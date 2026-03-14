@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useHandyVoice, VoiceOverlay } from "@/components/shell/VoiceOverlay";
 
 interface CommandBarProps {
   open: boolean;
@@ -59,63 +60,27 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [inlineResponse, setInlineResponse] = React.useState<string | null>(null);
   const [parsing, setParsing] = React.useState(false);
-  const [listening, setListening] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const recognitionRef = React.useRef<any>(null);
 
-  const startVoice = React.useCallback(async () => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      setInlineResponse("Speech recognition is not supported in this browser.");
-      return;
-    }
-
-    // Request microphone permission explicitly before starting recognition
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      // Stop the stream immediately — we just needed the permission grant
-      stream.getTracks().forEach((t) => t.stop());
-    } catch {
-      setInlineResponse("Microphone access denied. Please allow microphone permissions and try again.");
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.interimResults = true;
-    recognition.maxAlternatives = 1;
-
-    recognition.onresult = (event: any) => {
-      const transcript = Array.from(event.results)
-        .map((r: any) => r[0].transcript)
-        .join("");
-      setSearch(transcript);
+  // ── Handy Voice ──
+  const voice = useHandyVoice({
+    onTranscript: (text) => {
+      setSearch(text);
       setSelectedIndex(0);
       setInlineResponse(null);
-    };
+    },
+    onError: (err) => setInlineResponse(err),
+  });
 
-    recognition.onend = () => setListening(false);
-    recognition.onerror = (event: any) => {
-      setListening(false);
-      if (event.error === "not-allowed") {
-        setInlineResponse("Microphone access denied. Check your browser permissions.");
-      } else if (event.error === "no-speech") {
-        setInlineResponse("No speech detected. Try again.");
-      } else if (event.error !== "aborted") {
-        setInlineResponse(`Voice error: ${event.error}`);
-      }
-    };
+  const listening = voice.state === "recording" || voice.state === "transcribing";
 
-    recognitionRef.current = recognition;
-    recognition.start();
-    setListening(true);
-  }, []);
-
-  const stopVoice = React.useCallback(() => {
-    recognitionRef.current?.stop();
-    setListening(false);
-  }, []);
+  const toggleVoice = React.useCallback(() => {
+    if (listening) {
+      voice.stop();
+    } else {
+      voice.start();
+    }
+  }, [listening, voice]);
 
   const agentItems: CommandItem[] = React.useMemo(
     () =>
@@ -182,26 +147,24 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
       setSelectedIndex(0);
       setInlineResponse(null);
       setParsing(false);
-      setListening(false);
-      recognitionRef.current?.stop();
+      voice.cancel();
       setTimeout(() => inputRef.current?.focus(), 0);
     } else {
-      recognitionRef.current?.stop();
-      setListening(false);
+      voice.cancel();
     }
-  }, [open]);
+  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Global Cmd+K listener
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        // Toggle is handled by parent via onClose or onOpenCommandBar
       }
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
+
 
   // Clamp selected index
   React.useEffect(() => {
@@ -226,7 +189,6 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
     setInlineResponse(null);
 
     try {
-      // Use AI Core engine (algorithm-first, no AI calls)
       const res = await fetch("/api/core", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -260,6 +222,20 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
       setParsing(false);
     }
   }, [search, hasKnownMatches, onAction, onClose]);
+
+  // Listen for voice transcripts from the Header mic button
+  React.useEffect(() => {
+    const handleVoiceTranscript = (e: Event) => {
+      const text = (e as CustomEvent<{ text: string }>).detail?.text;
+      if (text) {
+        setSearch(text);
+        setSelectedIndex(0);
+        setInlineResponse(null);
+      }
+    };
+    window.addEventListener("voice-transcript", handleVoiceTranscript);
+    return () => window.removeEventListener("voice-transcript", handleVoiceTranscript);
+  }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
@@ -318,11 +294,11 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
           />
           <button
             type="button"
-            onClick={listening ? stopVoice : startVoice}
-            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors duration-200 ${
+            onClick={toggleVoice}
+            className={`relative flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${
               listening
-                ? "bg-zinc-100 text-zinc-900"
-                : "text-zinc-600 hover:text-zinc-600"
+                ? "bg-zinc-900 text-white"
+                : "text-zinc-400 hover:text-zinc-600"
             }`}
             aria-label={listening ? "Stop listening" : "Voice input"}
           >
@@ -331,9 +307,6 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
               <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
               <line x1="12" y1="19" x2="12" y2="22" />
             </svg>
-            {listening && (
-              <span className="absolute h-8 w-8 animate-ping rounded-lg bg-zinc-100" />
-            )}
           </button>
         </div>
 
@@ -358,7 +331,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
         <div className="max-h-72 overflow-y-auto py-2" role="listbox">
           {!search.trim() && recentCommands.length === 0 && (
             <p className="px-5 py-6 text-center text-sm text-zinc-600">
-              Type to search commands...
+              Type or speak to search commands...
             </p>
           )}
 
@@ -438,6 +411,13 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
           )}
         </div>
       </div>
+
+      {/* Handy-style floating overlay when recording */}
+      <VoiceOverlay
+        state={voice.state}
+        levels={voice.levels}
+        onCancel={voice.cancel}
+      />
     </div>
   );
 }
