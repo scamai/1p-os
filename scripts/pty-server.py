@@ -176,7 +176,16 @@ async def main():
     print(f"[pty-server] ws://localhost:{PORT}")
     print(f"[pty-server] shell: {SHELL}")
 
-    async with websockets.serve(terminal_session, "localhost", PORT):
+    async with websockets.serve(
+        terminal_session,
+        "localhost",
+        PORT,
+        ping_interval=30,
+        ping_timeout=120,
+        close_timeout=5,
+        max_size=10 * 1024 * 1024,
+        origins=None,  # Allow all origins
+    ):
         await asyncio.Future()  # Run forever
 
 

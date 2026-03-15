@@ -250,20 +250,24 @@ interface NavItemDef {
 }
 
 const ALL_NAV_ITEMS: NavItemDef[] = [
-  { id: "home", icon: <HomeIcon />, label: "Home", href: "/company", countKey: "pendingDecisions", pinned: true },
+  // Core
+  { id: "hq", icon: <HomeIcon />, label: "HQ", href: "/company", countKey: "pendingDecisions", pinned: true },
+  { id: "team", icon: <BotIcon />, label: "Agents", href: "/team", countKey: "activeAgents" },
+  { id: "operations", icon: <OrgChartIcon />, label: "Org & Goals", href: "/operations" },
+  { id: "costs", icon: <DollarIcon />, label: "Costs", href: "/costs" },
+  { id: "talent", icon: <StoreIcon />, label: "Hire", href: "/talent" },
+  // Business
   { id: "finance", icon: <DollarIcon />, label: "Finance", href: "/finance", countKey: "overdueInvoices" },
   { id: "sales", icon: <TagIcon />, label: "Sales", href: "/sales" },
-  { id: "crm", icon: <UsersIcon />, label: "CRM", href: "/crm", countKey: "activeRelationships" },
-  { id: "products", icon: <BoxIcon />, label: "Products", href: "/products" },
+  { id: "people", icon: <UsersIcon />, label: "People", href: "/people", countKey: "activeRelationships" },
   { id: "work", icon: <ClipboardIcon />, label: "Work", href: "/work", countKey: "activeProjects" },
-  { id: "team", icon: <BotIcon />, label: "Agents", href: "/team", countKey: "activeAgents" },
+  // Tools
   { id: "vault", icon: <FileTextIcon />, label: "Vault", href: "/vault", countKey: "documentCount" },
   { id: "channels", icon: <MessageIcon />, label: "Channels", href: "/channels" },
-  { id: "operations", icon: <OrgChartIcon />, label: "Operations", href: "/operations" },
   { id: "automations", icon: <BoltIcon />, label: "Automations", href: "/automations" },
   { id: "memory", icon: <BrainIcon />, label: "Memory", href: "/memory" },
   { id: "canvas", icon: <CanvasIcon />, label: "Canvas", href: "/canvas" },
-  { id: "talent", icon: <StoreIcon />, label: "Agent Market", href: "/talent" },
+  { id: "history", icon: <ClipboardIcon />, label: "History", href: "/history" },
   { id: "setup", icon: <TemplateIcon />, label: "Setup", href: "/setup" },
 ];
 

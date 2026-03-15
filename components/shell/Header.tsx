@@ -3,7 +3,7 @@
 import * as React from "react";
 import { HealthScore } from "@/components/company/HealthScore";
 import { CostIndicator } from "@/components/company/CostIndicator";
-import { MicButton } from "@/components/shell/VoiceOverlay";
+import { speak } from "@/lib/voice/voice-feedback";
 
 interface HeaderProps {
   businessName?: string;
@@ -43,7 +43,7 @@ function Header({
     const next = !voiceAlwaysOn;
     setVoiceAlwaysOn(next);
     localStorage.setItem("1pos-voice-always-on", String(next));
-    // AlwaysOnVoice picks this up from localStorage on mount, but also dispatch event
+    speak(next ? "Voice control on" : "Voice control off");
     window.dispatchEvent(new CustomEvent("voice-control", { detail: { action: next ? "unmute" : "mute" } }));
   };
 
@@ -88,12 +88,6 @@ function Header({
             <span className="text-[10px] font-medium hidden sm:inline">Voice</span>
           )}
         </button>
-
-        {/* Push-to-talk mic (for single commands when always-on is off) */}
-        <MicButton
-          onTranscript={(text) => onVoiceTranscript?.(text)}
-          className="h-8 w-8"
-        />
 
         <button
           onClick={onOpenCommandBar}
