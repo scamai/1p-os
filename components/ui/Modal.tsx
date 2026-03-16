@@ -56,7 +56,7 @@ function Modal({
   return (
     <dialog
       ref={dialogRef}
-      className={`fixed inset-0 z-50 m-auto max-h-[85vh] w-full max-w-md rounded-lg border border-zinc-200 bg-white p-0 text-zinc-900 shadow-xl backdrop:bg-black/20 ${className}`}
+      className={`fixed inset-0 z-50 m-auto max-h-[85vh] w-full max-w-md border border-zinc-200 bg-white p-0 text-zinc-900 shadow-xl backdrop:bg-black/20 ${className}`}
     >
       <div className="flex flex-col">
         <div className="flex items-start justify-between p-5">
@@ -74,7 +74,7 @@ function Modal({
           </div>
           <button
             onClick={onClose}
-            className="ml-4 rounded-sm p-1 text-zinc-500 transition-colors hover:text-zinc-900"
+            className="ml-4 p-1 text-zinc-500 transition-colors hover:text-zinc-900"
           >
             <svg
               width="14"

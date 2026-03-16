@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useTableData } from "@/lib/hooks/useTableData";
 import { Education, EDUCATION } from "@/components/shared/Education";
 
 type ItemStatus = "not-started" | "in-progress" | "done" | "overdue";
@@ -8,17 +9,12 @@ type ItemStatus = "not-started" | "in-progress" | "done" | "overdue";
 type ComplianceItem = {
   id: string;
   category: string;
-  name: string;
+  title: string;
+  description: string;
   status: ItemStatus;
-  dueDate: string;
-  notes: string;
+  due_date: string;
+  last_reviewed: string;
 };
-
-const STORAGE_KEY = "1pos-compliance";
-
-function uid() {
-  return Math.random().toString(36).slice(2, 10);
-}
 
 const STATUS_STYLES: Record<ItemStatus, string> = {
   "not-started": "bg-zinc-100 text-zinc-600",
@@ -29,90 +25,84 @@ const STATUS_STYLES: Record<ItemStatus, string> = {
 
 const CATEGORIES = ["Corporate", "Employment", "Tax", "Data & Privacy"];
 
-const DEFAULT_ITEMS: ComplianceItem[] = [
+const DEFAULT_ITEMS: Omit<ComplianceItem, "id">[] = [
   // Corporate
-  { id: uid(), category: "Corporate", name: "File Annual Report", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Corporate", name: "Registered Agent in state of incorporation", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Corporate", name: "Maintain corporate minutes / resolutions", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Corporate", name: "Operating Agreement / Bylaws on file", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Corporate", name: "Board consent for major decisions", status: "not-started", dueDate: "", notes: "" },
+  { category: "Corporate", title: "File Annual Report", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Corporate", title: "Registered Agent in state of incorporation", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Corporate", title: "Maintain corporate minutes / resolutions", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Corporate", title: "Operating Agreement / Bylaws on file", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Corporate", title: "Board consent for major decisions", description: "", status: "not-started", due_date: "", last_reviewed: "" },
   // Employment
-  { id: uid(), category: "Employment", name: "I-9 forms for all employees", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Employment", name: "W-4 forms for all employees", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Employment", name: "Workers compensation insurance", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Employment", name: "Employee handbook / policies", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Employment", name: "Contractor agreements (1099)", status: "not-started", dueDate: "", notes: "" },
+  { category: "Employment", title: "I-9 forms for all employees", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Employment", title: "W-4 forms for all employees", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Employment", title: "Workers compensation insurance", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Employment", title: "Employee handbook / policies", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Employment", title: "Contractor agreements (1099)", description: "", status: "not-started", due_date: "", last_reviewed: "" },
   // Tax
-  { id: uid(), category: "Tax", name: "EIN (Employer Identification Number)", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Tax", name: "State tax registration", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Tax", name: "Sales tax registration (if applicable)", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Tax", name: "Quarterly estimated tax payments", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Tax", name: "Annual tax return filed", status: "not-started", dueDate: "", notes: "" },
+  { category: "Tax", title: "EIN (Employer Identification Number)", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Tax", title: "State tax registration", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Tax", title: "Sales tax registration (if applicable)", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Tax", title: "Quarterly estimated tax payments", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Tax", title: "Annual tax return filed", description: "", status: "not-started", due_date: "", last_reviewed: "" },
   // Data & Privacy
-  { id: uid(), category: "Data & Privacy", name: "Privacy Policy published", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Data & Privacy", name: "Terms of Service published", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Data & Privacy", name: "Cookie consent banner (if applicable)", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Data & Privacy", name: "GDPR compliance (if serving EU)", status: "not-started", dueDate: "", notes: "" },
-  { id: uid(), category: "Data & Privacy", name: "Data processing agreements with vendors", status: "not-started", dueDate: "", notes: "" },
+  { category: "Data & Privacy", title: "Privacy Policy published", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Data & Privacy", title: "Terms of Service published", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Data & Privacy", title: "Cookie consent banner (if applicable)", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Data & Privacy", title: "GDPR compliance (if serving EU)", description: "", status: "not-started", due_date: "", last_reviewed: "" },
+  { category: "Data & Privacy", title: "Data processing agreements with vendors", description: "", status: "not-started", due_date: "", last_reviewed: "" },
 ];
 
 export default function Page() {
-  const [items, setItems] = useState<ComplianceItem[]>(DEFAULT_ITEMS);
-  const [loaded, setLoaded] = useState(false);
+  const { data: items, loading, create, update, remove } = useTableData<ComplianceItem>("compliance_items");
   const [editing, setEditing] = useState<ComplianceItem | null>(null);
   const [filterCategory, setFilterCategory] = useState<string>("all");
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newItem, setNewItem] = useState<ComplianceItem>({
-    id: "",
+  const [newItem, setNewItem] = useState<Omit<ComplianceItem, "id">>({
     category: "Corporate",
-    name: "",
+    title: "",
+    description: "",
     status: "not-started",
-    dueDate: "",
-    notes: "",
+    due_date: "",
+    last_reviewed: "",
   });
+  const seededRef = useRef(false);
 
+  // Seed default items if table is empty
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        setItems(JSON.parse(saved));
-      } catch {
-        /* ignore */
-      }
+    if (!loading && items.length === 0 && !seededRef.current) {
+      seededRef.current = true;
+      (async () => {
+        for (const item of DEFAULT_ITEMS) {
+          await create(item);
+        }
+      })();
     }
-    setLoaded(true);
-  }, []);
+  }, [loading, items.length, create]);
 
-  useEffect(() => {
-    if (loaded) localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items, loaded]);
-
-  function cycleStatus(id: string) {
+  async function cycleStatus(id: string) {
     const order: ItemStatus[] = ["not-started", "in-progress", "done", "overdue"];
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, status: order[(order.indexOf(item.status) + 1) % order.length] }
-          : item
-      )
-    );
+    const item = items.find((i) => i.id === id);
+    if (!item) return;
+    const nextStatus = order[(order.indexOf(item.status) + 1) % order.length];
+    await update(id, { status: nextStatus } as Partial<ComplianceItem>);
   }
 
-  function saveEdit() {
+  async function saveEdit() {
     if (!editing) return;
-    setItems((prev) => prev.map((i) => (i.id === editing.id ? editing : i)));
+    const { id: _id, ...rest } = editing;
+    await update(editing.id, rest);
     setEditing(null);
   }
 
-  function addItem() {
-    if (!newItem.name.trim()) return;
-    setItems((prev) => [...prev, { ...newItem, id: uid(), name: newItem.name.trim() }]);
-    setNewItem({ id: "", category: "Corporate", name: "", status: "not-started", dueDate: "", notes: "" });
+  async function addItem() {
+    if (!newItem.title.trim()) return;
+    await create({ ...newItem, title: newItem.title.trim() });
+    setNewItem({ category: "Corporate", title: "", description: "", status: "not-started", due_date: "", last_reviewed: "" });
     setShowAddForm(false);
   }
 
-  function removeItem(id: string) {
-    setItems((prev) => prev.filter((i) => i.id !== id));
+  async function removeItem(id: string) {
+    await remove(id);
   }
 
   const filtered = filterCategory === "all" ? items : items.filter((i) => i.category === filterCategory);
@@ -123,7 +113,7 @@ export default function Page() {
     overdue: items.filter((i) => i.status === "overdue").length,
   };
 
-  if (!loaded) return null;
+  if (loading) return null;
 
   const groupedByCategory: Record<string, ComplianceItem[]> = {};
   for (const item of filtered) {
@@ -210,8 +200,8 @@ export default function Page() {
                 <label className="block text-xs text-zinc-500 mb-1">Name</label>
                 <input
                   type="text"
-                  value={newItem.name}
-                  onChange={(e) => setNewItem((prev) => ({ ...prev, name: e.target.value }))}
+                  value={newItem.title}
+                  onChange={(e) => setNewItem((prev) => ({ ...prev, title: e.target.value }))}
                   className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
                 />
               </div>
@@ -232,8 +222,8 @@ export default function Page() {
                   <label className="block text-xs text-zinc-500 mb-1">Due Date</label>
                   <input
                     type="date"
-                    value={newItem.dueDate}
-                    onChange={(e) => setNewItem((prev) => ({ ...prev, dueDate: e.target.value }))}
+                    value={newItem.due_date}
+                    onChange={(e) => setNewItem((prev) => ({ ...prev, due_date: e.target.value }))}
                     className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
                   />
                 </div>
@@ -241,8 +231,8 @@ export default function Page() {
               <div>
                 <label className="block text-xs text-zinc-500 mb-1">Notes</label>
                 <textarea
-                  value={newItem.notes}
-                  onChange={(e) => setNewItem((prev) => ({ ...prev, notes: e.target.value }))}
+                  value={newItem.description}
+                  onChange={(e) => setNewItem((prev) => ({ ...prev, description: e.target.value }))}
                   rows={2}
                   className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400 resize-none"
                 />
@@ -266,8 +256,8 @@ export default function Page() {
                 <label className="block text-xs text-zinc-500 mb-1">Name</label>
                 <input
                   type="text"
-                  value={editing.name}
-                  onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+                  value={editing.title}
+                  onChange={(e) => setEditing({ ...editing, title: e.target.value })}
                   className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
                 />
               </div>
@@ -302,16 +292,16 @@ export default function Page() {
                 <label className="block text-xs text-zinc-500 mb-1">Due Date</label>
                 <input
                   type="date"
-                  value={editing.dueDate}
-                  onChange={(e) => setEditing({ ...editing, dueDate: e.target.value })}
+                  value={editing.due_date}
+                  onChange={(e) => setEditing({ ...editing, due_date: e.target.value })}
                   className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
                 />
               </div>
               <div>
                 <label className="block text-xs text-zinc-500 mb-1">Notes</label>
                 <textarea
-                  value={editing.notes}
-                  onChange={(e) => setEditing({ ...editing, notes: e.target.value })}
+                  value={editing.description}
+                  onChange={(e) => setEditing({ ...editing, description: e.target.value })}
                   rows={2}
                   className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400 resize-none"
                 />
@@ -349,10 +339,10 @@ export default function Page() {
                       item.status === "done" ? "text-zinc-400 line-through" : "text-zinc-700"
                     }`}
                   >
-                    {item.name}
+                    {item.title}
                   </span>
-                  {item.dueDate && (
-                    <span className="text-[10px] text-zinc-400 shrink-0">{item.dueDate}</span>
+                  {item.due_date && (
+                    <span className="text-[10px] text-zinc-400 shrink-0">{item.due_date}</span>
                   )}
                   <button
                     onClick={() => setEditing(item)}

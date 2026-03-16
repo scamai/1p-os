@@ -12,9 +12,9 @@ const variants = {
 } as const;
 
 const sizes = {
-  sm: "h-8 px-3 text-xs rounded-md",
-  md: "h-9 px-4 text-sm rounded-md",
-  lg: "h-11 px-6 text-base rounded-lg",
+  sm: "h-8 px-3 text-xs",
+  md: "h-9 px-4 text-sm",
+  lg: "h-11 px-6 text-base",
 } as const;
 
 export interface ButtonProps

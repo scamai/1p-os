@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { useTableData } from "@/lib/hooks/useTableData";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -12,7 +13,8 @@ interface Shareholder {
   name: string;
   type: "founder" | "investor" | "advisor" | "esop";
   shares: number;
-  note: string;
+  notes: string;
+  price_per_share: number;
 }
 
 const SHAREHOLDER_TYPES = [
@@ -21,26 +23,6 @@ const SHAREHOLDER_TYPES = [
   { value: "advisor", label: "Advisor" },
   { value: "esop", label: "ESOP" },
 ] as const;
-
-const STORAGE_KEY = "1pos_captable";
-
-function generateId(): string {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-}
-
-function loadData(): Shareholder[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveData(data: Shareholder[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
 
 // ---------------------------------------------------------------------------
 // Type badge styles
@@ -58,10 +40,9 @@ const TYPE_STYLES: Record<string, string> = {
 // ---------------------------------------------------------------------------
 
 export default function EquityPage() {
-  const [shareholders, setShareholders] = useState<Shareholder[]>([]);
+  const { data: shareholders, loading, create, update, remove } = useTableData<Shareholder>('shareholders');
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<string | null>(null);
-  const [loaded, setLoaded] = useState(false);
 
   // Form state
   const [formName, setFormName] = useState("");
@@ -72,16 +53,6 @@ export default function EquityPage() {
   // Dilution calculator
   const [raiseAmount, setRaiseAmount] = useState("");
   const [preMoneyVal, setPreMoneyVal] = useState("");
-
-  useEffect(() => {
-    setShareholders(loadData());
-    setLoaded(true);
-  }, []);
-
-  const persist = useCallback((next: Shareholder[]) => {
-    setShareholders(next);
-    saveData(next);
-  }, []);
 
   const resetForm = () => {
     setFormName("");
@@ -95,32 +66,31 @@ export default function EquityPage() {
     setFormName(s.name);
     setFormType(s.type);
     setFormShares(String(s.shares));
-    setFormNote(s.note);
+    setFormNote(s.notes || "");
     setEditing(s.id);
     setShowForm(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const entry: Shareholder = {
-      id: editing || generateId(),
+    const fields = {
       name: formName.trim(),
       type: formType,
       shares: parseInt(formShares) || 0,
-      note: formNote.trim(),
+      notes: formNote.trim(),
     };
 
     if (editing) {
-      persist(shareholders.map((s) => (s.id === editing ? entry : s)));
+      await update(editing, fields);
     } else {
-      persist([...shareholders, entry]);
+      await create(fields);
     }
     resetForm();
     setShowForm(false);
   };
 
-  const handleDelete = (id: string) => {
-    persist(shareholders.filter((s) => s.id !== id));
+  const handleDelete = async (id: string) => {
+    await remove(id);
   };
 
   const totalShares = shareholders.reduce((s, sh) => s + sh.shares, 0);
@@ -136,7 +106,7 @@ export default function EquityPage() {
       : 0;
   const newTotalShares = totalShares + newInvestorShares;
 
-  if (!loaded) return null;
+  if (loading) return null;
 
   return (
     <div className="mx-auto max-w-[800px]">
@@ -320,8 +290,8 @@ export default function EquityPage() {
                     <p className="text-[13px] font-medium text-zinc-900">
                       {s.name}
                     </p>
-                    {s.note && (
-                      <p className="text-[11px] text-zinc-400">{s.note}</p>
+                    {s.notes && (
+                      <p className="text-[11px] text-zinc-400">{s.notes}</p>
                     )}
                   </td>
                   <td className="px-4 py-3">

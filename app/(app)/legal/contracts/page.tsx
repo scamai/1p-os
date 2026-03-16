@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useTableData } from "@/lib/hooks/useTableData";
 import { Education, EDUCATION } from "@/components/shared/Education";
 
 type ContractType = "NDA" | "MSA" | "SOW" | "Employment" | "Other";
@@ -12,16 +13,11 @@ type Contract = {
   counterparty: string;
   type: ContractType;
   status: ContractStatus;
-  startDate: string;
-  endDate: string;
+  start_date: string;
+  end_date: string;
   value: number;
+  notes: string;
 };
-
-const STORAGE_KEY = "1pos-contracts";
-
-function uid() {
-  return Math.random().toString(36).slice(2, 10);
-}
 
 const STATUS_STYLES: Record<ContractStatus, string> = {
   draft: "bg-zinc-100 text-zinc-600",
@@ -43,46 +39,39 @@ const EMPTY_CONTRACT: Omit<Contract, "id"> = {
   counterparty: "",
   type: "NDA",
   status: "draft",
-  startDate: "",
-  endDate: "",
+  start_date: "",
+  end_date: "",
   value: 0,
+  notes: "",
 };
 
 export default function Page() {
-  const [contracts, setContracts] = useState<Contract[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const { data: contracts, loading, create, update, remove } = useTableData<Contract>("contracts");
   const [editing, setEditing] = useState<Contract | null>(null);
+  const [isNew, setIsNew] = useState(false);
   const [filterStatus, setFilterStatus] = useState<ContractStatus | "all">("all");
   const [filterType, setFilterType] = useState<ContractType | "all">("all");
 
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        setContracts(JSON.parse(saved));
-      } catch {
-        /* ignore */
-      }
-    }
-    setLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (loaded) localStorage.setItem(STORAGE_KEY, JSON.stringify(contracts));
-  }, [contracts, loaded]);
-
-  function save() {
+  async function save() {
     if (!editing) return;
-    setContracts((prev) => {
-      const exists = prev.find((c) => c.id === editing.id);
-      if (exists) return prev.map((c) => (c.id === editing.id ? editing : c));
-      return [...prev, editing];
-    });
+    if (isNew) {
+      const { id: _id, ...rest } = editing;
+      await create(rest);
+    } else {
+      const { id: _id, ...rest } = editing;
+      await update(editing.id, rest);
+    }
     setEditing(null);
+    setIsNew(false);
   }
 
-  function remove(id: string) {
-    setContracts((prev) => prev.filter((c) => c.id !== id));
+  async function handleRemove(id: string) {
+    await remove(id);
+  }
+
+  function startNew() {
+    setEditing({ id: "", ...EMPTY_CONTRACT });
+    setIsNew(true);
   }
 
   const filtered = contracts.filter((c) => {
@@ -93,7 +82,7 @@ export default function Page() {
 
   const totalValue = filtered.reduce((s, c) => s + c.value, 0);
 
-  if (!loaded) return null;
+  if (loading) return null;
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -106,7 +95,7 @@ export default function Page() {
           </p>
         </div>
         <button
-          onClick={() => setEditing({ id: uid(), ...EMPTY_CONTRACT })}
+          onClick={startNew}
           className="text-sm px-3 py-1.5 bg-zinc-900 text-white rounded hover:bg-zinc-800"
         >
           Add Contract
@@ -155,7 +144,7 @@ export default function Page() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
             <h2 className="text-sm font-semibold text-zinc-900 mb-4">
-              {contracts.find((c) => c.id === editing.id) ? "Edit" : "New"} Contract
+              {isNew ? "New" : "Edit"} Contract
             </h2>
             <div className="space-y-3">
               <div>
@@ -210,8 +199,8 @@ export default function Page() {
                   <label className="block text-xs text-zinc-500 mb-1">Start Date</label>
                   <input
                     type="date"
-                    value={editing.startDate}
-                    onChange={(e) => setEditing({ ...editing, startDate: e.target.value })}
+                    value={editing.start_date}
+                    onChange={(e) => setEditing({ ...editing, start_date: e.target.value })}
                     className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
                   />
                 </div>
@@ -219,8 +208,8 @@ export default function Page() {
                   <label className="block text-xs text-zinc-500 mb-1">End Date</label>
                   <input
                     type="date"
-                    value={editing.endDate}
-                    onChange={(e) => setEditing({ ...editing, endDate: e.target.value })}
+                    value={editing.end_date}
+                    onChange={(e) => setEditing({ ...editing, end_date: e.target.value })}
                     className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
                   />
                 </div>
@@ -238,7 +227,7 @@ export default function Page() {
             </div>
             <div className="flex justify-end gap-2 mt-4">
               <button
-                onClick={() => setEditing(null)}
+                onClick={() => { setEditing(null); setIsNew(false); }}
                 className="text-sm px-3 py-1.5 border border-zinc-200 rounded text-zinc-600 hover:bg-zinc-50"
               >
                 Cancel
@@ -297,21 +286,21 @@ export default function Page() {
                     </span>
                   </td>
                   <td className="px-3 py-2 text-xs text-zinc-500">
-                    {c.startDate && <span>{c.startDate}</span>}
-                    {c.startDate && c.endDate && <span> - </span>}
-                    {c.endDate && <span>{c.endDate}</span>}
+                    {c.start_date && <span>{c.start_date}</span>}
+                    {c.start_date && c.end_date && <span> - </span>}
+                    {c.end_date && <span>{c.end_date}</span>}
                   </td>
                   <td className="px-3 py-2 text-zinc-700">${c.value.toLocaleString()}</td>
                   <td className="px-3 py-2">
                     <div className="flex gap-1">
                       <button
-                        onClick={() => setEditing(c)}
+                        onClick={() => { setEditing(c); setIsNew(false); }}
                         className="text-xs text-zinc-400 hover:text-zinc-700"
                       >
                         Edit
                       </button>
                       <button
-                        onClick={() => remove(c.id)}
+                        onClick={() => handleRemove(c.id)}
                         className="text-xs text-zinc-400 hover:text-zinc-700"
                       >
                         Del

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { useTableData } from "@/lib/hooks/useTableData";
 
 type Tier = {
   id: string;
@@ -9,70 +10,62 @@ type Tier = {
   price: number;
   billing: "monthly" | "annual";
   features: string[];
-  highlighted: boolean;
+  sort_order: number;
 };
 
 type SimRow = { tierId: string; customers: number };
 
-const STORAGE_KEY = "1pos-pricing-strategy";
-
-function uid() { return Math.random().toString(36).slice(2, 10); }
-
-const STARTER_TIERS: Tier[] = [
-  { id: "free", name: "Free", price: 0, billing: "monthly", features: ["Basic features", "1 project", "Community support"], highlighted: false },
-  { id: "pro", name: "Pro", price: 29, billing: "monthly", features: ["Everything in Free", "Unlimited projects", "Priority support", "API access"], highlighted: true },
-  { id: "team", name: "Team", price: 79, billing: "monthly", features: ["Everything in Pro", "5 team members", "Admin controls", "SSO", "Dedicated support"], highlighted: false },
+const STARTER_TIERS: Omit<Tier, "id">[] = [
+  { name: "Free", price: 0, billing: "monthly", features: ["Basic features", "1 project", "Community support"], sort_order: 0 },
+  { name: "Pro", price: 29, billing: "monthly", features: ["Everything in Free", "Unlimited projects", "Priority support", "API access"], sort_order: 1 },
+  { name: "Team", price: 79, billing: "monthly", features: ["Everything in Pro", "5 team members", "Admin controls", "SSO", "Dedicated support"], sort_order: 2 },
 ];
 
 export default function Page() {
-  const [tiers, setTiers] = useState<Tier[]>([]);
+  const { data: tiers, loading, create, update, remove } = useTableData<Tier>(
+    "pricing_tiers",
+    { orderBy: "sort_order", ascending: true }
+  );
   const [simRows, setSimRows] = useState<SimRow[]>([]);
-  const [loaded, setLoaded] = useState(false);
   const [editingTier, setEditingTier] = useState<Tier | null>(null);
   const [featureDraft, setFeatureDraft] = useState("");
 
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        setTiers(data.tiers || []);
-        setSimRows(data.simRows || []);
-      } catch { /* ignore */ }
-    }
-    setLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (loaded) localStorage.setItem(STORAGE_KEY, JSON.stringify({ tiers, simRows }));
-  }, [tiers, simRows, loaded]);
+  // Keep simRows in sync when tiers load/change
+  // simRows is local-only (revenue simulator is ephemeral)
 
   function addTier() {
-    setEditingTier({ id: uid(), name: "", price: 0, billing: "monthly", features: [], highlighted: false });
+    setEditingTier({ id: "", name: "", price: 0, billing: "monthly", features: [], sort_order: tiers.length });
     setFeatureDraft("");
   }
 
-  function loadStarter() {
-    setTiers(STARTER_TIERS);
-    setSimRows(STARTER_TIERS.map((t) => ({ tierId: t.id, customers: 0 })));
+  async function loadStarter() {
+    for (const t of STARTER_TIERS) {
+      const created = await create(t);
+      if (created) {
+        setSimRows((prev) => [...prev, { tierId: created.id, customers: 0 }]);
+      }
+    }
   }
 
-  function saveTier() {
+  async function saveTier() {
     if (!editingTier) return;
-    setTiers((prev) => {
-      const exists = prev.find((t) => t.id === editingTier.id);
-      if (exists) return prev.map((t) => (t.id === editingTier.id ? editingTier : t));
-      return [...prev, editingTier];
-    });
-    setSimRows((prev) => {
-      if (!prev.find((r) => r.tierId === editingTier.id)) return [...prev, { tierId: editingTier.id, customers: 0 }];
-      return prev;
-    });
+    if (editingTier.id && tiers.find((t) => t.id === editingTier.id)) {
+      // Update existing
+      const { id, ...updates } = editingTier;
+      await update(id, updates);
+    } else {
+      // Create new
+      const { id, ...rest } = editingTier;
+      const created = await create(rest);
+      if (created) {
+        setSimRows((prev) => [...prev, { tierId: created.id, customers: 0 }]);
+      }
+    }
     setEditingTier(null);
   }
 
-  function removeTier(id: string) {
-    setTiers((prev) => prev.filter((t) => t.id !== id));
+  async function removeTier(id: string) {
+    await remove(id);
     setSimRows((prev) => prev.filter((r) => r.tierId !== id));
   }
 
@@ -87,7 +80,7 @@ export default function Page() {
 
   const totalCustomers = simRows.reduce((s, r) => s + r.customers, 0);
 
-  if (!loaded) return null;
+  if (loading) return null;
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -114,7 +107,7 @@ export default function Page() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white p-6 w-full max-w-md shadow-xl border border-zinc-200">
             <h2 className="text-sm font-semibold text-zinc-900 mb-4">
-              {tiers.find((t) => t.id === editingTier.id) ? "Edit" : "New"} Tier
+              {editingTier.id && tiers.find((t) => t.id === editingTier.id) ? "Edit" : "New"} Tier
             </h2>
             <div className="space-y-3">
               <div>
@@ -137,10 +130,6 @@ export default function Page() {
                   </select>
                 </div>
               </div>
-              <label className="flex items-center gap-2 text-[12px] text-zinc-600 cursor-pointer">
-                <input type="checkbox" checked={editingTier.highlighted} onChange={(e) => setEditingTier({ ...editingTier, highlighted: e.target.checked })} className="accent-zinc-900" />
-                Highlight as recommended
-              </label>
               <div>
                 <label className="block text-[11px] text-zinc-500 mb-1">Features</label>
                 <ul className="space-y-1 mb-2">
@@ -172,11 +161,10 @@ export default function Page() {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 border border-zinc-200 mb-8">
             {tiers.map((t) => (
-              <div key={t.id} className={`p-5 border-r last:border-r-0 border-zinc-200 ${t.highlighted ? "bg-zinc-50 border-t-2 border-t-zinc-900" : "bg-white"}`}>
+              <div key={t.id} className={`p-5 border-r last:border-r-0 border-zinc-200 bg-white`}>
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <h3 className="text-[14px] font-semibold text-zinc-900">{t.name || "Untitled"}</h3>
-                    {t.highlighted && <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-500">Recommended</span>}
                   </div>
                   <div className="flex gap-1">
                     <button onClick={() => { setEditingTier(t); setFeatureDraft(""); }} className="text-[11px] text-zinc-400 hover:text-zinc-700">Edit</button>
@@ -215,7 +203,11 @@ export default function Page() {
                     <span className="text-[11px] text-zinc-400">x</span>
                     <input
                       type="number" min={0} value={customers}
-                      onChange={(e) => setSimRows((prev) => prev.map((r) => r.tierId === t.id ? { ...r, customers: parseInt(e.target.value) || 0 } : r))}
+                      onChange={(e) => setSimRows((prev) => {
+                        const exists = prev.find((r) => r.tierId === t.id);
+                        if (exists) return prev.map((r) => r.tierId === t.id ? { ...r, customers: parseInt(e.target.value) || 0 } : r);
+                        return [...prev, { tierId: t.id, customers: parseInt(e.target.value) || 0 }];
+                      })}
                       className="w-20 text-[13px] border border-zinc-200 px-2 py-1 text-zinc-900 focus:outline-none focus:border-zinc-400 text-center"
                     />
                     <span className="text-[12px] text-zinc-500">=</span>

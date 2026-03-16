@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { useSingletonData } from "@/lib/hooks/useSingletonData";
 
 type Block = {
   id: string;
@@ -21,8 +22,6 @@ const DEFAULT_BLOCKS: Block[] = [
   { id: "cost-structure", title: "Cost Structure", hint: "What are your biggest costs? Fixed vs variable?", items: [] },
   { id: "revenue-streams", title: "Revenue Streams", hint: "How does money come in? Subscription, one-time, usage-based?", items: [] },
 ];
-
-const STORAGE_KEY = "1pos-business-model-canvas";
 
 // BMC layout: standard Osterwalder grid positions
 const GRID_LAYOUT: { id: string; col: string; row: string }[] = [
@@ -93,23 +92,16 @@ function CanvasBlock({
 }
 
 export default function Page() {
-  const [blocks, setBlocks] = useState<Block[]>(DEFAULT_BLOCKS);
-  const [loaded, setLoaded] = useState(false);
+  const { data, loading, update } = useSingletonData<{ blocks: Block[] }>(
+    "business_canvas",
+    { blocks: DEFAULT_BLOCKS }
+  );
 
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try { setBlocks(JSON.parse(saved)); } catch { /* ignore */ }
-    }
-    setLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (loaded) localStorage.setItem(STORAGE_KEY, JSON.stringify(blocks));
-  }, [blocks, loaded]);
+  const blocks = data.blocks ?? DEFAULT_BLOCKS;
 
   function updateBlock(updated: Block) {
-    setBlocks((prev) => prev.map((b) => (b.id === updated.id ? updated : b)));
+    const newBlocks = blocks.map((b) => (b.id === updated.id ? updated : b));
+    update({ blocks: newBlocks });
   }
 
   function getBlock(id: string) {
@@ -119,7 +111,7 @@ export default function Page() {
   const totalItems = blocks.reduce((s, b) => s + b.items.length, 0);
   const filledBlocks = blocks.filter((b) => b.items.length > 0).length;
 
-  if (!loaded) return null;
+  if (loading) return null;
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -135,7 +127,7 @@ export default function Page() {
           <span className="text-[11px] text-zinc-400">{filledBlocks}/9 blocks filled</span>
           <span className="text-[11px] text-zinc-400">{totalItems} items</span>
           <button
-            onClick={() => { setBlocks(DEFAULT_BLOCKS); localStorage.removeItem(STORAGE_KEY); }}
+            onClick={() => update({ blocks: DEFAULT_BLOCKS })}
             className="text-[11px] text-zinc-400 hover:text-zinc-600"
           >
             Reset

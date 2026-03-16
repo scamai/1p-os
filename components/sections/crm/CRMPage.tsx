@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { TabBar } from "@/components/shared/TabBar";
+import { useTableData } from "@/lib/hooks/useTableData";
 
 const TABS = ["All", "Clients", "Leads", "Contractors"] as const;
 type CRMTab = (typeof TABS)[number];
@@ -20,7 +21,23 @@ interface Contact {
   status: string;
 }
 
-const CONTACTS: Contact[] = [
+interface LeadRow {
+  id: string;
+  name: string;
+  email?: string;
+  type?: string;
+  status?: string;
+  notes?: string;
+  last_interaction?: string;
+  total_revenue?: number;
+  source?: string;
+  value?: number;
+  stage?: string;
+  contact_name?: string;
+  created_at?: string;
+}
+
+const MOCK_CONTACTS: Contact[] = [
   {
     id: "1", name: "Sarah Chen", type: "Client", lastInteraction: "Today",
     lastAgent: "Support Agent", totalRevenue: 12500, email: "sarah@acme.co",
@@ -58,6 +75,27 @@ const CONTACTS: Contact[] = [
     status: "Hot",
   },
 ];
+
+function mapLeadToContact(lead: LeadRow): Contact {
+  const typeMap: Record<string, ContactType> = {
+    client: "Client",
+    lead: "Lead",
+    contractor: "Contractor",
+  };
+  return {
+    id: lead.id,
+    name: lead.name || lead.contact_name || "Unknown",
+    type: typeMap[(lead.type ?? "lead").toLowerCase()] ?? "Lead",
+    lastInteraction: lead.last_interaction
+      ? new Date(lead.last_interaction).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      : "—",
+    lastAgent: "—",
+    totalRevenue: lead.total_revenue ?? lead.value ?? 0,
+    email: lead.email ?? "",
+    notes: lead.notes ?? "",
+    status: lead.status ?? "Active",
+  };
+}
 
 function ContactRow({ contact, expanded, onToggle }: { contact: Contact; expanded: boolean; onToggle: () => void }) {
   return (
@@ -129,7 +167,15 @@ function CRMPage({ onAction }: CRMPageProps) {
   const [expandedId, setExpandedId] = React.useState<string | null>(null);
   const handleAction = onAction ?? dispatchAppAction;
 
-  const filtered = CONTACTS.filter((c) => {
+  const { data: rawLeads, loading, error } = useTableData<LeadRow>("leads");
+
+  const contacts: Contact[] = React.useMemo(() => {
+    if (error && rawLeads.length === 0) return MOCK_CONTACTS;
+    if (rawLeads.length === 0 && !loading) return [];
+    return rawLeads.map(mapLeadToContact);
+  }, [rawLeads, loading, error]);
+
+  const filtered = contacts.filter((c) => {
     if (activeTab === "All") return true;
     if (activeTab === "Clients") return c.type === "Client";
     if (activeTab === "Leads") return c.type === "Lead";
@@ -154,19 +200,19 @@ function CRMPage({ onAction }: CRMPageProps) {
         <div>
           <p className="text-[11px] text-zinc-500">Clients</p>
           <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">
-            {CONTACTS.filter(c => c.type === "Client").length}
+            {loading ? "—" : contacts.filter(c => c.type === "Client").length}
           </p>
         </div>
         <div>
           <p className="text-[11px] text-zinc-500">Active Leads</p>
           <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">
-            {CONTACTS.filter(c => c.type === "Lead").length}
+            {loading ? "—" : contacts.filter(c => c.type === "Lead").length}
           </p>
         </div>
         <div>
           <p className="text-[11px] text-zinc-500">Total Revenue</p>
           <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">
-            ${CONTACTS.reduce((s, c) => s + c.totalRevenue, 0).toLocaleString()}
+            {loading ? "—" : `$${contacts.reduce((s, c) => s + c.totalRevenue, 0).toLocaleString()}`}
           </p>
         </div>
       </div>
@@ -179,18 +225,28 @@ function CRMPage({ onAction }: CRMPageProps) {
         />
       </div>
       <div className="mt-6">
-        {filtered.map((contact) => (
-          <ContactRow
-            key={contact.id}
-            contact={contact}
-            expanded={expandedId === contact.id}
-            onToggle={() => setExpandedId(expandedId === contact.id ? null : contact.id)}
-          />
-        ))}
-        {filtered.length === 0 && (
-          <div className="py-8 text-center text-[13px] text-zinc-500">
-            No contacts found.
+        {loading ? (
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-14 animate-pulse rounded bg-zinc-100" />
+            ))}
           </div>
+        ) : (
+          <>
+            {filtered.map((contact) => (
+              <ContactRow
+                key={contact.id}
+                contact={contact}
+                expanded={expandedId === contact.id}
+                onToggle={() => setExpandedId(expandedId === contact.id ? null : contact.id)}
+              />
+            ))}
+            {filtered.length === 0 && (
+              <div className="py-8 text-center text-[13px] text-zinc-500">
+                No contacts found.
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

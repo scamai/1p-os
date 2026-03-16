@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { useTableData } from "@/lib/hooks/useTableData";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -11,196 +12,210 @@ interface IncStep {
   id: string;
   title: string;
   description: string;
-  category: string;
-  done: boolean;
+  status: "todo" | "done";
   link: string;
+  sort_order: number;
 }
 
-const STORAGE_KEY = "1pos_incorporation";
+// Category mapping derived from DEFAULT_STEPS titles
+const STEP_CATEGORIES: Record<string, string> = {
+  "Validate your business idea": "Preparation",
+  "Choose entity type (LLC or C-Corp)": "Formation",
+  "Select state of incorporation": "Formation",
+  "Check business name availability": "Formation",
+  "Register / file formation documents": "Formation",
+  "Appoint a registered agent": "Formation",
+  "Get an EIN from the IRS": "Tax & Finance",
+  "Draft bylaws / operating agreement": "Legal",
+  "Issue founder stock / membership interests": "Legal",
+  "File 83(b) election (if applicable)": "Tax & Finance",
+  "Open a business bank account": "Tax & Finance",
+  "Set up bookkeeping / accounting": "Tax & Finance",
+  "Obtain business licenses & permits": "Compliance",
+  "Get business insurance": "Compliance",
+  "Protect intellectual property": "Legal",
+  "Set up business website & email": "Operations",
+};
 
-const DEFAULT_STEPS: Omit<IncStep, "done">[] = [
+function getCategoryForStep(title: string): string {
+  return STEP_CATEGORIES[title] || "Other";
+}
+
+const DEFAULT_STEPS: Omit<IncStep, "id">[] = [
   {
-    id: "idea-validate",
     title: "Validate your business idea",
     description:
       "Talk to potential customers, research the market, and confirm demand before spending money on legal setup.",
-    category: "Preparation",
+    status: "todo",
     link: "",
+    sort_order: 0,
   },
   {
-    id: "entity-type",
     title: "Choose entity type (LLC or C-Corp)",
     description:
       "LLC for simplicity and pass-through taxes. Delaware C-Corp if you plan to raise VC money. Most YC/VC-backed startups must be Delaware C-Corps.",
-    category: "Formation",
+    status: "todo",
     link: "https://www.sba.gov/business-guide/launch-your-business/choose-business-structure",
+    sort_order: 1,
   },
   {
-    id: "state",
     title: "Select state of incorporation",
     description:
       "Delaware is standard for C-Corps (VC requirement). Wyoming is popular for LLCs. Your home state works for local businesses.",
-    category: "Formation",
+    status: "todo",
     link: "",
+    sort_order: 2,
   },
   {
-    id: "name-check",
     title: "Check business name availability",
     description:
       "Search your state's business registry and USPTO trademark database to ensure your name is available.",
-    category: "Formation",
+    status: "todo",
     link: "https://www.uspto.gov/trademarks",
+    sort_order: 3,
   },
   {
-    id: "register",
     title: "Register / file formation documents",
     description:
       "File Articles of Incorporation (C-Corp) or Articles of Organization (LLC) with your state. Cost: $50-$500 depending on state.",
-    category: "Formation",
+    status: "todo",
     link: "",
+    sort_order: 4,
   },
   {
-    id: "registered-agent",
     title: "Appoint a registered agent",
     description:
       "Required in most states. This is the person/company that receives legal documents on behalf of your business.",
-    category: "Formation",
+    status: "todo",
     link: "",
+    sort_order: 5,
   },
   {
-    id: "ein",
     title: "Get an EIN from the IRS",
     description:
       "Employer Identification Number. Free, takes 5 minutes online. You need this before opening a bank account.",
-    category: "Tax & Finance",
+    status: "todo",
     link: "https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online",
+    sort_order: 6,
   },
   {
-    id: "bylaws",
     title: "Draft bylaws / operating agreement",
     description:
       "Bylaws (C-Corp) or Operating Agreement (LLC). Defines how the company is governed. Use a template or lawyer.",
-    category: "Legal",
+    status: "todo",
     link: "",
+    sort_order: 7,
   },
   {
-    id: "stock",
     title: "Issue founder stock / membership interests",
     description:
       "Formally issue shares to founders with vesting schedules. File 83(b) election within 30 days for tax benefits.",
-    category: "Legal",
+    status: "todo",
     link: "",
+    sort_order: 8,
   },
   {
-    id: "83b",
     title: "File 83(b) election (if applicable)",
     description:
       "CRITICAL: Must be filed with IRS within 30 days of receiving restricted stock. Saves potentially huge tax liability. Cannot be undone if missed.",
-    category: "Tax & Finance",
+    status: "todo",
     link: "",
+    sort_order: 9,
   },
   {
-    id: "bank",
     title: "Open a business bank account",
     description:
       "Keep personal and business finances separate. You'll need your EIN, formation documents, and ID. Mercury, Brex, and traditional banks all work.",
-    category: "Tax & Finance",
+    status: "todo",
     link: "",
+    sort_order: 10,
   },
   {
-    id: "accounting",
     title: "Set up bookkeeping / accounting",
     description:
       "Use QuickBooks, Xero, or Wave. Track every expense from day one. Your future self (and accountant) will thank you.",
-    category: "Tax & Finance",
+    status: "todo",
     link: "",
+    sort_order: 11,
   },
   {
-    id: "licenses",
     title: "Obtain business licenses & permits",
     description:
       "Requirements vary by state, city, and industry. Check your local government website for what's needed.",
-    category: "Compliance",
+    status: "todo",
     link: "https://www.sba.gov/business-guide/launch-your-business/apply-for-licenses-and-permits",
+    sort_order: 12,
   },
   {
-    id: "insurance",
     title: "Get business insurance",
     description:
       "At minimum: general liability. Consider E&O (errors & omissions) if you provide services. Workers' comp if you have employees.",
-    category: "Compliance",
+    status: "todo",
     link: "",
+    sort_order: 13,
   },
   {
-    id: "ip",
     title: "Protect intellectual property",
     description:
       "File trademarks for your brand name/logo. Consider provisional patents if applicable. Use NDAs where appropriate.",
-    category: "Legal",
+    status: "todo",
     link: "https://www.uspto.gov/trademarks",
+    sort_order: 14,
   },
   {
-    id: "website",
     title: "Set up business website & email",
     description:
       "Get a domain, set up a professional email (not gmail), and create at least a landing page.",
-    category: "Operations",
+    status: "todo",
     link: "",
+    sort_order: 15,
   },
 ];
-
-function loadSteps(): IncStep[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch {
-    // fall through
-  }
-  return DEFAULT_STEPS.map((s) => ({ ...s, done: false }));
-}
-
-function saveSteps(steps: IncStep[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(steps));
-}
 
 // ---------------------------------------------------------------------------
 // Main Page
 // ---------------------------------------------------------------------------
 
 export default function IncorporationPage() {
-  const [steps, setSteps] = useState<IncStep[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const { data: steps, loading, create, update, refresh } = useTableData<IncStep>('incorporation_steps', { orderBy: 'sort_order', ascending: true });
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const seededRef = useRef(false);
 
+  // Seed default steps if the table is empty
   useEffect(() => {
-    setSteps(loadSteps());
-    setLoaded(true);
-  }, []);
+    if (!loading && steps.length === 0 && !seededRef.current) {
+      seededRef.current = true;
+      (async () => {
+        for (const step of DEFAULT_STEPS) {
+          await create(step);
+        }
+        await refresh();
+      })();
+    }
+  }, [loading, steps.length, create, refresh]);
 
-  const persist = useCallback((next: IncStep[]) => {
-    setSteps(next);
-    saveSteps(next);
-  }, []);
-
-  const toggleStep = (id: string) => {
-    persist(
-      steps.map((s) => (s.id === id ? { ...s, done: !s.done } : s))
-    );
+  const toggleStep = async (id: string) => {
+    const step = steps.find((s) => s.id === id);
+    if (!step) return;
+    await update(id, { status: step.status === "done" ? "todo" : "done" } as Partial<IncStep>);
   };
 
-  const doneCount = steps.filter((s) => s.done).length;
+  const doneCount = steps.filter((s) => s.status === "done").length;
   const progress =
     steps.length > 0 ? Math.round((doneCount / steps.length) * 100) : 0;
 
   // Group by category
-  const categories = Array.from(new Set(steps.map((s) => s.category)));
+  const stepsWithCategory = steps.map((s) => ({
+    ...s,
+    category: getCategoryForStep(s.title),
+  }));
+  const categories = Array.from(new Set(stepsWithCategory.map((s) => s.category)));
   const grouped = categories.map((cat) => ({
     category: cat,
-    items: steps.filter((s) => s.category === cat),
+    items: stepsWithCategory.filter((s) => s.category === cat),
   }));
 
-  if (!loaded) return null;
+  if (loading) return null;
 
   return (
     <div className="mx-auto max-w-[800px]">
@@ -237,8 +252,8 @@ export default function IncorporationPage() {
       {/* Quick Stats */}
       <div className="mt-4 grid grid-cols-4 gap-3">
         {categories.map((cat) => {
-          const items = steps.filter((s) => s.category === cat);
-          const catDone = items.filter((s) => s.done).length;
+          const items = stepsWithCategory.filter((s) => s.category === cat);
+          const catDone = items.filter((s) => s.status === "done").length;
           return (
             <button
               key={cat}
@@ -265,7 +280,7 @@ export default function IncorporationPage() {
       {/* Checklist by category */}
       <div className="mt-8 space-y-6">
         {grouped.map(({ category, items }) => {
-          const catDone = items.filter((s) => s.done).length;
+          const catDone = items.filter((s) => s.status === "done").length;
           const isExpanded =
             expandedCategory === null || expandedCategory === category;
 
@@ -317,12 +332,12 @@ export default function IncorporationPage() {
                       >
                         <div
                           className={`flex h-5 w-5 items-center justify-center rounded-md border-2 transition-colors ${
-                            step.done
+                            step.status === "done"
                               ? "border-zinc-900 bg-zinc-900"
                               : "border-zinc-300 hover:border-zinc-400"
                           }`}
                         >
-                          {step.done && (
+                          {step.status === "done" && (
                             <svg
                               width="10"
                               height="10"
@@ -342,7 +357,7 @@ export default function IncorporationPage() {
                       <div className="flex-1 min-w-0">
                         <p
                           className={`text-[13px] font-medium ${
-                            step.done
+                            step.status === "done"
                               ? "text-zinc-400 line-through"
                               : "text-zinc-900"
                           }`}
@@ -351,7 +366,7 @@ export default function IncorporationPage() {
                         </p>
                         <p
                           className={`mt-1 text-[12px] leading-relaxed ${
-                            step.done ? "text-zinc-300" : "text-zinc-500"
+                            step.status === "done" ? "text-zinc-300" : "text-zinc-500"
                           }`}
                         >
                           {step.description}
@@ -393,9 +408,13 @@ export default function IncorporationPage() {
       {/* Reset */}
       <div className="mt-8 flex justify-end">
         <button
-          onClick={() => {
-            const fresh = DEFAULT_STEPS.map((s) => ({ ...s, done: false }));
-            persist(fresh);
+          onClick={async () => {
+            // Reset all steps to todo
+            for (const step of steps) {
+              if (step.status === "done") {
+                await update(step.id, { status: "todo" } as Partial<IncStep>);
+              }
+            }
             setExpandedCategory(null);
           }}
           className="text-[12px] text-zinc-400 hover:text-zinc-600 transition-colors"

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
+import { useTableData } from "@/lib/hooks/useTableData";
 import { Education, EDUCATION } from "@/components/shared/Education";
 
 interface Transaction {
@@ -14,17 +15,12 @@ interface Transaction {
 
 const ACCOUNTS = ["Checking", "Savings", "Credit Card", "Cash", "Other"];
 
-function genId() {
-  return Math.random().toString(36).slice(2, 10);
-}
-
 export default function Page() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { data: transactions, loading, create, remove } = useTableData<Transaction>("transactions");
   const [showForm, setShowForm] = useState(false);
   const [filterCat, setFilterCat] = useState<"all" | "revenue" | "expense">("all");
   const [filterStart, setFilterStart] = useState("");
   const [filterEnd, setFilterEnd] = useState("");
-  const [loaded, setLoaded] = useState(false);
 
   // Form state
   const [fDate, setFDate] = useState(new Date().toISOString().slice(0, 10));
@@ -33,57 +29,47 @@ export default function Page() {
   const [fCat, setFCat] = useState<"revenue" | "expense">("expense");
   const [fAccount, setFAccount] = useState("Checking");
 
-  useEffect(() => {
-    const saved = localStorage.getItem("1pos_bookkeeping");
-    if (saved) setTransactions(JSON.parse(saved));
-    setLoaded(true);
-  }, []);
-
-  function save(updated: Transaction[]) {
-    setTransactions(updated);
-    localStorage.setItem("1pos_bookkeeping", JSON.stringify(updated));
-  }
-
-  function addTransaction() {
+  async function addTransaction() {
     if (!fDesc || !fAmount) return;
-    const t: Transaction = {
-      id: genId(),
+    await create({
       date: fDate,
       description: fDesc,
       amount: parseFloat(fAmount) || 0,
       category: fCat,
       account: fAccount,
-    };
-    const updated = [t, ...transactions].sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-    save(updated);
+    } as Partial<Transaction>);
     setFDesc("");
     setFAmount("");
     setShowForm(false);
   }
 
-  function deleteTransaction(id: string) {
-    save(transactions.filter((t) => t.id !== id));
+  async function deleteTransaction(id: string) {
+    await remove(id);
   }
 
+  const sorted = useMemo(() => {
+    return [...transactions].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }, [transactions]);
+
   const filtered = useMemo(() => {
-    return transactions.filter((t) => {
+    return sorted.filter((t) => {
       if (filterCat !== "all" && t.category !== filterCat) return false;
       if (filterStart && t.date < filterStart) return false;
       if (filterEnd && t.date > filterEnd) return false;
       return true;
     });
-  }, [transactions, filterCat, filterStart, filterEnd]);
+  }, [sorted, filterCat, filterStart, filterEnd]);
 
   // Running balance
   const balancedRows = useMemo(() => {
     let balance = 0;
     // Calculate balance from oldest to newest, display newest first
-    const sorted = [...filtered].sort(
+    const chronological = [...filtered].sort(
       (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
-    const withBalance = sorted.map((t) => {
+    const withBalance = chronological.map((t) => {
       balance += t.category === "revenue" ? t.amount : -t.amount;
       return { ...t, balance };
     });
@@ -105,7 +91,7 @@ export default function Page() {
       .map(([month, data]) => ({ month, ...data }));
   }, [filtered]);
 
-  if (!loaded) return null;
+  if (loading) return null;
 
   return (
     <div className="mx-auto max-w-[640px]">

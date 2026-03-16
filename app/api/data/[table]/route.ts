@@ -31,6 +31,13 @@ const ALLOWED_TABLES: Record<string, string> = {
   quotes: "quotes",
   payments: "payments",
   products: "products",
+  // Existing tables (from earlier migrations)
+  relationships: "relationships",
+  invoices: "invoices",
+  expenses: "expenses",
+  channels: "channels",
+  projects: "projects",
+  documents: "documents",
   // Singleton tables (one row per business)
   market_data: "market_data",
   business_canvas: "business_canvas",

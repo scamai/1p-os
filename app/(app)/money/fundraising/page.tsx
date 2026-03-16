@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useTableData } from "@/lib/hooks/useTableData";
 import { Education, EDUCATION } from "@/components/shared/Education";
 
 interface Investor {
@@ -10,6 +11,7 @@ interface Investor {
   status: "intro" | "meeting" | "termsheet" | "committed" | "passed";
   amount: number;
   notes: string;
+  round_id: string;
 }
 
 interface Round {
@@ -17,7 +19,6 @@ interface Round {
   name: string;
   target: number;
   valuation: number;
-  investors: Investor[];
 }
 
 const STATUS_LABELS: Record<Investor["status"], string> = {
@@ -38,10 +39,6 @@ const STATUS_COLORS: Record<Investor["status"], string> = {
 
 const ROUND_PRESETS = ["Pre-seed", "Seed", "Series A", "Series B"];
 
-function genId() {
-  return Math.random().toString(36).slice(2, 10);
-}
-
 function fmt(n: number) {
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}K`;
@@ -49,7 +46,9 @@ function fmt(n: number) {
 }
 
 export default function Page() {
-  const [rounds, setRounds] = useState<Round[]>([]);
+  const { data: rounds, loading: roundsLoading, create: createRound, remove: removeRound } = useTableData<Round>("fundraising_rounds");
+  const { data: allInvestors, loading: investorsLoading, create: createInvestor, update: updateInvestor, remove: removeInvestor } = useTableData<Investor>("investors");
+
   const [activeRoundId, setActiveRoundId] = useState<string | null>(null);
   const [showRoundForm, setShowRoundForm] = useState(false);
   const [showInvestorForm, setShowInvestorForm] = useState(false);
@@ -67,49 +66,36 @@ export default function Page() {
   const [iAmount, setIAmount] = useState("");
   const [iNotes, setINotes] = useState("");
 
-  useEffect(() => {
-    const saved = localStorage.getItem("1pos_fundraising");
-    if (saved) {
-      const parsed = JSON.parse(saved) as Round[];
-      setRounds(parsed);
-      if (parsed.length > 0) setActiveRoundId(parsed[0].id);
-    }
-  }, []);
+  // Set active round to first round if not set
+  const effectiveActiveRoundId = activeRoundId ?? (rounds.length > 0 ? rounds[0].id : null);
 
-  function save(updated: Round[]) {
-    setRounds(updated);
-    localStorage.setItem("1pos_fundraising", JSON.stringify(updated));
-  }
+  const activeRound = rounds.find((r) => r.id === effectiveActiveRoundId) ?? null;
+  const roundInvestors = allInvestors.filter((i) => i.round_id === effectiveActiveRoundId);
 
-  function addRound() {
+  async function addRound() {
     if (!rName || !rTarget) return;
-    const r: Round = {
-      id: genId(),
+    const created = await createRound({
       name: rName,
       target: parseFloat(rTarget) || 0,
       valuation: parseFloat(rVal) || 0,
-      investors: [],
-    };
-    const updated = [...rounds, r];
-    save(updated);
-    setActiveRoundId(r.id);
+    } as Partial<Round>);
+    if (created) setActiveRoundId(created.id);
     setRName("");
     setRTarget("");
     setRVal("");
     setShowRoundForm(false);
   }
 
-  function deleteRound(id: string) {
-    const updated = rounds.filter((r) => r.id !== id);
-    save(updated);
-    if (activeRoundId === id) setActiveRoundId(updated[0]?.id ?? null);
+  async function deleteRound(id: string) {
+    await removeRound(id);
+    if (effectiveActiveRoundId === id) {
+      const remaining = rounds.filter((r) => r.id !== id);
+      setActiveRoundId(remaining[0]?.id ?? null);
+    }
   }
 
-  const activeRound = rounds.find((r) => r.id === activeRoundId) ?? null;
-
   function raised() {
-    if (!activeRound) return 0;
-    return activeRound.investors
+    return roundInvestors
       .filter((i) => i.status === "committed")
       .reduce((s, i) => s + i.amount, 0);
   }
@@ -133,36 +119,36 @@ export default function Page() {
     setShowInvestorForm(true);
   }
 
-  function saveInvestor() {
-    if (!activeRound || !iName) return;
-    const inv: Investor = {
-      id: editingInvestor?.id ?? genId(),
-      name: iName,
-      firm: iFirm,
-      status: iStatus,
-      amount: parseFloat(iAmount) || 0,
-      notes: iNotes,
-    };
-    const updated = rounds.map((r) => {
-      if (r.id !== activeRound.id) return r;
-      const investors = editingInvestor
-        ? r.investors.map((i) => (i.id === inv.id ? inv : i))
-        : [...r.investors, inv];
-      return { ...r, investors };
-    });
-    save(updated);
+  async function saveInvestor() {
+    if (!effectiveActiveRoundId || !iName) return;
+    if (editingInvestor) {
+      await updateInvestor(editingInvestor.id, {
+        name: iName,
+        firm: iFirm,
+        status: iStatus,
+        amount: parseFloat(iAmount) || 0,
+        notes: iNotes,
+      } as Partial<Investor>);
+    } else {
+      await createInvestor({
+        name: iName,
+        firm: iFirm,
+        status: iStatus,
+        amount: parseFloat(iAmount) || 0,
+        notes: iNotes,
+        round_id: effectiveActiveRoundId,
+      } as Partial<Investor>);
+    }
     resetInvestorForm();
     setShowInvestorForm(false);
   }
 
-  function deleteInvestor(invId: string) {
-    if (!activeRound) return;
-    const updated = rounds.map((r) => {
-      if (r.id !== activeRound.id) return r;
-      return { ...r, investors: r.investors.filter((i) => i.id !== invId) };
-    });
-    save(updated);
+  async function deleteInvestor(invId: string) {
+    await removeInvestor(invId);
   }
+
+  const loading = roundsLoading || investorsLoading;
+  if (loading) return null;
 
   const pct = activeRound && activeRound.target > 0
     ? Math.min(100, Math.round((raised() / activeRound.target) * 100))
@@ -183,7 +169,7 @@ export default function Page() {
             key={r.id}
             onClick={() => setActiveRoundId(r.id)}
             className={`px-3 py-1.5 text-sm rounded-md border transition-colors ${
-              r.id === activeRoundId
+              r.id === effectiveActiveRoundId
                 ? "bg-black text-white border-black"
                 : "bg-white text-zinc-700 border-zinc-200 hover:border-zinc-400"
             }`}
@@ -305,7 +291,7 @@ export default function Page() {
           {/* Investor pipeline */}
           <div className="mt-6 flex items-center justify-between">
             <h3 className="text-sm font-medium text-zinc-900">
-              Investor Pipeline ({activeRound.investors.length})
+              Investor Pipeline ({roundInvestors.length})
             </h3>
             <button
               onClick={() => {
@@ -394,10 +380,10 @@ export default function Page() {
 
           {/* Investor list */}
           <div className="mt-3 space-y-2">
-            {activeRound.investors.length === 0 && (
+            {roundInvestors.length === 0 && (
               <p className="text-sm text-zinc-400 py-4 text-center">No investors yet. Add your first investor above.</p>
             )}
-            {activeRound.investors.map((inv) => (
+            {roundInvestors.map((inv) => (
               <div
                 key={inv.id}
                 className="border border-zinc-200 rounded-lg p-3 bg-white flex items-start justify-between gap-3"

@@ -1,108 +1,82 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useTableData } from "@/lib/hooks/useTableData";
 import { Education, EDUCATION } from "@/components/shared/Education";
 
 type SafeStatus = "signed" | "pending";
 
 type Safe = {
   id: string;
-  investorName: string;
+  investor_name: string;
   amount: number;
-  valuationCap: number;
-  discountPct: number;
+  valuation_cap: number;
+  discount_pct: number;
   date: string;
   status: SafeStatus;
 };
 
-type SafesData = {
-  safes: Safe[];
-  totalShares: number;
-};
-
-const STORAGE_KEY = "1pos-safes";
-
-function uid() {
-  return Math.random().toString(36).slice(2, 10);
-}
-
-const INITIAL: SafesData = {
-  safes: [],
-  totalShares: 10000000,
-};
-
 export default function Page() {
-  const [data, setData] = useState<SafesData>(INITIAL);
-  const [loaded, setLoaded] = useState(false);
+  const { data: safes, loading, create, update, remove } = useTableData<Safe>("safes");
   const [editing, setEditing] = useState<Safe | null>(null);
+  const [isNew, setIsNew] = useState(false);
+  const [totalShares, setTotalShares] = useState(10000000);
 
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        setData({ ...INITIAL, ...JSON.parse(saved) });
-      } catch {
-        /* ignore */
-      }
-    }
-    setLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (loaded) localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  }, [data, loaded]);
-
-  function save() {
+  async function save() {
     if (!editing) return;
-    setData((prev) => {
-      const exists = prev.safes.find((s) => s.id === editing.id);
-      return {
-        ...prev,
-        safes: exists
-          ? prev.safes.map((s) => (s.id === editing.id ? editing : s))
-          : [...prev.safes, editing],
-      };
-    });
+    if (isNew) {
+      const { id: _id, ...rest } = editing;
+      await create(rest);
+    } else {
+      const { id: _id, ...rest } = editing;
+      await update(editing.id, rest);
+    }
     setEditing(null);
+    setIsNew(false);
   }
 
-  function remove(id: string) {
-    setData((prev) => ({ ...prev, safes: prev.safes.filter((s) => s.id !== id) }));
+  async function handleRemove(id: string) {
+    await remove(id);
   }
 
-  const totalOutstanding = data.safes
+  function startNew() {
+    setEditing({ id: "", investor_name: "", amount: 0, valuation_cap: 0, discount_pct: 0, date: "", status: "pending" });
+    setIsNew(true);
+  }
+
+  const totalOutstanding = safes
     .filter((s) => s.status === "signed")
     .reduce((sum, s) => sum + s.amount, 0);
 
-  const totalAll = data.safes.reduce((sum, s) => sum + s.amount, 0);
+  const totalAll = safes.reduce((sum, s) => sum + s.amount, 0);
 
   function capTableRows() {
     const rows: { name: string; shares: number; pct: number }[] = [];
     let totalNewShares = 0;
 
-    for (const s of data.safes.filter((s) => s.status === "signed")) {
-      if (s.valuationCap > 0) {
-        const pricePerShare = s.valuationCap / data.totalShares;
+    for (const s of safes.filter((s) => s.status === "signed")) {
+      if (s.valuation_cap > 0) {
+        const pricePerShare = s.valuation_cap / totalShares;
         const newShares = s.amount / pricePerShare;
         totalNewShares += newShares;
-        rows.push({ name: s.investorName, shares: newShares, pct: 0 });
+        rows.push({ name: s.investor_name, shares: newShares, pct: 0 });
       }
     }
 
-    const grandTotal = data.totalShares + totalNewShares;
-    const founderPct = (data.totalShares / grandTotal) * 100;
+    const grandTotal = totalShares + totalNewShares;
+    const founderPct = (totalShares / grandTotal) * 100;
 
     return {
       investors: rows.map((r) => ({ ...r, pct: (r.shares / grandTotal) * 100 })),
       founderPct,
-      founderShares: data.totalShares,
+      founderShares: totalShares,
       grandTotal,
     };
   }
 
   const capTable = capTableRows();
 
-  if (!loaded) return null;
+  if (loading) return null;
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -113,9 +87,7 @@ export default function Page() {
           <p className="mt-1 text-sm text-zinc-500">Track SAFE agreements and estimate dilution.</p>
         </div>
         <button
-          onClick={() =>
-            setEditing({ id: uid(), investorName: "", amount: 0, valuationCap: 0, discountPct: 0, date: "", status: "pending" })
-          }
+          onClick={startNew}
           className="text-sm px-3 py-1.5 bg-zinc-900 text-white rounded hover:bg-zinc-800"
         >
           Add SAFE
@@ -126,7 +98,7 @@ export default function Page() {
       <div className="grid grid-cols-3 gap-3 mb-6">
         <div className="border border-zinc-200 rounded-lg p-3 bg-white text-center">
           <p className="text-xs text-zinc-500 mb-1">Total SAFEs</p>
-          <p className="text-xl font-bold text-zinc-900">{data.safes.length}</p>
+          <p className="text-xl font-bold text-zinc-900">{safes.length}</p>
         </div>
         <div className="border border-zinc-200 rounded-lg p-3 bg-white text-center">
           <p className="text-xs text-zinc-500 mb-1">Total Outstanding (Signed)</p>
@@ -143,15 +115,15 @@ export default function Page() {
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
             <h2 className="text-sm font-semibold text-zinc-900 mb-4">
-              {data.safes.find((s) => s.id === editing.id) ? "Edit" : "New"} SAFE
+              {isNew ? "New" : "Edit"} SAFE
             </h2>
             <div className="space-y-3">
               <div>
                 <label className="block text-xs text-zinc-500 mb-1">Investor Name</label>
                 <input
                   type="text"
-                  value={editing.investorName}
-                  onChange={(e) => setEditing({ ...editing, investorName: e.target.value })}
+                  value={editing.investor_name}
+                  onChange={(e) => setEditing({ ...editing, investor_name: e.target.value })}
                   className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
                 />
               </div>
@@ -171,8 +143,8 @@ export default function Page() {
                   <input
                     type="number"
                     min={0}
-                    value={editing.valuationCap}
-                    onChange={(e) => setEditing({ ...editing, valuationCap: parseFloat(e.target.value) || 0 })}
+                    value={editing.valuation_cap}
+                    onChange={(e) => setEditing({ ...editing, valuation_cap: parseFloat(e.target.value) || 0 })}
                     className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
                   />
                 </div>
@@ -184,8 +156,8 @@ export default function Page() {
                     type="number"
                     min={0}
                     max={100}
-                    value={editing.discountPct}
-                    onChange={(e) => setEditing({ ...editing, discountPct: parseFloat(e.target.value) || 0 })}
+                    value={editing.discount_pct}
+                    onChange={(e) => setEditing({ ...editing, discount_pct: parseFloat(e.target.value) || 0 })}
                     className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
                   />
                 </div>
@@ -212,7 +184,7 @@ export default function Page() {
               </div>
             </div>
             <div className="flex justify-end gap-2 mt-4">
-              <button onClick={() => setEditing(null)} className="text-sm px-3 py-1.5 border border-zinc-200 rounded text-zinc-600 hover:bg-zinc-50">Cancel</button>
+              <button onClick={() => { setEditing(null); setIsNew(false); }} className="text-sm px-3 py-1.5 border border-zinc-200 rounded text-zinc-600 hover:bg-zinc-50">Cancel</button>
               <button onClick={save} className="text-sm px-3 py-1.5 bg-zinc-900 text-white rounded hover:bg-zinc-800">Save</button>
             </div>
           </div>
@@ -220,7 +192,7 @@ export default function Page() {
       )}
 
       {/* SAFE list */}
-      {data.safes.length === 0 ? (
+      {safes.length === 0 ? (
         <div className="text-center py-16 border border-dashed border-zinc-200 rounded-lg mb-6">
           <p className="text-sm text-zinc-400">No SAFEs yet. Add your first one.</p>
         </div>
@@ -235,12 +207,12 @@ export default function Page() {
               </tr>
             </thead>
             <tbody>
-              {data.safes.map((s, i) => (
+              {safes.map((s, i) => (
                 <tr key={s.id} className={`border-b border-zinc-100 ${i % 2 === 0 ? "bg-white" : "bg-zinc-50"}`}>
-                  <td className="px-3 py-2 text-zinc-900 font-medium">{s.investorName || "Unnamed"}</td>
+                  <td className="px-3 py-2 text-zinc-900 font-medium">{s.investor_name || "Unnamed"}</td>
                   <td className="px-3 py-2 text-zinc-700">${s.amount.toLocaleString()}</td>
-                  <td className="px-3 py-2 text-zinc-700">${s.valuationCap.toLocaleString()}</td>
-                  <td className="px-3 py-2 text-zinc-700">{s.discountPct}%</td>
+                  <td className="px-3 py-2 text-zinc-700">${s.valuation_cap.toLocaleString()}</td>
+                  <td className="px-3 py-2 text-zinc-700">{s.discount_pct}%</td>
                   <td className="px-3 py-2 text-zinc-500 text-xs">{s.date}</td>
                   <td className="px-3 py-2">
                     <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${s.status === "signed" ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-600"}`}>
@@ -249,8 +221,8 @@ export default function Page() {
                   </td>
                   <td className="px-3 py-2">
                     <div className="flex gap-1">
-                      <button onClick={() => setEditing(s)} className="text-xs text-zinc-400 hover:text-zinc-700">Edit</button>
-                      <button onClick={() => remove(s.id)} className="text-xs text-zinc-400 hover:text-zinc-700">Del</button>
+                      <button onClick={() => { setEditing(s); setIsNew(false); }} className="text-xs text-zinc-400 hover:text-zinc-700">Edit</button>
+                      <button onClick={() => handleRemove(s.id)} className="text-xs text-zinc-400 hover:text-zinc-700">Del</button>
                     </div>
                   </td>
                 </tr>
@@ -268,8 +240,8 @@ export default function Page() {
           <input
             type="number"
             min={1}
-            value={data.totalShares}
-            onChange={(e) => setData((prev) => ({ ...prev, totalShares: parseInt(e.target.value) || 1 }))}
+            value={totalShares}
+            onChange={(e) => setTotalShares(parseInt(e.target.value) || 1)}
             className="w-48 text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
           />
         </div>
