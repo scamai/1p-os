@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
+import { useTableData } from "@/lib/hooks/useTableData";
+import { useSingletonData } from "@/lib/hooks/useSingletonData";
 import { Education, EDUCATION } from "@/components/shared/Education";
 
 // ---------- Tax Calendar ----------
@@ -123,6 +125,20 @@ interface Deduction {
   hasReceipt: boolean;
 }
 
+interface TaxSettings {
+  taxDates: TaxDate[];
+  revenue: number;
+  taxRate: number;
+  entityFilter: "Both" | "C-Corp" | "LLC";
+}
+
+const DEFAULT_TAX_SETTINGS: TaxSettings = {
+  taxDates: DEFAULT_DATES,
+  revenue: 0,
+  taxRate: 21,
+  entityFilter: "Both",
+};
+
 const DEDUCTION_CATEGORIES = [
   "Home Office",
   "Vehicle / Mileage",
@@ -137,70 +153,58 @@ const DEDUCTION_CATEGORIES = [
   "Other",
 ];
 
-function genId() {
-  return Math.random().toString(36).slice(2, 10);
-}
-
 function fmt(n: number) {
   return `$${Math.abs(n).toLocaleString()}`;
 }
 
 export default function Page() {
-  const [taxDates, setTaxDates] = useState<TaxDate[]>(DEFAULT_DATES);
-  const [deductions, setDeductions] = useState<Deduction[]>([]);
-  const [entityFilter, setEntityFilter] = useState<"Both" | "C-Corp" | "LLC">("Both");
-  const [revenue, setRevenue] = useState(0);
-  const [taxRate, setTaxRate] = useState(21); // C-Corp default
+  const { data: settings, loading: settingsLoading, update: updateSettings } = useSingletonData<TaxSettings>("tax_settings", DEFAULT_TAX_SETTINGS);
+  const { data: deductions, loading: deductionsLoading, create: createDeduction, remove: removeDeduction } = useTableData<Deduction>("tax_deductions");
+
   const [showDeductionForm, setShowDeductionForm] = useState(false);
   const [dCat, setDCat] = useState(DEDUCTION_CATEGORIES[0]);
   const [dAmount, setDAmount] = useState("");
   const [dReceipt, setDReceipt] = useState(false);
   const [tab, setTab] = useState<"calendar" | "deductions" | "calculator">("calendar");
-  const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    const saved = localStorage.getItem("1pos_tax");
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed.taxDates) setTaxDates(parsed.taxDates);
-      if (parsed.deductions) setDeductions(parsed.deductions);
-      if (parsed.revenue != null) setRevenue(parsed.revenue);
-      if (parsed.taxRate != null) setTaxRate(parsed.taxRate);
-      if (parsed.entityFilter) setEntityFilter(parsed.entityFilter);
-    }
-    setLoaded(true);
-  }, []);
+  const taxDates = settings.taxDates;
+  const entityFilter = settings.entityFilter;
+  const revenue = settings.revenue;
+  const taxRate = settings.taxRate;
 
-  useEffect(() => {
-    if (!loaded) return;
-    localStorage.setItem(
-      "1pos_tax",
-      JSON.stringify({ taxDates, deductions, revenue, taxRate, entityFilter })
-    );
-  }, [taxDates, deductions, revenue, taxRate, entityFilter, loaded]);
-
-  function toggleDate(id: string) {
-    setTaxDates((prev) =>
-      prev.map((d) => (d.id === id ? { ...d, done: !d.done } : d))
-    );
+  function setEntityFilter(v: "Both" | "C-Corp" | "LLC") {
+    updateSettings({ ...settings, entityFilter: v });
   }
 
-  function addDeduction() {
+  function setRevenue(v: number) {
+    updateSettings({ ...settings, revenue: v });
+  }
+
+  function setTaxRate(v: number) {
+    updateSettings({ ...settings, taxRate: v });
+  }
+
+  function toggleDate(id: string) {
+    const updated = taxDates.map((d) =>
+      d.id === id ? { ...d, done: !d.done } : d
+    );
+    updateSettings({ ...settings, taxDates: updated });
+  }
+
+  async function addDeduction() {
     if (!dAmount) return;
-    const d: Deduction = {
-      id: genId(),
+    await createDeduction({
       category: dCat,
       amount: parseFloat(dAmount) || 0,
       hasReceipt: dReceipt,
-    };
-    setDeductions((prev) => [d, ...prev]);
+    } as Partial<Deduction>);
     setDAmount("");
     setDReceipt(false);
     setShowDeductionForm(false);
   }
 
-  function removeDeduction(id: string) {
-    setDeductions((prev) => prev.filter((d) => d.id !== id));
+  async function deleteDeduction(id: string) {
+    await removeDeduction(id);
   }
 
   const filteredDates = useMemo(
@@ -224,7 +228,7 @@ export default function Page() {
     return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
   }, [deductions]);
 
-  if (!loaded) return null;
+  if (settingsLoading || deductionsLoading) return null;
 
   return (
     <div className="mx-auto max-w-[640px]">
@@ -451,7 +455,7 @@ export default function Page() {
                   </div>
                 </div>
                 <button
-                  onClick={() => removeDeduction(d.id)}
+                  onClick={() => deleteDeduction(d.id)}
                   className="text-xs text-zinc-300 hover:text-red-600"
                 >
                   ×
