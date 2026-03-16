@@ -263,7 +263,6 @@ function SchedulesTab({
       {jobs.length === 0 ? (
         <div className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
           <p className="text-sm text-zinc-600">No schedules yet</p>
-          <p className="mt-1 text-xs text-zinc-400">Create your first automated schedule to run tasks on a recurring basis.</p>
           <Button onClick={onCreate} className="mt-4 text-xs">
             + New Schedule
           </Button>
@@ -365,7 +364,6 @@ function TriggersTab({
       {triggers.length === 0 ? (
         <div className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
           <p className="text-sm text-zinc-600">No triggers yet</p>
-          <p className="mt-1 text-xs text-zinc-400">Create event-driven triggers to react automatically when things happen.</p>
           <Button onClick={onCreate} className="mt-4 text-xs">
             + New Trigger
           </Button>
@@ -455,7 +453,6 @@ function HistoryTab({
     return (
       <div className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
         <p className="text-sm text-zinc-600">No runs yet</p>
-        <p className="mt-1 text-xs text-zinc-400">Execution history will appear here once automations start running.</p>
       </div>
     );
   }
@@ -590,7 +587,7 @@ function CreateJobModal({
       open={open}
       onClose={() => { reset(); onClose(); }}
       title="New Schedule"
-      description="Create a recurring or one-time automated task."
+      description="Run a task on a schedule."
     >
       <div className="flex flex-col gap-3">
         <Input
@@ -784,7 +781,7 @@ function CreateTriggerModal({
       open={open}
       onClose={() => { reset(); onClose(); }}
       title="New Trigger"
-      description="React automatically when an event happens."
+      description="Run a task when an event fires."
     >
       <div className="flex flex-col gap-3">
         <Input

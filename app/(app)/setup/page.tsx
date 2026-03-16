@@ -191,15 +191,11 @@ export default function SetupPage() {
     setAnalysisProgress([]);
 
     const steps = [
-      "Scanning connected accounts...",
-      "Reading your email patterns...",
-      "Analyzing your calendar...",
-      "Identifying your business type...",
-      "Detecting clients and contacts...",
-      "Mapping your workflows...",
-      "Selecting the best agent team...",
-      "Choosing AI strategy...",
-      "Analysis complete.",
+      "Scanning accounts...",
+      "Reading patterns...",
+      "Identifying business type...",
+      "Selecting agent team...",
+      "Done.",
     ];
 
     // Animate progress steps
@@ -357,8 +353,7 @@ export default function SetupPage() {
           </div>
           <h1 className="text-xl font-bold text-zinc-900">Connect your accounts</h1>
           <p className="mt-2 text-sm text-zinc-500 max-w-md mx-auto">
-            Just connect your email and tools. Our AI will read your business, understand what you do,
-            and hire the perfect team of agents automatically. <strong>Zero forms to fill.</strong>
+            Connect your tools. AI reads your business and builds your team. <strong>No forms.</strong>
           </p>
         </div>
 
@@ -389,8 +384,8 @@ export default function SetupPage() {
           </Button>
           <p className="text-[10px] text-zinc-400">
             {connectedAccounts.length > 0
-              ? "AI will scan your accounts and auto-configure everything"
-              : "You can connect accounts later — AI will use a general setup"
+              ? "AI auto-configures from your accounts"
+              : "Connect accounts later in Settings"
             }
           </p>
         </div>
@@ -410,8 +405,8 @@ export default function SetupPage() {
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-zinc-900">Reading your business...</h2>
-          <p className="mt-1 text-sm text-zinc-500">AI is analyzing your connected accounts</p>
+          <h2 className="text-lg font-semibold text-zinc-900">Analyzing...</h2>
+          <p className="mt-1 text-sm text-zinc-500">Reading your connected accounts</p>
         </div>
 
         <div className="flex flex-col gap-1.5">
@@ -452,9 +447,9 @@ export default function SetupPage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-zinc-900">Here&#39;s what I found</h2>
+          <h2 className="text-lg font-semibold text-zinc-900">Your setup</h2>
           <p className="mt-1 text-sm text-zinc-500">
-            AI analyzed your accounts and built your setup. Review and launch.
+            Review and launch.
           </p>
         </div>
 
@@ -575,7 +570,7 @@ export default function SetupPage() {
               Re-analyze
             </button>
           </div>
-          <p className="text-[10px] text-zinc-400">You can change any of this later in Settings</p>
+          <p className="text-[10px] text-zinc-400">Editable in Settings</p>
         </div>
       </div>
     );
@@ -585,11 +580,11 @@ export default function SetupPage() {
 
   if (phase === "launching") {
     const WIRING_LABELS = [
-      "Connecting safety pipeline",
-      "Setting budget limits",
-      "Enabling circuit breakers",
-      "Configuring model routing",
-      "Starting agent runtime",
+      "Safety pipeline",
+      "Budget limits",
+      "Circuit breakers",
+      "Model routing",
+      "Agent runtime",
     ];
 
     const totalSkills = agents.reduce((sum, a) => sum + a.skills.length, 0);
@@ -618,10 +613,10 @@ export default function SetupPage() {
             </div>
           )}
           <h2 className="text-lg font-semibold text-zinc-900">
-            {launchPhase === "hiring" && "Hiring your AI team..."}
+            {launchPhase === "hiring" && "Hiring agents..."}
             {launchPhase === "skills" && "Installing skills..."}
-            {launchPhase === "wiring" && "Wiring up systems..."}
-            {launchPhase === "done" && `${analysis?.businessName ?? "Your business"} is live!`}
+            {launchPhase === "wiring" && "Wiring systems..."}
+            {launchPhase === "done" && `${analysis?.businessName ?? "Your business"} is live.`}
           </h2>
         </div>
 
@@ -709,7 +704,7 @@ export default function SetupPage() {
         )}
 
         {launchPhase === "done" && (
-          <p className="mt-6 text-center text-sm text-zinc-500">Taking you to your command center...</p>
+          <p className="mt-6 text-center text-sm text-zinc-500">Opening HQ...</p>
         )}
       </div>
     );

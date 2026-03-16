@@ -175,7 +175,7 @@ const EDUCATION: Record<string, PageEducation> = {
 
 export function FounderEducation() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const education = EDUCATION[pathname];
   if (!education) return null;

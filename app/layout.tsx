@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "1 Person Company",
-  description: "Your one-person business operating system. AI agents that run your company while you do the work you love.",
+  title: "1P OS — Every mistake a first-time founder makes is already solved here",
+  description: "The operating system for first-time founders. Cap table, bookkeeping, contracts, fundraising, compliance — all built in. AI agents handle the work.",
 };
 
 export default function RootLayout({

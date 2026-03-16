@@ -63,7 +63,7 @@ INSERT INTO businesses (
 ) VALUES (
   '00000000-0000-0000-0000-000000000010',
   '00000000-0000-0000-0000-000000000001',
-  'Acme Studios',
+  'My Company',
   'CA',
   'llc',
   'saas',
@@ -97,7 +97,7 @@ INSERT INTO agents (id, business_id, name, role, avatar, status,
   '00000000-0000-0000-0000-000000000101',
   '00000000-0000-0000-0000-000000000010',
   'Lead Qualifier', 'Sales — Inbound Qualification', NULL, 'working',
-  'You are a sales qualification agent for Acme Studios, a B2B SaaS company. Score inbound leads using BANT criteria. Qualify leads that match ICP (mid-market, 50-500 employees, project management need). Escalate high-value leads ($5K+ ARR potential) for founder review.',
+  'You are a sales qualification agent for My Company, a B2B SaaS company. Score inbound leads using BANT criteria. Qualify leads that match ICP (mid-market, 50-500 employees, project management need). Escalate high-value leads ($5K+ ARR potential) for founder review.',
   ARRAY['identity', 'relationships', 'memory'],
   ARRAY['read_relationships', 'update_relationships', 'create_decision', 'send_message', 'search_memory'],
   '[{"type":"event","event_type":"new_lead","source":"form"},{"type":"schedule","cron":"0 9 * * 1-5"}]'::jsonb,
@@ -116,7 +116,7 @@ INSERT INTO agents (id, business_id, name, role, avatar, status,
   '00000000-0000-0000-0000-000000000102',
   '00000000-0000-0000-0000-000000000010',
   'Proposal Writer', 'Sales — Proposals & Contracts', NULL, 'idle',
-  'You write sales proposals for Acme Studios. Use context about the lead, their company, and our pricing tiers to draft professional proposals. Always escalate for approval before sending proposals over $2,000.',
+  'You write sales proposals for My Company. Use context about the lead, their company, and our pricing tiers to draft professional proposals. Always escalate for approval before sending proposals over $2,000.',
   ARRAY['identity', 'relationships', 'financials', 'memory'],
   ARRAY['read_relationships', 'create_document', 'create_decision', 'send_message'],
   '[{"type":"event","event_type":"qualified_lead","source":"agent"}]'::jsonb,
@@ -135,7 +135,7 @@ INSERT INTO agents (id, business_id, name, role, avatar, status,
   '00000000-0000-0000-0000-000000000103',
   '00000000-0000-0000-0000-000000000010',
   'Ticket Resolver', 'Support — Customer Success', NULL, 'working',
-  'You handle customer support tickets for Acme Studios. Resolve common issues using the knowledge base. Escalate billing disputes and refund requests over $50. Maintain a friendly, professional tone. Track resolution time.',
+  'You handle customer support tickets for My Company. Resolve common issues using the knowledge base. Escalate billing disputes and refund requests over $50. Maintain a friendly, professional tone. Track resolution time.',
   ARRAY['identity', 'relationships', 'memory'],
   ARRAY['read_relationships', 'update_relationships', 'send_email', 'create_decision', 'search_memory', 'add_memory'],
   '[{"type":"event","event_type":"new_ticket","source":"email"},{"type":"event","event_type":"new_ticket","source":"chat"}]'::jsonb,
@@ -154,7 +154,7 @@ INSERT INTO agents (id, business_id, name, role, avatar, status,
   '00000000-0000-0000-0000-000000000104',
   '00000000-0000-0000-0000-000000000010',
   'Content Writer', 'Content — Blog & Social', NULL, 'working',
-  'You create content for Acme Studios. Write blog posts, social media updates, and newsletters. Focus on project management tips, productivity, and SaaS industry trends. Maintain our brand voice: helpful, clear, slightly informal.',
+  'You create content for My Company. Write blog posts, social media updates, and newsletters. Focus on project management tips, productivity, and SaaS industry trends. Maintain our brand voice: helpful, clear, slightly informal.',
   ARRAY['identity', 'memory'],
   ARRAY['create_document', 'search_memory', 'add_memory', 'send_message'],
   '[{"type":"schedule","cron":"0 8 * * 1"},{"type":"schedule","cron":"0 10 * * 3,5"}]'::jsonb,
@@ -173,7 +173,7 @@ INSERT INTO agents (id, business_id, name, role, avatar, status,
   '00000000-0000-0000-0000-000000000105',
   '00000000-0000-0000-0000-000000000010',
   'Bookkeeper', 'Finance — Reconciliation', NULL, 'idle',
-  'You handle bookkeeping for Acme Studios. Reconcile Stripe payouts daily. Categorize expenses. Flag unusual transactions over $500. Prepare monthly summaries. Never approve or initiate payments — escalate all payment actions.',
+  'You handle bookkeeping for My Company. Reconcile Stripe payouts daily. Categorize expenses. Flag unusual transactions over $500. Prepare monthly summaries. Never approve or initiate payments — escalate all payment actions.',
   ARRAY['identity', 'financials', 'memory'],
   ARRAY['read_invoices', 'update_invoices', 'create_decision', 'search_memory', 'add_memory'],
   '[{"type":"schedule","cron":"0 6 * * 1-5"}]'::jsonb,
@@ -192,7 +192,7 @@ INSERT INTO agents (id, business_id, name, role, avatar, status,
   '00000000-0000-0000-0000-000000000106',
   '00000000-0000-0000-0000-000000000010',
   'Invoice Agent', 'Finance — Billing & Collections', NULL, 'working',
-  'You manage invoicing for Acme Studios. Generate invoices from project completions. Send payment reminders for overdue invoices. Escalate invoices overdue by 30+ days. Track payment status.',
+  'You manage invoicing for My Company. Generate invoices from project completions. Send payment reminders for overdue invoices. Escalate invoices overdue by 30+ days. Track payment status.',
   ARRAY['identity', 'financials', 'relationships'],
   ARRAY['create_invoice', 'read_invoices', 'update_invoices', 'send_email', 'create_decision'],
   '[{"type":"schedule","cron":"0 9 * * 1-5"},{"type":"event","event_type":"project_completed","source":"agent"}]'::jsonb,
@@ -211,7 +211,7 @@ INSERT INTO agents (id, business_id, name, role, avatar, status,
   '00000000-0000-0000-0000-000000000107',
   '00000000-0000-0000-0000-000000000010',
   'Ops Coordinator', 'Operations — Orchestration', NULL, 'working',
-  'You are the operations coordinator for Acme Studios. Route tasks between agents. Monitor agent health and performance. Compile daily briefings. Coordinate cross-department workflows. Flag bottlenecks and suggest process improvements.',
+  'You are the operations coordinator for My Company. Route tasks between agents. Monitor agent health and performance. Compile daily briefings. Coordinate cross-department workflows. Flag bottlenecks and suggest process improvements.',
   ARRAY['identity', 'financials', 'relationships', 'deadlines', 'memory'],
   ARRAY['send_message', 'create_decision', 'search_memory', 'add_memory', 'read_agents'],
   '[{"type":"schedule","cron":"0 7 * * 1-5"},{"type":"event","event_type":"agent_error","source":"system"}]'::jsonb,
@@ -303,14 +303,14 @@ INSERT INTO documents (business_id, name, file_type, file_size_bytes, category, 
 ('00000000-0000-0000-0000-000000000010', '5 PM Mistakes That Kill Velocity.md', 'text/markdown', 8400, 'report', ARRAY['content','blog','draft'], 'Blog post draft — PM best practices series part 1', 'internal', '00000000-0000-0000-0000-000000000104', 'agent', NOW() - INTERVAL '30 minutes'),
 ('00000000-0000-0000-0000-000000000010', 'Contoso Renewal Agreement.pdf', 'application/pdf', 340000, 'contract', ARRAY['contract','contoso','renewal'], 'Enterprise renewal agreement — Jun 2026', 'restricted', NULL, 'upload', NOW() - INTERVAL '1 month'),
 ('00000000-0000-0000-0000-000000000010', 'March Expense Report.csv', 'text/csv', 12000, 'receipt', ARRAY['finance','expenses','march'], 'Monthly expense categorization', 'internal', '00000000-0000-0000-0000-000000000105', 'agent', NOW() - INTERVAL '1 day'),
-('00000000-0000-0000-0000-000000000010', 'Brand Voice Guide.pdf', 'application/pdf', 95000, 'other', ARRAY['brand','content','guide'], 'Acme Studios brand voice and style guide', 'team', NULL, 'upload', NOW() - INTERVAL '3 months'),
+('00000000-0000-0000-0000-000000000010', 'Brand Voice Guide.pdf', 'application/pdf', 95000, 'other', ARRAY['brand','content','guide'], 'My Company brand voice and style guide', 'team', NULL, 'upload', NOW() - INTERVAL '3 months'),
 ('00000000-0000-0000-0000-000000000010', 'Support FAQ — SSO Setup.md', 'text/markdown', 4200, 'report', ARRAY['support','faq','sso'], 'Auto-generated FAQ from top support tickets', 'team', '00000000-0000-0000-0000-000000000104', 'agent', NOW() - INTERVAL '1 week');
 
 
 -- ── Business Memory ─────────────────────────────────────────
 
 INSERT INTO business_memory (business_id, content, category, tags, importance, source_agent_id, created_at) VALUES
-('00000000-0000-0000-0000-000000000010', 'Acme Studios pricing: Starter $80/mo (20 seats), Team $150/mo (50 seats), Enterprise $800+/mo (custom). Annual discount 15%.', 'fact', ARRAY['pricing','plans'], 10, NULL, NOW() - INTERVAL '2 months'),
+('00000000-0000-0000-0000-000000000010', 'My Company pricing: Starter $80/mo (20 seats), Team $150/mo (50 seats), Enterprise $800+/mo (custom). Annual discount 15%.', 'fact', ARRAY['pricing','plans'], 10, NULL, NOW() - INTERVAL '2 months'),
 ('00000000-0000-0000-0000-000000000010', 'Top 3 support issues this month: 1) SSO configuration (34%), 2) Billing portal access (28%), 3) API rate limit questions (18%)', 'insight', ARRAY['support','issues'], 8, '00000000-0000-0000-0000-000000000103', NOW() - INTERVAL '1 day'),
 ('00000000-0000-0000-0000-000000000010', 'Competitor Monday.com raised prices 20% in Feb 2026. Several of their customers reaching out to us. Opportunity for targeted campaign.', 'insight', ARRAY['competitor','opportunity'], 9, '00000000-0000-0000-0000-000000000101', NOW() - INTERVAL '3 weeks'),
 ('00000000-0000-0000-0000-000000000010', 'Contoso Ltd CTO (James Chen) prefers email over calls. Best response times: Tuesday-Thursday mornings. Decision maker for renewal.', 'relationship', ARRAY['contoso','preferences'], 7, '00000000-0000-0000-0000-000000000102', NOW() - INTERVAL '2 weeks'),
@@ -417,10 +417,10 @@ INSERT INTO expenses (business_id, description, amount, category, vendor, date, 
 
 INSERT INTO integrations (business_id, provider, label, status, scopes, metadata, last_synced_at) VALUES
 ('00000000-0000-0000-0000-000000000010', 'gmail', 'founder@acmestudios.com', 'active', ARRAY['gmail.readonly','gmail.send'], '{"email":"founder@acmestudios.com"}'::jsonb, NOW() - INTERVAL '15 minutes'),
-('00000000-0000-0000-0000-000000000010', 'slack', 'Acme Studios Workspace', 'active', ARRAY['chat:write','channels:read'], '{"workspace":"acme-studios"}'::jsonb, NOW() - INTERVAL '5 minutes'),
-('00000000-0000-0000-0000-000000000010', 'stripe', 'Acme Studios', 'active', ARRAY['read_write'], '{"account_id":"acct_demo123"}'::jsonb, NOW() - INTERVAL '1 hour'),
-('00000000-0000-0000-0000-000000000010', 'google_drive', 'Acme Studios Drive', 'active', ARRAY['drive.readonly'], '{"email":"founder@acmestudios.com"}'::jsonb, NOW() - INTERVAL '2 hours'),
-('00000000-0000-0000-0000-000000000010', 'notion', 'Acme Studios', 'error', ARRAY['read_content'], '{"workspace":"Acme Studios"}'::jsonb, NOW() - INTERVAL '3 days');
+('00000000-0000-0000-0000-000000000010', 'slack', 'My Company Workspace', 'active', ARRAY['chat:write','channels:read'], '{"workspace":"acme-studios"}'::jsonb, NOW() - INTERVAL '5 minutes'),
+('00000000-0000-0000-0000-000000000010', 'stripe', 'My Company', 'active', ARRAY['read_write'], '{"account_id":"acct_demo123"}'::jsonb, NOW() - INTERVAL '1 hour'),
+('00000000-0000-0000-0000-000000000010', 'google_drive', 'My Company Drive', 'active', ARRAY['drive.readonly'], '{"email":"founder@acmestudios.com"}'::jsonb, NOW() - INTERVAL '2 hours'),
+('00000000-0000-0000-0000-000000000010', 'notion', 'My Company', 'error', ARRAY['read_content'], '{"workspace":"My Company"}'::jsonb, NOW() - INTERVAL '3 days');
 
 
 -- ── Agent Data (KV state) ───────────────────────────────────
@@ -449,7 +449,7 @@ INSERT INTO marketplace_agents (slug, name, description, role, category, author_
 
 -- ============================================================
 -- Done! Demo data covers:
--- ✓ 1 business (Acme Studios — B2B SaaS, $45K MRR)
+-- ✓ 1 business (My Company — B2B SaaS, $45K MRR)
 -- ✓ 7 agents across 5 departments (all active with realistic metrics)
 -- ✓ 7 cross-agent messages showing workflow chains
 -- ✓ 5 pending decision cards (approvals + alerts)

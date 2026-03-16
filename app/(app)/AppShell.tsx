@@ -280,7 +280,7 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar counts={sidebarCounts} />
+      <Sidebar counts={sidebarCounts} onOpenCommandBar={() => setCommandBarOpen(true)} />
 
       <div className="ml-0 flex flex-1 flex-col md:ml-[220px]">
         <Header
@@ -300,7 +300,7 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
           }}
         />
 
-        <main className="flex-1 overflow-y-auto p-4 md:p-8">
+        <main className="flex-1 overflow-y-auto bg-white p-4 md:p-8">
           <CoreBanner section={currentSection} onAction={handleCommandAction} />
           {children}
           <FounderEducation />

@@ -41,7 +41,7 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
       open={open}
       onClose={handleClose}
       title="Kill Switch"
-      description="Emergency controls for your agents."
+      description="Stop agents immediately."
     >
       <div className="flex flex-col gap-3">
         <button
@@ -59,7 +59,7 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
             Pause One Agent
           </p>
           <p className="text-xs text-zinc-500">
-            Stop a specific agent immediately.
+            Pick one to stop.
           </p>
         </button>
 
@@ -93,7 +93,7 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
             Pause All Agents
           </p>
           <p className="text-xs text-zinc-500">
-            Stop all agents. Tasks in progress will finish gracefully.
+            In-progress tasks finish gracefully.
           </p>
         </button>
 
@@ -112,7 +112,7 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
             Full Lockdown
           </p>
           <p className="text-xs text-zinc-500">
-            Kill everything. No agents run until you manually unlock.
+            Nothing runs until you unlock.
           </p>
         </button>
 

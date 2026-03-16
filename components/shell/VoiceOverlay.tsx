@@ -202,40 +202,53 @@ export function MicButton({
   onTranscript,
   className = "",
 }: MicButtonProps) {
+  const [micError, setMicError] = React.useState<string | null>(null);
   const voice = useHandyVoice({
-    onTranscript,
-    onError: (err) => console.warn("[MicButton]", err),
+    onTranscript: (text) => {
+      setMicError(null);
+      onTranscript(text);
+    },
+    onError: (err) => {
+      setMicError(err);
+      console.warn("[MicButton]", err);
+    },
   });
 
   const isActive = voice.state !== "idle" && voice.state !== "error";
+  const isError = voice.state === "error";
 
   return (
     <>
       <button
         type="button"
-        onClick={isActive ? voice.stop : () => voice.start()}
+        onClick={() => {
+          setMicError(null);
+          if (isActive) voice.stop();
+          else voice.start();
+        }}
         className={`flex shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${
           isActive
             ? "bg-zinc-900 text-white"
-            : "text-zinc-400 hover:text-zinc-600"
+            : isError
+              ? "text-red-500"
+              : "text-zinc-400 hover:text-zinc-600"
         } ${className}`}
-        aria-label={isActive ? "Stop listening" : "Voice input (⌘⇧V)"}
-        title={isActive ? "Stop listening" : "Voice input (⌘⇧V)"}
+        aria-label={isActive ? "Stop listening" : isError ? "Mic not working — tap to retry" : "Voice input (⌘⇧V)"}
+        title={isError && micError ? micError : isActive ? "Stop listening" : "Voice input (⌘⇧V)"}
       >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-          <line x1="12" y1="19" x2="12" y2="22" />
-        </svg>
+        {isError ? (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+            <line x1="2" y1="2" x2="22" y2="22" />
+          </svg>
+        ) : (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+            <line x1="12" y1="19" x2="12" y2="22" />
+          </svg>
+        )}
       </button>
 
       <VoiceOverlay

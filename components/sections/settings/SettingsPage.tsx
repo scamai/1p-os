@@ -227,7 +227,7 @@ function SecurityTab() {
   };
 
   const handleKillSwitch = async () => {
-    if (!confirm("This will pause ALL agents immediately. Continue?")) return;
+    if (!confirm("Pause all agents now?")) return;
     try {
       await fetch("/api/safety/kill-switch", {
         method: "POST",
@@ -318,7 +318,7 @@ function SecurityTab() {
           disabled={saving}
           className="text-[12px] text-zinc-500 transition-colors hover:text-zinc-900 disabled:opacity-50"
         >
-          {saving ? "Saving..." : "Save Safety Settings"}
+          {saving ? "Saving..." : "Save"}
         </button>
         {saved && <span className="text-[12px] text-zinc-400">Saved</span>}
       </div>
@@ -362,7 +362,7 @@ function SecurityTab() {
           onClick={handleKillSwitch}
           className="rounded border border-zinc-300 px-4 py-2 text-[13px] text-zinc-700 transition-colors hover:bg-zinc-100"
         >
-          Emergency Stop — Pause All Agents
+          Stop All Agents
         </button>
       </div>
     </div>
@@ -487,7 +487,7 @@ function APIKeysTab() {
   return (
     <div className="space-y-6">
       <p className="text-[12px] text-zinc-500">
-        API keys are stored as environment variables. Edit your <code className="rounded bg-zinc-100 px-1 py-0.5 text-[11px] font-mono">.env.local</code> file to update them.
+        Stored in <code className="rounded bg-zinc-100 px-1 py-0.5 text-[11px] font-mono">.env.local</code>
       </p>
 
       <div className="space-y-3">
@@ -582,7 +582,7 @@ function UsageTab() {
       )}
 
       <p className="text-[11px] text-zinc-400">
-        Self-hosted — you pay only for AI API usage directly to providers.
+        Self-hosted. You pay providers directly.
       </p>
     </div>
   );
@@ -592,26 +592,26 @@ function UsageTab() {
 
 const AI_FEATURES = [
   { category: "Money", features: [
-    { name: "AI Bookkeeping", desc: "Auto-categorize transactions, reconcile accounts, flag anomalies" },
-    { name: "AI Accounting", desc: "Generate financial statements, track GAAP compliance" },
-    { name: "AI Auditing", desc: "Continuous audit trail, detect irregularities, generate reports" },
-    { name: "AI Tax Filing", desc: "Estimate taxes, prepare filings, track deadlines" },
-    { name: "AI Runrate Projections", desc: "Revenue forecasting, burn rate analysis, scenario modeling" },
+    { name: "AI Bookkeeping", desc: "Auto-categorize, reconcile, flag anomalies" },
+    { name: "AI Accounting", desc: "Financial statements, GAAP compliance" },
+    { name: "AI Auditing", desc: "Audit trail, irregularity detection, reports" },
+    { name: "AI Tax Filing", desc: "Estimates, filings, deadline tracking" },
+    { name: "AI Runrate Projections", desc: "Revenue forecasting, burn rate, scenarios" },
   ]},
   { category: "Business", features: [
-    { name: "AI Market Research", desc: "Competitive analysis, TAM/SAM/SOM, trend identification" },
-    { name: "AI Go-to-Market", desc: "Launch strategy, channel selection, messaging framework" },
-    { name: "AI Marketing", desc: "Content generation, campaign management, analytics" },
+    { name: "AI Market Research", desc: "Competitive analysis, TAM/SAM/SOM, trends" },
+    { name: "AI Go-to-Market", desc: "Launch strategy, channels, messaging" },
+    { name: "AI Marketing", desc: "Content, campaigns, analytics" },
   ]},
   { category: "Legal", features: [
-    { name: "AI Contracts", desc: "Draft, review, and negotiate contracts with AI assistance" },
-    { name: "AI Compliance", desc: "Regulatory monitoring, policy generation, risk assessment" },
-    { name: "AI IP Management", desc: "Trademark search, patent analysis, IP portfolio tracking" },
+    { name: "AI Contracts", desc: "Draft, review, negotiate contracts" },
+    { name: "AI Compliance", desc: "Regulatory monitoring, policy, risk" },
+    { name: "AI IP Management", desc: "Trademark search, patents, portfolio" },
   ]},
   { category: "Operations", features: [
-    { name: "AI Agent Orchestration", desc: "Multi-agent workflows, task delegation, autonomous execution" },
-    { name: "AI Decision Engine", desc: "Data-driven recommendations, approval workflows, risk scoring" },
-    { name: "AI Memory & Context", desc: "Persistent business knowledge, cross-agent learning" },
+    { name: "AI Agent Orchestration", desc: "Multi-agent workflows, task delegation" },
+    { name: "AI Decision Engine", desc: "Recommendations, approvals, risk scoring" },
+    { name: "AI Memory & Context", desc: "Persistent knowledge, cross-agent learning" },
   ]},
 ];
 
@@ -619,7 +619,7 @@ function AIFeaturesTab() {
   return (
     <div className="space-y-8">
       <p className="text-[12px] text-zinc-500">
-        AI-native features that will automate your business. All features below are in development.
+        In development.
       </p>
 
       {AI_FEATURES.map((group) => (

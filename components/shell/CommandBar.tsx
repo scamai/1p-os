@@ -227,12 +227,14 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
   const [input, setInput] = React.useState("");
   const [intent, setIntent] = React.useState<ParsedIntent | null>(null);
   const [executed, setExecuted] = React.useState<string | null>(null);
+  const [micError, setMicError] = React.useState<string | null>(null);
   const [parsing, setParsing] = React.useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   // Voice
   const voice = useHandyVoice({
     onTranscript: (text) => {
+      setMicError(null);
       setInput(text);
       // Auto-parse and execute voice commands
       const parsed = parseIntent(text);
@@ -249,10 +251,11 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
       // Show live parse as user speaks
       setIntent(parseIntent(text));
     },
-    onError: (err) => setExecuted(err),
+    onError: (err) => setMicError(err),
   });
 
   const listening = voice.state === "recording" || voice.state === "transcribing";
+  const voiceError = voice.state === "error";
 
   // Parse as user types
   React.useEffect(() => {
@@ -270,6 +273,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
       setInput("");
       setIntent(null);
       setExecuted(null);
+      setMicError(null);
       setParsing(false);
       // Start listening immediately
       setTimeout(() => voice.start(), 100);
@@ -340,7 +344,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
           setIntent(data);
           executeIntent(data);
         } else {
-          setExecuted("I didn't understand that. Try again.");
+          setExecuted("Didn't catch that. Try again.");
         }
       }
     } catch {
@@ -434,12 +438,21 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
             className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-200 ${
               listening
                 ? "bg-red-500 text-white shadow-lg shadow-red-500/25 scale-110"
-                : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700"
+                : voiceError
+                  ? "bg-red-100 text-red-500"
+                  : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700"
             }`}
-            aria-label={listening ? "Stop" : "Voice"}
+            aria-label={listening ? "Stop" : voiceError ? "Mic not working" : "Voice"}
+            title={voiceError && micError ? micError : undefined}
           >
             {listening ? (
               <div className="h-2.5 w-2.5 rounded-sm bg-white" />
+            ) : voiceError ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                <line x1="2" y1="2" x2="22" y2="22" />
+              </svg>
             ) : (
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
@@ -470,7 +483,17 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
 
         {/* Intent preview */}
         <div className="px-5 py-3">
-          {executed ? (
+          {micError ? (
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </div>
+              <span className="text-[13px] text-red-600">{micError}</span>
+            </div>
+          ) : executed ? (
             <div className="flex items-center gap-2.5">
               <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -499,7 +522,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
             </button>
           ) : input.trim() ? (
             <p className="text-[13px] text-zinc-400">
-              Press Enter to run with AI...
+              Enter to run
             </p>
           ) : (
             <div className="space-y-1">

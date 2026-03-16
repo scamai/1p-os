@@ -2,715 +2,135 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { DecisionFeed, type DecisionItem } from "@/components/company/DecisionFeed";
-import { MorningBriefCard } from "@/components/company/MorningBriefCard";
-import { ActivityFeed } from "@/components/company/ActivityFeed";
-import { AgentHandoffs } from "@/components/company/AgentHandoffs";
-import { MOCK_HANDOFFS, type AgentHandoff } from "@/lib/agents/collaboration";
 
-// ── Types ──
+// ── Data ──
 
-interface GoalNode {
+const CHECKLIST: {
   id: string;
-  title: string;
-  level: "mission" | "strategic" | "tactical" | "task";
-  status: "active" | "completed" | "cancelled" | "blocked";
-  assigned_agent_id: string | null;
-  children: GoalNode[];
-}
-
-interface AgentInfo {
-  id: string;
-  name: string;
-  role: string;
-  status: "active" | "idle" | "paused" | "error";
-  taskCount: number;
-  costToday: number;
-}
-
-interface CEOBrief {
-  tasksCompleted: number;
-  decisionsPending: number;
-  costToday: number;
-  agentsActive: number;
-  summary: string;
-  lastUpdated: string;
-}
-
-// ── Mock Data (DEV_BYPASS) ──
-
-const MOCK_BRIEF: CEOBrief = {
-  tasksCompleted: 7,
-  decisionsPending: 3,
-  costToday: 1.47,
-  agentsActive: 3,
-  summary:
-    "Sales Agent qualified 2 new leads and drafted a proposal for Globex ($5k). Finance Agent reconciled March payouts — everything matched. Support Agent resolved 3 tickets with 4-min avg response. Content Agent is paused (nearing budget). CEO decomposed Q2 growth strategy into 4 tactical goals.",
-  lastUpdated: new Date(Date.now() - 42 * 60 * 1000).toISOString(),
-};
-
-const MOCK_AGENTS: AgentInfo[] = [
-  { id: "a1", name: "CEO", role: "Strategy", status: "active", taskCount: 2, costToday: 0.31 },
-  { id: "a2", name: "Sales Agent", role: "Sales", status: "active", taskCount: 3, costToday: 0.52 },
-  { id: "a3", name: "Finance Agent", role: "Finance", status: "active", taskCount: 1, costToday: 0.18 },
-  { id: "a4", name: "Support Agent", role: "Support", status: "idle", taskCount: 0, costToday: 0.22 },
-  { id: "a5", name: "Content Agent", role: "Content", status: "paused", taskCount: 0, costToday: 0.24 },
+  label: string;
+  why: string;
+  href: string;
+  category: "company" | "money" | "business" | "legal";
+}[] = [
+  // Company
+  { id: "founders", label: "Add founders & equity split", why: "Equity fights kill 62% of startups with co-founders.", href: "/company/founders", category: "company" },
+  { id: "ideation", label: "Validate your idea", why: "Make sure you're solving a real problem before building.", href: "/company/ideation", category: "company" },
+  { id: "incorporation", label: "Incorporate your company", why: "You need a legal entity for bank accounts, fundraising, contracts.", href: "/company/incorporation", category: "company" },
+  { id: "deck", label: "Build your pitch deck", why: "Can't articulate your business = investors pass.", href: "/company/solution-deck", category: "company" },
+  // Money
+  { id: "fundraising", label: "Set up fundraising pipeline", why: "Track every investor conversation. Know where your round stands.", href: "/money/fundraising", category: "money" },
+  { id: "runrate", label: "Track your runway", why: "How long until you run out of money. Know this number always.", href: "/money/runrate", category: "money" },
+  { id: "bookkeeping", label: "Start bookkeeping", why: "Messy books = tax panic + investors walk during due diligence.", href: "/money/bookkeeping", category: "money" },
+  { id: "tax", label: "Track tax deadlines", why: "Late filings = penalties. Preventable.", href: "/money/tax", category: "money" },
+  // Business
+  { id: "model", label: "Define your business model", why: "Think through every part of your business on one page.", href: "/business/model", category: "business" },
+  { id: "pricing", label: "Set your pricing", why: "#1 revenue lever. Too low = lost money. Too high = no customers.", href: "/business/pricing", category: "business" },
+  { id: "gtm", label: "Plan your go-to-market", why: "Turn your product into a business. Plan where and how to launch.", href: "/business/gtm", category: "business" },
+  // Legal
+  { id: "contracts", label: "Track your contracts", why: "Handshake deals go wrong. No legal protection.", href: "/legal/contracts", category: "legal" },
+  { id: "compliance", label: "Check compliance requirements", why: "Missed filings, penalties, legal exposure. All preventable.", href: "/legal/compliance", category: "legal" },
+  { id: "ip", label: "Protect your IP", why: "Trademarks, patents, domains. Don't let them expire.", href: "/legal/ip", category: "legal" },
 ];
 
-const MOCK_GOALS: GoalNode[] = [
-  {
-    id: "g-mission",
-    title: "Build a profitable SaaS reaching $10k MRR",
-    level: "mission",
-    status: "active",
-    assigned_agent_id: null,
-    children: [
-      {
-        id: "g-s1",
-        title: "Acquire first 50 paying customers",
-        level: "strategic",
-        status: "active",
-        assigned_agent_id: null,
-        children: [
-          {
-            id: "g-t1",
-            title: "Set up inbound lead capture on landing page",
-            level: "tactical",
-            status: "completed",
-            assigned_agent_id: "a2",
-            children: [
-              { id: "g-task1", title: "Design lead form", level: "task", status: "completed", assigned_agent_id: "a2", children: [] },
-              { id: "g-task2", title: "Connect form to CRM", level: "task", status: "completed", assigned_agent_id: "a2", children: [] },
-            ],
-          },
-          {
-            id: "g-t2",
-            title: "Run outbound email campaign to 200 prospects",
-            level: "tactical",
-            status: "active",
-            assigned_agent_id: "a2",
-            children: [
-              { id: "g-task3", title: "Build prospect list from LinkedIn", level: "task", status: "completed", assigned_agent_id: "a2", children: [] },
-              { id: "g-task4", title: "Draft cold email sequence (3 emails)", level: "task", status: "active", assigned_agent_id: "a2", children: [] },
-              { id: "g-task5", title: "Send first batch (50 prospects)", level: "task", status: "blocked", assigned_agent_id: "a2", children: [] },
-            ],
-          },
-          {
-            id: "g-t3",
-            title: "Create demo video for website",
-            level: "tactical",
-            status: "active",
-            assigned_agent_id: "a5",
-            children: [],
-          },
-        ],
-      },
-      {
-        id: "g-s2",
-        title: "Reduce churn below 5%",
-        level: "strategic",
-        status: "active",
-        assigned_agent_id: null,
-        children: [
-          {
-            id: "g-t4",
-            title: "Set up automated onboarding emails",
-            level: "tactical",
-            status: "active",
-            assigned_agent_id: "a4",
-            children: [],
-          },
-        ],
-      },
-      {
-        id: "g-s3",
-        title: "Keep burn rate under $500/mo",
-        level: "strategic",
-        status: "active",
-        assigned_agent_id: "a3",
-        children: [
-          {
-            id: "g-t5",
-            title: "Audit current spending and create budget",
-            level: "tactical",
-            status: "completed",
-            assigned_agent_id: "a3",
-            children: [],
-          },
-        ],
-      },
-    ],
-  },
-];
-
-const MOCK_DECISIONS: DecisionItem[] = [
-  {
-    id: "d1",
-    type: "approval",
-    title: "Send proposal to Globex ($5,000)",
-    description:
-      "Sales Agent drafted a proposal based on the discovery call. Ready for review before sending.",
-    urgency: "high",
-    options: [
-      { label: "Approve & Send", value: "approve" },
-      { label: "Review First", value: "edit" },
-      { label: "Decline", value: "reject" },
-    ],
-  },
-  {
-    id: "d2",
-    type: "alert",
-    title: "Content Agent nearing budget limit",
-    description:
-      "At 85% of $50/mo budget with 18 days left. Currently generating social content.",
-    urgency: "medium",
-    options: [
-      { label: "Increase to $75", value: "increase" },
-      { label: "Pause Agent", value: "pause" },
-      { label: "OK, Let It Run", value: "dismiss" },
-    ],
-  },
-  {
-    id: "d3",
-    type: "approval",
-    title: "Refund request from Initech ($120)",
-    description:
-      "Support Agent flagged this — customer claims service issue. Refund is within policy.",
-    urgency: "low",
-    options: [
-      { label: "Approve Refund", value: "approve" },
-      { label: "Investigate", value: "review" },
-      { label: "Deny", value: "hold" },
-    ],
-  },
-];
-
-// ── Helpers ──
-
-const STATUS_ICON: Record<GoalNode["status"], { char: string; color: string }> = {
-  active: { char: "\u25CB", color: "text-zinc-500" },
-  completed: { char: "\u2713", color: "text-zinc-900" },
-  cancelled: { char: "\u2715", color: "text-zinc-300" },
-  blocked: { char: "\u25A0", color: "text-zinc-400" },
+const CATEGORY_LABELS: Record<string, string> = {
+  company: "Company",
+  money: "Money",
+  business: "Business",
+  legal: "Legal",
 };
 
-const LEVEL_LABEL: Record<GoalNode["level"], string> = {
-  mission: "Mission",
-  strategic: "Strategy",
-  tactical: "Tactic",
-  task: "Task",
-};
-
-const LEVEL_INDENT: Record<GoalNode["level"], string> = {
-  mission: "pl-0",
-  strategic: "pl-4",
-  tactical: "pl-8",
-  task: "pl-12",
-};
-
-const AGENT_DOT: Record<AgentInfo["status"], string> = {
-  active: "bg-emerald-500",
-  idle: "bg-zinc-300",
-  paused: "bg-amber-400",
-  error: "bg-red-500",
-};
-
-function timeAgo(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "just now";
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
-
-function formatUSD(n: number): string {
-  return `$${n.toFixed(2)}`;
-}
-
-// ── Sub-components ──
-
-function MissionEditor({
-  mission,
-  onSave,
-}: {
-  mission: string;
-  onSave: (v: string) => void;
-}) {
-  const [editing, setEditing] = React.useState(false);
-  const [value, setValue] = React.useState(mission);
-  const inputRef = React.useRef<HTMLInputElement>(null);
-
-  React.useEffect(() => {
-    if (editing) inputRef.current?.focus();
-  }, [editing]);
-
-  const save = () => {
-    const trimmed = value.trim();
-    if (trimmed) onSave(trimmed);
-    setEditing(false);
-  };
-
-  if (!editing) {
-    return (
-      <button
-        onClick={() => setEditing(true)}
-        className="group w-full text-left"
-      >
-        <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">
-          Mission
-        </p>
-        <p className="mt-1 text-[15px] font-medium text-zinc-900 group-hover:text-zinc-600">
-          {mission}
-          <span className="ml-2 text-[11px] text-zinc-300 opacity-0 transition-opacity group-hover:opacity-100">
-            edit
-          </span>
-        </p>
-      </button>
-    );
-  }
-
-  return (
-    <div>
-      <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">
-        Mission
-      </p>
-      <div className="mt-1 flex gap-2">
-        <input
-          ref={inputRef}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") save();
-            if (e.key === "Escape") {
-              setValue(mission);
-              setEditing(false);
-            }
-          }}
-          className="flex-1 border-b border-zinc-300 bg-transparent text-[15px] font-medium text-zinc-900 outline-none focus:border-zinc-900"
-        />
-        <button
-          onClick={save}
-          className="text-[12px] font-medium text-zinc-900 hover:text-zinc-600"
-        >
-          Save
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function BriefSection({ brief }: { brief: CEOBrief }) {
-  return (
-    <div>
-      <div className="flex items-baseline justify-between">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">
-          CEO Brief
-        </p>
-        <span className="text-[11px] text-zinc-300">
-          {timeAgo(brief.lastUpdated)}
-        </span>
-      </div>
-
-      {/* Key numbers */}
-      <div className="mt-3 grid grid-cols-4 gap-4">
-        <div>
-          <p className="text-[11px] text-zinc-400">Done today</p>
-          <p className="mt-0.5 font-mono text-lg font-semibold text-zinc-900">
-            {brief.tasksCompleted}
-          </p>
-        </div>
-        <div>
-          <p className="text-[11px] text-zinc-400">Pending</p>
-          <p className="mt-0.5 font-mono text-lg font-semibold text-zinc-900">
-            {brief.decisionsPending}
-          </p>
-        </div>
-        <div>
-          <p className="text-[11px] text-zinc-400">Cost today</p>
-          <p className="mt-0.5 font-mono text-lg font-semibold text-zinc-900">
-            {formatUSD(brief.costToday)}
-          </p>
-        </div>
-        <div>
-          <p className="text-[11px] text-zinc-400">Agents</p>
-          <p className="mt-0.5 font-mono text-lg font-semibold text-zinc-900">
-            {brief.agentsActive}
-          </p>
-        </div>
-      </div>
-
-      {/* Narrative */}
-      <p className="mt-3 text-[13px] leading-relaxed text-zinc-600">
-        {brief.summary}
-      </p>
-    </div>
-  );
-}
-
-function GoalRow({
-  node,
-  onDecompose,
-  decomposing,
-}: {
-  node: GoalNode;
-  onDecompose: (id: string) => void;
-  decomposing: string | null;
-}) {
-  const [expanded, setExpanded] = React.useState(
-    node.level === "mission" || node.level === "strategic"
-  );
-  const hasChildren = node.children.length > 0;
-  const canDecompose = node.level !== "task" && node.children.length === 0;
-  const icon = STATUS_ICON[node.status];
-  const isDecomposing = decomposing === node.id;
-
-  return (
-    <div>
-      <div
-        className={`flex items-center gap-2 py-1.5 ${LEVEL_INDENT[node.level]}`}
-      >
-        {/* Expand toggle */}
-        {hasChildren ? (
-          <button
-            onClick={() => setExpanded(!expanded)}
-            className="flex h-4 w-4 shrink-0 items-center justify-center text-zinc-400 hover:text-zinc-600"
-          >
-            <svg
-              className={`h-3 w-3 transition-transform ${expanded ? "rotate-90" : ""}`}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        ) : (
-          <span className="w-4 shrink-0" />
-        )}
-
-        {/* Status icon */}
-        <span className={`text-[13px] ${icon.color}`}>{icon.char}</span>
-
-        {/* Title */}
-        <span
-          className={`flex-1 text-[13px] ${
-            node.status === "completed"
-              ? "text-zinc-400 line-through"
-              : node.status === "blocked"
-                ? "text-zinc-500"
-                : "text-zinc-800"
-          }`}
-        >
-          {node.title}
-        </span>
-
-        {/* Level badge */}
-        <span className="shrink-0 text-[10px] font-medium uppercase tracking-wider text-zinc-300">
-          {LEVEL_LABEL[node.level]}
-        </span>
-
-        {/* Decompose button */}
-        {canDecompose && (
-          <button
-            onClick={() => onDecompose(node.id)}
-            disabled={isDecomposing}
-            className="shrink-0 rounded border border-zinc-200 px-2 py-0.5 text-[10px] font-medium text-zinc-500 transition-colors hover:border-zinc-400 hover:text-zinc-700 disabled:opacity-50"
-          >
-            {isDecomposing ? "..." : "Decompose"}
-          </button>
-        )}
-      </div>
-
-      {/* Children */}
-      {expanded &&
-        hasChildren &&
-        node.children.map((child) => (
-          <GoalRow
-            key={child.id}
-            node={child}
-            onDecompose={onDecompose}
-            decomposing={decomposing}
-          />
-        ))}
-    </div>
-  );
-}
-
-function GoalTree({
-  goals,
-  onDecompose,
-  decomposing,
-}: {
-  goals: GoalNode[];
-  onDecompose: (id: string) => void;
-  decomposing: string | null;
-}) {
-  if (goals.length === 0) {
-    return (
-      <p className="py-4 text-[13px] text-zinc-400">
-        No goals yet. Set your mission above.
-      </p>
-    );
-  }
-
-  return (
-    <div className="flex flex-col">
-      {goals.map((node) => (
-        <GoalRow
-          key={node.id}
-          node={node}
-          onDecompose={onDecompose}
-          decomposing={decomposing}
-        />
-      ))}
-    </div>
-  );
-}
-
-function TeamStrip({ agents }: { agents: AgentInfo[] }) {
-  const router = useRouter();
-
-  return (
-    <div className="flex gap-3 overflow-x-auto pb-1">
-      {agents.map((agent) => (
-        <button
-          key={agent.id}
-          onClick={() => router.push("/team")}
-          className="flex shrink-0 flex-col items-center gap-1.5 rounded-lg border border-zinc-100 px-3 py-2.5 transition-colors hover:border-zinc-300"
-        >
-          {/* Avatar circle with status dot */}
-          <div className="relative">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-100 text-[11px] font-semibold text-zinc-600">
-              {agent.name.charAt(0)}
-            </div>
-            <span
-              className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white ${AGENT_DOT[agent.status]}`}
-            />
-          </div>
-          <span className="text-[11px] font-medium text-zinc-700">
-            {agent.name.replace(" Agent", "")}
-          </span>
-          <div className="flex items-center gap-2 text-[10px] text-zinc-400">
-            <span className="font-mono">{agent.taskCount} tasks</span>
-            <span className="font-mono">{formatUSD(agent.costToday)}</span>
-          </div>
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function SpendBar({
-  spent,
-  budget,
-}: {
-  spent: number;
-  budget: number;
-}) {
-  const pct = Math.min((spent / budget) * 100, 100);
-  const barColor = pct > 80 ? "bg-amber-500" : "bg-zinc-900";
-
-  return (
-    <div>
-      <div className="flex items-baseline justify-between">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">
-          Spend
-        </p>
-        <span className="font-mono text-[12px] text-zinc-500">
-          {formatUSD(spent)} / {formatUSD(budget)} daily
-        </span>
-      </div>
-      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-zinc-100">
-        <div
-          className={`h-full rounded-full transition-all ${barColor}`}
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-      <p className="mt-1 text-right font-mono text-[11px] text-zinc-400">
-        {pct.toFixed(0)}% used
-      </p>
-    </div>
-  );
-}
-
-// ── Section wrapper ──
-
-function Section({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return <div className={`mt-8 ${className}`}>{children}</div>;
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-3 text-[11px] font-medium uppercase tracking-wider text-zinc-400">
-      {children}
-    </p>
-  );
-}
-
-// ── Main Page ──
-
-const MISSION_KEY = "1pos_mission";
-const DEFAULT_MISSION = "Build a profitable SaaS reaching $10k MRR";
+// ── Page ──
 
 function HQPage() {
   const router = useRouter();
+  const [openSections, setOpenSections] = React.useState<Record<string, boolean>>({
+    company: true,
+  });
 
-  // Mission (localStorage in dev bypass)
-  const [mission, setMission] = React.useState(DEFAULT_MISSION);
-  React.useEffect(() => {
-    const stored = localStorage.getItem(MISSION_KEY);
-    if (stored) setMission(stored);
-  }, []);
-  const saveMission = (v: string) => {
-    setMission(v);
-    localStorage.setItem(MISSION_KEY, v);
+  const toggle = (category: string) => {
+    setOpenSections((prev) => ({ ...prev, [category]: !prev[category] }));
   };
 
-  // Decisions
-  const [decisions, setDecisions] = React.useState<DecisionItem[]>(MOCK_DECISIONS);
-  const handleAction = async (cardId: string, action: string) => {
-    try {
-      await fetch(`/api/decisions/${cardId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action }),
-      });
-    } catch {
-      // DEV_BYPASS: API may not exist, just update locally
+  // Group by category
+  const grouped = React.useMemo(() => {
+    const map = new Map<string, typeof CHECKLIST>();
+    for (const item of CHECKLIST) {
+      if (!map.has(item.category)) map.set(item.category, []);
+      map.get(item.category)!.push(item);
     }
-    setDecisions((prev) =>
-      prev.map((d) => (d.id === cardId ? { ...d, done: true } : d))
-    );
-  };
-
-  // Goals
-  const [goals, setGoals] = React.useState<GoalNode[]>(MOCK_GOALS);
-  const [decomposing, setDecomposing] = React.useState<string | null>(null);
-
-  // Load real goals if available
-  React.useEffect(() => {
-    fetch("/api/orchestration/goals?format=tree")
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.goals?.length > 0) setGoals(data.goals);
-      })
-      .catch(() => {
-        // Stick with mock goals
-      });
+    return map;
   }, []);
-
-  const handleDecompose = async (goalId: string) => {
-    setDecomposing(goalId);
-    try {
-      const res = await fetch(`/api/orchestration/goals/${goalId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "decompose" }),
-      });
-      if (res.ok) {
-        // Reload goals
-        const treeRes = await fetch("/api/orchestration/goals?format=tree");
-        const data = await treeRes.json();
-        if (data.goals?.length > 0) setGoals(data.goals);
-      }
-    } catch {
-      // DEV_BYPASS: may fail, that's ok
-    } finally {
-      setDecomposing(null);
-    }
-  };
-
-  // Agents
-  const [agents] = React.useState<AgentInfo[]>(MOCK_AGENTS);
-
-  // Handoffs
-  const [handoffs] = React.useState<AgentHandoff[]>(
-    MOCK_HANDOFFS.filter((h) => h.status !== "completed")
-  );
-
-  // Spend
-  const spentToday = agents.reduce((s, a) => s + a.costToday, 0);
-  const dailyBudget = 20; // global daily budget from CLAUDE.md
-
-  // Greeting
-  const hour = new Date().getHours();
-  const greeting =
-    hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
-  const pendingCount = decisions.filter((d) => !d.done).length;
 
   return (
     <div className="mx-auto max-w-[640px] pb-16">
-      {/* Greeting */}
+      {/* Hero */}
       <div>
-        <h1 className="text-lg font-semibold text-zinc-900">{greeting}</h1>
-        <p className="mt-1 text-sm text-zinc-500">
-          {pendingCount > 0
-            ? `${pendingCount} decision${pendingCount > 1 ? "s" : ""} need${pendingCount === 1 ? "s" : ""} your attention.`
-            : "All clear. Your agents are handling everything."}
-        </p>
+        <h1 className="text-[22px] font-bold text-zinc-900 leading-tight">
+          Don&apos;t make the mistakes every first-time founder makes.
+        </h1>
       </div>
 
-      {/* 1. Mission */}
-      <Section>
-        <MissionEditor mission={mission} onSave={saveMission} />
-      </Section>
-
-      {/* 2. Morning Brief */}
-      <Section>
-        <MorningBriefCard />
-      </Section>
-
-      {/* 3. Activity Feed */}
-      <Section>
-        <ActivityFeed />
-      </Section>
-
-      {/* 4. Decisions */}
-      <Section>
-        <SectionLabel>Decisions</SectionLabel>
-        <DecisionFeed cards={decisions} onAction={handleAction} />
-      </Section>
-
-      {/* 4. Goals */}
-      <Section>
-        <SectionLabel>Goals</SectionLabel>
-        <GoalTree
-          goals={goals}
-          onDecompose={handleDecompose}
-          decomposing={decomposing}
-        />
-      </Section>
-
-      {/* 5. Team Strip */}
-      <Section>
-        <SectionLabel>Team</SectionLabel>
-        <TeamStrip agents={agents} />
-      </Section>
-
-      {/* 6. Agent Handoffs */}
-      <Section>
-        <SectionLabel>
-          Agent Handoffs{" "}
-          <span className="ml-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-zinc-100 px-1.5 text-[11px] font-semibold tabular-nums text-zinc-600">
-            {handoffs.length}
-          </span>
-        </SectionLabel>
-        <AgentHandoffs handoffs={handoffs} />
-      </Section>
-
-      {/* 7. Spend */}
-      <Section>
-        <SpendBar spent={spentToday} budget={dailyBudget} />
-      </Section>
+      {/* Checklist by category */}
+      <div className="mt-10 flex flex-col gap-2">
+        {Array.from(grouped.entries()).map(([category, items]) => {
+          const isOpen = openSections[category] ?? false;
+          return (
+            <div key={category}>
+              <button
+                onClick={() => toggle(category)}
+                className="flex w-full items-center gap-2 py-2 text-left"
+              >
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  className={`text-zinc-400 transition-transform duration-150 ${isOpen ? "rotate-90" : ""}`}
+                >
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
+                  {CATEGORY_LABELS[category]}
+                </span>
+                {!isOpen && (
+                  <span className="text-[11px] text-zinc-300 ml-1">
+                    {items.length}
+                  </span>
+                )}
+              </button>
+              {isOpen && (
+                <div className="flex flex-col">
+                  {items.map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => router.push(item.href)}
+                      className="flex items-start gap-3 border-b border-zinc-100 py-3 last:border-0 text-left transition-colors hover:bg-zinc-50 -mx-3 px-3"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[14px] font-medium text-zinc-900">
+                          {item.label}
+                        </p>
+                        <p className="mt-0.5 text-[13px] text-zinc-400">
+                          {item.why}
+                        </p>
+                      </div>
+                      <span className="mt-0.5 shrink-0 text-zinc-300">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="5" y1="12" x2="19" y2="12" />
+                          <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

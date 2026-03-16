@@ -12,6 +12,7 @@ interface SidebarProps {
     activeAgents?: number;
     documentCount?: number;
   };
+  onOpenCommandBar?: () => void;
 }
 
 // ── Icons (16px, strokeWidth 1.5) ──
@@ -49,8 +50,8 @@ function SettingsIcon() { return <svg width="16" height="16" viewBox="0 0 24 24"
 function ChevronIcon({ open }: { open: boolean }) {
   return (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-      className={`transition-transform duration-200 ${open ? "rotate-90" : ""}`}>
-      <polyline points="9 18 15 12 9 6" />
+      className={`transition-transform duration-150 ${open ? "rotate-180" : ""}`}>
+      <polyline points="6 9 12 15 18 9" />
     </svg>
   );
 }
@@ -128,20 +129,19 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
         items: [
           { id: "contracts", icon: <FileIcon />, label: "Contracts", href: "/legal/contracts" },
           { id: "legal-safes", icon: <TagIcon />, label: "SAFEs", href: "/legal/safes" },
-          { id: "compliance", icon: <ShieldIcon />, label: "Compliance", href: "/legal/compliance" },
           { id: "ip", icon: <LightbulbIcon />, label: "IP & Trademarks", href: "/legal/ip" },
         ],
       },
     ],
     bottom: [
-      { id: "settings", icon: <SettingsIcon />, label: "Settings", href: "/settings" },
+      { id: "settings", icon: <SettingsIcon />, label: "Company settings", href: "/settings" },
     ],
   };
 }
 
 // ── Sidebar Component ──
 
-function Sidebar({ counts = {} }: SidebarProps) {
+function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -180,36 +180,53 @@ function Sidebar({ counts = {} }: SidebarProps) {
     setOpenGroups((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
-  function renderItem(item: NavItem) {
+  // Top-level flat item (with icon) — like Carta's "Dashboard", "Manage employees"
+  function renderTopItem(item: NavItem) {
+    const active = isActive(item.href);
+    return (
+      <button
+        key={item.id}
+        onClick={() => navigateTo(item.href)}
+        className={`group flex w-full items-center gap-3 px-3 py-[7px] text-left transition-colors duration-100 ${
+          active
+            ? "text-zinc-900 font-medium"
+            : "text-zinc-700 hover:text-zinc-900"
+        }`}
+      >
+        <span className={`flex h-4 w-4 shrink-0 items-center justify-center ${
+          active ? "text-zinc-900" : "text-zinc-400 group-hover:text-zinc-600"
+        }`}>
+          {item.icon}
+        </span>
+        <span className="flex-1 truncate text-[14px]">{item.label}</span>
+      </button>
+    );
+  }
+
+  // Child item inside a group (plain text, indented, no icon) — like Carta's "View cap table", "Issue equity"
+  function renderChildItem(item: NavItem) {
     const active = isActive(item.href);
     const disabled = item.comingSoon;
     return (
       <button
         key={item.id}
         onClick={disabled ? undefined : () => navigateTo(item.href)}
-        className={`group flex w-full items-center gap-2.5 rounded-md px-3 py-1.5 text-left transition-colors duration-150 ${
+        className={`flex w-full items-center pl-9 pr-3 py-[5px] text-left transition-colors duration-100 ${
           disabled
             ? "text-zinc-300 cursor-default"
             : active
-              ? "bg-zinc-100 text-zinc-900 font-medium"
-              : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-800"
+              ? "text-zinc-900 font-medium"
+              : "text-zinc-600 hover:text-zinc-900"
         }`}
       >
-        <span className={`flex h-4 w-4 shrink-0 items-center justify-center ${
-          disabled
-            ? "text-zinc-300"
-            : active ? "text-zinc-800" : "text-zinc-400 group-hover:text-zinc-600"
-        }`}>
-          {item.icon}
-        </span>
-        <span className="flex-1 truncate text-[13px]">{item.label}</span>
+        <span className="flex-1 truncate text-[14px]">{item.label}</span>
         {disabled && (
-          <span className="shrink-0 rounded-full bg-zinc-100 px-1.5 py-0.5 text-[9px] font-medium text-zinc-400">
+          <span className="shrink-0 bg-zinc-100 px-1.5 py-0.5 text-[9px] font-medium text-zinc-400">
             Soon
           </span>
         )}
         {!disabled && item.count !== undefined && item.count > 0 && (
-          <span className="shrink-0 rounded-full bg-zinc-200 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600">
+          <span className="shrink-0 bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600">
             {item.count}
           </span>
         )}
@@ -217,6 +234,7 @@ function Sidebar({ counts = {} }: SidebarProps) {
     );
   }
 
+  // Group header (icon + label + chevron) — like Carta's "Essentials"
   function renderGroup(group: NavGroup) {
     const isOpen = openGroups[group.id] ?? false;
     const hasActive = group.items.some((item) => isActive(item.href));
@@ -225,20 +243,24 @@ function Sidebar({ counts = {} }: SidebarProps) {
       <div key={group.id}>
         <button
           onClick={() => toggleGroup(group.id)}
-          className={`flex w-full items-center gap-2 px-3 py-1.5 rounded-md text-left transition-colors duration-150 ${
-            hasActive ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50"
+          className={`flex w-full items-center gap-3 px-3 py-[7px] text-left transition-colors duration-100 ${
+            hasActive
+              ? "text-zinc-900 font-medium"
+              : "text-zinc-700 hover:text-zinc-900"
           }`}
         >
-          <span className="flex h-4 w-4 shrink-0 items-center justify-center text-zinc-400">
+          <span className={`flex h-4 w-4 shrink-0 items-center justify-center ${
+            hasActive ? "text-zinc-900" : "text-zinc-400"
+          }`}>
             {group.icon}
           </span>
-          <span className="flex-1 text-[13px] font-medium">{group.label}</span>
+          <span className="flex-1 text-[14px]">{group.label}</span>
           <ChevronIcon open={isOpen} />
         </button>
 
         {isOpen && (
-          <div className="ml-3 mt-0.5 space-y-0.5 border-l border-zinc-200 pl-3">
-            {group.items.map(renderItem)}
+          <div className="space-y-px">
+            {group.items.map(renderChildItem)}
           </div>
         )}
       </div>
@@ -248,28 +270,33 @@ function Sidebar({ counts = {} }: SidebarProps) {
   const sidebarContent = (
     <>
       {/* Header */}
-      <div className="flex h-12 items-center px-4">
+      <div className="flex h-14 items-center justify-between px-4 border-b border-zinc-200">
         <span className="text-[14px] font-bold tracking-tight text-zinc-900">
-          1 Person Company
+          1P OS
         </span>
+        <button
+          onClick={onOpenCommandBar}
+          className="flex h-7 w-7 items-center justify-center text-zinc-400 hover:text-zinc-600 transition-colors"
+          aria-label="Search"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </button>
       </div>
 
-      {/* Top items */}
-      <nav className="flex-1 overflow-y-auto px-2 py-1 space-y-0.5">
-        {nav.top.map(renderItem)}
-
-        {/* Divider */}
-        <div className="my-2 border-t border-zinc-200" />
+      {/* Main nav */}
+      <nav className="flex-1 overflow-y-auto px-1 space-y-0.5">
+        {/* Top flat items */}
+        {nav.top.map(renderTopItem)}
 
         {/* Groups */}
-        <div className="space-y-1">
-          {nav.groups.map(renderGroup)}
-        </div>
+        {nav.groups.map(renderGroup)}
       </nav>
 
-      {/* Bottom items */}
-      <div className="border-t border-zinc-200 px-2 py-2 space-y-0.5">
-        {nav.bottom.map(renderItem)}
+      {/* Bottom section */}
+      <div className="border-t border-zinc-200 px-1 py-2">
+        {nav.bottom.map(renderTopItem)}
       </div>
     </>
   );
@@ -294,9 +321,9 @@ function Sidebar({ counts = {} }: SidebarProps) {
 
       {/* Mobile overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm md:hidden" onClick={() => setMobileOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-black/20 md:hidden" onClick={() => setMobileOpen(false)} />
       )}
-      <aside className={`fixed left-0 top-0 bottom-0 z-50 flex w-[220px] flex-col bg-white border-r border-zinc-200 transition-transform duration-200 md:hidden ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside className={`fixed left-0 top-0 bottom-0 z-50 flex w-[220px] flex-col border-r border-zinc-200 bg-white transition-transform duration-200 md:hidden ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
         {sidebarContent}
       </aside>
     </>

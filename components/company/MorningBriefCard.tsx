@@ -135,7 +135,7 @@ function MorningBriefCard() {
 
       {error && (
         <p className="mt-3 text-[13px] text-zinc-500">
-          Unable to load the morning brief. Try refreshing.
+          Failed to load. Try refreshing.
         </p>
       )}
 

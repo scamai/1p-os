@@ -17,8 +17,8 @@ export const MOCK_USER = {
 export const MOCK_BUSINESS = {
   id: "00000000-0000-0000-0000-000000000010",
   user_id: MOCK_USER.id,
-  name: "Acme Studios",
-  business_name: "Acme Studios",
+  name: "My Company",
+  business_name: "My Company",
   health_score: 87,
   cost_today: 1.24,
   budget_daily: 5,

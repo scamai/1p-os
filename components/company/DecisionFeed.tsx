@@ -25,7 +25,7 @@ function DecisionFeed({ cards, onAction }: DecisionFeedProps) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center py-20">
         <p className="text-sm text-zinc-500">
-          All clear. Your business is running.
+          All clear.
         </p>
       </div>
     );
@@ -36,7 +36,7 @@ function DecisionFeed({ cards, onAction }: DecisionFeedProps) {
       {pending.length === 0 && (
         <div className="py-8 text-center">
           <p className="text-sm text-zinc-500">
-            All clear. Nothing needs your attention.
+            All clear.
           </p>
         </div>
       )}

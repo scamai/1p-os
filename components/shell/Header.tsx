@@ -24,7 +24,6 @@ function Header({
 }: HeaderProps) {
   const [voiceAlwaysOn, setVoiceAlwaysOn] = React.useState(false);
 
-  // Listen for always-on voice state changes
   React.useEffect(() => {
     const saved = localStorage.getItem("1pos-voice-always-on");
     if (saved === "true") setVoiceAlwaysOn(true);
@@ -46,9 +45,17 @@ function Header({
   };
 
   return (
-    <header className="flex h-12 items-center justify-between px-6">
-      <div />
+    <header className="flex h-12 items-center justify-between border-b border-zinc-200 bg-white px-6">
+      {/* Left: business name */}
+      <div className="flex items-center gap-2">
+        <span className="text-[14px] font-semibold text-zinc-900">
+          {businessName || "1P OS"}
+        </span>
+      </div>
 
+      {/* Right: actions */}
+      <div className="flex items-center gap-1">
+      </div>
     </header>
   );
 }
