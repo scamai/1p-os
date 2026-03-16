@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "1P OS",
+  title: "1 Person Company",
   description: "Your one-person business operating system. AI agents that run your company while you do the work you love.",
 };
 

@@ -10,6 +10,7 @@ import { InlineFormSheet } from "@/components/shell/InlineFormSheet";
 import { AIWizard, type WizardIntent } from "@/components/shell/AIWizard";
 import { CoreBanner } from "@/components/shell/CoreBanner";
 import { AlwaysOnVoice } from "@/components/shell/AlwaysOnVoice";
+import { FounderEducation } from "@/components/shared/FounderEducation";
 
 const InvoiceForm = React.lazy(() =>
   import("@/components/forms/InvoiceForm").then((m) => ({ default: m.InvoiceForm }))
@@ -86,7 +87,6 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
       "/talent": "team",
       "/canvas": "canvas",
       "/settings": "settings",
-      "/vault": "vault",
     };
     return map[pathname] ?? "hq";
   }, [pathname]);
@@ -282,7 +282,7 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
     <div className="flex min-h-screen">
       <Sidebar counts={sidebarCounts} />
 
-      <div className="ml-0 flex flex-1 flex-col md:ml-[200px]">
+      <div className="ml-0 flex flex-1 flex-col md:ml-[220px]">
         <Header
           businessName={headerProps.businessName}
           healthScore={headerProps.healthScore}
@@ -303,6 +303,7 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
           <CoreBanner section={currentSection} onAction={handleCommandAction} />
           {children}
+          <FounderEducation />
         </main>
       </div>
 

@@ -5,7 +5,7 @@
  * task, data, alert, or request types.
  */
 
-import { DEV_BYPASS } from "@/lib/supabase/dev-bypass";
+const DEV_BYPASS_ENABLED = process.env.DEV_BYPASS === "true";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -25,7 +25,7 @@ export interface AgentHandoff {
 }
 
 // ---------------------------------------------------------------------------
-// Mock data for DEV_BYPASS
+// Mock data for DEV_BYPASS_ENABLED
 // ---------------------------------------------------------------------------
 
 const now = new Date();
@@ -131,7 +131,7 @@ interface SupabaseClient {
 
 /**
  * Create a handoff record in the agent_messages table.
- * In DEV_BYPASS mode, returns a mock handoff.
+ * In DEV_BYPASS_ENABLED mode, returns a mock handoff.
  */
 export async function createHandoff(
   fromAgentId: string,
@@ -141,13 +141,13 @@ export async function createHandoff(
   payload: Record<string, unknown>,
   supabase: SupabaseClient,
 ): Promise<AgentHandoff> {
-  if (DEV_BYPASS) {
+  if (DEV_BYPASS_ENABLED) {
     const handoff: AgentHandoff = {
       id: crypto.randomUUID(),
       fromAgentId,
-      fromAgentName: MOCK_AGENTS.find((a) => a.id === fromAgentId)?.name ?? "Unknown",
+      fromAgentName: "Agent",
       toAgentId,
-      toAgentName: MOCK_AGENTS.find((a) => a.id === toAgentId)?.name ?? "Unknown",
+      toAgentName: "Agent",
       type,
       subject,
       payload,
@@ -193,13 +193,13 @@ export async function createHandoff(
 
 /**
  * Get all pending/accepted handoffs for a business.
- * In DEV_BYPASS mode, returns mock handoffs.
+ * In DEV_BYPASS_ENABLED mode, returns mock handoffs.
  */
 export async function getActiveHandoffs(
   businessId: string,
   supabase: SupabaseClient,
 ): Promise<AgentHandoff[]> {
-  if (DEV_BYPASS) {
+  if (DEV_BYPASS_ENABLED) {
     return MOCK_HANDOFFS.filter((h) => h.status !== "completed");
   }
 
@@ -230,14 +230,14 @@ export async function getActiveHandoffs(
 
 /**
  * Mark a handoff as completed with an optional result.
- * In DEV_BYPASS mode, returns the updated handoff.
+ * In DEV_BYPASS_ENABLED mode, returns the updated handoff.
  */
 export async function completeHandoff(
   handoffId: string,
   result: Record<string, unknown>,
   supabase: SupabaseClient,
 ): Promise<AgentHandoff> {
-  if (DEV_BYPASS) {
+  if (DEV_BYPASS_ENABLED) {
     const handoff = MOCK_HANDOFFS.find((h) => h.id === handoffId);
     if (!handoff) {
       throw new Error(`Handoff ${handoffId} not found`);

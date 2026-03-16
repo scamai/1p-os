@@ -19,6 +19,7 @@
 
 * {
   border-color: var(--border);
+  border-radius: 0 !important;
 }
 
 body {

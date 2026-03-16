@@ -4,7 +4,7 @@ import * as React from "react";
 import { TabBar } from "@/components/shared/TabBar";
 import { DevicesPanel } from "@/components/sections/settings/DevicesPanel";
 
-const TABS = ["Business", "Security", "Models", "API Keys", "Usage"];
+const TABS = ["Business", "Security", "Models", "API Keys", "Usage", "AI Features"];
 
 // --- Business Tab (fully wired) ---
 
@@ -588,6 +588,72 @@ function UsageTab() {
   );
 }
 
+// --- AI Features Tab (coming soon roadmap) ---
+
+const AI_FEATURES = [
+  { category: "Money", features: [
+    { name: "AI Bookkeeping", desc: "Auto-categorize transactions, reconcile accounts, flag anomalies" },
+    { name: "AI Accounting", desc: "Generate financial statements, track GAAP compliance" },
+    { name: "AI Auditing", desc: "Continuous audit trail, detect irregularities, generate reports" },
+    { name: "AI Tax Filing", desc: "Estimate taxes, prepare filings, track deadlines" },
+    { name: "AI Runrate Projections", desc: "Revenue forecasting, burn rate analysis, scenario modeling" },
+  ]},
+  { category: "Business", features: [
+    { name: "AI Market Research", desc: "Competitive analysis, TAM/SAM/SOM, trend identification" },
+    { name: "AI Go-to-Market", desc: "Launch strategy, channel selection, messaging framework" },
+    { name: "AI Marketing", desc: "Content generation, campaign management, analytics" },
+  ]},
+  { category: "Legal", features: [
+    { name: "AI Contracts", desc: "Draft, review, and negotiate contracts with AI assistance" },
+    { name: "AI Compliance", desc: "Regulatory monitoring, policy generation, risk assessment" },
+    { name: "AI IP Management", desc: "Trademark search, patent analysis, IP portfolio tracking" },
+  ]},
+  { category: "Operations", features: [
+    { name: "AI Agent Orchestration", desc: "Multi-agent workflows, task delegation, autonomous execution" },
+    { name: "AI Decision Engine", desc: "Data-driven recommendations, approval workflows, risk scoring" },
+    { name: "AI Memory & Context", desc: "Persistent business knowledge, cross-agent learning" },
+  ]},
+];
+
+function AIFeaturesTab() {
+  return (
+    <div className="space-y-8">
+      <p className="text-[12px] text-zinc-500">
+        AI-native features that will automate your business. All features below are in development.
+      </p>
+
+      {AI_FEATURES.map((group) => (
+        <div key={group.category} className="space-y-3">
+          <p className="text-xs font-medium text-zinc-900">{group.category}</p>
+          <div className="space-y-1">
+            {group.features.map((feature) => (
+              <div
+                key={feature.name}
+                className="flex items-center gap-3 rounded-lg border border-zinc-100 bg-zinc-50/50 px-4 py-3 opacity-50"
+              >
+                <span className="flex h-4 w-4 shrink-0 items-center justify-center text-zinc-300">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] text-zinc-500">{feature.name}</p>
+                  <p className="text-[11px] text-zinc-400">{feature.desc}</p>
+                </div>
+                <span className="shrink-0 rounded-full bg-zinc-100 px-2 py-0.5 text-[9px] font-medium text-zinc-400">
+                  Coming Soon
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // --- Main ---
 
 function SettingsPage() {
@@ -607,6 +673,7 @@ function SettingsPage() {
         {activeTab === "Models" && <ModelsTab />}
         {activeTab === "API Keys" && <APIKeysTab />}
         {activeTab === "Usage" && <UsageTab />}
+        {activeTab === "AI Features" && <AIFeaturesTab />}
       </div>
     </div>
   );

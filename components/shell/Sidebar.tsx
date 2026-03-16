@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, ReactNode } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SidebarItem } from "@/components/shell/SidebarItem";
 
 interface SidebarProps {
   counts?: {
@@ -15,654 +14,290 @@ interface SidebarProps {
   };
 }
 
-// --- Inline SVG Icons (16px, strokeWidth 1.5) ---
+// ── Icons (16px, strokeWidth 1.5) ──
 
-function HomeIcon() {
+function Icon({ d, ...props }: { d: string } & React.SVGProps<SVGSVGElement>) {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-      <polyline points="9 22 9 12 15 12 15 22" />
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <path d={d} />
     </svg>
   );
 }
 
-function DollarIcon() {
+function HomeIcon() { return <Icon d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />; }
+function UsersIcon() { return <Icon d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 7a4 4 0 100-8 4 4 0 000 8M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />; }
+function DollarIcon() { return <Icon d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />; }
+function FileIcon() { return <Icon d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M8 13h8M8 17h8" />; }
+function TargetIcon() { return <Icon d="M12 22a10 10 0 100-20 10 10 0 000 20zM12 18a6 6 0 100-12 6 6 0 000 12zM12 14a2 2 0 100-4 2 2 0 000 4z" />; }
+function TrendIcon() { return <Icon d="M23 6l-9.5 9.5-5-5L1 18" />; }
+function BriefcaseIcon() { return <Icon d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />; }
+function RocketIcon() { return <Icon d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09zM12 15l-3-3M22 2l-7.5 7.5" />; }
+function LightbulbIcon() { return <Icon d="M12 2a7 7 0 017 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 01-2 2h-4a2 2 0 01-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 017-7zM9 21h6" />; }
+function PieChartIcon() { return <Icon d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2v10z" />; }
+function MapIcon() { return <Icon d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4zM8 2v16M16 6v16" />; }
+function MegaphoneIcon() { return <Icon d="M22 2L11 13M22 2l-7 20-4-9-9-4z" />; }
+function ShieldIcon() { return <Icon d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />; }
+function TagIcon() { return <Icon d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82zM7 7h.01" />; }
+function LayersIcon() { return <Icon d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />; }
+function BookIcon() { return <Icon d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5V5a2.5 2.5 0 012.5-2.5H20v17H6.5A2.5 2.5 0 014 19.5z" />; }
+function CalculatorIcon() { return <Icon d="M4 2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zM8 10h8M8 14h8M8 18h3" />; }
+function SearchIcon() { return <Icon d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35" />; }
+function BotIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="10" rx="2" /><circle cx="9" cy="16" r="1" /><circle cx="15" cy="16" r="1" /><path d="M8 11V7a4 4 0 018 0v4" /><line x1="12" y1="3" x2="12" y2="1" /></svg>; }
+function TerminalIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 17 10 11 4 5" /><line x1="12" y1="19" x2="20" y2="19" /></svg>; }
+function SettingsIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.32 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" /></svg>; }
+
+function ChevronIcon({ open }: { open: boolean }) {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="12" y1="1" x2="12" y2="23" />
-      <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+      className={`transition-transform duration-200 ${open ? "rotate-90" : ""}`}>
+      <polyline points="9 18 15 12 9 6" />
     </svg>
   );
 }
 
-function UsersIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M23 21v-2a4 4 0 00-3-3.87" />
-      <path d="M16 3.13a4 4 0 010 7.75" />
-    </svg>
-  );
-}
+// ── Nav Structure ──
 
-function ClipboardIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" />
-      <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-      <line x1="8" y1="11" x2="16" y2="11" />
-      <line x1="8" y1="15" x2="13" y2="15" />
-    </svg>
-  );
-}
-
-function BotIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="11" width="18" height="10" rx="2" />
-      <circle cx="9" cy="16" r="1" />
-      <circle cx="15" cy="16" r="1" />
-      <path d="M8 11V7a4 4 0 018 0v4" />
-      <line x1="12" y1="3" x2="12" y2="1" />
-    </svg>
-  );
-}
-
-function BoxIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
-      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-      <line x1="12" y1="22.08" x2="12" y2="12" />
-    </svg>
-  );
-}
-
-function FileTextIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-      <polyline points="14 2 14 8 20 8" />
-      <line x1="8" y1="13" x2="16" y2="13" />
-      <line x1="8" y1="17" x2="16" y2="17" />
-    </svg>
-  );
-}
-
-function TagIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
-      <line x1="7" y1="7" x2="7.01" y2="7" />
-    </svg>
-  );
-}
-
-function StoreIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 9l1-4h16l1 4" />
-      <path d="M3 9v10a2 2 0 002 2h14a2 2 0 002-2V9" />
-      <path d="M9 21V13h6v8" />
-      <path d="M3 9h18" />
-    </svg>
-  );
-}
-
-function TemplateIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="3" width="7" height="7" rx="1" />
-      <rect x="14" y="3" width="7" height="7" rx="1" />
-      <rect x="3" y="14" width="7" height="7" rx="1" />
-      <rect x="14" y="14" width="7" height="7" rx="1" />
-    </svg>
-  );
-}
-
-function MessageIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-    </svg>
-  );
-}
-
-function BoltIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-    </svg>
-  );
-}
-
-function TerminalIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="4 17 10 11 4 5" />
-      <line x1="12" y1="19" x2="20" y2="19" />
-    </svg>
-  );
-}
-
-function OrgChartIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="9" y="2" width="6" height="4" rx="1" />
-      <rect x="2" y="18" width="6" height="4" rx="1" />
-      <rect x="16" y="18" width="6" height="4" rx="1" />
-      <line x1="12" y1="6" x2="12" y2="14" />
-      <line x1="5" y1="14" x2="19" y2="14" />
-      <line x1="5" y1="14" x2="5" y2="18" />
-      <line x1="19" y1="14" x2="19" y2="18" />
-    </svg>
-  );
-}
-
-function CanvasIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-      <line x1="3" y1="9" x2="21" y2="9" />
-      <line x1="9" y1="9" x2="9" y2="21" />
-    </svg>
-  );
-}
-
-function BrainIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2a7 7 0 017 7c0 2.38-1.19 4.47-3 5.74V17a2 2 0 01-2 2h-4a2 2 0 01-2-2v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 017-7z" />
-      <line x1="9" y1="21" x2="15" y2="21" />
-      <line x1="10" y1="17" x2="10" y2="21" />
-      <line x1="14" y1="17" x2="14" y2="21" />
-    </svg>
-  );
-}
-
-function SettingsIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="3" />
-      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.32 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-  );
-}
-
-function PencilIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-    </svg>
-  );
-}
-
-function GripIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <circle cx="9" cy="6" r="1" />
-      <circle cx="15" cy="6" r="1" />
-      <circle cx="9" cy="12" r="1" />
-      <circle cx="15" cy="12" r="1" />
-      <circle cx="9" cy="18" r="1" />
-      <circle cx="15" cy="18" r="1" />
-    </svg>
-  );
-}
-
-function EyeIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  );
-}
-
-function EyeOffIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" />
-      <line x1="1" y1="1" x2="23" y2="23" />
-    </svg>
-  );
-}
-
-// --- Nav item config ---
-
-interface NavItemDef {
+interface NavItem {
   id: string;
   icon: ReactNode;
   label: string;
   href: string;
-  countKey?: keyof NonNullable<SidebarProps["counts"]>;
-  pinned?: boolean; // Cannot be hidden
+  count?: number;
+  comingSoon?: boolean;
 }
 
-const ALL_NAV_ITEMS: NavItemDef[] = [
-  // Core
-  { id: "hq", icon: <HomeIcon />, label: "HQ", href: "/company", countKey: "pendingDecisions", pinned: true },
-  { id: "team", icon: <BotIcon />, label: "Agents", href: "/team", countKey: "activeAgents" },
-  { id: "operations", icon: <OrgChartIcon />, label: "Org & Goals", href: "/operations" },
-  { id: "costs", icon: <DollarIcon />, label: "Costs", href: "/costs" },
-  { id: "talent", icon: <StoreIcon />, label: "Hire", href: "/talent" },
-  // Business
-  { id: "finance", icon: <DollarIcon />, label: "Finance", href: "/finance", countKey: "overdueInvoices" },
-  { id: "sales", icon: <TagIcon />, label: "Sales", href: "/sales" },
-  { id: "people", icon: <UsersIcon />, label: "People", href: "/people", countKey: "activeRelationships" },
-  { id: "work", icon: <ClipboardIcon />, label: "Work", href: "/work", countKey: "activeProjects" },
-  // Tools
-  { id: "vault", icon: <FileTextIcon />, label: "Vault", href: "/vault", countKey: "documentCount" },
-  { id: "channels", icon: <MessageIcon />, label: "Channels", href: "/channels" },
-  { id: "automations", icon: <BoltIcon />, label: "Automations", href: "/automations" },
-  { id: "memory", icon: <BrainIcon />, label: "Memory", href: "/memory" },
-  { id: "canvas", icon: <CanvasIcon />, label: "Canvas", href: "/canvas" },
-  { id: "history", icon: <ClipboardIcon />, label: "History", href: "/history" },
-  { id: "setup", icon: <TemplateIcon />, label: "Setup", href: "/setup" },
-];
-
-const BOTTOM_NAV_ITEMS: NavItemDef[] = [
-  { id: "terminal", icon: <TerminalIcon />, label: "Terminal", href: "/terminal", pinned: true },
-  { id: "settings", icon: <SettingsIcon />, label: "Settings", href: "/settings", pinned: true },
-];
-
-// --- Persistence ---
-
-const STORAGE_KEY = "1pos-sidebar-config";
-
-interface SidebarConfig {
-  order: string[];
-  hidden: string[];
+interface NavGroup {
+  id: string;
+  label: string;
+  icon: ReactNode;
+  items: NavItem[];
+  defaultOpen?: boolean;
 }
 
-function getDefaultConfig(): SidebarConfig {
+function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups: NavGroup[]; bottom: NavItem[] } {
   return {
-    order: ALL_NAV_ITEMS.map((item) => item.id),
-    hidden: [],
+    top: [],
+    groups: [
+      {
+        id: "company",
+        label: "Company",
+        icon: <BriefcaseIcon />,
+        defaultOpen: true,
+        items: [
+          { id: "founders", icon: <UsersIcon />, label: "Founders", href: "/company/founders" },
+          { id: "equity", icon: <PieChartIcon />, label: "Equity", href: "/company/equity" },
+          { id: "ideation", icon: <LightbulbIcon />, label: "Ideation", href: "/company/ideation" },
+          { id: "incorporation", icon: <FileIcon />, label: "Incorporation", href: "/company/incorporation" },
+          { id: "solution-deck", icon: <LayersIcon />, label: "Solution Deck", href: "/company/solution-deck" },
+          { id: "accelerator", icon: <TargetIcon />, label: "Apply to Accelerator", href: "/company/accelerator" },
+        ],
+      },
+      {
+        id: "money",
+        label: "Money",
+        icon: <DollarIcon />,
+        items: [
+          { id: "fundraising", icon: <RocketIcon />, label: "Fundraising", href: "/money/fundraising" },
+          { id: "runrate", icon: <TrendIcon />, label: "Runrate", href: "/money/runrate" },
+          { id: "bookkeeping", icon: <BookIcon />, label: "Bookkeeping", href: "/money/bookkeeping" },
+          { id: "accounting", icon: <CalculatorIcon />, label: "Accounting", href: "/money/accounting" },
+          { id: "auditing", icon: <ShieldIcon />, label: "Auditing", href: "/money/auditing" },
+          { id: "tax", icon: <FileIcon />, label: "Tax", href: "/money/tax" },
+        ],
+      },
+      {
+        id: "business",
+        label: "Business",
+        icon: <MapIcon />,
+        items: [
+          { id: "biz-model", icon: <LayersIcon />, label: "Business Model", href: "/business/model" },
+          { id: "pricing", icon: <TagIcon />, label: "Pricing Strategy", href: "/business/pricing" },
+          { id: "market-research", icon: <SearchIcon />, label: "Market Research", href: "/business/market-research" },
+          { id: "gtm", icon: <RocketIcon />, label: "Go-to-Market", href: "/business/gtm" },
+          { id: "marketing", icon: <MegaphoneIcon />, label: "Marketing", href: "/business/marketing" },
+        ],
+      },
+      {
+        id: "legal",
+        label: "Legal",
+        icon: <ShieldIcon />,
+        items: [
+          { id: "contracts", icon: <FileIcon />, label: "Contracts", href: "/legal/contracts" },
+          { id: "legal-safes", icon: <TagIcon />, label: "SAFEs", href: "/legal/safes" },
+          { id: "compliance", icon: <ShieldIcon />, label: "Compliance", href: "/legal/compliance" },
+          { id: "ip", icon: <LightbulbIcon />, label: "IP & Trademarks", href: "/legal/ip" },
+        ],
+      },
+    ],
+    bottom: [
+      { id: "settings", icon: <SettingsIcon />, label: "Settings", href: "/settings" },
+    ],
   };
 }
 
-function loadConfig(): SidebarConfig {
-  if (typeof window === "undefined") return getDefaultConfig();
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return getDefaultConfig();
-    const parsed = JSON.parse(raw) as SidebarConfig;
-    // Merge in any new items that weren't in the saved config
-    const savedIds = new Set(parsed.order);
-    const allIds = ALL_NAV_ITEMS.map((i) => i.id);
-    for (const id of allIds) {
-      if (!savedIds.has(id)) {
-        parsed.order.push(id);
-      }
-    }
-    // Remove items that no longer exist
-    const validIds = new Set(allIds);
-    parsed.order = parsed.order.filter((id) => validIds.has(id));
-    parsed.hidden = parsed.hidden.filter((id) => validIds.has(id));
-    return parsed;
-  } catch {
-    return getDefaultConfig();
-  }
-}
-
-function saveConfig(config: SidebarConfig) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-  } catch {
-    // localStorage unavailable
-  }
-}
-
-// --- Sidebar Component ---
+// ── Sidebar Component ──
 
 function Sidebar({ counts = {} }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
-
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [editing, setEditing] = useState(false);
-  const [config, setConfig] = useState<SidebarConfig>(getDefaultConfig);
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
 
-  // Drag state
-  const [dragIndex, setDragIndex] = useState<number | null>(null);
-  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
-  const dragItemRef = useRef<string | null>(null);
+  const nav = buildNav(counts);
 
-  // Load saved config on mount
+  // Open group that contains current path
   useEffect(() => {
-    setConfig(loadConfig());
-  }, []);
+    for (const group of nav.groups) {
+      if (group.items.some((item) => pathname.startsWith(item.href))) {
+        setOpenGroups((prev) => ({ ...prev, [group.id]: true }));
+      }
+    }
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Build ordered + visible nav items
-  const itemMap = new Map(ALL_NAV_ITEMS.map((item) => [item.id, item]));
-  const hiddenSet = new Set(config.hidden);
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
 
-  const orderedItems: NavItemDef[] = config.order
-    .map((id) => itemMap.get(id))
-    .filter((item): item is NavItemDef => item !== undefined);
-
-  const visibleItems = orderedItems.filter((item) => !hiddenSet.has(item.id));
-
-  // Close mobile sidebar on route change
+  // Default open groups
   useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+    const defaults: Record<string, boolean> = {};
+    for (const g of nav.groups) {
+      if (g.defaultOpen) defaults[g.id] = true;
+    }
+    setOpenGroups((prev) => ({ ...defaults, ...prev }));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  function isActive(href: string): boolean {
+    if (href === "/company") return pathname === "/" || pathname === "/company";
+    return pathname === href || pathname.startsWith(href + "/");
+  }
 
   function navigateTo(href: string) {
-    if (editing) return;
     router.push(href);
     setMobileOpen(false);
   }
 
-  function isActive(href: string): boolean {
-    if (href === "/company") {
-      return pathname === "/" || pathname === "/company" || pathname.startsWith("/company/");
-    }
-    return pathname === href || pathname.startsWith(href + "/");
+  function toggleGroup(id: string) {
+    setOpenGroups((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
-  const toggleVisibility = useCallback((id: string) => {
-    setConfig((prev) => {
-      const next = { ...prev };
-      if (next.hidden.includes(id)) {
-        next.hidden = next.hidden.filter((h) => h !== id);
-      } else {
-        next.hidden = [...next.hidden, id];
-      }
-      saveConfig(next);
-      return next;
-    });
-  }, []);
-
-  const handleDragStart = useCallback((index: number, id: string) => {
-    setDragIndex(index);
-    dragItemRef.current = id;
-  }, []);
-
-  const handleDragOver = useCallback((e: React.DragEvent, index: number) => {
-    e.preventDefault();
-    setDragOverIndex(index);
-  }, []);
-
-  const handleDrop = useCallback((dropIndex: number) => {
-    if (dragIndex === null || dragIndex === dropIndex) {
-      setDragIndex(null);
-      setDragOverIndex(null);
-      return;
-    }
-
-    setConfig((prev) => {
-      const next = { ...prev };
-      const newOrder = [...next.order];
-      const [moved] = newOrder.splice(dragIndex, 1);
-      newOrder.splice(dropIndex, 0, moved);
-      next.order = newOrder;
-      saveConfig(next);
-      return next;
-    });
-
-    setDragIndex(null);
-    setDragOverIndex(null);
-  }, [dragIndex]);
-
-  const handleDragEnd = useCallback(() => {
-    setDragIndex(null);
-    setDragOverIndex(null);
-  }, []);
-
-  const resetToDefault = useCallback(() => {
-    const defaultConfig = getDefaultConfig();
-    setConfig(defaultConfig);
-    saveConfig(defaultConfig);
-  }, []);
-
-  // Render normal nav items
-  function renderNavItems(items: NavItemDef[]) {
-    return items.map((item) => (
-      <SidebarItem
-        key={item.href}
-        icon={item.icon}
-        label={item.label}
-        href={item.href}
-        count={item.countKey ? counts[item.countKey] : undefined}
-        isActive={isActive(item.href)}
-        isExpanded={true}
-        onClick={() => navigateTo(item.href)}
-      />
-    ));
-  }
-
-  // Render edit-mode nav items (with drag handles + visibility toggles)
-  function renderEditItems() {
-    return orderedItems.map((item, index) => {
-      const isHidden = hiddenSet.has(item.id);
-      const isDragging = dragIndex === index;
-      const isDragOver = dragOverIndex === index;
-
-      return (
-        <div
-          key={item.id}
-          draggable
-          onDragStart={() => handleDragStart(index, item.id)}
-          onDragOver={(e) => handleDragOver(e, index)}
-          onDrop={() => handleDrop(index)}
-          onDragEnd={handleDragEnd}
-          className={`
-            group flex items-center gap-1.5 px-2 py-1.5 mx-2 rounded-lg
-            transition-all duration-150 select-none
-            ${isDragging ? "opacity-30" : "opacity-100"}
-            ${isDragOver ? "bg-zinc-100 border-t-2 border-zinc-300" : "border-t-2 border-transparent"}
-            ${isHidden ? "text-zinc-300" : "text-zinc-600"}
-            hover:bg-zinc-50
-          `}
-          style={{ cursor: "grab" }}
-        >
-          {/* Drag handle */}
-          <span className="shrink-0 text-zinc-300 cursor-grab active:cursor-grabbing">
-            <GripIcon />
-          </span>
-
-          {/* Icon */}
-          <span className={`flex h-4 w-4 shrink-0 items-center justify-center ${isHidden ? "opacity-30" : ""}`}>
-            {item.icon}
-          </span>
-
-          {/* Label */}
-          <span className={`flex-1 truncate text-[13px] leading-5 ${isHidden ? "line-through opacity-40" : ""}`}>
-            {item.label}
-          </span>
-
-          {/* Visibility toggle */}
-          {!item.pinned && (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleVisibility(item.id);
-              }}
-              className={`shrink-0 flex h-5 w-5 items-center justify-center rounded transition-colors ${
-                isHidden
-                  ? "text-zinc-300 hover:text-zinc-500"
-                  : "text-zinc-400 hover:text-zinc-600"
-              }`}
-              aria-label={isHidden ? `Show ${item.label}` : `Hide ${item.label}`}
-            >
-              {isHidden ? <EyeOffIcon /> : <EyeIcon />}
-            </button>
-          )}
-
-          {item.pinned && (
-            <span className="shrink-0 text-[9px] text-zinc-300 uppercase tracking-wider">
-              pinned
-            </span>
-          )}
-        </div>
-      );
-    });
-  }
-
-  // --- Desktop sidebar ---
-  const desktopSidebar = (
-    <aside className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 z-30 w-[200px] border-r border-zinc-200">
-      {/* Header */}
-      <div className="flex h-12 items-center justify-between px-4">
-        <span className="text-[13px] font-semibold tracking-tight text-zinc-600">
-          1P OS
-        </span>
-        <button
-          type="button"
-          onClick={() => setEditing((prev) => !prev)}
-          className={`flex h-6 w-6 items-center justify-center rounded transition-colors duration-200 ${
-            editing
-              ? "bg-zinc-100 text-zinc-900"
-              : "text-zinc-300 hover:text-zinc-500"
-          }`}
-          aria-label={editing ? "Done editing sidebar" : "Customize sidebar"}
-        >
-          {editing ? <CloseIcon /> : <PencilIcon />}
-        </button>
-      </div>
-
-      {/* Main nav */}
-      {editing ? (
-        <div className="flex-1 overflow-y-auto py-2">
-          <div className="px-4 pb-2">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
-              Drag to reorder, toggle to hide
-            </p>
-          </div>
-          {renderEditItems()}
-          <div className="px-4 pt-4">
-            <button
-              type="button"
-              onClick={resetToDefault}
-              className="text-[11px] text-zinc-400 hover:text-zinc-600 transition-colors"
-            >
-              Reset to default
-            </button>
-          </div>
-        </div>
-      ) : (
-        <nav className="flex-1 space-y-0.5 overflow-y-auto py-2">
-          {renderNavItems(visibleItems)}
-        </nav>
-      )}
-
-      {/* Settings (always at bottom) */}
-      <div className="pt-4 pb-2">
-        {renderNavItems(BOTTOM_NAV_ITEMS)}
-      </div>
-    </aside>
-  );
-
-  // --- Mobile overlay ---
-  const mobileSidebar = (
-    <>
-      {/* Mobile hamburger */}
+  function renderItem(item: NavItem) {
+    const active = isActive(item.href);
+    const disabled = item.comingSoon;
+    return (
       <button
-        onClick={() => setMobileOpen(true)}
-        className="fixed left-3 top-3 z-40 flex h-8 w-8 items-center justify-center text-zinc-500 transition-colors duration-200 hover:text-zinc-600 md:hidden"
-        aria-label="Open menu"
+        key={item.id}
+        onClick={disabled ? undefined : () => navigateTo(item.href)}
+        className={`group flex w-full items-center gap-2.5 rounded-md px-3 py-1.5 text-left transition-colors duration-150 ${
+          disabled
+            ? "text-zinc-300 cursor-default"
+            : active
+              ? "bg-zinc-100 text-zinc-900 font-medium"
+              : "text-zinc-600 hover:bg-zinc-50 hover:text-zinc-800"
+        }`}
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
-      </button>
-
-      {/* Backdrop */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm md:hidden"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
-
-      {/* Mobile panel */}
-      <aside
-        className={`
-          fixed left-0 top-0 bottom-0 z-50 flex w-[200px] flex-col
-          glass border-r border-zinc-200
-          transition-transform duration-200 ease-in-out md:hidden
-          ${mobileOpen ? "translate-x-0" : "-translate-x-full"}
-        `}
-      >
-        {/* Header with close and edit */}
-        <div className="flex h-12 items-center justify-between px-4">
-          <span className="text-[13px] font-semibold tracking-tight text-zinc-600">
-            1P OS
+        <span className={`flex h-4 w-4 shrink-0 items-center justify-center ${
+          disabled
+            ? "text-zinc-300"
+            : active ? "text-zinc-800" : "text-zinc-400 group-hover:text-zinc-600"
+        }`}>
+          {item.icon}
+        </span>
+        <span className="flex-1 truncate text-[13px]">{item.label}</span>
+        {disabled && (
+          <span className="shrink-0 rounded-full bg-zinc-100 px-1.5 py-0.5 text-[9px] font-medium text-zinc-400">
+            Soon
           </span>
-          <div className="flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => setEditing((prev) => !prev)}
-              className={`flex h-6 w-6 items-center justify-center rounded transition-colors duration-200 ${
-                editing
-                  ? "bg-zinc-100 text-zinc-900"
-                  : "text-zinc-300 hover:text-zinc-500"
-              }`}
-              aria-label={editing ? "Done editing sidebar" : "Customize sidebar"}
-            >
-              {editing ? <CloseIcon /> : <PencilIcon />}
-            </button>
-            <button
-              onClick={() => { setMobileOpen(false); setEditing(false); }}
-              aria-label="Close menu"
-              className="flex h-6 w-6 items-center justify-center text-zinc-500 transition-colors duration-200 hover:text-zinc-600"
-            >
-              <CloseIcon />
-            </button>
-          </div>
-        </div>
-
-        {/* Nav */}
-        {editing ? (
-          <div className="flex-1 overflow-y-auto py-2">
-            <div className="px-4 pb-2">
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
-                Drag to reorder, toggle to hide
-              </p>
-            </div>
-            {renderEditItems()}
-            <div className="px-4 pt-4">
-              <button
-                type="button"
-                onClick={resetToDefault}
-                className="text-[11px] text-zinc-400 hover:text-zinc-600 transition-colors"
-              >
-                Reset to default
-              </button>
-            </div>
-          </div>
-        ) : (
-          <nav className="flex-1 space-y-0.5 overflow-y-auto py-2">
-            {renderNavItems(visibleItems)}
-          </nav>
         )}
+        {!disabled && item.count !== undefined && item.count > 0 && (
+          <span className="shrink-0 rounded-full bg-zinc-200 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600">
+            {item.count}
+          </span>
+        )}
+      </button>
+    );
+  }
 
-        <div className="pt-4 pb-2">
-          {renderNavItems(BOTTOM_NAV_ITEMS)}
+  function renderGroup(group: NavGroup) {
+    const isOpen = openGroups[group.id] ?? false;
+    const hasActive = group.items.some((item) => isActive(item.href));
+
+    return (
+      <div key={group.id}>
+        <button
+          onClick={() => toggleGroup(group.id)}
+          className={`flex w-full items-center gap-2 px-3 py-1.5 rounded-md text-left transition-colors duration-150 ${
+            hasActive ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-700 hover:bg-zinc-50"
+          }`}
+        >
+          <span className="flex h-4 w-4 shrink-0 items-center justify-center text-zinc-400">
+            {group.icon}
+          </span>
+          <span className="flex-1 text-[13px] font-medium">{group.label}</span>
+          <ChevronIcon open={isOpen} />
+        </button>
+
+        {isOpen && (
+          <div className="ml-3 mt-0.5 space-y-0.5 border-l border-zinc-200 pl-3">
+            {group.items.map(renderItem)}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  const sidebarContent = (
+    <>
+      {/* Header */}
+      <div className="flex h-12 items-center px-4">
+        <span className="text-[14px] font-bold tracking-tight text-zinc-900">
+          1 Person Company
+        </span>
+      </div>
+
+      {/* Top items */}
+      <nav className="flex-1 overflow-y-auto px-2 py-1 space-y-0.5">
+        {nav.top.map(renderItem)}
+
+        {/* Divider */}
+        <div className="my-2 border-t border-zinc-200" />
+
+        {/* Groups */}
+        <div className="space-y-1">
+          {nav.groups.map(renderGroup)}
         </div>
-      </aside>
+      </nav>
+
+      {/* Bottom items */}
+      <div className="border-t border-zinc-200 px-2 py-2 space-y-0.5">
+        {nav.bottom.map(renderItem)}
+      </div>
     </>
   );
 
   return (
     <>
-      {desktopSidebar}
-      {mobileSidebar}
+      {/* Desktop */}
+      <aside className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 z-30 w-[220px] border-r border-zinc-200 bg-white">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile hamburger */}
+      <button
+        onClick={() => setMobileOpen(true)}
+        className="fixed left-3 top-3 z-40 flex h-8 w-8 items-center justify-center text-zinc-500 hover:text-zinc-600 md:hidden"
+        aria-label="Open menu"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+          <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm md:hidden" onClick={() => setMobileOpen(false)} />
+      )}
+      <aside className={`fixed left-0 top-0 bottom-0 z-50 flex w-[220px] flex-col bg-white border-r border-zinc-200 transition-transform duration-200 md:hidden ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        {sidebarContent}
+      </aside>
     </>
   );
 }

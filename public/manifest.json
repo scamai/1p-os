@@ -1,6 +1,6 @@
 {
-  "name": "1P OS",
-  "short_name": "1P OS",
+  "name": "1 Person Company",
+  "short_name": "1 Person Co",
   "description": "AI CEO that runs your business",
   "start_url": "/company",
   "display": "standalone",
