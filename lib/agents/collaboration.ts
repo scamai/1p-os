@@ -5,7 +5,7 @@
  * task, data, alert, or request types.
  */
 
-import { DEV_BYPASS, MOCK_AGENTS } from "@/lib/supabase/dev-bypass";
+import { DEV_BYPASS } from "@/lib/supabase/dev-bypass";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -34,9 +34,9 @@ const today = now.toISOString().split("T")[0];
 const MOCK_HANDOFFS: AgentHandoff[] = [
   {
     id: "00000000-0000-0000-0000-000000000501",
-    fromAgentId: MOCK_AGENTS[2].id, // Sales Agent
+    fromAgentId: "00000000-0000-0000-0000-000000000102", // Sales Agent
     fromAgentName: "Sales Agent",
-    toAgentId: MOCK_AGENTS[4].id, // Support Agent (acting as Proposal Writer stand-in)
+    toAgentId: "00000000-0000-0000-0000-000000000104", // Support Agent (acting as Proposal Writer stand-in)
     toAgentName: "Proposal Writer",
     type: "task",
     subject: "Qualified lead: Globex Corp",
@@ -50,9 +50,9 @@ const MOCK_HANDOFFS: AgentHandoff[] = [
   },
   {
     id: "00000000-0000-0000-0000-000000000502",
-    fromAgentId: MOCK_AGENTS[4].id, // Support Agent
+    fromAgentId: "00000000-0000-0000-0000-000000000104", // Support Agent
     fromAgentName: "Support Agent",
-    toAgentId: MOCK_AGENTS[5].id, // Content Agent
+    toAgentId: "00000000-0000-0000-0000-000000000105", // Content Agent
     toAgentName: "Content Agent",
     type: "data",
     subject: "Top 3 issues this week for FAQ",
@@ -68,9 +68,9 @@ const MOCK_HANDOFFS: AgentHandoff[] = [
   },
   {
     id: "00000000-0000-0000-0000-000000000503",
-    fromAgentId: MOCK_AGENTS[3].id, // Finance Agent
+    fromAgentId: "00000000-0000-0000-0000-000000000103", // Finance Agent
     fromAgentName: "Finance Agent",
-    toAgentId: MOCK_AGENTS[1].id, // Admin Agent (Ops)
+    toAgentId: "00000000-0000-0000-0000-000000000101", // Admin Agent (Ops)
     toAgentName: "Ops Agent",
     type: "alert",
     subject: "Stripe payout discrepancy: $210",
@@ -85,9 +85,9 @@ const MOCK_HANDOFFS: AgentHandoff[] = [
   },
   {
     id: "00000000-0000-0000-0000-000000000504",
-    fromAgentId: MOCK_AGENTS[5].id, // Content Agent
+    fromAgentId: "00000000-0000-0000-0000-000000000105", // Content Agent
     fromAgentName: "Content Agent",
-    toAgentId: MOCK_AGENTS[1].id, // Admin Agent (Ops)
+    toAgentId: "00000000-0000-0000-0000-000000000101", // Admin Agent (Ops)
     toAgentName: "Ops Agent",
     type: "request",
     subject: "Blog post ready for scheduling",

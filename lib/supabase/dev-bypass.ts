@@ -297,8 +297,7 @@ export const MOCK_AUDIT_LOG = [
   { id: "al-4", actor: "CEO", action: "Decomposed Q2 growth strategy into 4 tactical goals", details: null, cost: 0.04, created_at: `${today}T07:00:12Z` },
 ];
 
-import { MOCK_HANDOFFS } from "@/lib/agents/collaboration";
-export { MOCK_HANDOFFS };
+// MOCK_HANDOFFS defined in lib/agents/collaboration.ts — loaded lazily to avoid circular imports
 
 /**
  * Creates a mock Supabase client that returns demo data instead of
@@ -324,7 +323,7 @@ export function createMockSupabaseClient() {
       projects: [],
       documents: [],
       audit_log: MOCK_AUDIT_LOG,
-      agent_messages: MOCK_HANDOFFS,
+      agent_messages: [],
       safety_config: [],
     };
 

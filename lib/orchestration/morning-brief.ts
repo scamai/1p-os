@@ -107,7 +107,6 @@ function generateMockBrief(): MorningBrief {
 
 // ── Real Brief (Supabase) ──
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function generateRealBrief(businessId: string, supabase: any): Promise<MorningBrief> {
   const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString();
   const yesterdayStart = new Date();
@@ -270,10 +269,8 @@ async function generateRealBrief(businessId: string, supabase: any): Promise<Mor
 
 // ── Public API ──
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function generateMorningBrief(
   businessId: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabase: any
 ): Promise<MorningBrief> {
   if (DEV_BYPASS) {
