@@ -3,6 +3,10 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { DecisionFeed, type DecisionItem } from "@/components/company/DecisionFeed";
+import { MorningBriefCard } from "@/components/company/MorningBriefCard";
+import { ActivityFeed } from "@/components/company/ActivityFeed";
+import { AgentHandoffs } from "@/components/company/AgentHandoffs";
+import { MOCK_HANDOFFS, type AgentHandoff } from "@/lib/agents/collaboration";
 
 // ── Types ──
 
@@ -625,11 +629,13 @@ function HQPage() {
     }
   };
 
-  // Brief
-  const [brief] = React.useState<CEOBrief>(MOCK_BRIEF);
-
   // Agents
   const [agents] = React.useState<AgentInfo[]>(MOCK_AGENTS);
+
+  // Handoffs
+  const [handoffs] = React.useState<AgentHandoff[]>(
+    MOCK_HANDOFFS.filter((h) => h.status !== "completed")
+  );
 
   // Spend
   const spentToday = agents.reduce((s, a) => s + a.costToday, 0);
@@ -658,12 +664,17 @@ function HQPage() {
         <MissionEditor mission={mission} onSave={saveMission} />
       </Section>
 
-      {/* 2. CEO Brief */}
+      {/* 2. Morning Brief */}
       <Section>
-        <BriefSection brief={brief} />
+        <MorningBriefCard />
       </Section>
 
-      {/* 3. Decisions */}
+      {/* 3. Activity Feed */}
+      <Section>
+        <ActivityFeed />
+      </Section>
+
+      {/* 4. Decisions */}
       <Section>
         <SectionLabel>Decisions</SectionLabel>
         <DecisionFeed cards={decisions} onAction={handleAction} />
@@ -685,7 +696,18 @@ function HQPage() {
         <TeamStrip agents={agents} />
       </Section>
 
-      {/* 6. Spend */}
+      {/* 6. Agent Handoffs */}
+      <Section>
+        <SectionLabel>
+          Agent Handoffs{" "}
+          <span className="ml-1 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-zinc-100 px-1.5 text-[11px] font-semibold tabular-nums text-zinc-600">
+            {handoffs.length}
+          </span>
+        </SectionLabel>
+        <AgentHandoffs handoffs={handoffs} />
+      </Section>
+
+      {/* 7. Spend */}
       <Section>
         <SpendBar spent={spentToday} budget={dailyBudget} />
       </Section>

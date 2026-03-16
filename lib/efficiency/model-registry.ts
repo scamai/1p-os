@@ -1,6 +1,6 @@
 export interface ModelConfig {
   id: string;
-  provider: 'anthropic' | 'meta' | 'mistral' | 'self-hosted';
+  provider: 'anthropic' | 'meta' | 'mistral' | 'minimax' | 'self-hosted';
   costPerInputToken: number;
   costPerOutputToken: number;
   maxContextWindow: number;
@@ -51,6 +51,20 @@ export const MODELS: Record<string, ModelConfig> = {
     displayName: 'Mistral Large',
   },
 };
+
+// Load MiniMax model if API key is available
+if (process.env.MINIMAX_API_KEY) {
+  MODELS['minimax-01'] = {
+    id: 'MiniMax-Text-01',
+    provider: 'minimax',
+    costPerInputToken: 0.0000004,
+    costPerOutputToken: 0.0000016,
+    maxContextWindow: 1_000_000,
+    qualityTier: 'medium',
+    latencyMs: 2000,
+    displayName: 'MiniMax-Text-01',
+  };
+}
 
 // Load self-hosted model from env if available
 if (process.env.DEPLOYMENT_MODE === 'self-hosted' && process.env.SELF_HOSTED_MODEL_ID) {

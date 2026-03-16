@@ -8,6 +8,15 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      animation: {
+        'feed-in': 'feedIn 0.5s ease-out',
+      },
+      keyframes: {
+        feedIn: {
+          '0%': { opacity: '0', transform: 'translateY(-8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
       colors: {
         brand: {
           50: '#f0f7ff',

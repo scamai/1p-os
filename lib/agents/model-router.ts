@@ -68,7 +68,7 @@ function cloudProfiles(): ModelProfile[] {
 
 /** BYOK mode: user provides their own keys */
 function defaultProfiles(): ModelProfile[] {
-  return [
+  const profiles: ModelProfile[] = [
     {
       id: "claude-sonnet",
       provider: "anthropic",
@@ -87,16 +87,32 @@ function defaultProfiles(): ModelProfile[] {
       failureCount: 0,
       costPer1kTokens: { input: 0.25, output: 1.25 },
     },
-    {
-      id: "ollama-llama",
-      provider: "ollama",
-      model: "llama3.1:70b",
+  ];
+
+  // Add MiniMax if key is available
+  if (process.env.MINIMAX_API_KEY) {
+    profiles.push({
+      id: "minimax-text-01",
+      provider: "minimax",
+      model: "MiniMax-Text-01",
       priority: 3,
       status: "active",
       failureCount: 0,
-      costPer1kTokens: { input: 0, output: 0 },
-    },
-  ];
+      costPer1kTokens: { input: 0.4, output: 1.6 },
+    });
+  }
+
+  profiles.push({
+    id: "ollama-llama",
+    provider: "ollama",
+    model: "llama3.1:70b",
+    priority: 4,
+    status: "active",
+    failureCount: 0,
+    costPer1kTokens: { input: 0, output: 0 },
+  });
+
+  return profiles;
 }
 
 // ---------------------------------------------------------------------------
