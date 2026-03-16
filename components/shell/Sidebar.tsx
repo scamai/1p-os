@@ -90,12 +90,14 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
           { id: "incorporation", icon: <FileIcon />, label: "Incorporation", href: "/company/incorporation" },
           { id: "solution-deck", icon: <LayersIcon />, label: "Solution Deck", href: "/company/solution-deck" },
           { id: "accelerator", icon: <TargetIcon />, label: "Apply to Accelerator", href: "/company/accelerator" },
+          { id: "company-fundraising", icon: <RocketIcon />, label: "Fundraising", href: "/company/fundraising" },
         ],
       },
       {
         id: "money",
         label: "Money",
         icon: <DollarIcon />,
+        defaultOpen: true,
         items: [
           { id: "fundraising", icon: <RocketIcon />, label: "Fundraising", href: "/money/fundraising" },
           { id: "runrate", icon: <TrendIcon />, label: "Runrate", href: "/money/runrate" },
@@ -109,6 +111,7 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
         id: "business",
         label: "Business",
         icon: <MapIcon />,
+        defaultOpen: true,
         items: [
           { id: "biz-model", icon: <LayersIcon />, label: "Business Model", href: "/business/model" },
           { id: "pricing", icon: <TagIcon />, label: "Pricing Strategy", href: "/business/pricing" },
@@ -121,6 +124,7 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
         id: "legal",
         label: "Legal",
         icon: <ShieldIcon />,
+        defaultOpen: true,
         items: [
           { id: "contracts", icon: <FileIcon />, label: "Contracts", href: "/legal/contracts" },
           { id: "legal-safes", icon: <TagIcon />, label: "SAFEs", href: "/legal/safes" },
@@ -141,9 +145,15 @@ function Sidebar({ counts = {} }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
-
   const nav = buildNav(counts);
+
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
+    const defaults: Record<string, boolean> = {};
+    for (const g of nav.groups) {
+      if (g.defaultOpen) defaults[g.id] = true;
+    }
+    return defaults;
+  });
 
   // Open group that contains current path
   useEffect(() => {
@@ -155,15 +165,6 @@ function Sidebar({ counts = {} }: SidebarProps) {
   }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => { setMobileOpen(false); }, [pathname]);
-
-  // Default open groups
-  useEffect(() => {
-    const defaults: Record<string, boolean> = {};
-    for (const g of nav.groups) {
-      if (g.defaultOpen) defaults[g.id] = true;
-    }
-    setOpenGroups((prev) => ({ ...defaults, ...prev }));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   function isActive(href: string): boolean {
     if (href === "/company") return pathname === "/" || pathname === "/company";
