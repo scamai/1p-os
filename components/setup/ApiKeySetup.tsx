@@ -123,10 +123,10 @@ function ApiKeySetup({ keys, onChange, compact = false }: ApiKeySetupProps) {
     <div>
       {!compact && (
         <>
-          <h2 className="mb-1 text-lg font-semibold text-slate-900">
+          <h2 className="mb-1 text-lg font-semibold text-black">
             Add your API keys
           </h2>
-          <p className="mb-4 text-sm text-slate-500">
+          <p className="mb-4 text-sm text-black/50">
             Add at least one LLM key to get started. You can add more anytime in settings.
           </p>
         </>
@@ -136,7 +136,7 @@ function ApiKeySetup({ keys, onChange, compact = false }: ApiKeySetupProps) {
       <div className="mb-4 flex items-center gap-3">
         <div className="relative flex-1">
           <svg
-            className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400"
+            className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-black/40"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -149,7 +149,7 @@ function ApiKeySetup({ keys, onChange, compact = false }: ApiKeySetupProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search providers..."
-            className="h-8 w-full rounded-md border border-slate-200 bg-transparent pl-8 pr-3 text-xs text-slate-900 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+            className="h-8 w-full rounded-md border border-black/[0.08] bg-transparent pl-8 pr-3 text-xs text-black placeholder:text-black/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
           />
         </div>
         <Badge variant={configuredCount > 0 ? "success" : "default"}>
@@ -169,18 +169,18 @@ function ApiKeySetup({ keys, onChange, compact = false }: ApiKeySetupProps) {
           return (
             <div
               key={cat}
-              className="rounded-lg border border-slate-200 overflow-hidden"
+              className="rounded-lg border border-black/[0.08] overflow-hidden"
             >
               <button
                 type="button"
                 onClick={() => toggleCategory(cat)}
-                className="flex w-full items-center justify-between px-3 py-2 text-left hover:bg-slate-50 transition-colors"
+                className="flex w-full items-center justify-between px-3 py-2 text-left hover:bg-black/[0.02] transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-slate-900">
+                  <span className="text-xs font-semibold text-black">
                     {cat}
                   </span>
-                  <span className="text-[10px] text-slate-500">
+                  <span className="text-[10px] text-black/50">
                     {items.length} providers
                   </span>
                   {catConfigured > 0 && (
@@ -188,7 +188,7 @@ function ApiKeySetup({ keys, onChange, compact = false }: ApiKeySetupProps) {
                   )}
                 </div>
                 <svg
-                  className={`h-3.5 w-3.5 text-slate-400 transition-transform ${
+                  className={`h-3.5 w-3.5 text-black/40 transition-transform ${
                     isExpanded ? "rotate-180" : ""
                   }`}
                   fill="none"
@@ -201,14 +201,14 @@ function ApiKeySetup({ keys, onChange, compact = false }: ApiKeySetupProps) {
               </button>
 
               {isExpanded && (
-                <div className="border-t border-slate-200 px-3 py-2 flex flex-col gap-2">
+                <div className="border-t border-black/[0.08] px-3 py-2 flex flex-col gap-2">
                   {items.map((provider) => (
                     <div key={provider.id} className="flex items-center gap-2">
                       <div className="w-32 shrink-0">
-                        <label className="text-xs font-medium text-slate-700">
+                        <label className="text-xs font-medium text-black/70">
                           {provider.label}
                           {provider.required && (
-                            <span className="ml-0.5 text-slate-900">*</span>
+                            <span className="ml-0.5 text-black">*</span>
                           )}
                         </label>
                       </div>
@@ -221,7 +221,7 @@ function ApiKeySetup({ keys, onChange, compact = false }: ApiKeySetupProps) {
                       />
                       {(keys[provider.envVar] ?? "").length > 0 && (
                         <svg
-                          className="h-4 w-4 shrink-0 text-slate-900"
+                          className="h-4 w-4 shrink-0 text-black"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"

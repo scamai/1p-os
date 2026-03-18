@@ -66,10 +66,10 @@ function ModelStrategyPicker({
 }: ModelStrategyPickerProps) {
   return (
     <div>
-      <h2 className="mb-1 text-lg font-semibold text-slate-900">
+      <h2 className="mb-1 text-lg font-semibold text-black">
         Choose your model strategy
       </h2>
-      <p className="mb-6 text-sm text-slate-500">
+      <p className="mb-6 text-sm text-black/50">
         This controls which AI models your agents use. You can change this anytime.
       </p>
 
@@ -87,32 +87,32 @@ function ModelStrategyPicker({
               onClick={() => onSelect(s.id)}
               className={`flex items-center justify-between rounded-lg border px-4 py-3 text-left transition-all ${
                 isSelected
-                  ? "border-slate-900 bg-slate-50"
-                  : "border-slate-200 hover:border-slate-300 hover:bg-slate-50/50"
+                  ? "border-black bg-black/[0.02]"
+                  : "border-black/[0.08] hover:border-black/30 hover:bg-black/[0.02]/50"
               }`}
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-slate-900">
+                  <span className="text-sm font-medium text-black">
                     {s.name}
                   </span>
                   {isCurrent && (
                     <Badge variant="success">Current</Badge>
                   )}
                   {isRecommended && !isCurrent && (
-                    <span className="text-[10px] text-slate-400">Recommended</span>
+                    <span className="text-[10px] text-black/40">Recommended</span>
                   )}
                   {isSelected && (
-                    <svg className="h-3.5 w-3.5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <svg className="h-3.5 w-3.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   )}
                 </div>
-                <p className="mt-0.5 text-xs text-slate-500">{s.description}</p>
+                <p className="mt-0.5 text-xs text-black/50">{s.description}</p>
               </div>
               <div className="ml-4 shrink-0 text-right">
-                <p className="text-xs font-mono text-slate-600">${costs.daily}/day</p>
-                <p className="text-[11px] font-mono text-slate-400">~${costs.monthly}/mo</p>
+                <p className="text-xs font-mono text-black/60">${costs.daily}/day</p>
+                <p className="text-[11px] font-mono text-black/40">~${costs.monthly}/mo</p>
               </div>
             </button>
           );
@@ -120,14 +120,14 @@ function ModelStrategyPicker({
       </div>
 
       {/* Comparison table */}
-      <div className="mt-6 rounded-lg border border-slate-200 overflow-hidden">
+      <div className="mt-6 rounded-lg border border-black/[0.08] overflow-hidden">
         <table className="w-full text-xs">
           <thead>
-            <tr className="border-b border-slate-200 bg-slate-50">
-              <th className="px-3 py-2 text-left font-medium text-slate-500">Strategy</th>
-              <th className="px-3 py-2 text-right font-medium text-slate-500">Daily</th>
-              <th className="px-3 py-2 text-right font-medium text-slate-500">Monthly</th>
-              <th className="px-3 py-2 text-right font-medium text-slate-500">Quality</th>
+            <tr className="border-b border-black/[0.08] bg-black/[0.02]">
+              <th className="px-3 py-2 text-left font-medium text-black/50">Strategy</th>
+              <th className="px-3 py-2 text-right font-medium text-black/50">Daily</th>
+              <th className="px-3 py-2 text-right font-medium text-black/50">Monthly</th>
+              <th className="px-3 py-2 text-right font-medium text-black/50">Quality</th>
             </tr>
           </thead>
           <tbody>
@@ -136,20 +136,20 @@ function ModelStrategyPicker({
               return (
                 <tr
                   key={s.id}
-                  className={`border-b border-slate-200 last:border-0 ${
-                    selected === s.id ? "bg-slate-50" : ""
+                  className={`border-b border-black/[0.08] last:border-0 ${
+                    selected === s.id ? "bg-black/[0.02]" : ""
                   }`}
                 >
-                  <td className="px-3 py-2 font-medium text-slate-900">{s.name}</td>
-                  <td className="px-3 py-2 text-right font-mono text-slate-900">${costs.daily}</td>
-                  <td className="px-3 py-2 text-right font-mono text-slate-900">${costs.monthly}</td>
-                  <td className="px-3 py-2 text-right text-slate-500">{s.qualityRating}</td>
+                  <td className="px-3 py-2 font-medium text-black">{s.name}</td>
+                  <td className="px-3 py-2 text-right font-mono text-black">${costs.daily}</td>
+                  <td className="px-3 py-2 text-right font-mono text-black">${costs.monthly}</td>
+                  <td className="px-3 py-2 text-right text-black/50">{s.qualityRating}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <div className="px-3 py-1.5 text-[10px] text-slate-400 bg-slate-50">
+        <div className="px-3 py-1.5 text-[10px] text-black/40 bg-black/[0.02]">
           Estimates based on {agentCount} agent{agentCount !== 1 ? "s" : ""}
         </div>
       </div>

@@ -83,10 +83,10 @@ function BusinessTemplates({ onApply }: BusinessTemplatesProps) {
 
   return (
     <div>
-      <h2 className="mb-1 text-lg font-semibold text-slate-100">
+      <h2 className="mb-1 text-lg font-semibold text-black/[0.04]">
         Pick your business template
       </h2>
-      <p className="mb-6 text-sm text-slate-400">
+      <p className="mb-6 text-sm text-black/40">
         Choose one and get a fully configured team in 60 seconds. You can customize everything later.
       </p>
 
@@ -101,8 +101,8 @@ function BusinessTemplates({ onApply }: BusinessTemplatesProps) {
               onClick={() => setSelected(t.id)}
               className={`relative flex flex-col rounded-xl border p-4 text-left transition-all ${
                 isSelected
-                  ? "border-white bg-slate-800 ring-1 ring-white"
-                  : "border-slate-700 bg-slate-900 hover:border-slate-500 hover:bg-slate-800/60"
+                  ? "border-white bg-black/80 ring-1 ring-white"
+                  : "border-black/70 bg-black hover:border-black/50 hover:bg-black/80/60"
               } ${loading ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
             >
               {isSelected && (
@@ -125,14 +125,14 @@ function BusinessTemplates({ onApply }: BusinessTemplatesProps) {
 
               <div className="mb-2 text-2xl">{t.icon}</div>
 
-              <h3 className="text-sm font-semibold text-slate-100">{t.name}</h3>
-              <p className="mt-1 text-xs leading-relaxed text-slate-400">
+              <h3 className="text-sm font-semibold text-black/[0.04]">{t.name}</h3>
+              <p className="mt-1 text-xs leading-relaxed text-black/40">
                 {t.description}
               </p>
 
-              <div className="mt-3 flex items-center gap-3 text-xs font-mono text-slate-500">
+              <div className="mt-3 flex items-center gap-3 text-xs font-mono text-black/50">
                 <span>{t.agentCount} agents</span>
-                <span className="text-slate-600">&middot;</span>
+                <span className="text-black/60">&middot;</span>
                 <span>~${t.estimatedMonthlyCost}/mo</span>
               </div>
             </button>
@@ -141,7 +141,7 @@ function BusinessTemplates({ onApply }: BusinessTemplatesProps) {
       </div>
 
       {error && (
-        <p className="mt-4 text-sm text-slate-400">{error}</p>
+        <p className="mt-4 text-sm text-black/40">{error}</p>
       )}
 
       <button
@@ -150,8 +150,8 @@ function BusinessTemplates({ onApply }: BusinessTemplatesProps) {
         onClick={handleApply}
         className={`mt-6 w-full rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
           selected && !loading
-            ? "bg-white text-slate-900 hover:bg-slate-200"
-            : "bg-slate-800 text-slate-500 cursor-not-allowed"
+            ? "bg-white text-black hover:bg-black/[0.08]"
+            : "bg-black/80 text-black/50 cursor-not-allowed"
         }`}
       >
         {loading ? (

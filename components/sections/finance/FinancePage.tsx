@@ -108,21 +108,21 @@ function formatDate(dateStr: string): string {
 
 function statusColor(status: string): string {
   switch (status) {
-    case "paid": return "bg-slate-100 text-slate-700";
-    case "sent": return "bg-slate-50 text-slate-600";
-    case "overdue": return "bg-slate-200 text-slate-800";
-    case "draft": return "bg-slate-100 text-slate-500";
-    default: return "bg-slate-100 text-slate-500";
+    case "paid": return "bg-black/[0.04] text-black/70";
+    case "sent": return "bg-black/[0.02] text-black/60";
+    case "overdue": return "bg-black/[0.08] text-black/80";
+    case "draft": return "bg-black/[0.04] text-black/50";
+    default: return "bg-black/[0.04] text-black/50";
   }
 }
 
 const ROLE_COLORS: Record<string, string> = {
-  operations: "bg-slate-900",
-  finance: "bg-slate-700",
-  sales: "bg-slate-500",
-  marketing: "bg-slate-800",
-  "customer-success": "bg-slate-600",
-  product: "bg-slate-400",
+  operations: "bg-black",
+  finance: "bg-black/70",
+  sales: "bg-black/50",
+  marketing: "bg-black/80",
+  "customer-success": "bg-black/60",
+  product: "bg-black/40",
 };
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -369,12 +369,12 @@ function FinancePage({ onAction }: FinancePageProps) {
     return (
       <div className="mx-auto max-w-4xl">
         <div className="animate-pulse space-y-4">
-          <div className="h-8 w-48 rounded bg-slate-100" />
+          <div className="h-8 w-48 rounded bg-black/[0.04]" />
           <div className="grid grid-cols-4 gap-3">
-            {[1, 2, 3, 4].map((i) => <div key={i} className="h-24 rounded-lg bg-slate-100" />)}
+            {[1, 2, 3, 4].map((i) => <div key={i} className="h-24 rounded-lg bg-black/[0.04]" />)}
           </div>
           <div className="grid grid-cols-2 gap-3">
-            {[1, 2].map((i) => <div key={i} className="h-64 rounded-lg bg-slate-100" />)}
+            {[1, 2].map((i) => <div key={i} className="h-64 rounded-lg bg-black/[0.04]" />)}
           </div>
         </div>
       </div>
@@ -397,12 +397,12 @@ function FinancePage({ onAction }: FinancePageProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">Finance</h1>
-          <p className="text-sm text-slate-500">Your AI CFO — complete financial control</p>
+          <h1 className="text-lg font-semibold text-black">Finance</h1>
+          <p className="text-sm text-black/50">Your AI CFO — complete financial control</p>
         </div>
         <div className="flex items-center gap-2">
           <button
-            className="rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+            className="rounded-md border border-black/[0.08] px-3 py-1.5 text-xs font-medium text-black/70 hover:bg-black/[0.02] transition-colors"
             onClick={() => handleAction("new_invoice")}
           >
             + New Invoice
@@ -411,15 +411,15 @@ function FinancePage({ onAction }: FinancePageProps) {
       </div>
 
       {/* Section nav */}
-      <div className="mt-4 flex items-center gap-1 overflow-x-auto border-b border-slate-200 pb-px">
+      <div className="mt-4 flex items-center gap-1 overflow-x-auto border-b border-black/[0.08] pb-px">
         {SECTIONS.map((s) => (
           <button
             key={s.id}
             onClick={() => setActiveSection(s.id)}
             className={`flex items-center gap-1.5 whitespace-nowrap rounded-t-md px-3 py-2 text-xs font-medium transition-colors ${
               activeSection === s.id
-                ? "bg-slate-100 text-slate-900 border-b-2 border-slate-900 -mb-px"
-                : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+                ? "bg-black/[0.04] text-black border-b-2 border-black -mb-px"
+                : "text-black/50 hover:text-black/70 hover:bg-black/[0.02]"
             }`}
           >
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
@@ -464,24 +464,24 @@ function FinancePage({ onAction }: FinancePageProps) {
       </div>
 
       {/* ── Budget health bar ───────────────────────────────────────────────── */}
-      <div className="mt-4 rounded-lg border border-slate-200 px-4 py-3">
+      <div className="mt-4 rounded-lg border border-black/[0.08] px-4 py-3">
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-xs font-medium text-slate-700">Monthly AI Budget</span>
-          <span className="text-xs font-mono text-slate-500">
+          <span className="text-xs font-medium text-black/70">Monthly AI Budget</span>
+          <span className="text-xs font-mono text-black/50">
             {formatMoney(agentSpend)} / {formatMoney(totalAgentBudget)}
           </span>
         </div>
-        <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
+        <div className="h-2 w-full overflow-hidden rounded-full bg-black/[0.04]">
           <div
             className={`h-full rounded-full transition-all duration-500 ${
-              budgetUsedPct >= 90 ? "bg-slate-900"
-              : budgetUsedPct >= 70 ? "bg-slate-700"
-              : "bg-slate-500"
+              budgetUsedPct >= 90 ? "bg-black"
+              : budgetUsedPct >= 70 ? "bg-black/70"
+              : "bg-black/50"
             }`}
             style={{ width: `${budgetUsedPct}%` }}
           />
         </div>
-        <div className="mt-1.5 flex items-center justify-between text-[10px] text-slate-400">
+        <div className="mt-1.5 flex items-center justify-between text-[10px] text-black/40">
           <span>Projected: {formatMoney(projectedMonthly)}/mo</span>
           {costSaved > 0 && <span>Saved {formatMoney(costSaved)} from efficiency</span>}
           <span>{formatMoney(budgetRemaining)} remaining</span>
@@ -494,21 +494,21 @@ function FinancePage({ onAction }: FinancePageProps) {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-slate-900">Monthly Runrate</h2>
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider">
+              <h2 className="text-sm font-semibold text-black">Monthly Runrate</h2>
+              <span className="text-[10px] text-black/40 uppercase tracking-wider">
                 Day {dayOfMonth} of {daysInMonth}
               </span>
             </div>
             <div className="flex flex-col gap-2">
               <RunrateRow label="Revenue" current={revenue} projected={revenueRunrate} positive />
               <RunrateRow label="AI Costs" current={agentSpend} projected={costRunrate} positive={false} />
-              <div className="border-t border-slate-100 pt-2">
+              <div className="border-t border-black/[0.04] pt-2">
                 <RunrateRow label="Net Profit" current={netProfit} projected={profitRunrate} positive={profitRunrate >= 0} bold />
               </div>
               {profitMargin !== 0 && (
                 <div className="flex items-center justify-between text-[10px]">
-                  <span className="text-slate-400">Profit margin</span>
-                  <span className={`font-mono font-semibold ${profitMargin >= 0 ? "text-slate-700" : "text-slate-800"}`}>
+                  <span className="text-black/40">Profit margin</span>
+                  <span className={`font-mono font-semibold ${profitMargin >= 0 ? "text-black/70" : "text-black/80"}`}>
                     {profitMargin.toFixed(1)}%
                   </span>
                 </div>
@@ -516,10 +516,10 @@ function FinancePage({ onAction }: FinancePageProps) {
             </div>
             {/* Progress through month */}
             <div className="mt-3">
-              <div className="h-1 w-full overflow-hidden rounded-full bg-slate-100">
-                <div className="h-full rounded-full bg-slate-300" style={{ width: `${Math.round(monthProgress * 100)}%` }} />
+              <div className="h-1 w-full overflow-hidden rounded-full bg-black/[0.04]">
+                <div className="h-full rounded-full bg-black/30" style={{ width: `${Math.round(monthProgress * 100)}%` }} />
               </div>
-              <p className="mt-1 text-[10px] text-slate-400 text-right">{daysRemaining} days remaining</p>
+              <p className="mt-1 text-[10px] text-black/40 text-right">{daysRemaining} days remaining</p>
             </div>
           </CardContent>
         </Card>
@@ -528,23 +528,23 @@ function FinancePage({ onAction }: FinancePageProps) {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-slate-900">Annual Projection</h2>
-              <span className="text-[10px] text-slate-400 uppercase tracking-wider">
+              <h2 className="text-sm font-semibold text-black">Annual Projection</h2>
+              <span className="text-[10px] text-black/40 uppercase tracking-wider">
                 Based on current pace
               </span>
             </div>
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-slate-500">Revenue</span>
-                <span className="text-xs font-mono font-semibold text-slate-900">{formatMoney(annualRevenueRunrate)}/yr</span>
+                <span className="text-xs text-black/50">Revenue</span>
+                <span className="text-xs font-mono font-semibold text-black">{formatMoney(annualRevenueRunrate)}/yr</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-slate-500">AI Costs</span>
-                <span className="text-xs font-mono text-slate-700">-{formatMoney(annualCostRunrate)}/yr</span>
+                <span className="text-xs text-black/50">AI Costs</span>
+                <span className="text-xs font-mono text-black/70">-{formatMoney(annualCostRunrate)}/yr</span>
               </div>
-              <div className="border-t border-slate-100 pt-2 flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-900">Net Profit</span>
-                <span className={`text-sm font-mono font-bold ${annualProfitRunrate >= 0 ? "text-slate-700" : "text-slate-800"}`}>
+              <div className="border-t border-black/[0.04] pt-2 flex items-center justify-between">
+                <span className="text-xs font-semibold text-black">Net Profit</span>
+                <span className={`text-sm font-mono font-bold ${annualProfitRunrate >= 0 ? "text-black/70" : "text-black/80"}`}>
                   {formatMoney(annualProfitRunrate)}/yr
                 </span>
               </div>
@@ -552,11 +552,11 @@ function FinancePage({ onAction }: FinancePageProps) {
 
             {/* Pending income callout */}
             {pendingIncome > 0 && (
-              <div className="mt-3 rounded-md bg-slate-50 px-3 py-2">
-                <p className="text-[10px] font-medium text-slate-600">
+              <div className="mt-3 rounded-md bg-black/[0.02] px-3 py-2">
+                <p className="text-[10px] font-medium text-black/60">
                   {formatMoney(pendingIncome)} in outstanding invoices
                 </p>
-                <p className="text-[10px] text-slate-500">
+                <p className="text-[10px] text-black/50">
                   If collected, annual revenue would be {formatMoney(annualRevenueRunrate + pendingIncome * 12)}/yr
                 </p>
               </div>
@@ -565,8 +565,8 @@ function FinancePage({ onAction }: FinancePageProps) {
             {/* Break-even indicator */}
             {agentSpend > 0 && (
               <div className="mt-3 flex items-center justify-between text-[10px]">
-                <span className="text-slate-400">AI cost per $ revenue</span>
-                <span className="font-mono text-slate-700">
+                <span className="text-black/40">AI cost per $ revenue</span>
+                <span className="font-mono text-black/70">
                   {revenue > 0 ? `$${(agentSpend / revenue).toFixed(2)}` : "N/A"}
                 </span>
               </div>
@@ -582,20 +582,20 @@ function FinancePage({ onAction }: FinancePageProps) {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-slate-900">Invoices</h2>
+              <h2 className="text-sm font-semibold text-black">Invoices</h2>
               <button
                 onClick={() => handleAction("new_invoice")}
-                className="text-[11px] text-slate-500 hover:text-slate-900 transition-colors"
+                className="text-[11px] text-black/50 hover:text-black transition-colors"
               >
                 + New
               </button>
             </div>
             {invoices.length === 0 ? (
               <div className="py-8 text-center">
-                <p className="text-sm text-slate-400">No invoices yet</p>
+                <p className="text-sm text-black/40">No invoices yet</p>
                 <button
                   onClick={() => handleAction("new_invoice")}
-                  className="mt-2 text-xs text-slate-500 hover:text-slate-900 transition-colors"
+                  className="mt-2 text-xs text-black/50 hover:text-black transition-colors"
                 >
                   Create your first invoice
                 </button>
@@ -605,11 +605,11 @@ function FinancePage({ onAction }: FinancePageProps) {
                 {invoices.slice(0, 8).map((inv) => (
                   <div
                     key={inv.id}
-                    className="flex items-center justify-between border-b border-slate-100 py-2 last:border-0"
+                    className="flex items-center justify-between border-b border-black/[0.04] py-2 last:border-0"
                   >
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-slate-900 truncate">
+                        <span className="text-xs font-medium text-black truncate">
                           {inv.client_name}
                         </span>
                         <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-medium ${statusColor(inv.status)}`}>
@@ -617,14 +617,14 @@ function FinancePage({ onAction }: FinancePageProps) {
                         </span>
                       </div>
                       {inv.description && (
-                        <p className="text-[10px] text-slate-400 truncate">{inv.description}</p>
+                        <p className="text-[10px] text-black/40 truncate">{inv.description}</p>
                       )}
                     </div>
                     <div className="ml-3 shrink-0 text-right">
-                      <p className="text-xs font-mono font-semibold text-slate-900">
+                      <p className="text-xs font-mono font-semibold text-black">
                         ${inv.amount.toLocaleString()}
                       </p>
-                      <p className="text-[10px] font-mono text-slate-400">
+                      <p className="text-[10px] font-mono text-black/40">
                         {formatDate(inv.due_date ?? inv.created_at)}
                       </p>
                     </div>
@@ -635,10 +635,10 @@ function FinancePage({ onAction }: FinancePageProps) {
 
             {/* Invoice summary bar */}
             {invoices.length > 0 && (
-              <div className="mt-3 flex items-center gap-3 border-t border-slate-100 pt-2">
-                <SummaryPill label="Paid" value={formatMoney(revenue)} className="text-slate-700 bg-slate-100" />
-                {outstanding > 0 && <SummaryPill label="Owed" value={formatMoney(outstanding)} className="text-slate-600 bg-slate-50" />}
-                {overdue > 0 && <SummaryPill label="Overdue" value={formatMoney(overdue)} className="text-slate-800 bg-slate-200" />}
+              <div className="mt-3 flex items-center gap-3 border-t border-black/[0.04] pt-2">
+                <SummaryPill label="Paid" value={formatMoney(revenue)} className="text-black/70 bg-black/[0.04]" />
+                {outstanding > 0 && <SummaryPill label="Owed" value={formatMoney(outstanding)} className="text-black/60 bg-black/[0.02]" />}
+                {overdue > 0 && <SummaryPill label="Overdue" value={formatMoney(overdue)} className="text-black/80 bg-black/[0.08]" />}
               </div>
             )}
           </CardContent>
@@ -648,20 +648,20 @@ function FinancePage({ onAction }: FinancePageProps) {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-slate-900">Agent Costs</h2>
-              <span className="text-[10px] font-mono text-slate-400">
+              <h2 className="text-sm font-semibold text-black">Agent Costs</h2>
+              <span className="text-[10px] font-mono text-black/40">
                 {agentCosts.length} agents
               </span>
             </div>
             {agentCosts.length === 0 ? (
-              <p className="py-8 text-center text-sm text-slate-400">No agent cost data yet</p>
+              <p className="py-8 text-center text-sm text-black/40">No agent cost data yet</p>
             ) : (
               <div className="flex flex-col gap-2.5">
                 {agentsByROI.map((agent) => {
                   const pct = agent.monthlyBudget > 0
                     ? Math.min(100, Math.round((agent.spentThisMonth / agent.monthlyBudget) * 100))
                     : 0;
-                  const roleColor = ROLE_COLORS[agent.role] ?? "bg-slate-500";
+                  const roleColor = ROLE_COLORS[agent.role] ?? "bg-black/50";
 
                   return (
                     <div key={agent.agentId} className="flex items-center gap-2.5">
@@ -670,18 +670,18 @@ function FinancePage({ onAction }: FinancePageProps) {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-medium text-slate-900 truncate">{agent.name}</span>
-                          <span className="text-xs font-mono text-slate-700">{formatMoney(agent.spentThisMonth)}</span>
+                          <span className="text-xs font-medium text-black truncate">{agent.name}</span>
+                          <span className="text-xs font-mono text-black/70">{formatMoney(agent.spentThisMonth)}</span>
                         </div>
-                        <div className="mt-0.5 h-1 w-full overflow-hidden rounded-full bg-slate-100">
+                        <div className="mt-0.5 h-1 w-full overflow-hidden rounded-full bg-black/[0.04]">
                           <div
                             className={`h-full rounded-full transition-all ${
-                              pct >= 90 ? "bg-slate-900" : pct >= 70 ? "bg-slate-700" : "bg-slate-400"
+                              pct >= 90 ? "bg-black" : pct >= 70 ? "bg-black/70" : "bg-black/40"
                             }`}
                             style={{ width: `${pct}%` }}
                           />
                         </div>
-                        <div className="mt-0.5 flex items-center gap-2 text-[10px] text-slate-400">
+                        <div className="mt-0.5 flex items-center gap-2 text-[10px] text-black/40">
                           <span>{agent.tasksCompleted} tasks</span>
                           {agent.hoursSaved > 0 && <span>{agent.hoursSaved.toFixed(1)}h saved</span>}
                           <span className="ml-auto">{pct}% of {formatMoney(agent.monthlyBudget)}</span>
@@ -707,28 +707,28 @@ function FinancePage({ onAction }: FinancePageProps) {
       {cfoSuggestions.length > 0 && (
         <div className="mt-6">
           <div className="flex items-center gap-2 mb-3">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-black">
               <svg className="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
             </div>
-            <h2 className="text-sm font-semibold text-slate-900">AI CFO Recommendations</h2>
+            <h2 className="text-sm font-semibold text-black">AI CFO Recommendations</h2>
           </div>
           <div className="flex flex-col gap-2">
             {cfoSuggestions.map((s) => (
               <div
                 key={s.id}
                 className={`rounded-lg border px-4 py-3 ${
-                  s.priority === "high" ? "border-slate-200 bg-slate-100/50"
-                  : "border-slate-200 bg-white"
+                  s.priority === "high" ? "border-black/[0.08] bg-black/[0.04]/50"
+                  : "border-black/[0.08] bg-white"
                 }`}
               >
                 <div className="flex items-start gap-3">
                   <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                    s.type === "earn" ? "bg-slate-100 text-slate-700"
-                    : s.type === "save" ? "bg-slate-100 text-slate-600"
-                    : s.type === "warn" ? "bg-slate-100 text-slate-600"
-                    : "bg-slate-100 text-slate-600"
+                    s.type === "earn" ? "bg-black/[0.04] text-black/70"
+                    : s.type === "save" ? "bg-black/[0.04] text-black/60"
+                    : s.type === "warn" ? "bg-black/[0.04] text-black/60"
+                    : "bg-black/[0.04] text-black/60"
                   }`}>
                     {s.type === "earn" && <DollarIcon />}
                     {s.type === "save" && <PiggyIcon />}
@@ -736,10 +736,10 @@ function FinancePage({ onAction }: FinancePageProps) {
                     {s.type === "optimize" && <WrenchIcon />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-slate-900">{s.title}</p>
-                    <p className="mt-0.5 text-[11px] text-slate-500">{s.description}</p>
+                    <p className="text-xs font-semibold text-black">{s.title}</p>
+                    <p className="mt-0.5 text-[11px] text-black/50">{s.description}</p>
                     {s.impact && (
-                      <span className="mt-1 inline-block rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+                      <span className="mt-1 inline-block rounded-full bg-black/[0.04] px-2 py-0.5 text-[10px] font-medium text-black/60">
                         Impact: {s.impact}
                       </span>
                     )}
@@ -747,7 +747,7 @@ function FinancePage({ onAction }: FinancePageProps) {
                   {s.actionLabel && (
                     <button
                       onClick={() => handleAction(s.action ?? "")}
-                      className="shrink-0 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                      className="shrink-0 rounded-md border border-black/[0.08] bg-white px-2.5 py-1 text-[11px] font-medium text-black/70 hover:bg-black/[0.02] transition-colors"
                     >
                       {s.actionLabel}
                     </button>
@@ -765,37 +765,37 @@ function FinancePage({ onAction }: FinancePageProps) {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-slate-900">Expenses</h2>
+              <h2 className="text-sm font-semibold text-black">Expenses</h2>
               <button
                 onClick={() => handleAction("log_expense")}
-                className="text-[11px] text-slate-500 hover:text-slate-900 transition-colors"
+                className="text-[11px] text-black/50 hover:text-black transition-colors"
               >
                 + Log Expense
               </button>
             </div>
             {expenses.length === 0 ? (
               <div className="py-6 text-center">
-                <svg className="mx-auto h-8 w-8 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                <svg className="mx-auto h-8 w-8 text-black/[0.08]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
                 </svg>
-                <p className="mt-2 text-xs text-slate-400">No expenses tracked yet</p>
-                <p className="mt-1 text-[10px] text-slate-400">Connect your email or bank to auto-import, or log manually</p>
+                <p className="mt-2 text-xs text-black/40">No expenses tracked yet</p>
+                <p className="mt-1 text-[10px] text-black/40">Connect your email or bank to auto-import, or log manually</p>
                 <div className="mt-3 flex items-center justify-center gap-2">
                   <button
                     onClick={() => handleAction("connect_email_expenses")}
-                    className="rounded-md border border-slate-200 px-2.5 py-1 text-[11px] text-slate-600 hover:bg-slate-50 transition-colors"
+                    className="rounded-md border border-black/[0.08] px-2.5 py-1 text-[11px] text-black/60 hover:bg-black/[0.02] transition-colors"
                   >
                     Connect Email
                   </button>
                   <button
                     onClick={() => handleAction("connect_bank")}
-                    className="rounded-md border border-slate-200 px-2.5 py-1 text-[11px] text-slate-600 hover:bg-slate-50 transition-colors"
+                    className="rounded-md border border-black/[0.08] px-2.5 py-1 text-[11px] text-black/60 hover:bg-black/[0.02] transition-colors"
                   >
                     Connect Bank
                   </button>
                   <button
                     onClick={() => handleAction("log_expense")}
-                    className="rounded-md bg-slate-900 px-2.5 py-1 text-[11px] text-white hover:bg-slate-800 transition-colors"
+                    className="rounded-md bg-black px-2.5 py-1 text-[11px] text-white hover:bg-black/80 transition-colors"
                   >
                     Log Manually
                   </button>
@@ -805,26 +805,26 @@ function FinancePage({ onAction }: FinancePageProps) {
               <>
                 <div className="flex flex-col">
                   {expenses.slice(0, 8).map((exp) => (
-                    <div key={exp.id} className="flex items-center justify-between border-b border-slate-100 py-2 last:border-0">
+                    <div key={exp.id} className="flex items-center justify-between border-b border-black/[0.04] py-2 last:border-0">
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium text-slate-900 truncate">{exp.description}</span>
+                          <span className="text-xs font-medium text-black truncate">{exp.description}</span>
                           <SourceBadge source={exp.source} />
                           {exp.recurring && (
-                            <span className="text-[10px] text-slate-400 bg-slate-100 rounded px-1 py-0.5">recurring</span>
+                            <span className="text-[10px] text-black/40 bg-black/[0.04] rounded px-1 py-0.5">recurring</span>
                           )}
                         </div>
-                        {exp.vendor && <p className="text-[10px] text-slate-400">{exp.vendor}</p>}
+                        {exp.vendor && <p className="text-[10px] text-black/40">{exp.vendor}</p>}
                       </div>
-                      <span className="ml-3 text-xs font-mono text-slate-700">-{formatMoney(exp.amount)}</span>
+                      <span className="ml-3 text-xs font-mono text-black/70">-{formatMoney(exp.amount)}</span>
                     </div>
                   ))}
                 </div>
-                <div className="mt-2 flex items-center justify-between border-t border-slate-200 pt-2">
-                  <span className="text-[10px] text-slate-400">
+                <div className="mt-2 flex items-center justify-between border-t border-black/[0.08] pt-2">
+                  <span className="text-[10px] text-black/40">
                     {expenses.length} expenses &middot; {formatMoney(recurringExpenses)}/mo recurring
                   </span>
-                  <span className="text-xs font-mono font-semibold text-slate-900">
+                  <span className="text-xs font-mono font-semibold text-black">
                     {formatMoney(totalExpenses)}
                   </span>
                 </div>
@@ -837,43 +837,43 @@ function FinancePage({ onAction }: FinancePageProps) {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-slate-900">Reimbursements</h2>
+              <h2 className="text-sm font-semibold text-black">Reimbursements</h2>
               <button
                 onClick={() => handleAction("new_reimbursement")}
-                className="text-[11px] text-slate-500 hover:text-slate-900 transition-colors"
+                className="text-[11px] text-black/50 hover:text-black transition-colors"
               >
                 + Request
               </button>
             </div>
             {reimbursements.length === 0 ? (
               <div className="py-6 text-center">
-                <svg className="mx-auto h-8 w-8 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                <svg className="mx-auto h-8 w-8 text-black/[0.08]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-                <p className="mt-2 text-xs text-slate-400">No reimbursement requests</p>
-                <p className="mt-1 text-[10px] text-slate-400">Track team expenses and contractor reimbursements</p>
+                <p className="mt-2 text-xs text-black/40">No reimbursement requests</p>
+                <p className="mt-1 text-[10px] text-black/40">Track team expenses and contractor reimbursements</p>
               </div>
             ) : (
               <div className="flex flex-col">
                 {reimbursements.map((r) => (
-                  <div key={r.id} className="flex items-center justify-between border-b border-slate-100 py-2 last:border-0">
+                  <div key={r.id} className="flex items-center justify-between border-b border-black/[0.04] py-2 last:border-0">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-slate-900">{r.person}</span>
+                        <span className="text-xs font-medium text-black">{r.person}</span>
                         <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
-                          r.status === "paid" ? "bg-slate-100 text-slate-700"
-                          : r.status === "approved" ? "bg-slate-50 text-slate-600"
-                          : r.status === "rejected" ? "bg-slate-200 text-slate-800"
-                          : "bg-slate-100 text-slate-600"
+                          r.status === "paid" ? "bg-black/[0.04] text-black/70"
+                          : r.status === "approved" ? "bg-black/[0.02] text-black/60"
+                          : r.status === "rejected" ? "bg-black/[0.08] text-black/80"
+                          : "bg-black/[0.04] text-black/60"
                         }`}>
                           {r.status}
                         </span>
                       </div>
-                      <p className="text-[10px] text-slate-400 truncate">{r.description}</p>
+                      <p className="text-[10px] text-black/40 truncate">{r.description}</p>
                     </div>
                     <div className="ml-3 shrink-0 text-right">
-                      <p className="text-xs font-mono text-slate-700">{formatMoney(r.amount)}</p>
-                      <p className="text-[10px] text-slate-400">{formatDate(r.submitted_at)}</p>
+                      <p className="text-xs font-mono text-black/70">{formatMoney(r.amount)}</p>
+                      <p className="text-[10px] text-black/40">{formatDate(r.submitted_at)}</p>
                     </div>
                   </div>
                 ))}
@@ -888,8 +888,8 @@ function FinancePage({ onAction }: FinancePageProps) {
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h2 className="text-sm font-semibold text-slate-900">Data Sources</h2>
-              <p className="text-[10px] text-slate-400">Connect accounts for automatic expense & income tracking</p>
+              <h2 className="text-sm font-semibold text-black">Data Sources</h2>
+              <p className="text-[10px] text-black/40">Connect accounts for automatic expense & income tracking</p>
             </div>
           </div>
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
@@ -942,7 +942,7 @@ function FinancePage({ onAction }: FinancePageProps) {
         {/* Spending Trend */}
         <Card>
           <CardContent className="p-4">
-            <h2 className="mb-3 text-sm font-semibold text-slate-900">Spending Trend</h2>
+            <h2 className="mb-3 text-sm font-semibold text-black">Spending Trend</h2>
             <CostTrend data={trendData} budgetLine={totalAgentBudget / 30} />
           </CardContent>
         </Card>
@@ -951,22 +951,22 @@ function FinancePage({ onAction }: FinancePageProps) {
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <Card>
             <CardContent className="p-4">
-              <h3 className="text-xs font-semibold text-slate-700 mb-2">Best ROI Agents</h3>
+              <h3 className="text-xs font-semibold text-black/70 mb-2">Best ROI Agents</h3>
               {agentsByROI.slice(0, 3).map((a, i) => (
                 <div key={a.agentId} className="flex items-center justify-between py-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] text-slate-400 w-3">{i + 1}.</span>
-                    <span className="text-xs text-slate-900">{a.name}</span>
+                    <span className="text-[10px] text-black/40 w-3">{i + 1}.</span>
+                    <span className="text-xs text-black">{a.name}</span>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-500">{a.roi.toFixed(1)} hrs/$</span>
+                  <span className="text-[10px] font-mono text-black/50">{a.roi.toFixed(1)} hrs/$</span>
                 </div>
               ))}
-              {agentsByROI.length === 0 && <p className="text-[10px] text-slate-400">No data yet</p>}
+              {agentsByROI.length === 0 && <p className="text-[10px] text-black/40">No data yet</p>}
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4">
-              <h3 className="text-xs font-semibold text-slate-700 mb-2">This Month</h3>
+              <h3 className="text-xs font-semibold text-black/70 mb-2">This Month</h3>
               <div className="flex flex-col gap-1.5">
                 <QuickStat label="Total requests" value={String(costSummary?.requestCount ?? 0)} />
                 <QuickStat label="Tokens used" value={(costSummary?.tokenCount ?? 0).toLocaleString()} />
@@ -977,10 +977,10 @@ function FinancePage({ onAction }: FinancePageProps) {
           </Card>
           <Card>
             <CardContent className="p-4">
-              <h3 className="text-xs font-semibold text-slate-700 mb-2">Time Saved</h3>
+              <h3 className="text-xs font-semibold text-black/70 mb-2">Time Saved</h3>
               <div className="flex flex-col items-center justify-center py-2">
-                <span className="text-2xl font-bold text-slate-900">{agentCosts.reduce((s, a) => s + a.hoursSaved, 0).toFixed(1)}h</span>
-                <span className="text-[10px] text-slate-400 mt-0.5">estimated hours saved this month</span>
+                <span className="text-2xl font-bold text-black">{agentCosts.reduce((s, a) => s + a.hoursSaved, 0).toFixed(1)}h</span>
+                <span className="text-[10px] text-black/40 mt-0.5">estimated hours saved this month</span>
               </div>
             </CardContent>
           </Card>
@@ -995,8 +995,8 @@ function FinancePage({ onAction }: FinancePageProps) {
       <div className="mt-6 flex flex-col gap-4">
         <Card>
           <CardContent className="p-4">
-            <h2 className="text-sm font-semibold text-slate-900 mb-1">Audit Trail</h2>
-            <p className="text-[11px] text-slate-500 mb-4">Every financial action by every agent is logged and reviewable.</p>
+            <h2 className="text-sm font-semibold text-black mb-1">Audit Trail</h2>
+            <p className="text-[11px] text-black/50 mb-4">Every financial action by every agent is logged and reviewable.</p>
 
             <div className="flex flex-col gap-2">
               {[
@@ -1006,13 +1006,13 @@ function FinancePage({ onAction }: FinancePageProps) {
                 { type: "Expense Verification", desc: "Auto-match receipts to transactions", status: "coming" },
                 { type: "Compliance Reports", desc: "Generate SOC2/GDPR-ready audit exports", status: "coming" },
               ].map((item) => (
-                <div key={item.type} className="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2.5">
+                <div key={item.type} className="flex items-center justify-between rounded-lg border border-black/[0.08] px-3 py-2.5">
                   <div>
-                    <p className="text-xs font-medium text-slate-900">{item.type}</p>
-                    <p className="text-[10px] text-slate-500">{item.desc}</p>
+                    <p className="text-xs font-medium text-black">{item.type}</p>
+                    <p className="text-[10px] text-black/50">{item.desc}</p>
                   </div>
                   <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                    item.status === "active" ? "bg-slate-100 text-slate-700" : "bg-slate-100 text-slate-500"
+                    item.status === "active" ? "bg-black/[0.04] text-black/70" : "bg-black/[0.04] text-black/50"
                   }`}>
                     {item.status === "active" ? "Active" : "Coming soon"}
                   </span>
@@ -1024,14 +1024,14 @@ function FinancePage({ onAction }: FinancePageProps) {
 
         <Card>
           <CardContent className="p-4">
-            <h2 className="text-sm font-semibold text-slate-900 mb-1">Export & Reports</h2>
-            <p className="text-[11px] text-slate-500 mb-4">Download your financial data for external review.</p>
+            <h2 className="text-sm font-semibold text-black mb-1">Export & Reports</h2>
+            <p className="text-[11px] text-black/50 mb-4">Download your financial data for external review.</p>
             <div className="flex flex-wrap gap-2">
               {["Audit Log (CSV)", "Agent Costs (CSV)", "Invoices (CSV)", "P&L Statement (PDF)", "Tax Summary (PDF)"].map((label) => (
                 <button
                   key={label}
                   onClick={() => handleAction(`export_${label.toLowerCase().replace(/[^a-z]/g, "_")}`)}
-                  className="rounded-md border border-slate-200 px-3 py-1.5 text-[11px] font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="rounded-md border border-black/[0.08] px-3 py-1.5 text-[11px] font-medium text-black/70 hover:bg-black/[0.02] transition-colors"
                 >
                   {label}
                 </button>
@@ -1049,25 +1049,25 @@ function FinancePage({ onAction }: FinancePageProps) {
       <div className="mt-6 flex flex-col gap-4">
         <Card>
           <CardContent className="p-4">
-            <h2 className="text-sm font-semibold text-slate-900 mb-1">Tax Overview</h2>
-            <p className="text-[11px] text-slate-500 mb-4">AI-assisted tax preparation and filing. Requires human approval for all submissions.</p>
+            <h2 className="text-sm font-semibold text-black mb-1">Tax Overview</h2>
+            <p className="text-[11px] text-black/50 mb-4">AI-assisted tax preparation and filing. Requires human approval for all submissions.</p>
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 mb-4">
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-[10px] text-slate-500">Est. Annual Revenue</p>
-                <p className="mt-1 text-sm font-mono font-bold text-slate-900">{formatMoney(annualRevenueRunrate)}</p>
+              <div className="rounded-lg bg-black/[0.02] p-3">
+                <p className="text-[10px] text-black/50">Est. Annual Revenue</p>
+                <p className="mt-1 text-sm font-mono font-bold text-black">{formatMoney(annualRevenueRunrate)}</p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-[10px] text-slate-500">Est. Deductions</p>
-                <p className="mt-1 text-sm font-mono font-bold text-slate-900">{formatMoney(annualCostRunrate + totalExpenses * 12)}</p>
+              <div className="rounded-lg bg-black/[0.02] p-3">
+                <p className="text-[10px] text-black/50">Est. Deductions</p>
+                <p className="mt-1 text-sm font-mono font-bold text-black">{formatMoney(annualCostRunrate + totalExpenses * 12)}</p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-[10px] text-slate-500">Est. Taxable Income</p>
-                <p className="mt-1 text-sm font-mono font-bold text-slate-900">{formatMoney(Math.max(0, annualProfitRunrate - totalExpenses * 12))}</p>
+              <div className="rounded-lg bg-black/[0.02] p-3">
+                <p className="text-[10px] text-black/50">Est. Taxable Income</p>
+                <p className="mt-1 text-sm font-mono font-bold text-black">{formatMoney(Math.max(0, annualProfitRunrate - totalExpenses * 12))}</p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-3">
-                <p className="text-[10px] text-slate-500">Est. Tax (25%)</p>
-                <p className="mt-1 text-sm font-mono font-bold text-slate-900">{formatMoney(Math.max(0, (annualProfitRunrate - totalExpenses * 12) * 0.25))}</p>
+              <div className="rounded-lg bg-black/[0.02] p-3">
+                <p className="text-[10px] text-black/50">Est. Tax (25%)</p>
+                <p className="mt-1 text-sm font-mono font-bold text-black">{formatMoney(Math.max(0, (annualProfitRunrate - totalExpenses * 12) * 0.25))}</p>
               </div>
             </div>
 
@@ -1079,15 +1079,15 @@ function FinancePage({ onAction }: FinancePageProps) {
                 { label: "1099 Generation", due: "Jan 31 (for contractors)", status: "not_started" },
                 { label: "Sales Tax", due: "Monthly/Quarterly", status: "na" },
               ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2.5">
+                <div key={item.label} className="flex items-center justify-between rounded-lg border border-black/[0.08] px-3 py-2.5">
                   <div>
-                    <p className="text-xs font-medium text-slate-900">{item.label}</p>
-                    <p className="text-[10px] text-slate-500">Due: {item.due}</p>
+                    <p className="text-xs font-medium text-black">{item.label}</p>
+                    <p className="text-[10px] text-black/50">Due: {item.due}</p>
                   </div>
                   <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                    item.status === "upcoming" ? "bg-slate-100 text-slate-600"
-                    : item.status === "na" ? "bg-slate-100 text-slate-400"
-                    : "bg-slate-100 text-slate-500"
+                    item.status === "upcoming" ? "bg-black/[0.04] text-black/60"
+                    : item.status === "na" ? "bg-black/[0.04] text-black/40"
+                    : "bg-black/[0.04] text-black/50"
                   }`}>
                     {item.status === "upcoming" ? "Upcoming" : item.status === "na" ? "N/A" : "Not started"}
                   </span>
@@ -1095,9 +1095,9 @@ function FinancePage({ onAction }: FinancePageProps) {
               ))}
             </div>
 
-            <div className="mt-4 rounded-lg border border-slate-200 bg-slate-100 px-4 py-3">
-              <p className="text-xs font-semibold text-slate-800">Tax filing requires human approval</p>
-              <p className="text-[10px] text-slate-600 mt-0.5">
+            <div className="mt-4 rounded-lg border border-black/[0.08] bg-black/[0.04] px-4 py-3">
+              <p className="text-xs font-semibold text-black/80">Tax filing requires human approval</p>
+              <p className="text-[10px] text-black/60 mt-0.5">
                 Your AI CFO can prepare returns and estimates, but all filings must be reviewed and approved by you or your accountant before submission.
               </p>
             </div>
@@ -1113,8 +1113,8 @@ function FinancePage({ onAction }: FinancePageProps) {
       <div className="mt-6 flex flex-col gap-4">
         <Card>
           <CardContent className="p-4">
-            <h2 className="text-sm font-semibold text-slate-900 mb-1">Human Controllers</h2>
-            <p className="text-[11px] text-slate-500 mb-4">
+            <h2 className="text-sm font-semibold text-black mb-1">Human Controllers</h2>
+            <p className="text-[11px] text-black/50 mb-4">
               Add external accountants, bookkeepers, or advisors who can review, approve, and override AI financial decisions.
             </p>
 
@@ -1123,23 +1123,23 @@ function FinancePage({ onAction }: FinancePageProps) {
               {[
                 { role: "Primary Owner", name: "You", access: "Full control", type: "owner" as const },
               ].map((c) => (
-                <div key={c.role} className="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2.5">
+                <div key={c.role} className="flex items-center justify-between rounded-lg border border-black/[0.08] px-3 py-2.5">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-white text-xs font-bold">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-white text-xs font-bold">
                       {c.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-slate-900">{c.name}</p>
-                      <p className="text-[10px] text-slate-500">{c.role} &middot; {c.access}</p>
+                      <p className="text-xs font-medium text-black">{c.name}</p>
+                      <p className="text-[10px] text-black/50">{c.role} &middot; {c.access}</p>
                     </div>
                   </div>
-                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-700">Active</span>
+                  <span className="rounded-full bg-black/[0.04] px-2 py-0.5 text-[10px] font-medium text-black/70">Active</span>
                 </div>
               ))}
             </div>
 
             {/* Add controller */}
-            <h3 className="text-xs font-semibold text-slate-700 mb-2">Add a Human Controller</h3>
+            <h3 className="text-xs font-semibold text-black/70 mb-2">Add a Human Controller</h3>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {[
                 {
@@ -1167,22 +1167,22 @@ function FinancePage({ onAction }: FinancePageProps) {
                   icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
                 },
               ].map((ctrl) => (
-                <div key={ctrl.role} className="rounded-lg border border-dashed border-slate-300 p-3 hover:border-slate-400 hover:bg-slate-50 transition-colors">
+                <div key={ctrl.role} className="rounded-lg border border-dashed border-black/30 p-3 hover:border-black/40 hover:bg-black/[0.02] transition-colors">
                   <div className="flex items-center gap-2 mb-2">
-                    <svg className="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+                    <svg className="h-4 w-4 text-black/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
                       <path d={ctrl.icon} />
                     </svg>
-                    <p className="text-xs font-semibold text-slate-900">{ctrl.role}</p>
+                    <p className="text-xs font-semibold text-black">{ctrl.role}</p>
                   </div>
-                  <p className="text-[10px] text-slate-500 mb-2">{ctrl.desc}</p>
+                  <p className="text-[10px] text-black/50 mb-2">{ctrl.desc}</p>
                   <div className="flex flex-wrap gap-1 mb-3">
                     {ctrl.permissions.map((p) => (
-                      <span key={p} className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">{p}</span>
+                      <span key={p} className="rounded bg-black/[0.04] px-1.5 py-0.5 text-[10px] text-black/50">{p}</span>
                     ))}
                   </div>
                   <button
                     onClick={() => handleAction(`invite_${ctrl.role.toLowerCase().replace(/[^a-z]/g, "_")}`)}
-                    className="w-full rounded-md border border-slate-200 px-2 py-1.5 text-[11px] font-medium text-slate-700 hover:bg-slate-100 transition-colors"
+                    className="w-full rounded-md border border-black/[0.08] px-2 py-1.5 text-[11px] font-medium text-black/70 hover:bg-black/[0.04] transition-colors"
                   >
                     Invite {ctrl.role}
                   </button>
@@ -1191,7 +1191,7 @@ function FinancePage({ onAction }: FinancePageProps) {
             </div>
 
             {/* 3rd party integrations */}
-            <h3 className="text-xs font-semibold text-slate-700 mt-6 mb-2">Connect to Accounting Software</h3>
+            <h3 className="text-xs font-semibold text-black/70 mt-6 mb-2">Connect to Accounting Software</h3>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {[
                 { name: "QuickBooks", status: "available" },
@@ -1209,19 +1209,19 @@ function FinancePage({ onAction }: FinancePageProps) {
                   disabled={sw.status === "coming"}
                   className={`rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${
                     sw.status === "coming"
-                      ? "border-slate-100 text-slate-400 cursor-not-allowed"
-                      : "border-slate-200 text-slate-700 hover:bg-slate-50"
+                      ? "border-black/[0.04] text-black/40 cursor-not-allowed"
+                      : "border-black/[0.08] text-black/70 hover:bg-black/[0.02]"
                   }`}
                 >
                   {sw.name}
-                  {sw.status === "coming" && <span className="block text-[10px] text-slate-400 mt-0.5">coming soon</span>}
+                  {sw.status === "coming" && <span className="block text-[10px] text-black/40 mt-0.5">coming soon</span>}
                 </button>
               ))}
             </div>
 
             {/* Approval rules */}
-            <h3 className="text-xs font-semibold text-slate-700 mt-6 mb-2">Approval Rules</h3>
-            <p className="text-[10px] text-slate-500 mb-3">Set thresholds for when human review is required.</p>
+            <h3 className="text-xs font-semibold text-black/70 mt-6 mb-2">Approval Rules</h3>
+            <p className="text-[10px] text-black/50 mb-3">Set thresholds for when human review is required.</p>
             <div className="flex flex-col gap-1.5">
               {[
                 { rule: "Invoice send", threshold: "Always require approval", gate: "human_gate" },
@@ -1230,9 +1230,9 @@ function FinancePage({ onAction }: FinancePageProps) {
                 { rule: "Budget change", threshold: "Owner approval required", gate: "owner" },
                 { rule: "Payment over $500", threshold: "2-person approval", gate: "dual" },
               ].map((r) => (
-                <div key={r.rule} className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
-                  <span className="text-xs text-slate-900">{r.rule}</span>
-                  <span className="text-[10px] text-slate-500">{r.threshold}</span>
+                <div key={r.rule} className="flex items-center justify-between rounded-md bg-black/[0.02] px-3 py-2">
+                  <span className="text-xs text-black">{r.rule}</span>
+                  <span className="text-[10px] text-black/50">{r.threshold}</span>
                 </div>
               ))}
             </div>
@@ -1258,12 +1258,12 @@ function MetricCard({
   sub: string;
   trend: "up" | "down" | "warn" | "neutral";
 }) {
-  const trendIcon = trend === "up" ? "text-slate-700" : trend === "down" ? "text-slate-800" : trend === "warn" ? "text-slate-600" : "text-slate-400";
+  const trendIcon = trend === "up" ? "text-black/70" : trend === "down" ? "text-black/80" : trend === "warn" ? "text-black/60" : "text-black/40";
   return (
     <Card>
       <CardContent className="p-3">
-        <p className="text-[10px] text-slate-500 uppercase tracking-wider">{label}</p>
-        <p className="mt-1 text-xl font-bold font-mono text-slate-900">{value}</p>
+        <p className="text-[10px] text-black/50 uppercase tracking-wider">{label}</p>
+        <p className="mt-1 text-xl font-bold font-mono text-black">{value}</p>
         <p className={`mt-0.5 text-[10px] ${trendIcon}`}>{sub}</p>
       </CardContent>
     </Card>
@@ -1281,8 +1281,8 @@ function SummaryPill({ label, value, className }: { label: string; value: string
 function QuickStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between text-xs">
-      <span className="text-slate-500">{label}</span>
-      <span className="font-mono text-slate-900">{value}</span>
+      <span className="text-black/50">{label}</span>
+      <span className="font-mono text-black">{value}</span>
     </div>
   );
 }
@@ -1302,16 +1302,16 @@ function RunrateRow({
 }) {
   return (
     <div className="flex items-center justify-between">
-      <span className={`text-xs ${bold ? "font-semibold text-slate-900" : "text-slate-500"}`}>{label}</span>
+      <span className={`text-xs ${bold ? "font-semibold text-black" : "text-black/50"}`}>{label}</span>
       <div className="flex items-center gap-3">
-        <span className="text-[10px] font-mono text-slate-400">{formatMoney(current)} so far</span>
-        <svg className="h-3 w-3 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <span className="text-[10px] font-mono text-black/40">{formatMoney(current)} so far</span>
+        <svg className="h-3 w-3 text-black/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
         </svg>
         <span className={`text-xs font-mono font-semibold ${
           bold
-            ? positive ? "text-slate-700" : "text-slate-800"
-            : "text-slate-900"
+            ? positive ? "text-black/70" : "text-black/80"
+            : "text-black"
         }`}>
           {formatMoney(projected)}
         </span>
@@ -1322,11 +1322,11 @@ function RunrateRow({
 
 function SourceBadge({ source }: { source: string }) {
   const config: Record<string, { label: string; className: string }> = {
-    email: { label: "email", className: "bg-slate-100 text-slate-600" },
-    bank: { label: "bank", className: "bg-slate-100 text-slate-600" },
-    stripe: { label: "stripe", className: "bg-slate-100 text-slate-600" },
-    agent: { label: "agent", className: "bg-slate-100 text-slate-600" },
-    manual: { label: "manual", className: "bg-slate-100 text-slate-400" },
+    email: { label: "email", className: "bg-black/[0.04] text-black/60" },
+    bank: { label: "bank", className: "bg-black/[0.04] text-black/60" },
+    stripe: { label: "stripe", className: "bg-black/[0.04] text-black/60" },
+    agent: { label: "agent", className: "bg-black/[0.04] text-black/60" },
+    manual: { label: "manual", className: "bg-black/[0.04] text-black/40" },
   };
   const c = config[source] ?? config.manual;
   return (
@@ -1356,17 +1356,17 @@ function DataSourceCard({
   alwaysAvailable?: boolean;
 }) {
   return (
-    <div className={`rounded-lg border p-3 transition-colors ${connected ? "border-slate-200 bg-slate-50/30" : "border-slate-200"}`}>
+    <div className={`rounded-lg border p-3 transition-colors ${connected ? "border-black/[0.08] bg-black/[0.02]/30" : "border-black/[0.08]"}`}>
       <div className="flex items-center gap-2 mb-1.5">
-        <div className="text-slate-400">{icon}</div>
-        <span className="text-xs font-medium text-slate-900">{name}</span>
+        <div className="text-black/40">{icon}</div>
+        <span className="text-xs font-medium text-black">{name}</span>
         {connected && !alwaysAvailable && (
-          <span className="ml-auto inline-block h-1.5 w-1.5 rounded-full bg-slate-900" />
+          <span className="ml-auto inline-block h-1.5 w-1.5 rounded-full bg-black" />
         )}
       </div>
-      <p className="text-[10px] text-slate-400 mb-2">{description}</p>
+      <p className="text-[10px] text-black/40 mb-2">{description}</p>
       {connected && lastSync && (
-        <p className="text-[10px] text-slate-400 mb-1.5">
+        <p className="text-[10px] text-black/40 mb-1.5">
           Synced {lastSync} &middot; {items ?? 0} items
         </p>
       )}
@@ -1374,8 +1374,8 @@ function DataSourceCard({
         onClick={onConnect}
         className={`w-full rounded-md px-2 py-1 text-[10px] font-medium transition-colors ${
           connected && !alwaysAvailable
-            ? "border border-slate-200 text-slate-500 hover:bg-slate-50"
-            : "bg-slate-900 text-white hover:bg-slate-800"
+            ? "border border-black/[0.08] text-black/50 hover:bg-black/[0.02]"
+            : "bg-black text-white hover:bg-black/80"
         }`}
       >
         {connected && !alwaysAvailable ? "Settings" : alwaysAvailable ? "Add Entry" : "Connect"}

@@ -88,9 +88,9 @@ export default function ModelsPage() {
     return (
       <div className="mx-auto max-w-2xl py-8">
         <div className="animate-pulse space-y-4">
-          <div className="h-6 w-48 rounded bg-slate-100" />
-          <div className="h-4 w-72 rounded bg-slate-100" />
-          <div className="h-32 rounded bg-slate-100" />
+          <div className="h-6 w-48 rounded bg-black/[0.04]" />
+          <div className="h-4 w-72 rounded bg-black/[0.04]" />
+          <div className="h-32 rounded bg-black/[0.04]" />
         </div>
       </div>
     );
@@ -98,25 +98,25 @@ export default function ModelsPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="mb-1 text-lg font-semibold text-slate-900">
+      <h1 className="mb-1 text-lg font-semibold text-black">
         Model Routing
       </h1>
-      <p className="mb-6 text-sm text-slate-500">
+      <p className="mb-6 text-sm text-black/50">
         Choose how your agents select AI models for their tasks.
       </p>
 
       {/* Current strategy indicator */}
       {routingData && (
-        <div className="mb-6 flex items-center gap-3 rounded-lg border border-slate-200 bg-slate-100 px-4 py-3">
+        <div className="mb-6 flex items-center gap-3 rounded-lg border border-black/[0.08] bg-black/[0.04] px-4 py-3">
           <div className="flex-1">
-            <p className="text-xs text-slate-500">Current strategy</p>
-            <p className="text-sm font-semibold text-slate-900">
+            <p className="text-xs text-black/50">Current strategy</p>
+            <p className="text-sm font-semibold text-black">
               {routingData.name}
             </p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-slate-500">Estimated cost</p>
-            <p className="text-sm font-mono font-semibold text-slate-900">
+            <p className="text-xs text-black/50">Estimated cost</p>
+            <p className="text-sm font-mono font-semibold text-black">
               ${routingData.estimatedDailyCost}/day &middot; ${routingData.estimatedMonthlyCost}/mo
             </p>
           </div>
@@ -139,30 +139,30 @@ export default function ModelsPage() {
           {selected === currentStrategy ? "Current Strategy" : "Switch Strategy"}
         </Button>
         {saved && (
-          <span className="text-sm text-slate-700">Strategy updated!</span>
+          <span className="text-sm text-black/70">Strategy updated!</span>
         )}
       </div>
 
       {/* Task routing breakdown table */}
       {routingData?.taskBreakdown && routingData.taskBreakdown.length > 0 && (
         <div className="mt-8">
-          <h2 className="mb-3 text-sm font-semibold text-slate-900">
+          <h2 className="mb-3 text-sm font-semibold text-black">
             Task Routing Breakdown
           </h2>
-          <div className="rounded-lg border border-slate-200 overflow-hidden">
+          <div className="rounded-lg border border-black/[0.08] overflow-hidden">
             <table className="w-full text-xs">
               <thead>
-                <tr className="border-b border-slate-200 bg-slate-100">
-                  <th className="px-3 py-2 text-left font-medium text-slate-500">
+                <tr className="border-b border-black/[0.08] bg-black/[0.04]">
+                  <th className="px-3 py-2 text-left font-medium text-black/50">
                     Task Type
                   </th>
-                  <th className="px-3 py-2 text-left font-medium text-slate-500">
+                  <th className="px-3 py-2 text-left font-medium text-black/50">
                     Complexity
                   </th>
-                  <th className="px-3 py-2 text-left font-medium text-slate-500">
+                  <th className="px-3 py-2 text-left font-medium text-black/50">
                     Model
                   </th>
-                  <th className="px-3 py-2 text-right font-medium text-slate-500">
+                  <th className="px-3 py-2 text-right font-medium text-black/50">
                     Est. Daily Cost
                   </th>
                 </tr>
@@ -171,9 +171,9 @@ export default function ModelsPage() {
                 {routingData.taskBreakdown.map((task) => (
                   <tr
                     key={task.taskType}
-                    className="border-b border-slate-200 last:border-0"
+                    className="border-b border-black/[0.08] last:border-0"
                   >
-                    <td className="px-3 py-2 text-slate-900">
+                    <td className="px-3 py-2 text-black">
                       {task.taskType}
                     </td>
                     <td className="px-3 py-2">
@@ -189,10 +189,10 @@ export default function ModelsPage() {
                         {task.complexity}
                       </Badge>
                     </td>
-                    <td className="px-3 py-2 font-mono text-slate-500">
+                    <td className="px-3 py-2 font-mono text-black/50">
                       {task.model}
                     </td>
-                    <td className="px-3 py-2 text-right font-mono text-slate-900">
+                    <td className="px-3 py-2 text-right font-mono text-black">
                       ${task.estimatedDailyCost.toFixed(4)}
                     </td>
                   </tr>
@@ -206,20 +206,20 @@ export default function ModelsPage() {
       {/* Strategy comparison */}
       {comparison.length > 0 && (
         <div className="mt-8">
-          <h2 className="mb-3 text-sm font-semibold text-slate-900">
+          <h2 className="mb-3 text-sm font-semibold text-black">
             Strategy Comparison
           </h2>
-          <div className="rounded-lg border border-slate-200 overflow-hidden">
+          <div className="rounded-lg border border-black/[0.08] overflow-hidden">
             <table className="w-full text-xs">
               <thead>
-                <tr className="border-b border-slate-200 bg-slate-100">
-                  <th className="px-3 py-2 text-left font-medium text-slate-500">
+                <tr className="border-b border-black/[0.08] bg-black/[0.04]">
+                  <th className="px-3 py-2 text-left font-medium text-black/50">
                     Strategy
                   </th>
-                  <th className="px-3 py-2 text-right font-medium text-slate-500">
+                  <th className="px-3 py-2 text-right font-medium text-black/50">
                     Daily
                   </th>
-                  <th className="px-3 py-2 text-right font-medium text-slate-500">
+                  <th className="px-3 py-2 text-right font-medium text-black/50">
                     Monthly
                   </th>
                 </tr>
@@ -228,11 +228,11 @@ export default function ModelsPage() {
                 {comparison.map((entry) => (
                   <tr
                     key={entry.strategy}
-                    className={`border-b border-slate-200 last:border-0 ${
-                      entry.strategy === currentStrategy ? "bg-slate-100/50" : ""
+                    className={`border-b border-black/[0.08] last:border-0 ${
+                      entry.strategy === currentStrategy ? "bg-black/[0.04]/50" : ""
                     }`}
                   >
-                    <td className="px-3 py-2 text-slate-900">
+                    <td className="px-3 py-2 text-black">
                       <span className="flex items-center gap-2">
                         {entry.name}
                         {entry.strategy === currentStrategy && (
@@ -240,10 +240,10 @@ export default function ModelsPage() {
                         )}
                       </span>
                     </td>
-                    <td className="px-3 py-2 text-right font-mono text-slate-900">
+                    <td className="px-3 py-2 text-right font-mono text-black">
                       ${entry.estimatedDailyCost}
                     </td>
-                    <td className="px-3 py-2 text-right font-mono text-slate-900">
+                    <td className="px-3 py-2 text-right font-mono text-black">
                       ${entry.estimatedMonthlyCost}
                     </td>
                   </tr>

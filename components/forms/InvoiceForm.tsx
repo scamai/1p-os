@@ -95,7 +95,7 @@ function InvoiceForm({ onClose, prefill }: InvoiceFormProps) {
         required
       />
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-slate-600">
+        <label className="text-sm font-medium text-black/60">
           Description
         </label>
         <textarea
@@ -103,7 +103,7 @@ function InvoiceForm({ onClose, prefill }: InvoiceFormProps) {
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Invoice description"
           rows={3}
-          className="w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="w-full rounded-md border border-black/[0.08] bg-transparent px-3 py-2 text-sm text-black placeholder:text-black/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
         />
       </div>
       <Input
@@ -114,11 +114,11 @@ function InvoiceForm({ onClose, prefill }: InvoiceFormProps) {
         required
       />
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-slate-600">Status</label>
+        <label className="text-sm font-medium text-black/60">Status</label>
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="h-9 w-full rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="h-9 w-full rounded-md border border-black/[0.08] bg-transparent px-3 text-sm text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
         >
           <option value="draft">Draft</option>
           <option value="sent">Sent</option>
@@ -126,7 +126,7 @@ function InvoiceForm({ onClose, prefill }: InvoiceFormProps) {
         </select>
       </div>
       {error && (
-        <p className="text-sm text-slate-500">{error}</p>
+        <p className="text-sm text-black/50">{error}</p>
       )}
       <div className="flex items-center justify-end gap-3 pt-2">
         <Button type="button" variant="ghost" onClick={onClose}>

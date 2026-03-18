@@ -2,17 +2,17 @@ import * as React from "react";
 
 const variants = {
   default:
-    "bg-slate-900 text-white hover:bg-slate-800 active:bg-slate-950",
+    "bg-black text-white hover:bg-black/90 active:bg-black",
   primary:
-    "bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800",
+    "bg-black text-white hover:bg-black/90 active:bg-black",
   destructive:
     "bg-red-50 text-red-700 hover:bg-red-100 active:bg-red-200",
   outline:
-    "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100",
+    "border border-black/[0.06] bg-white text-black/70 hover:bg-black/[0.02] active:bg-black/[0.04]",
   ghost:
-    "bg-transparent text-slate-600 hover:bg-slate-100 active:bg-slate-200",
+    "bg-transparent text-black/60 hover:bg-black/[0.04] active:bg-black/[0.08]",
   link:
-    "bg-transparent text-indigo-600 underline-offset-4 hover:underline",
+    "bg-transparent text-black underline-offset-4 hover:underline",
 } as const;
 
 const sizes = {
@@ -44,7 +44,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={`inline-flex items-center justify-center rounded-md font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${variants[variant]} ${sizes[size]} ${className}`}
+        className={`inline-flex items-center justify-center rounded-md font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${variants[variant]} ${sizes[size]} ${className}`}
         disabled={disabled || loading}
         {...props}
       >

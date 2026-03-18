@@ -25,9 +25,9 @@ interface RemindersViewProps {
 }
 
 const SEVERITY_BORDER: Record<string, string> = {
-  critical: "border-l-2 border-l-slate-900",
-  warning: "border-l-2 border-l-slate-500",
-  info: "border-l-2 border-l-slate-300",
+  critical: "border-l-2 border-l-black",
+  warning: "border-l-2 border-l-black/50",
+  info: "border-l-2 border-l-black/30",
 };
 
 function severityVariant(severity: string): "default" | "warning" | "outline" {
@@ -136,8 +136,8 @@ export function RemindersView({ reminders: initialReminders }: RemindersViewProp
     <div className="mx-auto max-w-2xl px-6 py-8">
       <div className="mb-8 flex items-start justify-between">
         <div>
-          <h1 className="text-base font-semibold text-slate-900">Reminders</h1>
-          <p className="mt-1 text-[13px] text-slate-500">
+          <h1 className="text-base font-semibold text-black">Reminders</h1>
+          <p className="mt-1 text-[13px] text-black/50">
             Compliance deadlines and important dates
           </p>
         </div>
@@ -151,8 +151,8 @@ export function RemindersView({ reminders: initialReminders }: RemindersViewProp
       </div>
 
       {showAddForm && (
-        <div className="mb-6 border border-slate-200 bg-white p-4">
-          <h3 className="text-sm font-medium text-slate-900 mb-3">
+        <div className="mb-6 border border-black/[0.08] bg-white p-4">
+          <h3 className="text-sm font-medium text-black mb-3">
             New reminder
           </h3>
           <div className="flex flex-col gap-3">
@@ -168,24 +168,24 @@ export function RemindersView({ reminders: initialReminders }: RemindersViewProp
             />
             <div className="flex gap-3">
               <div className="flex-1">
-                <label className="text-xs font-medium text-slate-600 mb-1 block">
+                <label className="text-xs font-medium text-black/60 mb-1 block">
                   Due date
                 </label>
                 <input
                   type="date"
                   value={formDueDate}
                   onChange={(e) => setFormDueDate(e.target.value)}
-                  className="h-9 w-full border border-slate-200 bg-transparent px-3 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-1"
+                  className="h-9 w-full border border-black/[0.08] bg-transparent px-3 text-sm text-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1"
                 />
               </div>
               <div className="flex-1">
-                <label className="text-xs font-medium text-slate-600 mb-1 block">
+                <label className="text-xs font-medium text-black/60 mb-1 block">
                   Severity
                 </label>
                 <select
                   value={formSeverity}
                   onChange={(e) => setFormSeverity(e.target.value)}
-                  className="h-9 w-full border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-1"
+                  className="h-9 w-full border border-black/[0.08] bg-white px-3 text-sm text-black/70 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-1"
                 >
                   <option value="info">Info</option>
                   <option value="warning">Warning</option>
@@ -208,12 +208,12 @@ export function RemindersView({ reminders: initialReminders }: RemindersViewProp
       )}
 
       <div className="mb-8">
-        <h2 className="text-xs font-medium uppercase tracking-widest text-slate-500 mb-3">
+        <h2 className="text-xs font-medium uppercase tracking-widest text-black/50 mb-3">
           Upcoming (next 30 days)
         </h2>
         {upcoming.length === 0 ? (
-          <div className="flex items-center justify-center border border-slate-200 px-4 py-12">
-            <p className="text-[13px] text-slate-500">
+          <div className="flex items-center justify-center border border-black/[0.08] px-4 py-12">
+            <p className="text-[13px] text-black/50">
               No reminders yet. Complete steps to auto-generate compliance
               deadlines.
             </p>
@@ -223,32 +223,32 @@ export function RemindersView({ reminders: initialReminders }: RemindersViewProp
             {upcoming.map((reminder) => (
               <div
                 key={reminder.id}
-                className={`flex items-center justify-between border border-slate-200 bg-white px-4 py-3 ${
+                className={`flex items-center justify-between border border-black/[0.08] bg-white px-4 py-3 ${
                   SEVERITY_BORDER[reminder.severity] || ""
                 }`}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm text-slate-900">
+                    <span className="text-sm text-black">
                       {reminder.title}
                     </span>
                     <Badge variant={severityVariant(reminder.severity)}>
                       {reminder.severity}
                     </Badge>
                     {reminder.is_recurring && (
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-black/40">
                         {reminder.recurrence_interval || "recurring"}
                       </span>
                     )}
                   </div>
                   {reminder.description && (
-                    <p className="mt-0.5 text-xs text-slate-500 truncate">
+                    <p className="mt-0.5 text-xs text-black/50 truncate">
                       {reminder.description}
                     </p>
                   )}
                 </div>
                 <div className="flex items-center gap-3 ml-4 shrink-0">
-                  <span className="text-xs text-slate-400 tabular-nums">
+                  <span className="text-xs text-black/40 tabular-nums">
                     {new Date(reminder.due_date).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -273,7 +273,7 @@ export function RemindersView({ reminders: initialReminders }: RemindersViewProp
         <div>
           <button
             onClick={() => setCompletedExpanded(!completedExpanded)}
-            className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-slate-400 hover:text-slate-600 transition-colors duration-150 mb-3"
+            className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-black/40 hover:text-black/60 transition-colors duration-150 mb-3"
           >
             <svg
               width="10"
@@ -295,14 +295,14 @@ export function RemindersView({ reminders: initialReminders }: RemindersViewProp
               {completed.map((reminder) => (
                 <div
                   key={reminder.id}
-                  className="flex items-center justify-between border border-slate-200 bg-white px-4 py-3 opacity-60"
+                  className="flex items-center justify-between border border-black/[0.08] bg-white px-4 py-3 opacity-60"
                 >
                   <div className="flex-1 min-w-0">
-                    <span className="text-sm text-slate-500 line-through">
+                    <span className="text-sm text-black/50 line-through">
                       {reminder.title}
                     </span>
                   </div>
-                  <span className="text-xs text-slate-400 tabular-nums">
+                  <span className="text-xs text-black/40 tabular-nums">
                     {reminder.completed_at
                       ? new Date(reminder.completed_at).toLocaleDateString(
                           "en-US",
@@ -317,7 +317,7 @@ export function RemindersView({ reminders: initialReminders }: RemindersViewProp
         </div>
       )}
 
-      <p className="mt-12 text-xs text-slate-400 leading-relaxed">
+      <p className="mt-12 text-xs text-black/40 leading-relaxed">
         Reminders are generated based on your incorporation steps. Always
         confirm deadlines with official sources.
       </p>

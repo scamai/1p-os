@@ -34,21 +34,21 @@ interface MemoryItem {
 // ---------------------------------------------------------------------------
 
 const CATEGORY_COLORS: Record<string, string> = {
-  fact: "bg-slate-100 text-slate-700 border-slate-200",
-  preference: "bg-slate-100 text-slate-700 border-slate-200",
-  relationship: "bg-slate-100 text-slate-700 border-slate-200",
-  event: "bg-slate-100 text-slate-700 border-slate-200",
-  insight: "bg-slate-100 text-slate-700 border-slate-200",
-  uncategorized: "bg-slate-50 text-slate-600 border-slate-200",
+  fact: "bg-black/[0.04] text-black/70 border-black/[0.08]",
+  preference: "bg-black/[0.04] text-black/70 border-black/[0.08]",
+  relationship: "bg-black/[0.04] text-black/70 border-black/[0.08]",
+  event: "bg-black/[0.04] text-black/70 border-black/[0.08]",
+  insight: "bg-black/[0.04] text-black/70 border-black/[0.08]",
+  uncategorized: "bg-black/[0.02] text-black/60 border-black/[0.08]",
 };
 
 const CATEGORY_BAR_COLORS: Record<string, string> = {
-  fact: "bg-slate-900",
-  preference: "bg-slate-700",
-  relationship: "bg-slate-600",
-  event: "bg-slate-500",
-  insight: "bg-slate-800",
-  uncategorized: "bg-slate-400",
+  fact: "bg-black",
+  preference: "bg-black/70",
+  relationship: "bg-black/60",
+  event: "bg-black/50",
+  insight: "bg-black/80",
+  uncategorized: "bg-black/40",
 };
 
 // ---------------------------------------------------------------------------
@@ -80,12 +80,12 @@ function TimelineChart({ data }: { data: { date: string; count: number }[] }) {
         return (
           <div key={d.date} className="group relative flex-1 flex flex-col items-center justify-end">
             <div
-              className="w-full rounded-t bg-slate-900 transition-all hover:bg-slate-700"
+              className="w-full rounded-t bg-black transition-all hover:bg-black/70"
               style={{ height: `${Math.max(height, 2)}%`, minHeight: d.count > 0 ? 4 : 1 }}
             />
             {/* Tooltip */}
             <div className="absolute -top-8 left-1/2 -translate-x-1/2 hidden group-hover:block z-10">
-              <div className="whitespace-nowrap rounded bg-slate-800 px-2 py-1 text-[10px] text-white shadow-lg">
+              <div className="whitespace-nowrap rounded bg-black/80 px-2 py-1 text-[10px] text-white shadow-lg">
                 {d.date}: {d.count}
               </div>
             </div>
@@ -260,7 +260,7 @@ export default function MemoryPage() {
   if (error) {
     return (
       <div className="mx-auto max-w-2xl py-12 text-center">
-        <p className="text-sm text-slate-800">{error}</p>
+        <p className="text-sm text-black/80">{error}</p>
       </div>
     );
   }
@@ -270,20 +270,20 @@ export default function MemoryPage() {
       {/* Header */}
       <div className="mb-1 flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">Memory</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className="text-lg font-semibold text-black">Memory</h1>
+          <p className="text-sm text-black/50">
             What your agents know — automatically extracted from every conversation.
           </p>
         </div>
         <div className="flex items-center gap-2">
           {stats?.semantic && (
-            <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-medium text-slate-700 border border-slate-200">
+            <span className="shrink-0 rounded-full bg-black/[0.04] px-2.5 py-0.5 text-[11px] font-medium text-black/70 border border-black/[0.08]">
               Semantic
             </span>
           )}
           <button
             onClick={() => setShowAddForm((v) => !v)}
-            className="h-8 rounded-md bg-slate-900 px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+            className="h-8 rounded-md bg-black px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
           >
             {showAddForm ? "Cancel" : "+ Add Memory"}
           </button>
@@ -294,10 +294,10 @@ export default function MemoryPage() {
       {showAddForm && (
         <form
           onSubmit={handleAddMemory}
-          className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-3"
+          className="mt-4 rounded-lg border border-black/[0.08] bg-black/[0.02] p-4 space-y-3"
         >
           <div>
-            <label className="block text-[12px] font-medium text-slate-500 mb-1">
+            <label className="block text-[12px] font-medium text-black/50 mb-1">
               Content
             </label>
             <textarea
@@ -305,18 +305,18 @@ export default function MemoryPage() {
               onChange={(e) => setAddContent(e.target.value)}
               placeholder="What should your agents remember?"
               rows={3}
-              className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 resize-none"
+              className="w-full rounded-md border border-black/[0.08] bg-white px-3 py-2 text-[13px] text-black placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-black resize-none"
             />
           </div>
           <div className="flex gap-3">
             <div className="flex-1">
-              <label className="block text-[12px] font-medium text-slate-500 mb-1">
+              <label className="block text-[12px] font-medium text-black/50 mb-1">
                 Category
               </label>
               <select
                 value={addCategory}
                 onChange={(e) => setAddCategory(e.target.value)}
-                className="w-full h-8 rounded-md border border-slate-200 bg-white px-2 text-[13px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                className="w-full h-8 rounded-md border border-black/[0.08] bg-white px-2 text-[13px] text-black/70 focus:outline-none focus:ring-2 focus:ring-black"
               >
                 {CATEGORIES.map((c) => (
                   <option key={c} value={c}>
@@ -326,7 +326,7 @@ export default function MemoryPage() {
               </select>
             </div>
             <div className="w-32">
-              <label className="block text-[12px] font-medium text-slate-500 mb-1">
+              <label className="block text-[12px] font-medium text-black/50 mb-1">
                 Importance ({addImportance.toFixed(1)})
               </label>
               <input
@@ -341,13 +341,13 @@ export default function MemoryPage() {
             </div>
           </div>
           {addError && (
-            <p className="text-[12px] text-slate-800">{addError}</p>
+            <p className="text-[12px] text-black/80">{addError}</p>
           )}
           <div className="flex justify-end">
             <button
               type="submit"
               disabled={addSaving || !addContent.trim()}
-              className="h-8 rounded-md bg-slate-900 px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="h-8 rounded-md bg-black px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
             >
               {addSaving ? "Saving..." : "Save Memory"}
             </button>
@@ -356,15 +356,15 @@ export default function MemoryPage() {
       )}
 
       {/* Tabs */}
-      <div className="mt-4 mb-6 flex gap-1 border-b border-slate-200">
+      <div className="mt-4 mb-6 flex gap-1 border-b border-black/[0.08]">
         {TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
             className={`px-3 py-2 text-[13px] font-medium transition-colors border-b-2 -mb-px ${
               tab === t.id
-                ? "border-slate-900 text-slate-900"
-                : "border-transparent text-slate-500 hover:text-slate-700"
+                ? "border-black text-black"
+                : "border-transparent text-black/50 hover:text-black/70"
             }`}
           >
             {t.label}
@@ -379,30 +379,30 @@ export default function MemoryPage() {
           <div className="grid grid-cols-3 gap-3">
             <Card>
               <CardContent className="p-4">
-                <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                <p className="text-[11px] font-medium uppercase tracking-wider text-black/50">
                   Total Memories
                 </p>
-                <p className="mt-1 text-2xl font-semibold tabular-nums text-slate-900">
+                <p className="mt-1 text-2xl font-semibold tabular-nums text-black">
                   {stats.totalMemories}
                 </p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                <p className="text-[11px] font-medium uppercase tracking-wider text-black/50">
                   Agents
                 </p>
-                <p className="mt-1 text-2xl font-semibold tabular-nums text-slate-900">
+                <p className="mt-1 text-2xl font-semibold tabular-nums text-black">
                   {stats.byAgent.length}
                 </p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4">
-                <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                <p className="text-[11px] font-medium uppercase tracking-wider text-black/50">
                   Categories
                 </p>
-                <p className="mt-1 text-2xl font-semibold tabular-nums text-slate-900">
+                <p className="mt-1 text-2xl font-semibold tabular-nums text-black">
                   {stats.byCategory.length}
                 </p>
               </CardContent>
@@ -412,7 +412,7 @@ export default function MemoryPage() {
           {/* Category breakdown */}
           <Card>
             <CardContent className="p-4">
-              <p className="mb-3 text-xs font-medium uppercase tracking-wider text-slate-500">
+              <p className="mb-3 text-xs font-medium uppercase tracking-wider text-black/50">
                 By Category
               </p>
               <div className="space-y-2">
@@ -420,13 +420,13 @@ export default function MemoryPage() {
                   .sort((a, b) => b.count - a.count)
                   .map((cat) => (
                     <div key={cat.category} className="flex items-center gap-3">
-                      <span className="w-24 text-[13px] text-slate-600 capitalize">
+                      <span className="w-24 text-[13px] text-black/60 capitalize">
                         {cat.category}
                       </span>
-                      <div className="flex-1 h-5 rounded-full bg-slate-100 overflow-hidden">
+                      <div className="flex-1 h-5 rounded-full bg-black/[0.04] overflow-hidden">
                         <div
                           className={`h-full rounded-full transition-all ${
-                            CATEGORY_BAR_COLORS[cat.category] ?? "bg-slate-400"
+                            CATEGORY_BAR_COLORS[cat.category] ?? "bg-black/40"
                           }`}
                           style={{
                             width: `${Math.max(
@@ -436,7 +436,7 @@ export default function MemoryPage() {
                           }}
                         />
                       </div>
-                      <span className="w-8 text-right text-[13px] tabular-nums text-slate-500">
+                      <span className="w-8 text-right text-[13px] tabular-nums text-black/50">
                         {cat.count}
                       </span>
                     </div>
@@ -449,7 +449,7 @@ export default function MemoryPage() {
           {stats.byAgent.length > 0 && (
             <Card>
               <CardContent className="p-4">
-                <p className="mb-3 text-xs font-medium uppercase tracking-wider text-slate-500">
+                <p className="mb-3 text-xs font-medium uppercase tracking-wider text-black/50">
                   By Agent
                 </p>
                 <div className="space-y-2">
@@ -457,10 +457,10 @@ export default function MemoryPage() {
                     .sort((a, b) => b.count - a.count)
                     .map((agent) => (
                       <div key={agent.agentId} className="flex items-center justify-between py-1">
-                        <span className="text-[13px] text-slate-700">
+                        <span className="text-[13px] text-black/70">
                           {agent.agentName}
                         </span>
-                        <span className="text-[13px] tabular-nums text-slate-500">
+                        <span className="text-[13px] tabular-nums text-black/50">
                           {agent.count} memories
                         </span>
                       </div>
@@ -472,7 +472,7 @@ export default function MemoryPage() {
 
           {/* Recent memories preview */}
           <div>
-            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-black/50">
               Recent Memories
             </p>
             <div className="space-y-1.5">
@@ -482,7 +482,7 @@ export default function MemoryPage() {
               {stats.recentMemories.length > 5 && (
                 <button
                   onClick={() => setTab("memories")}
-                  className="mt-2 text-[12px] text-slate-500 hover:text-slate-700 transition-colors"
+                  className="mt-2 text-[12px] text-black/50 hover:text-black/70 transition-colors"
                 >
                   View all {stats.totalMemories} memories
                 </button>
@@ -497,11 +497,11 @@ export default function MemoryPage() {
         <div className="space-y-6">
           <Card>
             <CardContent className="p-4">
-              <p className="mb-3 text-xs font-medium uppercase tracking-wider text-slate-500">
+              <p className="mb-3 text-xs font-medium uppercase tracking-wider text-black/50">
                 Memories Created — Last 30 Days
               </p>
               <TimelineChart data={stats.timeline} />
-              <div className="mt-2 flex justify-between text-[10px] text-slate-400">
+              <div className="mt-2 flex justify-between text-[10px] text-black/40">
                 <span>{stats.timeline[0]?.date}</span>
                 <span>{stats.timeline[stats.timeline.length - 1]?.date}</span>
               </div>
@@ -521,23 +521,23 @@ export default function MemoryPage() {
                 return (
                   <div key={day.date}>
                     <div className="mb-1.5 flex items-center gap-2">
-                      <span className="text-[13px] font-medium text-slate-700">
+                      <span className="text-[13px] font-medium text-black/70">
                         {new Date(day.date + "T12:00:00").toLocaleDateString("en-US", {
                           weekday: "short",
                           month: "short",
                           day: "numeric",
                         })}
                       </span>
-                      <span className="text-[11px] text-slate-400">
+                      <span className="text-[11px] text-black/40">
                         {day.count} memories
                       </span>
                     </div>
-                    <div className="space-y-1 pl-3 border-l-2 border-slate-100">
+                    <div className="space-y-1 pl-3 border-l-2 border-black/[0.04]">
                       {dayMemories.map((m) => (
                         <MemoryRow key={m.id} memory={m} compact />
                       ))}
                       {dayMemories.length === 0 && (
-                        <p className="text-[12px] text-slate-400 italic py-1">
+                        <p className="text-[12px] text-black/40 italic py-1">
                           {day.count} memories (not in recent window)
                         </p>
                       )}
@@ -557,7 +557,7 @@ export default function MemoryPage() {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="h-8 rounded-md border border-slate-200 bg-white px-2 text-[13px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900"
+              className="h-8 rounded-md border border-black/[0.08] bg-white px-2 text-[13px] text-black/70 focus:outline-none focus:ring-2 focus:ring-black"
             >
               <option value="all">All categories</option>
               {stats.byCategory.map((c) => (
@@ -569,7 +569,7 @@ export default function MemoryPage() {
             <select
               value={filterAgent}
               onChange={(e) => setFilterAgent(e.target.value)}
-              className="h-8 rounded-md border border-slate-200 bg-white px-2 text-[13px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900"
+              className="h-8 rounded-md border border-black/[0.08] bg-white px-2 text-[13px] text-black/70 focus:outline-none focus:ring-2 focus:ring-black"
             >
               <option value="all">All agents</option>
               {stats.byAgent.map((a) => (
@@ -578,7 +578,7 @@ export default function MemoryPage() {
                 </option>
               ))}
             </select>
-            <span className="ml-auto text-[12px] text-slate-400 self-center">
+            <span className="ml-auto text-[12px] text-black/40 self-center">
               {filteredMemories.length} of {stats.totalMemories}
             </span>
           </div>
@@ -589,7 +589,7 @@ export default function MemoryPage() {
               <MemoryRow key={m.id} memory={m} onDelete={handleDelete} />
             ))}
             {filteredMemories.length === 0 && (
-              <p className="py-8 text-center text-sm text-slate-500">
+              <p className="py-8 text-center text-sm text-black/50">
                 No memories match the current filters.
               </p>
             )}
@@ -605,12 +605,12 @@ export default function MemoryPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={stats?.semantic ? "Semantic search across all memories..." : "Search memories..."}
-              className="h-9 flex-1 rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-900"
+              className="h-9 flex-1 rounded-md border border-black/[0.08] bg-transparent px-3 text-sm text-black placeholder:text-black/50 focus:outline-none focus:ring-2 focus:ring-black"
             />
             <button
               type="submit"
               disabled={searching}
-              className="h-9 rounded-md bg-slate-900 px-4 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+              className="h-9 rounded-md bg-black px-4 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
             >
               {searching ? "Searching..." : "Search"}
             </button>
@@ -623,7 +623,7 @@ export default function MemoryPage() {
           )}
 
           {!searching && searched && searchResults.length === 0 && (
-            <p className="py-12 text-center text-sm text-slate-500">
+            <p className="py-12 text-center text-sm text-black/50">
               No memories found for &quot;{searchQuery}&quot;.
             </p>
           )}
@@ -637,7 +637,7 @@ export default function MemoryPage() {
           )}
 
           {!searched && !searching && (
-            <p className="py-12 text-center text-sm text-slate-500">
+            <p className="py-12 text-center text-sm text-black/50">
               {stats?.semantic
                 ? "Search uses vector similarity — try natural language queries."
                 : "Search your business knowledge base."}
@@ -649,7 +649,7 @@ export default function MemoryPage() {
       {/* Empty state */}
       {stats && stats.totalMemories === 0 && tab === "overview" && (
         <div className="py-16 text-center">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-black/50">
             No memories yet. Memories are automatically extracted when your agents
             have conversations or execute tasks.
           </p>
@@ -677,13 +677,13 @@ function MemoryRow({
 
   return (
     <div
-      className={`group rounded-lg border border-slate-100 bg-white transition-colors hover:bg-slate-50 ${
+      className={`group rounded-lg border border-black/[0.04] bg-white transition-colors hover:bg-black/[0.02] ${
         compact ? "px-3 py-2" : "px-4 py-3"
       }`}
     >
       <div className="flex items-start gap-2">
         <div className="flex-1 min-w-0">
-          <p className={`text-slate-800 ${compact ? "text-[12px]" : "text-[13px]"}`}>
+          <p className={`text-black/80 ${compact ? "text-[12px]" : "text-[13px]"}`}>
             {memory.content || "(empty)"}
           </p>
           <div className="mt-1 flex items-center gap-2">
@@ -692,11 +692,11 @@ function MemoryRow({
             >
               {memory.category}
             </span>
-            <span className="text-[11px] text-slate-400">
+            <span className="text-[11px] text-black/40">
               {memory.agentName}
             </span>
             {!compact && memory.createdAt && (
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] text-black/40">
                 {new Date(memory.createdAt).toLocaleDateString()}
               </span>
             )}
@@ -711,7 +711,7 @@ function MemoryRow({
           {onDelete && (
             <button
               onClick={() => onDelete(memory.id)}
-              className="hidden group-hover:flex h-6 w-6 items-center justify-center rounded text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              className="hidden group-hover:flex h-6 w-6 items-center justify-center rounded text-black/40 hover:text-black hover:bg-black/[0.04] transition-colors"
               aria-label="Delete memory"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

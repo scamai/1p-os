@@ -100,10 +100,10 @@ const INITIAL_PRODUCTS: Product[] = [
 
 function StatusDot({ status }: { status: CodeInstance["status"] }) {
   const colors = {
-    running: "bg-slate-900",
-    stopped: "bg-slate-300",
-    deploying: "bg-slate-500 animate-pulse",
-    error: "bg-slate-900",
+    running: "bg-black",
+    stopped: "bg-black/30",
+    deploying: "bg-black/50 animate-pulse",
+    error: "bg-black",
   };
   return <span className={`inline-block h-1.5 w-1.5 rounded-full ${colors[status]}`} />;
 }
@@ -124,13 +124,13 @@ function InstanceCard({
   const isRunning = instance.status === "running" || instance.status === "deploying";
 
   return (
-    <div className="rounded-lg border border-slate-200 bg-white">
+    <div className="rounded-lg border border-black/[0.08] bg-white">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+      <div className="flex items-center justify-between border-b border-black/[0.04] px-4 py-3">
         <div className="flex items-center gap-2.5">
           <StatusDot status={instance.status} />
-          <span className="text-[13px] font-medium text-slate-900">{instance.name}</span>
-          <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500">
+          <span className="text-[13px] font-medium text-black">{instance.name}</span>
+          <span className="rounded bg-black/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-black/50">
             {MODELS.find((m) => m.id === instance.model)?.name ?? instance.model}
           </span>
         </div>
@@ -140,8 +140,8 @@ function InstanceCard({
             onClick={onToggle}
             className={`rounded px-2 py-0.5 text-[11px] font-medium transition-colors ${
               isRunning
-                ? "bg-slate-900 text-white hover:bg-slate-700"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                ? "bg-black text-white hover:bg-black/70"
+                : "bg-black/[0.04] text-black/60 hover:bg-black/[0.08]"
             }`}
           >
             {isRunning ? "Stop" : "Start"}
@@ -149,7 +149,7 @@ function InstanceCard({
           {/* Remove */}
           <button
             onClick={onRemove}
-            className="rounded p-1 text-slate-300 transition-colors hover:text-slate-500"
+            className="rounded p-1 text-black/30 transition-colors hover:text-black/50"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M18 6L6 18M6 6l12 12" />
@@ -161,32 +161,32 @@ function InstanceCard({
       {/* Body */}
       <div className="px-4 py-3">
         {/* Task */}
-        <p className="text-[12px] text-slate-500">{instance.task}</p>
+        <p className="text-[12px] text-black/50">{instance.task}</p>
 
         {/* Stats row */}
         <div className="mt-3 flex items-center gap-6">
           <div>
-            <p className="text-[10px] text-slate-400">Uptime</p>
-            <p className="font-mono text-[12px] text-slate-700">{instance.uptime}</p>
+            <p className="text-[10px] text-black/40">Uptime</p>
+            <p className="font-mono text-[12px] text-black/70">{instance.uptime}</p>
           </div>
           <div>
-            <p className="text-[10px] text-slate-400">Tokens today</p>
-            <p className="font-mono text-[12px] text-slate-700">
+            <p className="text-[10px] text-black/40">Tokens today</p>
+            <p className="font-mono text-[12px] text-black/70">
               {instance.tokensToday > 0 ? `${(instance.tokensToday / 1000).toFixed(1)}k` : "—"}
             </p>
           </div>
           <div>
-            <p className="text-[10px] text-slate-400">Cost today</p>
-            <p className="font-mono text-[12px] text-slate-700">
+            <p className="text-[10px] text-black/40">Cost today</p>
+            <p className="font-mono text-[12px] text-black/70">
               {instance.costToday > 0 ? `$${instance.costToday.toFixed(2)}` : "—"}
             </p>
           </div>
           <div className="ml-auto">
-            <p className="text-[10px] text-slate-400">Model</p>
+            <p className="text-[10px] text-black/40">Model</p>
             <select
               value={instance.model}
               onChange={(e) => onModelChange(e.target.value)}
-              className="mt-0.5 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[11px] text-slate-700 focus:outline-none"
+              className="mt-0.5 rounded border border-black/[0.08] bg-white px-1.5 py-0.5 text-[11px] text-black/70 focus:outline-none"
             >
               {MODELS.map((m) => (
                 <option key={m.id} value={m.id}>
@@ -283,33 +283,33 @@ function ProductCard({
   }
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-slate-50/50">
+    <div className="rounded-xl border border-black/[0.08] bg-black/[0.02]/50">
       {/* Product Header */}
       <div
         className="flex cursor-pointer items-center justify-between px-5 py-4"
         onClick={() => setExpanded(!expanded)}
       >
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900 text-[11px] font-bold text-white">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-black text-[11px] font-bold text-white">
             {product.name.charAt(0).toUpperCase()}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-[14px] font-semibold text-slate-900">{product.name}</h2>
-              <span className="rounded bg-slate-200 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+              <h2 className="text-[14px] font-semibold text-black">{product.name}</h2>
+              <span className="rounded bg-black/[0.08] px-1.5 py-0.5 text-[10px] font-medium text-black/60">
                 {product.status}
               </span>
             </div>
-            <p className="text-[11px] text-slate-400">{product.description}</p>
+            <p className="text-[11px] text-black/40">{product.description}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-5">
           <div className="text-right">
-            <p className="font-mono text-[12px] text-slate-700">
+            <p className="font-mono text-[12px] text-black/70">
               {runningCount}/{product.instances.length} running
             </p>
-            <p className="font-mono text-[10px] text-slate-400">
+            <p className="font-mono text-[10px] text-black/40">
               ${totalCost.toFixed(2)} today
             </p>
           </div>
@@ -320,7 +320,7 @@ function ProductCard({
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
-            className={`text-slate-400 transition-transform ${expanded ? "rotate-180" : ""}`}
+            className={`text-black/40 transition-transform ${expanded ? "rotate-180" : ""}`}
           >
             <path d="M6 9l6 6 6-6" />
           </svg>
@@ -329,7 +329,7 @@ function ProductCard({
 
       {/* Instances */}
       {expanded && (
-        <div className="border-t border-slate-200 px-5 py-4">
+        <div className="border-t border-black/[0.08] px-5 py-4">
           <div className="flex flex-col gap-3">
             {product.instances.map((inst) => (
               <InstanceCard
@@ -348,7 +348,7 @@ function ProductCard({
               e.stopPropagation();
               addInstance();
             }}
-            className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-slate-300 py-2.5 text-[12px] text-slate-400 transition-colors hover:border-slate-400 hover:text-slate-600"
+            className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg border border-dashed border-black/30 py-2.5 text-[12px] text-black/40 transition-colors hover:border-black/40 hover:text-black/60"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M12 5v14M5 12h14" />
@@ -381,42 +381,42 @@ function NewProductDialog({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="fixed inset-0 bg-black/20" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-xl">
-        <h3 className="text-[15px] font-semibold text-slate-900">New Product</h3>
+      <div className="relative z-10 w-full max-w-md rounded-xl border border-black/[0.08] bg-white p-6 shadow-xl">
+        <h3 className="text-[15px] font-semibold text-black">New Product</h3>
         <div className="mt-4 flex flex-col gap-3">
           <div>
-            <label className="text-[11px] text-slate-500">Product Name</label>
+            <label className="text-[11px] text-black/50">Product Name</label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="My SaaS App"
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-[13px] text-slate-900 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-black/[0.08] px-3 py-2 text-[13px] text-black placeholder:text-black/30 focus:border-black/40 focus:outline-none"
               autoFocus
             />
           </div>
           <div>
-            <label className="text-[11px] text-slate-500">Description</label>
+            <label className="text-[11px] text-black/50">Description</label>
             <input
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
               placeholder="What are you building?"
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-[13px] text-slate-900 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-black/[0.08] px-3 py-2 text-[13px] text-black placeholder:text-black/30 focus:border-black/40 focus:outline-none"
             />
           </div>
           <div>
-            <label className="text-[11px] text-slate-500">Repository (optional)</label>
+            <label className="text-[11px] text-black/50">Repository (optional)</label>
             <input
               value={repo}
               onChange={(e) => setRepo(e.target.value)}
               placeholder="github.com/you/repo"
-              className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-[13px] text-slate-900 placeholder:text-slate-300 focus:border-slate-400 focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-black/[0.08] px-3 py-2 text-[13px] text-black placeholder:text-black/30 focus:border-black/40 focus:outline-none"
             />
           </div>
         </div>
         <div className="mt-5 flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="rounded-lg px-3 py-1.5 text-[12px] text-slate-500 hover:text-slate-700"
+            className="rounded-lg px-3 py-1.5 text-[12px] text-black/50 hover:text-black/70"
           >
             Cancel
           </button>
@@ -431,7 +431,7 @@ function NewProductDialog({
               }
             }}
             disabled={!name.trim()}
-            className="rounded-lg bg-slate-900 px-4 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-slate-700 disabled:opacity-30"
+            className="rounded-lg bg-black px-4 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-black/70 disabled:opacity-30"
           >
             Create Product
           </button>
@@ -478,10 +478,10 @@ function ProductsPage() {
     <div className="mx-auto max-w-4xl">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-slate-900">Products</h1>
+        <h1 className="text-lg font-semibold text-black">Products</h1>
         <button
           onClick={() => setShowNew(true)}
-          className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-3 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-slate-700"
+          className="flex items-center gap-1.5 rounded-lg bg-black px-3 py-1.5 text-[12px] font-medium text-white transition-colors hover:bg-black/70"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <path d="M12 5v14M5 12h14" />
@@ -493,19 +493,19 @@ function ProductsPage() {
       {/* Overview Stats */}
       <div className="mt-6 grid grid-cols-3 gap-6">
         <div>
-          <p className="text-[11px] text-slate-500">Products</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">{products.length}</p>
+          <p className="text-[11px] text-black/50">Products</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-black">{products.length}</p>
         </div>
         <div>
-          <p className="text-[11px] text-slate-500">Instances</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">
+          <p className="text-[11px] text-black/50">Instances</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-black">
             {runningInstances}
-            <span className="text-sm text-slate-400">/{totalInstances}</span>
+            <span className="text-sm text-black/40">/{totalInstances}</span>
           </p>
         </div>
         <div>
-          <p className="text-[11px] text-slate-500">Cost Today</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">
+          <p className="text-[11px] text-black/50">Cost Today</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-black">
             ${totalCost.toFixed(2)}
           </p>
         </div>
@@ -519,10 +519,10 @@ function ProductsPage() {
 
         {products.length === 0 && (
           <div className="flex flex-col items-center py-16 text-center">
-            <p className="text-[13px] text-slate-400">No products yet</p>
+            <p className="text-[13px] text-black/40">No products yet</p>
             <button
               onClick={() => setShowNew(true)}
-              className="mt-2 text-[13px] text-slate-600 underline underline-offset-2 hover:text-slate-900"
+              className="mt-2 text-[13px] text-black/60 underline underline-offset-2 hover:text-black"
             >
               Create your first product
             </button>

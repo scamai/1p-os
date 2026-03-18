@@ -8,19 +8,19 @@ import dynamic from "next/dynamic";
 
 const EquityCalculator = dynamic(
   () => import("./calculators/EquityCalculator").then((m) => ({ default: m.EquityCalculator })),
-  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-slate-50" /> }
+  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-black/[0.02]" /> }
 );
 const DilutionSimulator = dynamic(
   () => import("./calculators/DilutionSimulator").then((m) => ({ default: m.DilutionSimulator })),
-  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-slate-50" /> }
+  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-black/[0.02]" /> }
 );
 const VestingVisualizer = dynamic(
   () => import("./calculators/VestingVisualizer").then((m) => ({ default: m.VestingVisualizer })),
-  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-slate-50" /> }
+  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-black/[0.02]" /> }
 );
 const TAMCalculator = dynamic(
   () => import("./calculators/TAMCalculator").then((m) => ({ default: m.TAMCalculator })),
-  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-slate-50" /> }
+  { ssr: false, loading: () => <div className="h-48 animate-pulse bg-black/[0.02]" /> }
 );
 
 const CALCULATOR_MAP: Record<string, React.ComponentType> = {
@@ -91,8 +91,8 @@ function renderContent(content: string | null) {
       elements.push(
         <ul key={`list-${elements.length}`} className="my-2 ml-4 flex flex-col gap-1">
           {listItems.map((item, i) => (
-            <li key={i} className="text-sm text-slate-700 leading-relaxed">
-              <span className="mr-2 text-slate-400">&bull;</span>
+            <li key={i} className="text-sm text-black/70 leading-relaxed">
+              <span className="mr-2 text-black/40">&bull;</span>
               {formatInline(item)}
             </li>
           ))}
@@ -107,7 +107,7 @@ function renderContent(content: string | null) {
     const parts = text.split(/\*\*(.*?)\*\*/g);
     return parts.map((part, i) =>
       i % 2 === 1 ? (
-        <span key={i} className="font-medium text-slate-900">
+        <span key={i} className="font-medium text-black">
           {part}
         </span>
       ) : (
@@ -134,7 +134,7 @@ function renderContent(content: string | null) {
       elements.push(
         <h4
           key={elements.length}
-          className="mt-4 mb-1 text-sm font-semibold text-slate-900"
+          className="mt-4 mb-1 text-sm font-semibold text-black"
         >
           {trimmed.slice(4)}
         </h4>
@@ -143,7 +143,7 @@ function renderContent(content: string | null) {
       elements.push(
         <h3
           key={elements.length}
-          className="mt-4 mb-1 text-sm font-semibold text-slate-900"
+          className="mt-4 mb-1 text-sm font-semibold text-black"
         >
           {trimmed.slice(3)}
         </h3>
@@ -152,7 +152,7 @@ function renderContent(content: string | null) {
       elements.push(
         <p
           key={elements.length}
-          className="my-1.5 text-sm text-slate-700 leading-relaxed"
+          className="my-1.5 text-sm text-black/70 leading-relaxed"
         >
           {formatInline(trimmed)}
         </p>
@@ -189,7 +189,7 @@ export function StepView({
       {/* Back link */}
       <button
         onClick={() => router.push(`/launch/phase/${phase.slug}`)}
-        className="mb-6 flex items-center gap-1.5 text-xs text-slate-500 transition-colors duration-150 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+        className="mb-6 flex items-center gap-1.5 text-xs text-black/50 transition-colors duration-150 hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
       >
         <svg
           width="12"
@@ -214,11 +214,11 @@ export function StepView({
       )}
 
       {/* Step title */}
-      <h1 className="text-base font-semibold text-slate-900 mb-1">
+      <h1 className="text-base font-semibold text-black mb-1">
         {step.title}
       </h1>
       {step.estimated_minutes > 0 && (
-        <p className="text-xs text-slate-400 mb-6">
+        <p className="text-xs text-black/40 mb-6">
           ~{step.estimated_minutes} min
         </p>
       )}
@@ -258,19 +258,19 @@ export function StepView({
               </div>
             )}
             {step.checklist && step.checklist.length > 0 && (
-              <div className="mt-4 border border-slate-200 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">
+              <div className="mt-4 border border-black/[0.08] p-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-black/50 mb-2">
                   Checklist
                 </p>
                 <div className="flex flex-col gap-1.5">
                   {step.checklist.map((item, i) => (
                     <label
                       key={i}
-                      className="flex items-start gap-2 text-sm text-slate-700"
+                      className="flex items-start gap-2 text-sm text-black/70"
                     >
                       <input
                         type="checkbox"
-                        className="mt-0.5 h-4 w-4 border border-slate-300 accent-slate-900"
+                        className="mt-0.5 h-4 w-4 border border-black/30 accent-black"
                       />
                       {item}
                     </label>
@@ -318,8 +318,8 @@ export function StepView({
         {step.step_type === "form" && (
           <div>
             {renderContent(step.content_md)}
-            <div className="mt-4 border border-slate-200 bg-slate-50 p-4">
-              <p className="text-sm text-slate-500">
+            <div className="mt-4 border border-black/[0.08] bg-black/[0.02] p-4">
+              <p className="text-sm text-black/50">
                 Form fields will be rendered here based on step configuration.
               </p>
             </div>
@@ -330,10 +330,10 @@ export function StepView({
         {step.step_type === "calculator" && (
           <div>
             {renderContent(step.content_md)}
-            <div className="mt-4 border border-slate-200 p-5">
+            <div className="mt-4 border border-black/[0.08] p-5">
               {CALCULATOR_MAP[step.slug]
                 ? React.createElement(CALCULATOR_MAP[step.slug])
-                : <p className="text-sm text-slate-500">Calculator coming soon.</p>
+                : <p className="text-sm text-black/50">Calculator coming soon.</p>
               }
             </div>
           </div>
@@ -373,7 +373,7 @@ export function StepView({
       </div>
 
       {/* Mark complete */}
-      <div className="border-t border-slate-200 pt-4">
+      <div className="border-t border-black/[0.08] pt-4">
         <StepComplete
           stepId={step.id}
           userId={userId}
@@ -387,7 +387,7 @@ export function StepView({
         {prevStep ? (
           <Link
             href={`/launch/phase/${phase.slug}/${prevStep.slug}`}
-            className="flex items-center gap-1.5 text-xs text-slate-500 transition-colors duration-150 hover:text-slate-900"
+            className="flex items-center gap-1.5 text-xs text-black/50 transition-colors duration-150 hover:text-black"
           >
             <svg
               width="10"
@@ -407,7 +407,7 @@ export function StepView({
         {nextStep ? (
           <Link
             href={`/launch/phase/${phase.slug}/${nextStep.slug}`}
-            className="flex items-center gap-1.5 text-xs text-slate-500 transition-colors duration-150 hover:text-slate-900"
+            className="flex items-center gap-1.5 text-xs text-black/50 transition-colors duration-150 hover:text-black"
           >
             {nextStep.title}
             <svg

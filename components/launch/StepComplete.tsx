@@ -61,11 +61,11 @@ export function StepComplete({
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          className="text-slate-900"
+          className="text-black"
         >
           <path d="M3 8.5l3.5 3.5L13 4" />
         </svg>
-        <span className="text-sm font-medium text-slate-900">Completed</span>
+        <span className="text-sm font-medium text-black">Completed</span>
       </div>
     );
   }

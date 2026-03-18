@@ -35,16 +35,16 @@ function HireFlow({
     >
       <div className="flex flex-col gap-4">
         <div>
-          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500">
+          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-black/50">
             What it will do
           </h4>
           <ul className="flex flex-col gap-1">
             {agent.capabilities.map((cap, i) => (
               <li
                 key={i}
-                className="flex items-start gap-2 text-sm text-slate-900"
+                className="flex items-start gap-2 text-sm text-black"
               >
-                <span className="mt-1 text-slate-900 font-semibold">+</span>
+                <span className="mt-1 text-black font-semibold">+</span>
                 {cap}
               </li>
             ))}
@@ -52,14 +52,14 @@ function HireFlow({
         </div>
 
         <div>
-          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500">
+          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-black/50">
             Permissions needed
           </h4>
           <ul className="flex flex-col gap-1">
             {agent.permissions.map((perm, i) => (
               <li
                 key={i}
-                className="flex items-start gap-2 text-sm text-slate-500"
+                className="flex items-start gap-2 text-sm text-black/50"
               >
                 <span className="mt-1">-</span>
                 {perm}
@@ -68,11 +68,11 @@ function HireFlow({
           </ul>
         </div>
 
-        <div className="rounded-md bg-slate-50 p-3">
-          <p className="text-xs text-slate-500">
+        <div className="rounded-md bg-black/[0.02] p-3">
+          <p className="text-xs text-black/50">
             Estimated daily cost
           </p>
-          <p className="mt-0.5 text-sm font-semibold text-slate-900">
+          <p className="mt-0.5 text-sm font-semibold text-black">
             {agent.estimatedDailyCost}
           </p>
         </div>

@@ -59,8 +59,8 @@ export function EquityCalculator() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold text-slate-900">Co-founder equity calculator</h3>
-        <p className="mt-1 text-[13px] text-slate-500">
+        <h3 className="text-sm font-semibold text-black">Co-founder equity calculator</h3>
+        <p className="mt-1 text-[13px] text-black/50">
           Rate each founder&apos;s contribution on a scale of 0-10 for each factor.
         </p>
       </div>
@@ -70,19 +70,19 @@ export function EquityCalculator() {
         <table className="w-full text-sm">
           <thead>
             <tr>
-              <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wider text-slate-500">
+              <th className="px-3 py-2 text-left text-[11px] font-medium uppercase tracking-wider text-black/50">
                 Founder
               </th>
               {FACTORS.map((f) => (
                 <th
                   key={f.key}
-                  className="px-3 py-2 text-center text-[11px] font-medium uppercase tracking-wider text-slate-500"
+                  className="px-3 py-2 text-center text-[11px] font-medium uppercase tracking-wider text-black/50"
                   title={f.description}
                 >
                   {f.label}
                 </th>
               ))}
-              <th className="px-3 py-2 text-center text-[11px] font-medium uppercase tracking-wider text-slate-900">
+              <th className="px-3 py-2 text-center text-[11px] font-medium uppercase tracking-wider text-black">
                 Equity %
               </th>
               <th className="w-8" />
@@ -90,13 +90,13 @@ export function EquityCalculator() {
           </thead>
           <tbody>
             {founders.map((founder, i) => (
-              <tr key={i} className="border-t border-slate-100">
+              <tr key={i} className="border-t border-black/[0.04]">
                 <td className="px-3 py-2">
                   <input
                     type="text"
                     value={founder.name}
                     onChange={(e) => updateFounder(i, "name", e.target.value)}
-                    className="w-full border-0 bg-transparent text-sm font-medium text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+                    className="w-full border-0 bg-transparent text-sm font-medium text-black outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
                   />
                 </td>
                 {FACTORS.map((f) => (
@@ -113,12 +113,12 @@ export function EquityCalculator() {
                           Math.min(10, Math.max(0, parseInt(e.target.value) || 0))
                         )
                       }
-                      className="h-8 w-12 border border-slate-200 bg-transparent px-2 text-center text-sm tabular-nums text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+                      className="h-8 w-12 border border-black/[0.08] bg-transparent px-2 text-center text-sm tabular-nums text-black outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
                     />
                   </td>
                 ))}
                 <td className="px-3 py-2 text-center">
-                  <span className="text-sm font-semibold tabular-nums text-slate-900">
+                  <span className="text-sm font-semibold tabular-nums text-black">
                     {getPercentage(founder)}%
                   </span>
                 </td>
@@ -126,7 +126,7 @@ export function EquityCalculator() {
                   {founders.length > 2 && (
                     <button
                       onClick={() => removeFounder(i)}
-                      className="flex h-6 w-6 items-center justify-center text-slate-400 transition-colors hover:text-slate-700"
+                      className="flex h-6 w-6 items-center justify-center text-black/40 transition-colors hover:text-black/70"
                       aria-label="Remove founder"
                     >
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -149,14 +149,14 @@ export function EquityCalculator() {
 
       {/* Visual split */}
       <div>
-        <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-slate-500">
+        <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-black/50">
           Recommended split
         </p>
-        <div className="flex h-8 w-full overflow-hidden border border-slate-200">
+        <div className="flex h-8 w-full overflow-hidden border border-black/[0.08]">
           {founders.map((f, i) => {
             const pct = getPercentage(f);
             if (pct === 0) return null;
-            const shades = ["bg-slate-900", "bg-slate-600", "bg-slate-400", "bg-slate-300"];
+            const shades = ["bg-black", "bg-black/60", "bg-black/40", "bg-black/30"];
             return (
               <div
                 key={i}
@@ -171,7 +171,7 @@ export function EquityCalculator() {
         </div>
         <div className="mt-1 flex gap-4">
           {founders.map((f, i) => (
-            <span key={i} className="text-[11px] text-slate-500">
+            <span key={i} className="text-[11px] text-black/50">
               {f.name}: {getPercentage(f)}%
             </span>
           ))}

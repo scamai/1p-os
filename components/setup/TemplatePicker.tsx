@@ -70,10 +70,10 @@ interface TemplatePickerProps {
 function TemplatePicker({ selected, onSelect }: TemplatePickerProps) {
   return (
     <div>
-      <h2 className="mb-1 text-lg font-semibold text-slate-900">
+      <h2 className="mb-1 text-lg font-semibold text-black">
         Choose a template
       </h2>
-      <p className="mb-6 text-sm text-slate-500">
+      <p className="mb-6 text-sm text-black/50">
         Pick the one closest to what you do. You can customize later.
       </p>
 
@@ -87,26 +87,26 @@ function TemplatePicker({ selected, onSelect }: TemplatePickerProps) {
               onClick={() => onSelect(t.id)}
               className={`flex items-center justify-between rounded-lg border px-4 py-3 text-left transition-all ${
                 isSelected
-                  ? "border-slate-900 bg-slate-50"
-                  : "border-slate-200 hover:border-slate-300 hover:bg-slate-50/50"
+                  ? "border-black bg-black/[0.02]"
+                  : "border-black/[0.08] hover:border-black/30 hover:bg-black/[0.02]/50"
               }`}
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-slate-900">
+                  <span className="text-sm font-medium text-black">
                     {t.name}
                   </span>
                   {isSelected && (
-                    <svg className="h-3.5 w-3.5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <svg className="h-3.5 w-3.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   )}
                 </div>
-                <p className="mt-0.5 text-xs text-slate-500">{t.description}</p>
+                <p className="mt-0.5 text-xs text-black/50">{t.description}</p>
               </div>
               <div className="ml-4 shrink-0 text-right">
-                <p className="text-xs font-mono text-slate-600">{t.agentCount} agents</p>
-                <p className="text-[11px] font-mono text-slate-400">{t.estimatedCost}</p>
+                <p className="text-xs font-mono text-black/60">{t.agentCount} agents</p>
+                <p className="text-[11px] font-mono text-black/40">{t.estimatedCost}</p>
               </div>
             </button>
           );

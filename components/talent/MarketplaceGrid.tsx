@@ -65,13 +65,13 @@ function MarketplaceGrid({ listings, onHire }: MarketplaceGridProps) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search agents..."
-          className="h-9 flex-1 rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-300"
+          className="h-9 flex-1 rounded-md border border-black/[0.08] bg-transparent px-3 text-sm text-black placeholder:text-black/50 focus:outline-none focus:ring-2 focus:ring-black/30"
         />
         <div className="flex gap-2">
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="h-9 rounded-md border border-slate-200 bg-transparent px-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-300"
+            className="h-9 rounded-md border border-black/[0.08] bg-transparent px-2 text-sm text-black focus:outline-none focus:ring-2 focus:ring-black/30"
           >
             {categories.map((c) => (
               <option key={c} value={c}>
@@ -82,7 +82,7 @@ function MarketplaceGrid({ listings, onHire }: MarketplaceGridProps) {
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value)}
-            className="h-9 rounded-md border border-slate-200 bg-transparent px-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-300"
+            className="h-9 rounded-md border border-black/[0.08] bg-transparent px-2 text-sm text-black focus:outline-none focus:ring-2 focus:ring-black/30"
           >
             {sortOptions.map((o) => (
               <option key={o.value} value={o.value}>
@@ -95,7 +95,7 @@ function MarketplaceGrid({ listings, onHire }: MarketplaceGridProps) {
 
       {sorted.length === 0 ? (
         <div className="py-12 text-center">
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-black/50">
             No agents found matching your search.
           </p>
         </div>

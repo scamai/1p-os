@@ -8,9 +8,9 @@ import type { AgentHandoff } from "@/lib/agents/collaboration";
 // ---------------------------------------------------------------------------
 
 const STATUS_STYLE: Record<AgentHandoff["status"], { label: string; bg: string; text: string }> = {
-  pending: { label: "Pending", bg: "bg-slate-100", text: "text-slate-600" },
-  accepted: { label: "Accepted", bg: "bg-slate-100", text: "text-slate-700" },
-  completed: { label: "Done", bg: "bg-slate-100", text: "text-slate-700" },
+  pending: { label: "Pending", bg: "bg-black/[0.04]", text: "text-black/60" },
+  accepted: { label: "Accepted", bg: "bg-black/[0.04]", text: "text-black/70" },
+  completed: { label: "Done", bg: "bg-black/[0.04]", text: "text-black/70" },
 };
 
 const TYPE_LABEL: Record<AgentHandoff["type"], string> = {
@@ -31,14 +31,14 @@ interface AgentHandoffsProps {
 function AgentHandoffs({ handoffs }: AgentHandoffsProps) {
   if (handoffs.length === 0) {
     return (
-      <p className="py-3 text-[13px] text-slate-400">
+      <p className="py-3 text-[13px] text-black/40">
         No active handoffs between agents.
       </p>
     );
   }
 
   return (
-    <div className="flex flex-col divide-y divide-slate-100">
+    <div className="flex flex-col divide-y divide-black/[0.04]">
       {handoffs.map((handoff) => {
         const style = STATUS_STYLE[handoff.status];
 
@@ -48,11 +48,11 @@ function AgentHandoffs({ handoffs }: AgentHandoffsProps) {
             <div className="flex min-w-0 flex-1 flex-col gap-1">
               {/* Agent flow */}
               <div className="flex items-center gap-1.5 text-[13px]">
-                <span className="font-medium text-slate-800">
+                <span className="font-medium text-black/80">
                   {handoff.fromAgentName.replace(" Agent", "")}
                 </span>
                 <svg
-                  className="h-3 w-3 shrink-0 text-slate-300"
+                  className="h-3 w-3 shrink-0 text-black/30"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -60,18 +60,18 @@ function AgentHandoffs({ handoffs }: AgentHandoffsProps) {
                 >
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
-                <span className="font-medium text-slate-800">
+                <span className="font-medium text-black/80">
                   {handoff.toAgentName.replace(" Agent", "")}
                 </span>
               </div>
 
               {/* Subject */}
-              <p className="text-[13px] leading-snug text-slate-600">
+              <p className="text-[13px] leading-snug text-black/60">
                 {handoff.subject}
               </p>
 
               {/* Type tag */}
-              <span className="mt-0.5 inline-block w-fit rounded border border-slate-150 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-slate-400">
+              <span className="mt-0.5 inline-block w-fit rounded border border-black/[0.06] px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-black/40">
                 {TYPE_LABEL[handoff.type]}
               </span>
             </div>

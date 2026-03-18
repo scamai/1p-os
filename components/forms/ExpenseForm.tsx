@@ -55,12 +55,12 @@ function ExpenseForm({ onClose, prefill }: ExpenseFormProps) {
         required
       />
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-slate-600">Category</label>
+        <label className="text-sm font-medium text-black/60">Category</label>
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           required
-          className="h-9 w-full rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="h-9 w-full rounded-md border border-black/[0.08] bg-transparent px-3 text-sm text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
         >
           <option value="">Select category</option>
           <option value="software">Software</option>
@@ -87,7 +87,7 @@ function ExpenseForm({ onClose, prefill }: ExpenseFormProps) {
         required
       />
       {error && (
-        <p className="text-sm text-slate-500">{error}</p>
+        <p className="text-sm text-black/50">{error}</p>
       )}
       <div className="flex items-center justify-end gap-3 pt-2">
         <Button type="button" variant="ghost" onClick={onClose}>

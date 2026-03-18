@@ -115,15 +115,15 @@ export function VoiceOverlay({
 
   return (
     <div className="fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 animate-in fade-in slide-in-from-bottom-2 duration-200">
-      <div className="flex h-10 items-center gap-2 rounded-full bg-slate-900/95 px-4 shadow-xl ring-1 ring-white/10">
+      <div className="flex h-10 items-center gap-2 rounded-full bg-black/95 px-4 shadow-xl ring-1 ring-white/10">
         {/* Mic dot / spinner */}
         <div className="flex h-5 w-5 items-center justify-center">
           {state === "recording" ? (
-            <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-slate-400 shadow-[0_0_8px_rgba(161,161,170,0.6)]" />
+            <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-black/40 shadow-[0_0_8px_rgba(161,161,170,0.6)]" />
           ) : state === "loading" ? (
-            <div className="h-3.5 w-3.5 animate-spin rounded-full border-[1.5px] border-slate-600 border-t-slate-300" />
+            <div className="h-3.5 w-3.5 animate-spin rounded-full border-[1.5px] border-black/60 border-t-black/30" />
           ) : (
-            <div className="h-2 w-2 animate-pulse rounded-full bg-slate-500" />
+            <div className="h-2 w-2 animate-pulse rounded-full bg-black/50" />
           )}
         </div>
 
@@ -133,7 +133,7 @@ export function VoiceOverlay({
             levels.map((v, i) => (
               <div
                 key={i}
-                className="w-[4px] rounded-sm bg-slate-300"
+                className="w-[4px] rounded-sm bg-black/30"
                 style={{
                   height: `${Math.max(3, Math.min(22, 3 + Math.pow(v, 0.6) * 19))}px`,
                   opacity: Math.max(0.3, Math.min(1, v * 2)),
@@ -142,7 +142,7 @@ export function VoiceOverlay({
               />
             ))
           ) : (
-            <span className="flex items-center gap-1.5 px-0.5 text-[11px] text-slate-400">
+            <span className="flex items-center gap-1.5 px-0.5 text-[11px] text-black/40">
               {state === "loading" ? (
                 <>
                   Loading{progress > 0 && progress < 100 ? ` ${progress}%` : "..."}
@@ -159,14 +159,14 @@ export function VoiceOverlay({
           {state === "recording" && onStop && (
             <button
               onClick={onStop}
-              className="flex h-6 items-center gap-1 rounded-full bg-slate-700/80 px-2.5 text-[10px] font-medium text-slate-300 transition-colors hover:bg-slate-600 hover:text-white"
+              className="flex h-6 items-center gap-1 rounded-full bg-black/70/80 px-2.5 text-[10px] font-medium text-black/30 transition-colors hover:bg-black/60 hover:text-white"
             >
               Done
             </button>
           )}
           <button
             onClick={onCancel}
-            className="flex h-5 w-5 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-700 hover:text-slate-300"
+            className="flex h-5 w-5 items-center justify-center rounded-full text-black/50 transition-colors hover:bg-black/70 hover:text-black/30"
             title="Cancel (Esc)"
           >
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
@@ -182,7 +182,7 @@ export function VoiceOverlay({
 
         {/* Shortcut hint */}
         {state === "recording" && (
-          <span className="text-[10px] text-slate-600 ml-1 hidden sm:inline">
+          <span className="text-[10px] text-black/60 ml-1 hidden sm:inline">
             ⌘⇧V
           </span>
         )}
@@ -227,10 +227,10 @@ export function MicButton({
         }}
         className={`flex shrink-0 items-center justify-center rounded-lg transition-all duration-200 ${
           isActive
-            ? "bg-slate-900 text-white"
+            ? "bg-black text-white"
             : isError
-              ? "text-slate-900"
-              : "text-slate-400 hover:text-slate-600"
+              ? "text-black"
+              : "text-black/40 hover:text-black/60"
         } ${className}`}
         aria-label={isActive ? "Stop listening" : isError ? "Mic not working — tap to retry" : "Voice input (⌘⇧V)"}
         title={isError && micError ? micError : isActive ? "Stop listening" : "Voice input (⌘⇧V)"}

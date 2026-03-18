@@ -174,14 +174,14 @@ function CanvasPage() {
 
   return (
     <div className="flex h-full min-h-[calc(100vh-4rem)] flex-col">
-      <h1 className="mb-4 text-lg font-semibold text-slate-900">Canvas</h1>
+      <h1 className="mb-4 text-lg font-semibold text-black">Canvas</h1>
 
-      <div className="flex flex-1 gap-0 overflow-hidden rounded-lg border border-slate-200">
+      <div className="flex flex-1 gap-0 overflow-hidden rounded-lg border border-black/[0.08]">
         {/* Sidebar */}
-        <div className="w-[220px] shrink-0 border-r border-slate-200 bg-slate-50">
+        <div className="w-[220px] shrink-0 border-r border-black/[0.08] bg-black/[0.02]">
           <div className="p-3">
             <button
-              className="w-full text-left text-xs text-slate-500 hover:text-slate-900 transition-colors"
+              className="w-full text-left text-xs text-black/50 hover:text-black transition-colors"
             >
               + New Canvas
             </button>
@@ -194,14 +194,14 @@ function CanvasPage() {
                 onClick={() => setSelectedId(canvas.id)}
                 className={`w-full px-3 py-2.5 text-left transition-colors ${
                   canvas.id === selectedId
-                    ? "bg-white border-l-2 border-slate-900"
-                    : "hover:bg-slate-100 border-l-2 border-transparent"
+                    ? "bg-white border-l-2 border-black"
+                    : "hover:bg-black/[0.04] border-l-2 border-transparent"
                 }`}
               >
-                <p className={`truncate text-sm ${canvas.id === selectedId ? "text-slate-900 font-medium" : "text-slate-600"}`}>
+                <p className={`truncate text-sm ${canvas.id === selectedId ? "text-black font-medium" : "text-black/60"}`}>
                   {canvas.title}
                 </p>
-                <p className="mt-0.5 text-[11px] text-slate-400">
+                <p className="mt-0.5 text-[11px] text-black/40">
                   {canvas.agent} · {canvas.timestamp}
                 </p>
               </button>
@@ -212,18 +212,18 @@ function CanvasPage() {
         {/* Content */}
         <div className="flex flex-1 flex-col bg-white">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-200 px-6 py-3">
+          <div className="flex items-center justify-between border-b border-black/[0.08] px-6 py-3">
             <div>
-              <h2 className="text-sm font-medium text-slate-900">{selected.title}</h2>
-              <p className="mt-0.5 text-[11px] text-slate-400">
+              <h2 className="text-sm font-medium text-black">{selected.title}</h2>
+              <p className="mt-0.5 text-[11px] text-black/40">
                 {selected.agent} · {selected.timestamp} · {selected.type}
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <button className="text-xs text-slate-400 hover:text-slate-700 transition-colors">
+              <button className="text-xs text-black/40 hover:text-black/70 transition-colors">
                 Export
               </button>
-              <button className="text-xs text-slate-400 hover:text-slate-700 transition-colors">
+              <button className="text-xs text-black/40 hover:text-black/70 transition-colors">
                 Share
               </button>
             </div>
@@ -234,43 +234,43 @@ function CanvasPage() {
             <div className="prose prose-zinc prose-sm max-w-none">
               {selected.content.split('\n').map((line, i) => {
                 // Simple markdown rendering
-                if (line.startsWith('# ')) return <h1 key={i} className="text-lg font-semibold text-slate-900 mt-6 mb-3 first:mt-0">{line.slice(2)}</h1>;
-                if (line.startsWith('## ')) return <h2 key={i} className="text-sm font-semibold text-slate-900 mt-5 mb-2">{line.slice(3)}</h2>;
-                if (line.startsWith('### ')) return <h3 key={i} className="text-sm font-medium text-slate-700 mt-4 mb-1">{line.slice(4)}</h3>;
-                if (line.startsWith('- [ ] ')) return <div key={i} className="flex items-center gap-2 py-0.5 text-[13px] text-slate-700"><span className="h-3.5 w-3.5 rounded border border-slate-300" />{line.slice(6)}</div>;
-                if (line.startsWith('- ')) return <div key={i} className="flex items-start gap-2 py-0.5 text-[13px] text-slate-600"><span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-slate-400" />{line.slice(2)}</div>;
+                if (line.startsWith('# ')) return <h1 key={i} className="text-lg font-semibold text-black mt-6 mb-3 first:mt-0">{line.slice(2)}</h1>;
+                if (line.startsWith('## ')) return <h2 key={i} className="text-sm font-semibold text-black mt-5 mb-2">{line.slice(3)}</h2>;
+                if (line.startsWith('### ')) return <h3 key={i} className="text-sm font-medium text-black/70 mt-4 mb-1">{line.slice(4)}</h3>;
+                if (line.startsWith('- [ ] ')) return <div key={i} className="flex items-center gap-2 py-0.5 text-[13px] text-black/70"><span className="h-3.5 w-3.5 rounded border border-black/30" />{line.slice(6)}</div>;
+                if (line.startsWith('- ')) return <div key={i} className="flex items-start gap-2 py-0.5 text-[13px] text-black/60"><span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-black/40" />{line.slice(2)}</div>;
                 if (line.startsWith('| ')) {
                   const cells = line.split('|').filter(Boolean).map(c => c.trim());
                   if (cells.every(c => c.match(/^-+$/))) return null; // separator row
                   return (
                     <div key={i} className="flex gap-4 py-1 text-[12px] font-mono">
                       {cells.map((cell, j) => (
-                        <span key={j} className={`flex-1 ${j === 0 ? 'text-slate-700' : 'text-slate-500'}`}>{cell}</span>
+                        <span key={j} className={`flex-1 ${j === 0 ? 'text-black/70' : 'text-black/50'}`}>{cell}</span>
                       ))}
                     </div>
                   );
                 }
-                if (line.startsWith('*') && line.endsWith('*')) return <p key={i} className="text-[13px] text-slate-400 italic py-1">{line.replace(/\*/g, '')}</p>;
-                if (line.startsWith('---')) return <hr key={i} className="my-4 border-slate-100" />;
+                if (line.startsWith('*') && line.endsWith('*')) return <p key={i} className="text-[13px] text-black/40 italic py-1">{line.replace(/\*/g, '')}</p>;
+                if (line.startsWith('---')) return <hr key={i} className="my-4 border-black/[0.04]" />;
                 if (line.startsWith('**') && line.includes(':**')) {
                   const [label, ...rest] = line.split(':**');
-                  return <p key={i} className="text-[13px] text-slate-600 py-0.5"><span className="font-medium text-slate-900">{label.replace(/\*/g, '')}:</span> {rest.join(':**').replace(/\*/g, '')}</p>;
+                  return <p key={i} className="text-[13px] text-black/60 py-0.5"><span className="font-medium text-black">{label.replace(/\*/g, '')}:</span> {rest.join(':**').replace(/\*/g, '')}</p>;
                 }
                 if (line.trim() === '') return <div key={i} className="h-2" />;
-                return <p key={i} className="text-[13px] text-slate-600 leading-relaxed py-0.5">{line}</p>;
+                return <p key={i} className="text-[13px] text-black/60 leading-relaxed py-0.5">{line}</p>;
               })}
             </div>
           </div>
 
           {/* Prompt bar */}
-          <div className="border-t border-slate-200 px-6 py-3">
+          <div className="border-t border-black/[0.08] px-6 py-3">
             <div className="flex gap-2">
               <input
                 type="text"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder="Ask an agent to update or create something..."
-                className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-slate-300"
+                className="flex-1 rounded-lg border border-black/[0.08] bg-white px-3 py-2 text-sm text-black placeholder:text-black/40 outline-none focus:border-black/30"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleSend();
                 }}
@@ -278,7 +278,7 @@ function CanvasPage() {
               <button
                 onClick={handleSend}
                 disabled={!prompt.trim()}
-                className="shrink-0 rounded-lg bg-slate-900 px-4 py-2 text-xs text-white transition-opacity disabled:opacity-30 hover:bg-slate-800"
+                className="shrink-0 rounded-lg bg-black px-4 py-2 text-xs text-white transition-opacity disabled:opacity-30 hover:bg-black/80"
               >
                 Send
               </button>

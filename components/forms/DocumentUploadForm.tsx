@@ -82,10 +82,10 @@ function DocumentUploadForm({ onClose }: DocumentUploadFormProps) {
         onClick={() => inputRef.current?.click()}
         className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-8 transition-colors ${
           dragOver
-            ? "border-slate-400 bg-slate-100"
+            ? "border-black/40 bg-black/[0.04]"
             : file
-              ? "border-slate-300 bg-slate-50"
-              : "border-slate-200 bg-slate-50 hover:border-slate-300"
+              ? "border-black/30 bg-black/[0.02]"
+              : "border-black/[0.08] bg-black/[0.02] hover:border-black/30"
         }`}
       >
         <input
@@ -97,7 +97,7 @@ function DocumentUploadForm({ onClose }: DocumentUploadFormProps) {
         {file ? (
           <div className="flex flex-col items-center gap-1">
             <svg
-              className="h-6 w-6 text-slate-500"
+              className="h-6 w-6 text-black/50"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -108,13 +108,13 @@ function DocumentUploadForm({ onClose }: DocumentUploadFormProps) {
               <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
               <polyline points="14 2 14 8 20 8" />
             </svg>
-            <p className="text-sm font-medium text-slate-600">{file.name}</p>
-            <p className="text-xs text-slate-500">{formatFileSize(file.size)}</p>
+            <p className="text-sm font-medium text-black/60">{file.name}</p>
+            <p className="text-xs text-black/50">{formatFileSize(file.size)}</p>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-1">
             <svg
-              className="h-6 w-6 text-slate-500"
+              className="h-6 w-6 text-black/50"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -126,7 +126,7 @@ function DocumentUploadForm({ onClose }: DocumentUploadFormProps) {
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-black/50">
               Drop a file here or click to browse
             </p>
           </div>
@@ -134,12 +134,12 @@ function DocumentUploadForm({ onClose }: DocumentUploadFormProps) {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-slate-600">Category</label>
+        <label className="text-sm font-medium text-black/60">Category</label>
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           required
-          className="h-9 w-full rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="h-9 w-full rounded-md border border-black/[0.08] bg-transparent px-3 text-sm text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
         >
           <option value="">Select category</option>
           <option value="contract">Contract</option>
@@ -154,17 +154,17 @@ function DocumentUploadForm({ onClose }: DocumentUploadFormProps) {
         placeholder="Project name (optional)"
       />
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-slate-600">Notes</label>
+        <label className="text-sm font-medium text-black/60">Notes</label>
         <textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Additional notes"
           rows={2}
-          className="w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="w-full rounded-md border border-black/[0.08] bg-transparent px-3 py-2 text-sm text-black placeholder:text-black/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
         />
       </div>
       {error && (
-        <p className="text-sm text-slate-500">{error}</p>
+        <p className="text-sm text-black/50">{error}</p>
       )}
       <div className="flex items-center justify-end gap-3 pt-2">
         <Button type="button" variant="ghost" onClick={onClose}>

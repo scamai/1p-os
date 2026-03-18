@@ -157,7 +157,7 @@ export function OnboardingQuiz() {
         {currentStep > 0 && (
           <button
             onClick={back}
-            className="flex h-8 w-8 items-center justify-center text-slate-500 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+            className="flex h-8 w-8 items-center justify-center text-black/50 transition-colors duration-150 hover:bg-black/[0.04] hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
             aria-label="Go back"
           >
             <svg
@@ -177,12 +177,12 @@ export function OnboardingQuiz() {
             <div
               key={i}
               className={`h-1 flex-1 transition-colors duration-150 ${
-                i <= currentStep ? "bg-slate-900" : "bg-slate-200"
+                i <= currentStep ? "bg-black" : "bg-black/[0.08]"
               }`}
             />
           ))}
         </div>
-        <span className="text-xs text-slate-400 tabular-nums">
+        <span className="text-xs text-black/40 tabular-nums">
           {currentStep + 1}/{TOTAL_STEPS}
         </span>
       </div>
@@ -190,10 +190,10 @@ export function OnboardingQuiz() {
       {/* Step 0: Solo or co-founder */}
       {currentStep === 0 && (
         <div>
-          <h2 className="text-base font-semibold text-slate-900 mb-1">
+          <h2 className="text-base font-semibold text-black mb-1">
             Are you a solo founder?
           </h2>
-          <p className="text-[13px] text-slate-500 mb-6">
+          <p className="text-[13px] text-black/50 mb-6">
             This shapes your incorporation path and operating agreement needs.
           </p>
           <div className="flex flex-col gap-2">
@@ -205,10 +205,10 @@ export function OnboardingQuiz() {
                   cofounder_count: null,
                 }))
               }
-              className={`w-full border px-4 py-3 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+              className={`w-full border px-4 py-3 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1 ${
                 data.founder_type === "solo"
-                  ? "border-slate-900 bg-slate-50 font-medium text-slate-900"
-                  : "border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-black bg-black/[0.02] font-medium text-black"
+                  : "border-black/[0.08] text-black/70 hover:border-black/30 hover:bg-black/[0.02]"
               }`}
             >
               Solo founder
@@ -221,10 +221,10 @@ export function OnboardingQuiz() {
                   cofounder_count: d.cofounder_count || 2,
                 }))
               }
-              className={`w-full border px-4 py-3 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+              className={`w-full border px-4 py-3 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1 ${
                 data.founder_type === "cofounders"
-                  ? "border-slate-900 bg-slate-50 font-medium text-slate-900"
-                  : "border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-black bg-black/[0.02] font-medium text-black"
+                  : "border-black/[0.08] text-black/70 hover:border-black/30 hover:bg-black/[0.02]"
               }`}
             >
               I have co-founders
@@ -258,10 +258,10 @@ export function OnboardingQuiz() {
       {/* Step 1: Business type */}
       {currentStep === 1 && (
         <div>
-          <h2 className="text-base font-semibold text-slate-900 mb-1">
+          <h2 className="text-base font-semibold text-black mb-1">
             What are you building?
           </h2>
-          <p className="text-[13px] text-slate-500 mb-6">
+          <p className="text-[13px] text-black/50 mb-6">
             Determines which permits, licenses, and tax considerations to show.
           </p>
           <div className="flex flex-col gap-2">
@@ -271,10 +271,10 @@ export function OnboardingQuiz() {
                 onClick={() =>
                   setData((d) => ({ ...d, business_type: bt.value }))
                 }
-                className={`w-full border px-4 py-3 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+                className={`w-full border px-4 py-3 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1 ${
                   data.business_type === bt.value
-                    ? "border-slate-900 bg-slate-50 font-medium text-slate-900"
-                    : "border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                    ? "border-black bg-black/[0.02] font-medium text-black"
+                    : "border-black/[0.08] text-black/70 hover:border-black/30 hover:bg-black/[0.02]"
                 }`}
               >
                 {bt.label}
@@ -293,7 +293,7 @@ export function OnboardingQuiz() {
                   }))
                 }
                 rows={3}
-                className="w-full border border-slate-200 bg-transparent px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+                className="w-full border border-black/[0.08] bg-transparent px-3 py-2 text-sm text-black placeholder:text-black/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
               />
             </div>
           )}
@@ -308,29 +308,29 @@ export function OnboardingQuiz() {
       {/* Step 2: VC */}
       {currentStep === 2 && (
         <div>
-          <h2 className="text-base font-semibold text-slate-900 mb-1">
+          <h2 className="text-base font-semibold text-black mb-1">
             Planning to raise VC?
           </h2>
-          <p className="text-[13px] text-slate-500 mb-6">
+          <p className="text-[13px] text-black/50 mb-6">
             If yes, we recommend incorporating as a Delaware C-Corp.
           </p>
           <div className="flex flex-col gap-2">
             <button
               onClick={() => setData((d) => ({ ...d, raising_vc: true }))}
-              className={`w-full border px-4 py-3 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+              className={`w-full border px-4 py-3 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1 ${
                 data.raising_vc === true
-                  ? "border-slate-900 bg-slate-50 font-medium text-slate-900"
-                  : "border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-black bg-black/[0.02] font-medium text-black"
+                  : "border-black/[0.08] text-black/70 hover:border-black/30 hover:bg-black/[0.02]"
               }`}
             >
               Yes
             </button>
             <button
               onClick={() => setData((d) => ({ ...d, raising_vc: false }))}
-              className={`w-full border px-4 py-3 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+              className={`w-full border px-4 py-3 text-left text-sm transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1 ${
                 data.raising_vc === false
-                  ? "border-slate-900 bg-slate-50 font-medium text-slate-900"
-                  : "border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-black bg-black/[0.02] font-medium text-black"
+                  : "border-black/[0.08] text-black/70 hover:border-black/30 hover:bg-black/[0.02]"
               }`}
             >
               No
@@ -347,10 +347,10 @@ export function OnboardingQuiz() {
       {/* Step 3: State */}
       {currentStep === 3 && (
         <div>
-          <h2 className="text-base font-semibold text-slate-900 mb-1">
+          <h2 className="text-base font-semibold text-black mb-1">
             Where do you live?
           </h2>
-          <p className="text-[13px] text-slate-500 mb-6">
+          <p className="text-[13px] text-black/50 mb-6">
             Your state determines filing requirements, taxes, and registered
             agent needs.
           </p>
@@ -359,7 +359,7 @@ export function OnboardingQuiz() {
             onChange={(e) =>
               setData((d) => ({ ...d, state: e.target.value }))
             }
-            className="h-9 w-full border border-slate-200 bg-transparent px-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+            className="h-9 w-full border border-black/[0.08] bg-transparent px-3 text-sm text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
           >
             <option value="">Select your state</option>
             {US_STATES.map((s) => (
@@ -379,10 +379,10 @@ export function OnboardingQuiz() {
       {/* Step 4: Incorporation path */}
       {currentStep === 4 && (
         <div>
-          <h2 className="text-base font-semibold text-slate-900 mb-1">
+          <h2 className="text-base font-semibold text-black mb-1">
             Choose your incorporation path
           </h2>
-          <p className="text-[13px] text-slate-500 mb-6">
+          <p className="text-[13px] text-black/50 mb-6">
             All paths get you to the same result. Pick based on your budget and
             comfort level.
           </p>
@@ -392,7 +392,7 @@ export function OnboardingQuiz() {
                 key={path.value}
                 className={`cursor-pointer transition-colors duration-150 ${
                   data.incorporation_path === path.value
-                    ? "border-slate-900 bg-slate-50"
+                    ? "border-black bg-black/[0.02]"
                     : ""
                 }`}
                 onClick={() =>
@@ -404,17 +404,17 @@ export function OnboardingQuiz() {
                     <span
                       className={`text-sm ${
                         data.incorporation_path === path.value
-                          ? "font-semibold text-slate-900"
-                          : "font-medium text-slate-900"
+                          ? "font-semibold text-black"
+                          : "font-medium text-black"
                       }`}
                     >
                       {path.label}
                     </span>
-                    <span className="text-xs text-slate-500 tabular-nums ml-3">
+                    <span className="text-xs text-black/50 tabular-nums ml-3">
                       {path.cost}
                     </span>
                   </div>
-                  <p className="text-[13px] text-slate-500 leading-relaxed">
+                  <p className="text-[13px] text-black/50 leading-relaxed">
                     {path.description}
                   </p>
                 </CardContent>
@@ -432,10 +432,10 @@ export function OnboardingQuiz() {
       {/* Step 5: Summary */}
       {currentStep === 5 && (
         <div>
-          <h2 className="text-base font-semibold text-slate-900 mb-1">
+          <h2 className="text-base font-semibold text-black mb-1">
             Almost there
           </h2>
-          <p className="text-[13px] text-slate-500 mb-6">
+          <p className="text-[13px] text-black/50 mb-6">
             Name your company and review your plan.
           </p>
 
@@ -450,38 +450,38 @@ export function OnboardingQuiz() {
             />
           </div>
 
-          <div className="border border-slate-200 bg-slate-50 p-4 mb-6">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-3">
+          <div className="border border-black/[0.08] bg-black/[0.02] p-4 mb-6">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-black/50 mb-3">
               Your plan
             </h3>
             <div className="flex flex-col gap-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-slate-500">Founder type</span>
-                <span className="text-slate-900">
+                <span className="text-black/50">Founder type</span>
+                <span className="text-black">
                   {data.founder_type === "solo"
                     ? "Solo"
                     : `${data.cofounder_count} co-founders`}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Building</span>
-                <span className="text-slate-900 capitalize">
+                <span className="text-black/50">Building</span>
+                <span className="text-black capitalize">
                   {data.business_type}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Raising VC</span>
-                <span className="text-slate-900">
+                <span className="text-black/50">Raising VC</span>
+                <span className="text-black">
                   {data.raising_vc ? "Yes" : "No"}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">State</span>
-                <span className="text-slate-900">{data.state}</span>
+                <span className="text-black/50">State</span>
+                <span className="text-black">{data.state}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Incorporation</span>
-                <span className="text-slate-900">
+                <span className="text-black/50">Incorporation</span>
+                <span className="text-black">
                   {INCORPORATION_PATHS.find(
                     (p) => p.value === data.incorporation_path
                   )?.label ?? data.incorporation_path}

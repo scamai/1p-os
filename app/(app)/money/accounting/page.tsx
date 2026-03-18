@@ -148,12 +148,12 @@ export default function Page() {
     return (
       <div className="mt-4">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+          <h3 className="text-xs font-medium text-black/50 uppercase tracking-wide">
             {title}
           </h3>
           <button
             onClick={() => addItem(section)}
-            className="text-xs text-slate-400 hover:text-slate-700"
+            className="text-xs text-black/40 hover:text-black/70"
           >
             + Add
           </button>
@@ -167,21 +167,21 @@ export default function Page() {
               <input
                 value={item.label}
                 onChange={(e) => renameItem(section, i, e.target.value)}
-                className="flex-1 text-sm text-slate-700 bg-transparent border-b border-transparent hover:border-slate-200 focus:border-slate-400 focus:outline-none py-1 px-1"
+                className="flex-1 text-sm text-black/70 bg-transparent border-b border-transparent hover:border-black/[0.08] focus:border-black/40 focus:outline-none py-1 px-1"
               />
               <div className="relative">
-                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-slate-400">$</span>
+                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-xs text-black/40">$</span>
                 <input
                   type="number"
                   value={item.amount || ""}
                   onChange={(e) => updateItem(section, i, e.target.value)}
                   placeholder="0"
-                  className="w-28 border border-slate-200 rounded-md pl-5 pr-2 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-black"
+                  className="w-28 border border-black/[0.08] rounded-md pl-5 pr-2 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-black"
                 />
               </div>
               <button
                 onClick={() => removeItem(section, i)}
-                className="text-xs text-slate-300 hover:text-slate-900 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="text-xs text-black/30 hover:text-black opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 ×
               </button>
@@ -195,8 +195,8 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-[640px]">
       <Education {...EDUCATION.accounting} />
-      <h1 className="text-lg font-semibold text-slate-900">Accounting</h1>
-      <p className="mt-1 text-sm text-slate-500">
+      <h1 className="text-lg font-semibold text-black">Accounting</h1>
+      <p className="mt-1 text-sm text-black/50">
         Simple P&L and balance sheet for your business.
       </p>
 
@@ -209,7 +209,7 @@ export default function Page() {
             className={`px-4 py-1.5 text-sm rounded-md border transition-colors ${
               tab === t
                 ? "bg-black text-white border-black"
-                : "bg-white text-slate-700 border-slate-200 hover:border-slate-400"
+                : "bg-white text-black/70 border-black/[0.08] hover:border-black/40"
             }`}
           >
             {t === "pnl" ? "Profit & Loss" : "Balance Sheet"}
@@ -218,26 +218,26 @@ export default function Page() {
       </div>
 
       {tab === "pnl" && (
-        <div className="mt-4 border border-slate-200 rounded-lg p-4 bg-white">
+        <div className="mt-4 border border-black/[0.08] rounded-lg p-4 bg-white">
           <Section title="Revenue" section="revenue" items={data.revenue} />
 
-          <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2">
-            <span className="text-sm font-medium text-slate-900">Total Revenue</span>
-            <span className="text-sm font-medium text-slate-900">{fmt(totalRevenue)}</span>
+          <div className="mt-3 flex items-center justify-between border-t border-black/[0.04] pt-2">
+            <span className="text-sm font-medium text-black">Total Revenue</span>
+            <span className="text-sm font-medium text-black">{fmt(totalRevenue)}</span>
           </div>
 
           <Section title="Cost of Goods Sold" section="cogs" items={data.cogs} />
 
-          <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2">
-            <span className="text-sm font-medium text-slate-900">Total COGS</span>
-            <span className="text-sm font-medium text-slate-900">{fmt(totalCogs)}</span>
+          <div className="mt-3 flex items-center justify-between border-t border-black/[0.04] pt-2">
+            <span className="text-sm font-medium text-black">Total COGS</span>
+            <span className="text-sm font-medium text-black">{fmt(totalCogs)}</span>
           </div>
 
-          <div className="mt-3 flex items-center justify-between border-t border-slate-200 pt-3">
-            <span className="text-sm font-semibold text-slate-900">Gross Profit</span>
+          <div className="mt-3 flex items-center justify-between border-t border-black/[0.08] pt-3">
+            <span className="text-sm font-semibold text-black">Gross Profit</span>
             <div className="text-right">
-              <span className="text-sm font-semibold text-slate-900">{fmt(grossProfit)}</span>
-              <span className="text-xs text-slate-500 ml-2">
+              <span className="text-sm font-semibold text-black">{fmt(grossProfit)}</span>
+              <span className="text-xs text-black/50 ml-2">
                 {pct(grossProfit, totalRevenue)} margin
               </span>
             </div>
@@ -245,22 +245,22 @@ export default function Page() {
 
           <Section title="Operating Expenses" section="opex" items={data.opex} />
 
-          <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2">
-            <span className="text-sm font-medium text-slate-900">Total OpEx</span>
-            <span className="text-sm font-medium text-slate-900">{fmt(totalOpex)}</span>
+          <div className="mt-3 flex items-center justify-between border-t border-black/[0.04] pt-2">
+            <span className="text-sm font-medium text-black">Total OpEx</span>
+            <span className="text-sm font-medium text-black">{fmt(totalOpex)}</span>
           </div>
 
-          <div className="mt-4 flex items-center justify-between border-t-2 border-slate-900 pt-3">
-            <span className="text-base font-semibold text-slate-900">Net Income</span>
+          <div className="mt-4 flex items-center justify-between border-t-2 border-black pt-3">
+            <span className="text-base font-semibold text-black">Net Income</span>
             <div className="text-right">
               <span
                 className={`text-base font-semibold ${
-                  netIncome >= 0 ? "text-slate-900" : "text-slate-500"
+                  netIncome >= 0 ? "text-black" : "text-black/50"
                 }`}
               >
                 {fmt(netIncome)}
               </span>
-              <span className="text-xs text-slate-500 ml-2">
+              <span className="text-xs text-black/50 ml-2">
                 {pct(netIncome, totalRevenue)} margin
               </span>
             </div>
@@ -269,39 +269,39 @@ export default function Page() {
       )}
 
       {tab === "balance" && (
-        <div className="mt-4 border border-slate-200 rounded-lg p-4 bg-white">
+        <div className="mt-4 border border-black/[0.08] rounded-lg p-4 bg-white">
           <Section title="Assets" section="assets" items={data.assets} />
 
-          <div className="mt-3 flex items-center justify-between border-t border-slate-200 pt-3">
-            <span className="text-sm font-semibold text-slate-900">Total Assets</span>
-            <span className="text-sm font-semibold text-slate-900">{fmt(totalAssets)}</span>
+          <div className="mt-3 flex items-center justify-between border-t border-black/[0.08] pt-3">
+            <span className="text-sm font-semibold text-black">Total Assets</span>
+            <span className="text-sm font-semibold text-black">{fmt(totalAssets)}</span>
           </div>
 
           <Section title="Liabilities" section="liabilities" items={data.liabilities} />
 
-          <div className="mt-3 flex items-center justify-between border-t border-slate-200 pt-3">
-            <span className="text-sm font-semibold text-slate-900">Total Liabilities</span>
-            <span className="text-sm font-semibold text-slate-900">{fmt(totalLiabilities)}</span>
+          <div className="mt-3 flex items-center justify-between border-t border-black/[0.08] pt-3">
+            <span className="text-sm font-semibold text-black">Total Liabilities</span>
+            <span className="text-sm font-semibold text-black">{fmt(totalLiabilities)}</span>
           </div>
 
           <Section title="Equity" section="equity" items={data.equity} />
 
-          <div className="mt-3 flex items-center justify-between border-t border-slate-200 pt-3">
-            <span className="text-sm font-semibold text-slate-900">Total Equity</span>
-            <span className="text-sm font-semibold text-slate-900">{fmt(totalEquity)}</span>
+          <div className="mt-3 flex items-center justify-between border-t border-black/[0.08] pt-3">
+            <span className="text-sm font-semibold text-black">Total Equity</span>
+            <span className="text-sm font-semibold text-black">{fmt(totalEquity)}</span>
           </div>
 
-          <div className="mt-4 flex items-center justify-between border-t-2 border-slate-900 pt-3">
-            <span className="text-base font-semibold text-slate-900">
+          <div className="mt-4 flex items-center justify-between border-t-2 border-black pt-3">
+            <span className="text-base font-semibold text-black">
               Liabilities + Equity
             </span>
-            <span className="text-base font-semibold text-slate-900">
+            <span className="text-base font-semibold text-black">
               {fmt(totalLiabilities + totalEquity)}
             </span>
           </div>
 
           {totalAssets !== totalLiabilities + totalEquity && (
-            <p className="mt-2 text-xs text-slate-500">
+            <p className="mt-2 text-xs text-black/50">
               Note: Assets ({fmt(totalAssets)}) do not equal Liabilities + Equity (
               {fmt(totalLiabilities + totalEquity)}). The balance sheet should balance.
             </p>

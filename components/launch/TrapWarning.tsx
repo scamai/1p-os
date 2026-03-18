@@ -7,9 +7,9 @@ interface TrapWarningProps {
 }
 
 const severityStyles = {
-  critical: "border-l-4 border-l-slate-900 bg-slate-50 p-4",
-  warning: "border-l-[3px] border-l-slate-500 bg-slate-50 p-4",
-  info: "border-l-2 border-l-slate-300 bg-slate-50 p-3",
+  critical: "border-l-4 border-l-black bg-black/[0.02] p-4",
+  warning: "border-l-[3px] border-l-black/50 bg-black/[0.02] p-4",
+  info: "border-l-2 border-l-black/30 bg-black/[0.02] p-3",
 };
 
 const severityLabel = {
@@ -21,10 +21,10 @@ const severityLabel = {
 export function TrapWarning({ severity, message, className = "" }: TrapWarningProps) {
   return (
     <div className={`${severityStyles[severity]} ${className}`}>
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-900 mb-1">
+      <p className="text-xs font-semibold uppercase tracking-wide text-black mb-1">
         {severityLabel[severity]}
       </p>
-      <p className={`text-sm ${severity === "critical" ? "font-medium text-slate-900" : "text-slate-600"}`}>
+      <p className={`text-sm ${severity === "critical" ? "font-medium text-black" : "text-black/60"}`}>
         {message}
       </p>
     </div>

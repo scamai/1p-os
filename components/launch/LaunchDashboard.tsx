@@ -122,18 +122,18 @@ export function LaunchDashboard({
   return (
     <div className="mx-auto max-w-2xl px-6 py-8">
       <div className="mb-8">
-        <h1 className="text-base font-semibold text-slate-900">
+        <h1 className="text-base font-semibold text-black">
           {profile.company_name || "Your Company"}
         </h1>
-        <p className="mt-1 text-[13px] text-slate-500">
+        <p className="mt-1 text-[13px] text-black/50">
           FounderLaunch — your incorporation checklist
         </p>
       </div>
 
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-slate-500">Overall progress</span>
-          <span className="text-xs text-slate-500 tabular-nums">
+          <span className="text-xs text-black/50">Overall progress</span>
+          <span className="text-xs text-black/50 tabular-nums">
             {totalCompleted}/{totalVisible} steps
           </span>
         </div>
@@ -156,7 +156,7 @@ export function LaunchDashboard({
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <CardTitle>{phase.title}</CardTitle>
-                    <p className="mt-1 text-[13px] text-slate-500">
+                    <p className="mt-1 text-[13px] text-black/50">
                       {phase.description}
                     </p>
                   </div>
@@ -170,11 +170,11 @@ export function LaunchDashboard({
               <CardContent className="pt-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-xs text-slate-500 tabular-nums">
+                    <span className="text-xs text-black/50 tabular-nums">
                       {completed}/{total} steps
                     </span>
                     {!done && (
-                      <span className="text-xs text-slate-400">
+                      <span className="text-xs text-black/40">
                         ~{timeLeft} left
                       </span>
                     )}
@@ -193,17 +193,17 @@ export function LaunchDashboard({
 
       {reminders.length > 0 && (
         <div className="mt-10">
-          <h2 className="text-sm font-semibold text-slate-900 mb-3">
+          <h2 className="text-sm font-semibold text-black mb-3">
             Upcoming reminders
           </h2>
           <div className="flex flex-col gap-2">
             {reminders.map((r) => (
               <div
                 key={r.id}
-                className="flex items-center justify-between border border-slate-200 bg-white px-4 py-3"
+                className="flex items-center justify-between border border-black/[0.08] bg-white px-4 py-3"
               >
-                <span className="text-sm text-slate-900">{r.title}</span>
-                <span className="text-xs text-slate-400">
+                <span className="text-sm text-black">{r.title}</span>
+                <span className="text-xs text-black/40">
                   {new Date(r.due_date).toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
@@ -215,7 +215,7 @@ export function LaunchDashboard({
         </div>
       )}
 
-      <p className="mt-12 text-xs text-slate-400 leading-relaxed">
+      <p className="mt-12 text-xs text-black/40 leading-relaxed">
         FounderLaunch provides general information and templates for educational
         purposes. This is not legal, tax, or financial advice.
       </p>

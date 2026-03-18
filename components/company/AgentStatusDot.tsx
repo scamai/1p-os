@@ -1,11 +1,11 @@
 type AgentStatus = "working" | "needs_input" | "idle" | "error" | "paused";
 
 const statusColors: Record<AgentStatus, string> = {
-  working: "bg-slate-900",
-  needs_input: "bg-slate-400",
-  idle: "bg-slate-300",
-  error: "bg-slate-600",
-  paused: "bg-slate-600",
+  working: "bg-black",
+  needs_input: "bg-black/40",
+  idle: "bg-black/30",
+  error: "bg-black/60",
+  paused: "bg-black/60",
 };
 
 interface AgentStatusDotProps {

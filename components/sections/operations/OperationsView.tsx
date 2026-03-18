@@ -164,14 +164,14 @@ function StatusDot({ status }: { status: AgentStatus }) {
 
 function AgentNodeCard({ agent }: { agent: Agent }) {
   return (
-    <div className="flex items-start gap-2.5 rounded-lg border border-slate-200 bg-white px-3 py-2.5 hover:border-slate-300 transition-colors">
+    <div className="flex items-start gap-2.5 rounded-lg border border-black/[0.08] bg-white px-3 py-2.5 hover:border-black/30 transition-colors">
       <StatusDot status={agent.status} />
       <div className="min-w-0 flex-1">
-        <p className="text-[13px] font-medium text-slate-900 truncate">{agent.name}</p>
-        <p className="text-[11px] text-slate-500 truncate">{agent.role}</p>
+        <p className="text-[13px] font-medium text-black truncate">{agent.name}</p>
+        <p className="text-[11px] text-black/50 truncate">{agent.role}</p>
         <div className="mt-1.5 flex items-center gap-3">
-          <span className="text-[10px] text-slate-400">{agent.tasksToday} tasks</span>
-          <span className="text-[10px] text-slate-400">${agent.costToday.toFixed(2)}</span>
+          <span className="text-[10px] text-black/40">{agent.tasksToday} tasks</span>
+          <span className="text-[10px] text-black/40">${agent.costToday.toFixed(2)}</span>
         </div>
       </div>
     </div>
@@ -183,8 +183,8 @@ function DepartmentCard({ department }: { department: Department }) {
   const totalTasks = department.agents.reduce((sum, a) => sum + a.tasksToday, 0);
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-slate-50/50">
-      <div className="flex items-center gap-2.5 px-4 py-3 border-b border-slate-200">
+    <div className="rounded-xl border border-black/[0.08] bg-black/[0.02]/50">
+      <div className="flex items-center gap-2.5 px-4 py-3 border-b border-black/[0.08]">
         <div
           className="flex h-7 w-7 items-center justify-center rounded-lg text-[11px] font-semibold text-white"
           style={{ backgroundColor: department.color }}
@@ -192,8 +192,8 @@ function DepartmentCard({ department }: { department: Department }) {
           {department.icon}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-semibold text-slate-900">{department.name}</p>
-          <p className="text-[10px] text-slate-500">
+          <p className="text-[13px] font-semibold text-black">{department.name}</p>
+          <p className="text-[10px] text-black/50">
             {activeCount}/{department.agents.length} active · {totalTasks} tasks today
           </p>
         </div>
@@ -222,37 +222,37 @@ function OrgStructureView({ departments }: { departments: Department[] }) {
     <div>
       <div className="grid grid-cols-4 gap-6 mb-8">
         <div>
-          <p className="text-[11px] text-slate-500">Departments</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">{departments.length}</p>
+          <p className="text-[11px] text-black/50">Departments</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-black">{departments.length}</p>
         </div>
         <div>
-          <p className="text-[11px] text-slate-500">Total Agents</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">{totalAgents}</p>
+          <p className="text-[11px] text-black/50">Total Agents</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-black">{totalAgents}</p>
         </div>
         <div>
-          <p className="text-[11px] text-slate-500">Active Now</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">{activeAgents}/{totalAgents}</p>
+          <p className="text-[11px] text-black/50">Active Now</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-black">{activeAgents}/{totalAgents}</p>
         </div>
         <div>
-          <p className="text-[11px] text-slate-500">Today&apos;s Cost</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">${totalCost.toFixed(2)}</p>
+          <p className="text-[11px] text-black/50">Today&apos;s Cost</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-black">${totalCost.toFixed(2)}</p>
         </div>
       </div>
 
       <div className="flex justify-center mb-4">
-        <div className="inline-flex items-center gap-2 rounded-lg border-2 border-slate-900 bg-slate-900 px-4 py-2">
-          <div className="h-2 w-2 rounded-full bg-slate-400" />
+        <div className="inline-flex items-center gap-2 rounded-lg border-2 border-black bg-black px-4 py-2">
+          <div className="h-2 w-2 rounded-full bg-black/40" />
           <span className="text-[13px] font-semibold text-white">You — Founder</span>
         </div>
       </div>
       <div className="flex justify-center mb-4">
-        <div className="w-px h-8 bg-slate-300" />
+        <div className="w-px h-8 bg-black/30" />
       </div>
       <div className="relative mb-4">
-        <div className="absolute left-[10%] right-[10%] top-0 h-px bg-slate-300" />
+        <div className="absolute left-[10%] right-[10%] top-0 h-px bg-black/30" />
         <div className="flex justify-between px-[10%]">
           {departments.map((_, i) => (
-            <div key={i} className="w-px h-4 bg-slate-300" />
+            <div key={i} className="w-px h-4 bg-black/30" />
           ))}
         </div>
       </div>
@@ -263,8 +263,8 @@ function OrgStructureView({ departments }: { departments: Department[] }) {
         ))}
       </div>
 
-      <div className="mt-8 flex items-center gap-4 text-[11px] text-slate-500">
-        <span className="font-medium text-slate-700">Status:</span>
+      <div className="mt-8 flex items-center gap-4 text-[11px] text-black/50">
+        <span className="font-medium text-black/70">Status:</span>
         {Object.entries(STATUS_LABELS).map(([status, label]) => (
           <span key={status} className="flex items-center gap-1.5">
             <StatusDot status={status as AgentStatus} />
@@ -283,8 +283,8 @@ const WorkflowCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex items-center justify-center h-[600px] rounded-xl border border-slate-200 bg-slate-50">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900" />
+      <div className="flex items-center justify-center h-[600px] rounded-xl border border-black/[0.08] bg-black/[0.02]">
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-black/30 border-t-black" />
       </div>
     ),
   }
@@ -324,40 +324,40 @@ export function OperationsView() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">Operations</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <h1 className="text-lg font-semibold text-black">Operations</h1>
+          <p className="mt-1 text-sm text-black/50">
             Drag-and-drop workflow builder. Connect agents into automated pipelines.
           </p>
         </div>
         {!data && !loading && (
-          <span className="text-[10px] text-slate-400 border border-slate-200 rounded px-2 py-1">
+          <span className="text-[10px] text-black/40 border border-black/[0.08] rounded px-2 py-1">
             Demo data
           </span>
         )}
       </div>
 
       {/* Tabs */}
-      <div className="mt-6 flex items-center gap-1 border-b border-slate-200">
+      <div className="mt-6 flex items-center gap-1 border-b border-black/[0.08]">
         <button
           onClick={() => setTab("workflows")}
           className={`px-3 py-2 text-[13px] font-medium transition-colors relative ${
-            tab === "workflows" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+            tab === "workflows" ? "text-black" : "text-black/50 hover:text-black/70"
           }`}
         >
           Workflow Builder
           {tab === "workflows" && (
-            <span className="absolute bottom-0 left-0 right-0 h-px bg-slate-900" />
+            <span className="absolute bottom-0 left-0 right-0 h-px bg-black" />
           )}
         </button>
         <button
           onClick={() => setTab("structure")}
           className={`px-3 py-2 text-[13px] font-medium transition-colors relative ${
-            tab === "structure" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+            tab === "structure" ? "text-black" : "text-black/50 hover:text-black/70"
           }`}
         >
           Org Structure
           {tab === "structure" && (
-            <span className="absolute bottom-0 left-0 right-0 h-px bg-slate-900" />
+            <span className="absolute bottom-0 left-0 right-0 h-px bg-black" />
           )}
         </button>
       </div>
@@ -366,7 +366,7 @@ export function OperationsView() {
       <div className="mt-6">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900" />
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-black/30 border-t-black" />
           </div>
         ) : (
           <>

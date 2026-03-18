@@ -21,7 +21,7 @@ function AgentSidebar({ agents }: AgentSidebarProps) {
 
   return (
     <>
-      <aside className="flex w-14 flex-col items-center gap-3 border-l border-slate-200 bg-white py-3">
+      <aside className="flex w-14 flex-col items-center gap-3 border-l border-black/[0.08] bg-white py-3">
         {agents.map((agent) => (
           <button
             key={agent.id}
@@ -29,11 +29,11 @@ function AgentSidebar({ agents }: AgentSidebarProps) {
             className="group relative flex flex-col items-center gap-0.5"
             title={agent.name}
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-medium text-slate-900 transition-colors group-hover:bg-slate-500/20">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black/[0.04] text-xs font-medium text-black transition-colors group-hover:bg-black/50/20">
               {agent.initial}
             </div>
             <AgentStatusDot status={agent.status} />
-            <span className="hidden text-[10px] text-slate-500 group-hover:block">
+            <span className="hidden text-[10px] text-black/50 group-hover:block">
               {agent.name.split(" ")[0]}
             </span>
           </button>
@@ -41,22 +41,22 @@ function AgentSidebar({ agents }: AgentSidebarProps) {
       </aside>
 
       {selectedAgent && (
-        <div className="fixed inset-y-0 right-0 z-40 flex w-72 flex-col border-l border-slate-200 bg-white shadow-xl">
-          <div className="flex items-center justify-between border-b border-slate-200 p-4">
+        <div className="fixed inset-y-0 right-0 z-40 flex w-72 flex-col border-l border-black/[0.08] bg-white shadow-xl">
+          <div className="flex items-center justify-between border-b border-black/[0.08] p-4">
             <div>
-              <h3 className="text-sm font-semibold text-slate-900">
+              <h3 className="text-sm font-semibold text-black">
                 {selectedAgent.name}
               </h3>
               <div className="mt-0.5 flex items-center gap-1.5">
                 <AgentStatusDot status={selectedAgent.status} />
-                <span className="text-xs capitalize text-slate-500">
+                <span className="text-xs capitalize text-black/50">
                   {selectedAgent.status.replace("_", " ")}
                 </span>
               </div>
             </div>
             <button
               onClick={() => setSelected(null)}
-              className="rounded-sm p-1 text-slate-500 hover:text-slate-900"
+              className="rounded-sm p-1 text-black/50 hover:text-black"
             >
               <svg
                 width="14"
@@ -73,12 +73,12 @@ function AgentSidebar({ agents }: AgentSidebarProps) {
           </div>
 
           <div className="flex-1 overflow-y-auto p-4">
-            <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500">
+            <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-black/50">
               Activity
             </h4>
             {(!selectedAgent.activityLog ||
               selectedAgent.activityLog.length === 0) && (
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-black/50">
                 No recent activity.
               </p>
             )}
@@ -86,7 +86,7 @@ function AgentSidebar({ agents }: AgentSidebarProps) {
               {selectedAgent.activityLog?.map((entry, i) => (
                 <p
                   key={i}
-                  className="text-xs text-slate-500"
+                  className="text-xs text-black/50"
                 >
                   {entry}
                 </p>

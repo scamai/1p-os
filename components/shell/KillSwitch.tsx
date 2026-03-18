@@ -51,14 +51,14 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
           }}
           className={`rounded-md border p-3 text-left transition-colors ${
             level === "one"
-              ? "border-slate-400 bg-slate-100"
-              : "border-slate-200 hover:border-slate-400"
+              ? "border-black/40 bg-black/[0.04]"
+              : "border-black/[0.08] hover:border-black/40"
           }`}
         >
-          <p className="text-sm font-medium text-slate-900">
+          <p className="text-sm font-medium text-black">
             Pause One Agent
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-black/50">
             Pick one to stop.
           </p>
         </button>
@@ -67,7 +67,7 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
           <select
             value={selectedAgent}
             onChange={(e) => setSelectedAgent(e.target.value)}
-            className="rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900"
+            className="rounded-md border border-black/[0.08] bg-white px-3 py-2 text-sm text-black"
           >
             <option value="">Select agent...</option>
             {agents.map((a) => (
@@ -85,14 +85,14 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
           }}
           className={`rounded-md border p-3 text-left transition-colors ${
             level === "all"
-              ? "border-slate-400 bg-slate-100"
-              : "border-slate-200 hover:border-slate-400"
+              ? "border-black/40 bg-black/[0.04]"
+              : "border-black/[0.08] hover:border-black/40"
           }`}
         >
-          <p className="text-sm font-medium text-slate-900">
+          <p className="text-sm font-medium text-black">
             Pause All Agents
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-black/50">
             In-progress tasks finish gracefully.
           </p>
         </button>
@@ -104,14 +104,14 @@ function KillSwitch({ open, onClose, onConfirm, agents = [] }: KillSwitchProps) 
           }}
           className={`rounded-md border p-3 text-left transition-colors ${
             level === "lockdown"
-              ? "border-slate-400 bg-slate-100"
-              : "border-slate-200 hover:border-slate-400"
+              ? "border-black/40 bg-black/[0.04]"
+              : "border-black/[0.08] hover:border-black/40"
           }`}
         >
-          <p className="text-sm font-medium text-slate-900">
+          <p className="text-sm font-medium text-black">
             Full Lockdown
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-black/50">
             Nothing runs until you unlock.
           </p>
         </button>

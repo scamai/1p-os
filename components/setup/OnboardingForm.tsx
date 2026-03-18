@@ -152,10 +152,10 @@ function OnboardingForm({ onSubmit, loading = false, templateId = "general" }: O
   return (
     <form onSubmit={handleSubmit} className="flex max-w-md flex-col gap-4">
       <div>
-        <h2 className="text-lg font-semibold text-slate-900">
+        <h2 className="text-lg font-semibold text-black">
           Tell us about your business
         </h2>
-        <p className="mt-0.5 text-sm text-slate-500">
+        <p className="mt-0.5 text-sm text-black/50">
           Just a few details and your AI team is ready.
         </p>
       </div>
@@ -169,14 +169,14 @@ function OnboardingForm({ onSubmit, loading = false, templateId = "general" }: O
       />
 
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-slate-900">
+        <label className="text-sm font-medium text-black">
           State
         </label>
         <select
           value={state}
           onChange={(e) => setState(e.target.value)}
           required
-          className="h-9 w-full rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="h-9 w-full rounded-md border border-black/[0.08] bg-transparent px-3 text-sm text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
         >
           <option value="">Select state...</option>
           {US_STATES.map((s) => (
@@ -188,7 +188,7 @@ function OnboardingForm({ onSubmit, loading = false, templateId = "general" }: O
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-slate-900">
+        <label className="text-sm font-medium text-black">
           What do you do?
         </label>
         <textarea
@@ -197,13 +197,13 @@ function OnboardingForm({ onSubmit, loading = false, templateId = "general" }: O
           placeholder={placeholder}
           required
           rows={3}
-          className="w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="w-full rounded-md border border-black/[0.08] bg-transparent px-3 py-2 text-sm text-black placeholder:text-black/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
         />
       </div>
 
       {/* Agent preview */}
-      <div className="rounded-lg border border-slate-200 p-3">
-        <p className="mb-2 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+      <div className="rounded-lg border border-black/[0.08] p-3">
+        <p className="mb-2 text-[10px] font-semibold text-black/40 uppercase tracking-wider">
           Your AI Team — {agents.length} agents
         </p>
         <div className="flex flex-col gap-1">
@@ -212,15 +212,15 @@ function OnboardingForm({ onSubmit, loading = false, templateId = "general" }: O
               key={agent.name}
               className="flex items-center justify-between py-0.5"
             >
-              <span className="text-xs text-slate-700">{agent.name}</span>
-              <span className="text-[11px] text-slate-400 capitalize">
+              <span className="text-xs text-black/70">{agent.name}</span>
+              <span className="text-[11px] text-black/40 capitalize">
                 {agent.role.replace("-", " ")}
               </span>
             </div>
           ))}
         </div>
-        <div className="mt-2 border-t border-slate-100 pt-2 text-[11px] text-slate-400">
-          Est. <span className="font-mono text-slate-600">${estimatedDailyCost}/day</span> with balanced strategy
+        <div className="mt-2 border-t border-black/[0.04] pt-2 text-[11px] text-black/40">
+          Est. <span className="font-mono text-black/60">${estimatedDailyCost}/day</span> with balanced strategy
         </div>
       </div>
 

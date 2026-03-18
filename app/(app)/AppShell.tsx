@@ -264,7 +264,7 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
     return (
       <React.Suspense
         fallback={
-          <div className="flex items-center justify-center py-8 text-sm text-slate-500">
+          <div className="flex items-center justify-center py-8 text-sm text-black/50">
             Loading...
           </div>
         }
@@ -343,7 +343,7 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
             onClick={() => setWizardIntent(null)}
           />
           <div className="fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-lg">
-            <div className="mx-4 mt-4 h-[70vh] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl">
+            <div className="mx-4 mt-4 h-[70vh] overflow-hidden rounded-xl border border-black/[0.06] bg-white shadow-2xl">
               <AIWizard
                 intent={wizardIntent}
                 onClose={() => setWizardIntent(null)}

@@ -274,14 +274,14 @@ function AlwaysOnVoice({ onAction, onOpenCommandBar }: AlwaysOnVoiceProps) {
 
   // Minimal always-on indicator (bottom-left)
   return (
-    <div className="fixed bottom-4 left-4 z-50 flex items-center gap-2 rounded-full bg-slate-900/90 px-3 py-1.5 shadow-lg ring-1 ring-white/10">
+    <div className="fixed bottom-4 left-4 z-50 flex items-center gap-2 rounded-full bg-black/90 px-3 py-1.5 shadow-lg ring-1 ring-white/10">
       <div className="relative flex h-3 w-3 items-center justify-center">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-slate-400 opacity-40" />
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-slate-400" />
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-black/40 opacity-40" />
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-black/40" />
       </div>
-      <span className="text-[10px] font-medium text-slate-400">Voice on</span>
+      <span className="text-[10px] font-medium text-black/40">Voice on</span>
       {lastHeard && (
-        <span className="max-w-[160px] truncate text-[10px] text-slate-500">
+        <span className="max-w-[160px] truncate text-[10px] text-black/50">
           &ldquo;{lastHeard}&rdquo;
         </span>
       )}
@@ -290,7 +290,7 @@ function AlwaysOnVoice({ onAction, onOpenCommandBar }: AlwaysOnVoiceProps) {
           setActive(false);
           speak("Voice control off");
         }}
-        className="ml-1 flex h-4 w-4 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-700 hover:text-slate-300"
+        className="ml-1 flex h-4 w-4 items-center justify-center rounded-full text-black/50 transition-colors hover:bg-black/70 hover:text-black/30"
         title="Turn off (⌘⇧L)"
       >
         <svg width="8" height="8" viewBox="0 0 24 24" fill="none">

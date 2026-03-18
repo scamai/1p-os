@@ -54,21 +54,21 @@ function CanvasBlock({
   }
 
   return (
-    <div className={`border border-slate-200 p-3 bg-white flex flex-col ${tall ? "min-h-[200px]" : "min-h-[100px]"}`}>
-      <h3 className="text-[10px] font-bold text-slate-900 uppercase tracking-widest mb-1">
+    <div className={`border border-black/[0.08] p-3 bg-white flex flex-col ${tall ? "min-h-[200px]" : "min-h-[100px]"}`}>
+      <h3 className="text-[10px] font-bold text-black uppercase tracking-widest mb-1">
         {block.title}
       </h3>
       {block.items.length === 0 && !focused && (
-        <p className="text-[11px] text-slate-300 italic mb-2">{block.hint}</p>
+        <p className="text-[11px] text-black/30 italic mb-2">{block.hint}</p>
       )}
       <ul className="flex-1 space-y-1 mb-2">
         {block.items.map((item, idx) => (
-          <li key={idx} className="text-[12px] text-slate-700 flex items-start gap-1.5 group">
-            <span className="text-slate-300 mt-0.5 shrink-0">-</span>
+          <li key={idx} className="text-[12px] text-black/70 flex items-start gap-1.5 group">
+            <span className="text-black/30 mt-0.5 shrink-0">-</span>
             <span className="flex-1">{item}</span>
             <button
               onClick={() => onUpdate({ ...block, items: block.items.filter((_, i) => i !== idx) })}
-              className="text-slate-200 hover:text-slate-500 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+              className="text-black/[0.08] hover:text-black/50 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
             >
               x
             </button>
@@ -84,7 +84,7 @@ function CanvasBlock({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           placeholder="+"
-          className="flex-1 text-[12px] border border-slate-100 px-2 py-1 text-slate-900 placeholder:text-slate-300 focus:outline-none focus:border-slate-400 bg-slate-50"
+          className="flex-1 text-[12px] border border-black/[0.04] px-2 py-1 text-black placeholder:text-black/30 focus:outline-none focus:border-black/40 bg-black/[0.02]"
         />
       </div>
     </div>
@@ -118,17 +118,17 @@ export default function Page() {
       <Education {...EDUCATION.businessModel} />
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">Business Model Canvas</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <h1 className="text-lg font-semibold text-black">Business Model Canvas</h1>
+          <p className="mt-1 text-sm text-black/50">
             Map out the 9 building blocks of your business.
           </p>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-[11px] text-slate-400">{filledBlocks}/9 blocks filled</span>
-          <span className="text-[11px] text-slate-400">{totalItems} items</span>
+          <span className="text-[11px] text-black/40">{filledBlocks}/9 blocks filled</span>
+          <span className="text-[11px] text-black/40">{totalItems} items</span>
           <button
             onClick={() => update({ blocks: DEFAULT_BLOCKS })}
-            className="text-[11px] text-slate-400 hover:text-slate-600"
+            className="text-[11px] text-black/40 hover:text-black/60"
           >
             Reset
           </button>
@@ -136,30 +136,30 @@ export default function Page() {
       </div>
 
       {/* BMC Grid — Osterwalder standard layout */}
-      <div className="border border-slate-900">
+      <div className="border border-black">
         {/* Top section: 5 columns */}
         <div className="grid grid-cols-10">
           {/* Key Partners — 2 rows */}
-          <div className="col-span-2 border-r border-slate-900">
+          <div className="col-span-2 border-r border-black">
             <CanvasBlock block={getBlock("key-partners")} onUpdate={updateBlock} tall />
           </div>
 
           {/* Key Activities + Key Resources — stacked */}
-          <div className="col-span-2 border-r border-slate-900">
-            <div className="border-b border-slate-900">
+          <div className="col-span-2 border-r border-black">
+            <div className="border-b border-black">
               <CanvasBlock block={getBlock("key-activities")} onUpdate={updateBlock} />
             </div>
             <CanvasBlock block={getBlock("key-resources")} onUpdate={updateBlock} />
           </div>
 
           {/* Value Propositions — 2 rows */}
-          <div className="col-span-2 border-r border-slate-900">
+          <div className="col-span-2 border-r border-black">
             <CanvasBlock block={getBlock("value-props")} onUpdate={updateBlock} tall />
           </div>
 
           {/* Customer Relationships + Channels — stacked */}
-          <div className="col-span-2 border-r border-slate-900">
-            <div className="border-b border-slate-900">
+          <div className="col-span-2 border-r border-black">
+            <div className="border-b border-black">
               <CanvasBlock block={getBlock("customer-relationships")} onUpdate={updateBlock} />
             </div>
             <CanvasBlock block={getBlock("channels")} onUpdate={updateBlock} />
@@ -172,8 +172,8 @@ export default function Page() {
         </div>
 
         {/* Bottom section: 2 columns */}
-        <div className="grid grid-cols-2 border-t border-slate-900">
-          <div className="border-r border-slate-900">
+        <div className="grid grid-cols-2 border-t border-black">
+          <div className="border-r border-black">
             <CanvasBlock block={getBlock("cost-structure")} onUpdate={updateBlock} />
           </div>
           <CanvasBlock block={getBlock("revenue-streams")} onUpdate={updateBlock} />

@@ -45,10 +45,10 @@ function Header({
   };
 
   return (
-    <header className="flex h-12 items-center justify-between border-b border-slate-200 bg-white px-6">
+    <header className="flex h-12 items-center justify-between border-b border-black/[0.06] bg-white px-6">
       {/* Left: business name */}
       <div className="flex items-center gap-2">
-        <span className="text-[14px] font-semibold text-slate-900">
+        <span className="text-[14px] font-semibold text-black">
           {businessName || "1 Person Company"}
         </span>
       </div>

@@ -72,7 +72,7 @@ function WhatIfCalculator() {
         <div className="flex flex-col gap-4">
           {/* Agent count slider */}
           <div>
-            <label className="text-sm text-slate-500">
+            <label className="text-sm text-black/50">
               If I hire more agents...
             </label>
             <div className="mt-2 flex items-center gap-3">
@@ -84,7 +84,7 @@ function WhatIfCalculator() {
                 onChange={(e) =>
                   setAdditionalAgents(parseInt(e.target.value))
                 }
-                className="flex-1 accent-slate-100"
+                className="flex-1 accent-black/[0.04]"
               />
               <input
                 type="number"
@@ -97,14 +97,14 @@ function WhatIfCalculator() {
                     setAdditionalAgents(val);
                   }
                 }}
-                className="w-16 rounded-md border border-slate-200 bg-white px-2 py-1 text-center text-sm font-semibold text-slate-900"
+                className="w-16 rounded-md border border-black/[0.08] bg-white px-2 py-1 text-center text-sm font-semibold text-black"
               />
             </div>
           </div>
 
           {/* Strategy selector */}
           <div>
-            <label className="text-sm text-slate-500">
+            <label className="text-sm text-black/50">
               Strategy
             </label>
             <div className="mt-2 flex gap-2">
@@ -114,8 +114,8 @@ function WhatIfCalculator() {
                   onClick={() => setStrategy(opt.value)}
                   className={`flex-1 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                     strategy === opt.value
-                      ? "bg-slate-100 text-[#09090b]"
-                      : "bg-slate-50 text-slate-500 hover:bg-slate-100"
+                      ? "bg-black/[0.04] text-[#09090b]"
+                      : "bg-black/[0.02] text-black/50 hover:bg-black/[0.04]"
                   }`}
                 >
                   {opt.label}
@@ -126,29 +126,29 @@ function WhatIfCalculator() {
 
           {/* Cost comparison */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-md bg-slate-50 p-3">
-              <p className="text-xs text-slate-500">
+            <div className="rounded-md bg-black/[0.02] p-3">
+              <p className="text-xs text-black/50">
                 Current ({currentCount} agents)
               </p>
-              <p className="mt-0.5 text-sm font-semibold text-slate-900">
+              <p className="mt-0.5 text-sm font-semibold text-black">
                 {loading ? "..." : `$${currentMonthly.toFixed(2)}/mo`}
               </p>
             </div>
             <div
               className={`rounded-md p-3 ${
                 overBudget
-                  ? "bg-slate-200"
-                  : "bg-slate-50"
+                  ? "bg-black/[0.08]"
+                  : "bg-black/[0.02]"
               }`}
             >
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-black/50">
                 Projected ({currentCount + additionalAgents} agents)
               </p>
               <p
                 className={`mt-0.5 text-sm font-semibold ${
                   overBudget
-                    ? "text-slate-900 font-bold"
-                    : "text-slate-900"
+                    ? "text-black font-bold"
+                    : "text-black"
                 }`}
               >
                 {loading ? "..." : `$${projectedMonthly.toFixed(2)}/mo`}
@@ -159,23 +159,23 @@ function WhatIfCalculator() {
           {/* Details */}
           <div className="flex flex-col gap-1.5 text-xs">
             <div className="flex items-center justify-between">
-              <span className="text-slate-500">
+              <span className="text-black/50">
                 Additional cost
               </span>
-              <span className="font-mono text-slate-900">
+              <span className="font-mono text-black">
                 +${difference.toFixed(2)}/mo
               </span>
             </div>
             {monthlyBudget > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-slate-500">
+                <span className="text-black/50">
                   Monthly budget
                 </span>
                 <span
                   className={`font-mono ${
                     overBudget
-                      ? "text-slate-900 font-bold"
-                      : "text-slate-900"
+                      ? "text-black font-bold"
+                      : "text-black"
                   }`}
                 >
                   ${monthlyBudget.toFixed(2)}
@@ -184,16 +184,16 @@ function WhatIfCalculator() {
               </div>
             )}
             <div className="flex items-center justify-between">
-              <span className="text-slate-500">
+              <span className="text-black/50">
                 Confidence
               </span>
               <span
                 className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${
                   confidence === "high"
-                    ? "bg-slate-100 text-slate-900 font-semibold"
+                    ? "bg-black/[0.04] text-black font-semibold"
                     : confidence === "medium"
-                      ? "bg-slate-100 text-slate-700"
-                      : "bg-slate-100 text-slate-500"
+                      ? "bg-black/[0.04] text-black/70"
+                      : "bg-black/[0.04] text-black/50"
                 }`}
               >
                 {confidence}

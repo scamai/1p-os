@@ -58,7 +58,7 @@ export function AgentStepNode({ data, selected }: NodeProps) {
               className="inline-block h-2 w-2 rounded-full shrink-0"
               style={{ backgroundColor: statusColor }}
             />
-            <p className="text-[12px] font-semibold text-slate-900 truncate">{d.agentName}</p>
+            <p className="text-[12px] font-semibold text-black truncate">{d.agentName}</p>
           </div>
           <p
             className="text-[10px] font-medium"
@@ -71,10 +71,10 @@ export function AgentStepNode({ data, selected }: NodeProps) {
 
       {/* Body */}
       <div className="px-3 py-2">
-        <p className="text-[11px] text-slate-600">{d.action}</p>
-        <div className="mt-1.5 flex items-center gap-3 border-t border-slate-100 pt-1.5">
-          <span className="text-[10px] text-slate-400">{d.tasksToday} tasks</span>
-          <span className="text-[10px] text-slate-400">${(d.costToday ?? 0).toFixed(2)}</span>
+        <p className="text-[11px] text-black/60">{d.action}</p>
+        <div className="mt-1.5 flex items-center gap-3 border-t border-black/[0.04] pt-1.5">
+          <span className="text-[10px] text-black/40">{d.tasksToday} tasks</span>
+          <span className="text-[10px] text-black/40">${(d.costToday ?? 0).toFixed(2)}</span>
         </div>
       </div>
 

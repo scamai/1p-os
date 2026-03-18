@@ -62,23 +62,23 @@ function SessionRow({
 
   return (
     <div>
-      <div className="flex items-center gap-4 rounded-md px-3 py-2.5 hover:bg-slate-50 transition-colors">
-        <span className="w-28 shrink-0 text-sm text-slate-600 truncate">
+      <div className="flex items-center gap-4 rounded-md px-3 py-2.5 hover:bg-black/[0.02] transition-colors">
+        <span className="w-28 shrink-0 text-sm text-black/60 truncate">
           {session.agent}
         </span>
-        <span className="min-w-0 flex-1 truncate font-mono text-xs text-slate-600">
+        <span className="min-w-0 flex-1 truncate font-mono text-xs text-black/60">
           {session.url}
         </span>
-        <span className="hidden w-40 shrink-0 truncate text-xs text-slate-500 sm:block">
+        <span className="hidden w-40 shrink-0 truncate text-xs text-black/50 sm:block">
           {session.action}
         </span>
-        <span className="w-20 shrink-0 text-right font-mono text-[11px] text-slate-700">
+        <span className="w-20 shrink-0 text-right font-mono text-[11px] text-black/70">
           {session.timestamp}
         </span>
         {showView && (
           <button
             onClick={() => setViewing((v) => !v)}
-            className="shrink-0 text-xs text-slate-600 hover:text-slate-600 transition-colors"
+            className="shrink-0 text-xs text-black/60 hover:text-black/60 transition-colors"
           >
             {viewing ? "Hide" : "View"}
           </button>
@@ -86,8 +86,8 @@ function SessionRow({
       </div>
 
       {viewing && (
-        <div className="mx-3 mb-2 flex h-40 items-center justify-center rounded border border-slate-200 bg-white">
-          <span className="text-xs text-slate-700">
+        <div className="mx-3 mb-2 flex h-40 items-center justify-center rounded border border-black/[0.08] bg-white">
+          <span className="text-xs text-black/70">
             Screenshot placeholder
           </span>
         </div>
@@ -99,12 +99,12 @@ function SessionRow({
 function BrowserPanel() {
   return (
     <section className="mt-10">
-      <h2 className="mb-4 font-mono text-[13px] uppercase tracking-widest text-slate-500">
+      <h2 className="mb-4 font-mono text-[13px] uppercase tracking-widest text-black/50">
         Browser Sessions
       </h2>
 
       <div className="space-y-px">
-        <p className="mb-2 text-[11px] font-mono uppercase tracking-wider text-slate-700">
+        <p className="mb-2 text-[11px] font-mono uppercase tracking-wider text-black/70">
           Active
         </p>
         {ACTIVE_SESSIONS.map((s) => (
@@ -113,7 +113,7 @@ function BrowserPanel() {
       </div>
 
       <div className="mt-6 space-y-px">
-        <p className="mb-2 text-[11px] font-mono uppercase tracking-wider text-slate-700">
+        <p className="mb-2 text-[11px] font-mono uppercase tracking-wider text-black/70">
           History
         </p>
         {HISTORY_SESSIONS.map((s) => (

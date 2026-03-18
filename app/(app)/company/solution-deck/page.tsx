@@ -184,10 +184,10 @@ export default function SolutionDeckPage() {
       <Education {...EDUCATION.solutionDeck} />
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">
+          <h1 className="text-lg font-semibold text-black">
             Solution Deck
           </h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-black/50">
             Build your pitch deck slide by slide. Pre-filled with a standard
             investor template.
           </p>
@@ -195,13 +195,13 @@ export default function SolutionDeckPage() {
         <div className="flex items-center gap-2">
           <button
             onClick={exportToClipboard}
-            className="h-8 rounded-md border border-slate-200 px-3 text-[13px] font-medium text-slate-600 hover:bg-slate-50 transition-colors"
+            className="h-8 rounded-md border border-black/[0.08] px-3 text-[13px] font-medium text-black/60 hover:bg-black/[0.02] transition-colors"
           >
             {copied ? "Copied!" : "Copy as Text"}
           </button>
           <button
             onClick={() => setShowAddForm(!showAddForm)}
-            className="h-8 rounded-md bg-slate-900 px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+            className="h-8 rounded-md bg-black px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
           >
             {showAddForm ? "Cancel" : "+ Add Slide"}
           </button>
@@ -220,11 +220,11 @@ export default function SolutionDeckPage() {
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
             placeholder="Slide title (e.g. 'Why Now?')"
-            className="h-9 flex-1 rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
+            className="h-9 flex-1 rounded-md border border-black/[0.08] bg-white px-3 text-[13px] text-black placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-black"
           />
           <button
             type="submit"
-            className="h-9 rounded-md bg-slate-900 px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+            className="h-9 rounded-md bg-black px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
           >
             Add
           </button>
@@ -240,14 +240,14 @@ export default function SolutionDeckPage() {
               onClick={() => setActiveSlide(slide.id)}
               className={`w-full rounded-lg px-3 py-2.5 text-left transition-colors ${
                 activeSlide === slide.id
-                  ? "bg-slate-900 text-white"
-                  : "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50"
+                  ? "bg-black text-white"
+                  : "bg-white border border-black/[0.08] text-black/70 hover:bg-black/[0.02]"
               }`}
             >
               <div className="flex items-center gap-2">
                 <span
                   className={`text-[11px] font-mono ${
-                    activeSlide === slide.id ? "text-slate-400" : "text-slate-400"
+                    activeSlide === slide.id ? "text-black/40" : "text-black/40"
                   }`}
                 >
                   {idx + 1}
@@ -259,7 +259,7 @@ export default function SolutionDeckPage() {
               {slide.content && (
                 <p
                   className={`mt-0.5 text-[11px] truncate ${
-                    activeSlide === slide.id ? "text-slate-400" : "text-slate-400"
+                    activeSlide === slide.id ? "text-black/40" : "text-black/40"
                   }`}
                 >
                   {slide.content.slice(0, 40)}
@@ -271,7 +271,7 @@ export default function SolutionDeckPage() {
 
           {slides.length === 0 && (
             <div className="text-center py-8">
-              <p className="text-[12px] text-slate-400">No slides yet.</p>
+              <p className="text-[12px] text-black/40">No slides yet.</p>
             </div>
           )}
 
@@ -279,7 +279,7 @@ export default function SolutionDeckPage() {
           <div className="pt-3">
             <button
               onClick={resetToTemplate}
-              className="text-[11px] text-slate-400 hover:text-slate-600 transition-colors"
+              className="text-[11px] text-black/40 hover:text-black/60 transition-colors"
             >
               Reset to template
             </button>
@@ -288,11 +288,11 @@ export default function SolutionDeckPage() {
 
         {/* Slide editor */}
         {current ? (
-          <div className="flex-1 rounded-xl border border-slate-200 bg-white p-6">
+          <div className="flex-1 rounded-xl border border-black/[0.08] bg-white p-6">
             {/* Slide header with controls */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-mono text-slate-400">
+                <span className="text-[11px] font-mono text-black/40">
                   Slide {currentIdx + 1} of {slides.length}
                 </span>
               </div>
@@ -300,7 +300,7 @@ export default function SolutionDeckPage() {
                 <button
                   onClick={() => moveSlide(current.id, "up")}
                   disabled={currentIdx === 0}
-                  className="h-7 w-7 rounded flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-400 transition-colors"
+                  className="h-7 w-7 rounded flex items-center justify-center text-black/40 hover:text-black hover:bg-black/[0.04] disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-black/40 transition-colors"
                   title="Move up"
                 >
                   <svg
@@ -319,7 +319,7 @@ export default function SolutionDeckPage() {
                 <button
                   onClick={() => moveSlide(current.id, "down")}
                   disabled={currentIdx === slides.length - 1}
-                  className="h-7 w-7 rounded flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-100 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-slate-400 transition-colors"
+                  className="h-7 w-7 rounded flex items-center justify-center text-black/40 hover:text-black hover:bg-black/[0.04] disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-black/40 transition-colors"
                   title="Move down"
                 >
                   <svg
@@ -335,10 +335,10 @@ export default function SolutionDeckPage() {
                     <polyline points="6 9 12 15 18 9" />
                   </svg>
                 </button>
-                <div className="w-px h-5 bg-slate-200 mx-1" />
+                <div className="w-px h-5 bg-black/[0.08] mx-1" />
                 <button
                   onClick={() => deleteSlide(current.id)}
-                  className="h-7 w-7 rounded flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                  className="h-7 w-7 rounded flex items-center justify-center text-black/40 hover:text-black hover:bg-black/[0.04] transition-colors"
                   title="Delete slide"
                 >
                   <svg
@@ -364,7 +364,7 @@ export default function SolutionDeckPage() {
               onChange={(e) =>
                 updateSlide(current.id, "title", e.target.value)
               }
-              className="w-full text-xl font-semibold text-slate-900 bg-transparent border-none focus:outline-none placeholder:text-slate-300"
+              className="w-full text-xl font-semibold text-black bg-transparent border-none focus:outline-none placeholder:text-black/30"
               placeholder="Slide title"
             />
 
@@ -375,13 +375,13 @@ export default function SolutionDeckPage() {
                 updateSlide(current.id, "content", e.target.value)
               }
               rows={12}
-              className="mt-4 w-full rounded-md border border-slate-200 bg-white px-4 py-3 text-[13px] text-slate-700 leading-relaxed placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 resize-y"
+              className="mt-4 w-full rounded-md border border-black/[0.08] bg-white px-4 py-3 text-[13px] text-black/70 leading-relaxed placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-black resize-y"
               placeholder="Write your slide content here..."
             />
 
             {/* Word count */}
             <div className="mt-2 flex items-center justify-between">
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] text-black/40">
                 {current.content.trim()
                   ? current.content.trim().split(/\s+/).length
                   : 0}{" "}
@@ -392,7 +392,7 @@ export default function SolutionDeckPage() {
                 {currentIdx > 0 && (
                   <button
                     onClick={() => setActiveSlide(slides[currentIdx - 1].id)}
-                    className="text-[12px] text-slate-500 hover:text-slate-900 transition-colors"
+                    className="text-[12px] text-black/50 hover:text-black transition-colors"
                   >
                     Previous
                   </button>
@@ -400,7 +400,7 @@ export default function SolutionDeckPage() {
                 {currentIdx < slides.length - 1 && (
                   <button
                     onClick={() => setActiveSlide(slides[currentIdx + 1].id)}
-                    className="text-[12px] text-slate-500 hover:text-slate-900 transition-colors"
+                    className="text-[12px] text-black/50 hover:text-black transition-colors"
                   >
                     Next
                   </button>
@@ -409,8 +409,8 @@ export default function SolutionDeckPage() {
             </div>
           </div>
         ) : (
-          <div className="flex-1 rounded-xl border border-slate-200 bg-white p-12 text-center">
-            <p className="text-sm text-slate-500">
+          <div className="flex-1 rounded-xl border border-black/[0.08] bg-white p-12 text-center">
+            <p className="text-sm text-black/50">
               Select a slide from the list or add a new one.
             </p>
           </div>
@@ -421,10 +421,10 @@ export default function SolutionDeckPage() {
       {slides.length > 0 && (
         <div className="mt-8">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-[13px] font-semibold text-slate-700">
+            <h2 className="text-[13px] font-semibold text-black/70">
               Full Deck Preview
             </h2>
-            <span className="text-[11px] text-slate-400">
+            <span className="text-[11px] text-black/40">
               {slides.length} slides
             </span>
           </div>
@@ -435,20 +435,20 @@ export default function SolutionDeckPage() {
                 onClick={() => setActiveSlide(slide.id)}
                 className={`w-full rounded-xl border p-4 text-left transition-all ${
                   activeSlide === slide.id
-                    ? "border-slate-900 bg-slate-50 ring-1 ring-slate-900"
-                    : "border-slate-200 bg-white hover:border-slate-300"
+                    ? "border-black bg-black/[0.02] ring-1 ring-black"
+                    : "border-black/[0.08] bg-white hover:border-black/30"
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <span className="shrink-0 rounded bg-slate-100 px-1.5 py-0.5 text-[11px] font-mono text-slate-500">
+                  <span className="shrink-0 rounded bg-black/[0.04] px-1.5 py-0.5 text-[11px] font-mono text-black/50">
                     {idx + 1}
                   </span>
                   <div className="min-w-0">
-                    <p className="text-[13px] font-semibold text-slate-900">
+                    <p className="text-[13px] font-semibold text-black">
                       {slide.title}
                     </p>
                     {slide.content && (
-                      <p className="mt-1 text-[12px] text-slate-500 line-clamp-2">
+                      <p className="mt-1 text-[12px] text-black/50 line-clamp-2">
                         {slide.content}
                       </p>
                     )}

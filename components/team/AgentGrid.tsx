@@ -26,13 +26,13 @@ function AgentGrid({ agents, onSelect, onDelete, onHireAgent }: AgentGridProps) 
   if (agents.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4">
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-black/50">
           No agents yet. Hire your first agent to get started.
         </p>
         {onHireAgent && (
           <button
             onClick={onHireAgent}
-            className="text-sm text-slate-900 hover:underline"
+            className="text-sm text-black hover:underline"
           >
             + Hire Agent
           </button>
@@ -46,7 +46,7 @@ function AgentGrid({ agents, onSelect, onDelete, onHireAgent }: AgentGridProps) 
       {agents.map((agent) => (
         <div
           key={agent.id}
-          className="group relative cursor-pointer rounded-lg border border-slate-200 bg-white p-4 transition-all hover:shadow-md"
+          className="group relative cursor-pointer rounded-lg border border-black/[0.08] bg-white p-4 transition-all hover:shadow-md"
           onClick={() => onSelect(agent.id)}
         >
           {/* Delete button — visible on hover */}
@@ -56,7 +56,7 @@ function AgentGrid({ agents, onSelect, onDelete, onHireAgent }: AgentGridProps) 
                 e.stopPropagation();
                 setConfirmId(agent.id);
               }}
-              className="absolute right-3 top-3 hidden rounded p-1 text-slate-400 transition-colors hover:text-slate-700 group-hover:block"
+              className="absolute right-3 top-3 hidden rounded p-1 text-black/40 transition-colors hover:text-black/70 group-hover:block"
               aria-label={`Delete ${agent.name}`}
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -71,16 +71,16 @@ function AgentGrid({ agents, onSelect, onDelete, onHireAgent }: AgentGridProps) 
               className="absolute inset-0 z-10 flex items-center justify-center gap-3 rounded-lg bg-white/95"
               onClick={(e) => e.stopPropagation()}
             >
-              <span className="text-xs text-slate-500">Delete {agent.name}?</span>
+              <span className="text-xs text-black/50">Delete {agent.name}?</span>
               <button
                 onClick={() => setConfirmId(null)}
-                className="text-xs text-slate-500 hover:text-slate-700"
+                className="text-xs text-black/50 hover:text-black/70"
               >
                 Cancel
               </button>
               <button
                 onClick={() => { onDelete?.(agent.id); setConfirmId(null); }}
-                className="text-xs font-medium text-slate-900 hover:underline"
+                className="text-xs font-medium text-black hover:underline"
               >
                 Delete
               </button>
@@ -88,22 +88,22 @@ function AgentGrid({ agents, onSelect, onDelete, onHireAgent }: AgentGridProps) 
           )}
 
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-sm font-semibold text-white">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-sm font-semibold text-white">
               {agent.initial}
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-semibold text-slate-900">
+                <h3 className="text-sm font-semibold text-black">
                   {agent.name}
                 </h3>
                 <AgentStatusDot status={agent.status} />
               </div>
-              <span className="inline-block mt-0.5 rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600">
+              <span className="inline-block mt-0.5 rounded-full border border-black/[0.08] bg-black/[0.02] px-2 py-0.5 text-[10px] font-medium text-black/60">
                 {agent.role}
               </span>
             </div>
           </div>
-          <div className="mt-3 flex items-center gap-4 text-xs text-slate-500">
+          <div className="mt-3 flex items-center gap-4 text-xs text-black/50">
             <span>{agent.tasksCompleted} tasks</span>
             <span>${agent.costToday.toFixed(2)} today</span>
           </div>

@@ -47,7 +47,7 @@ function DevicesPanel() {
 
   return (
     <div className="space-y-4">
-      <p className="font-mono text-[11px] uppercase tracking-widest text-slate-500">
+      <p className="font-mono text-[11px] uppercase tracking-widest text-black/50">
         Connected Devices
       </p>
 
@@ -55,18 +55,18 @@ function DevicesPanel() {
         {mockDevices.map((device) => (
           <div
             key={device.name}
-            className="flex flex-col gap-1 border-b border-slate-200 pb-3"
+            className="flex flex-col gap-1 border-b border-black/[0.08] pb-3"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="text-[13px] text-slate-800">{device.name}</span>
-                <span className="text-[12px] text-slate-500">{device.platform}</span>
+                <span className="text-[13px] text-black/80">{device.name}</span>
+                <span className="text-[12px] text-black/50">{device.platform}</span>
               </div>
               <div className="flex items-center gap-3">
-                <span className="text-[12px] text-slate-500">
+                <span className="text-[12px] text-black/50">
                   {device.connected ? "Connected" : "Disconnected"}
                 </span>
-                <span className="font-mono text-[11px] text-slate-600">
+                <span className="font-mono text-[11px] text-black/60">
                   {device.lastSeen}
                 </span>
               </div>
@@ -76,7 +76,7 @@ function DevicesPanel() {
                 {device.capabilities.map((cap) => (
                   <span
                     key={cap}
-                    className="text-[10px] text-slate-700"
+                    className="text-[10px] text-black/70"
                   >
                     {cap}
                   </span>
@@ -90,12 +90,12 @@ function DevicesPanel() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => setPairingCode(generatePairingCode())}
-          className="text-[12px] text-slate-500 transition-colors duration-150 hover:text-slate-800"
+          className="text-[12px] text-black/50 transition-colors duration-150 hover:text-black/80"
         >
           + Pair Device
         </button>
         {pairingCode && (
-          <span className="font-mono text-xl text-slate-900">{pairingCode}</span>
+          <span className="font-mono text-xl text-black">{pairingCode}</span>
         )}
       </div>
     </div>

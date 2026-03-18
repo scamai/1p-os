@@ -150,13 +150,13 @@ function getDateRangeStart(range: DateRange): Date | null {
 function statusDotColor(status: "active" | "idle" | "paused" | "error"): string {
   switch (status) {
     case "active":
-      return "bg-slate-900";
+      return "bg-black";
     case "idle":
-      return "bg-slate-300";
+      return "bg-black/30";
     case "paused":
-      return "bg-slate-400";
+      return "bg-black/40";
     case "error":
-      return "bg-slate-600";
+      return "bg-black/60";
   }
 }
 
@@ -241,7 +241,7 @@ function SelectDropdown({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="h-9 rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-300"
+      className="h-9 rounded-md border border-black/[0.08] bg-transparent px-3 text-sm text-black focus:outline-none focus:ring-1 focus:ring-black/30"
     >
       <option value="">{placeholder}</option>
       {options.map((o) => (
@@ -255,24 +255,24 @@ function SelectDropdown({
 
 function ExpandedDetail({ entry }: { entry: AuditEntry }) {
   return (
-    <div className="border-t border-slate-100 bg-slate-50/50 px-4 py-3 text-xs text-slate-600">
+    <div className="border-t border-black/[0.04] bg-black/[0.02]/50 px-4 py-3 text-xs text-black/60">
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
-          <p className="mb-1 font-medium text-slate-900">Input</p>
+          <p className="mb-1 font-medium text-black">Input</p>
           <p>{entry.inputSummary}</p>
         </div>
         <div>
-          <p className="mb-1 font-medium text-slate-900">Output</p>
+          <p className="mb-1 font-medium text-black">Output</p>
           <p>{entry.outputSummary}</p>
         </div>
       </div>
       <div className="mt-3 flex flex-wrap gap-4">
         <div>
-          <span className="font-medium text-slate-900">Tokens: </span>
+          <span className="font-medium text-black">Tokens: </span>
           {entry.tokensUsed.toLocaleString()}
         </div>
         <div>
-          <span className="font-medium text-slate-900">Context: </span>
+          <span className="font-medium text-black">Context: </span>
           {entry.contextAccessed.join(", ")}
         </div>
       </div>
@@ -348,7 +348,7 @@ function HistoryPage() {
     <div>
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-slate-900">Activity History</h1>
+        <h1 className="text-lg font-semibold text-black">Activity History</h1>
         <Button
           variant="outline"
           size="sm"
@@ -391,40 +391,40 @@ function HistoryPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search actions, agents, goals..."
-            className="h-9 w-full min-w-[200px] rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-300"
+            className="h-9 w-full min-w-[200px] rounded-md border border-black/[0.08] bg-transparent px-3 text-sm text-black placeholder:text-black/50 focus:outline-none focus:ring-1 focus:ring-black/30"
           />
         </div>
       </div>
 
       {/* Results count */}
-      <p className="mb-3 text-xs text-slate-500">
+      <p className="mb-3 text-xs text-black/50">
         {filtered.length} {filtered.length === 1 ? "entry" : "entries"} found
       </p>
 
       {/* Entries */}
       {filtered.length === 0 ? (
         <div className="py-16 text-center">
-          <p className="text-sm text-slate-500">No audit entries match your filters.</p>
+          <p className="text-sm text-black/50">No audit entries match your filters.</p>
         </div>
       ) : (
         <div className="space-y-6">
           {grouped.map((group) => (
             <div key={group.label}>
-              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-black/40">
                 {group.label}
               </h2>
-              <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+              <div className="overflow-hidden rounded-lg border border-black/[0.08] bg-white">
                 {group.entries.map((entry, idx) => (
                   <div key={entry.id}>
-                    {idx > 0 && <div className="border-t border-slate-100" />}
+                    {idx > 0 && <div className="border-t border-black/[0.04]" />}
                     <button
                       type="button"
                       onClick={() => toggleExpanded(entry.id)}
-                      className={`w-full border-l-2 px-4 py-3 text-left transition-colors hover:bg-slate-50/80 ${statusRowBorder(entry.status)}`}
+                      className={`w-full border-l-2 px-4 py-3 text-left transition-colors hover:bg-black/[0.02]/80 ${statusRowBorder(entry.status)}`}
                     >
                       <div className="flex items-start gap-3">
                         {/* Time */}
-                        <span className="mt-0.5 w-16 shrink-0 text-xs text-slate-400">
+                        <span className="mt-0.5 w-16 shrink-0 text-xs text-black/40">
                           {formatTime(entry.timestamp)}
                         </span>
 
@@ -434,16 +434,16 @@ function HistoryPage() {
                             className={`inline-block h-2 w-2 shrink-0 rounded-full ${statusDotColor(entry.agentStatus)}`}
                             title={entry.agentStatus}
                           />
-                          <span className="truncate text-xs font-medium text-slate-900">
+                          <span className="truncate text-xs font-medium text-black">
                             {entry.agentName}
                           </span>
                         </div>
 
                         {/* Description */}
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm text-slate-900">{entry.description}</p>
+                          <p className="text-sm text-black">{entry.description}</p>
                           {entry.linkedGoal && (
-                            <p className="mt-0.5 truncate text-xs text-slate-400">
+                            <p className="mt-0.5 truncate text-xs text-black/40">
                               Goal: {entry.linkedGoal}
                             </p>
                           )}
@@ -454,14 +454,14 @@ function HistoryPage() {
                           <Badge variant={statusBadgeVariant(entry.status)}>
                             {statusLabel(entry.status)}
                           </Badge>
-                          <span className="w-14 text-right text-xs text-slate-500">
+                          <span className="w-14 text-right text-xs text-black/50">
                             ${entry.cost.toFixed(2)}
                           </span>
-                          <span className="hidden w-20 truncate text-right text-xs text-slate-400 sm:inline">
+                          <span className="hidden w-20 truncate text-right text-xs text-black/40 sm:inline">
                             {entry.model.replace("claude-", "").replace("-20250514", "")}
                           </span>
                           <svg
-                            className={`h-4 w-4 text-slate-400 transition-transform ${expandedIds.has(entry.id) ? "rotate-180" : ""}`}
+                            className={`h-4 w-4 text-black/40 transition-transform ${expandedIds.has(entry.id) ? "rotate-180" : ""}`}
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth={2}
@@ -499,7 +499,7 @@ function HistoryPage() {
           >
             Previous
           </Button>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-black/50">
             Page {page} of {totalPages}
           </span>
           <Button

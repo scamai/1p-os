@@ -9,10 +9,10 @@ interface AgentStatus {
 }
 
 const statusDot: Record<AgentStatus["status"], string> = {
-  active: "bg-slate-900",
-  idle: "bg-slate-300",
-  paused: "bg-slate-400",
-  error: "bg-slate-600",
+  active: "bg-black",
+  idle: "bg-black/30",
+  paused: "bg-black/40",
+  error: "bg-black/60",
 };
 
 const statusLabel: Record<AgentStatus["status"], string> = {
@@ -28,7 +28,7 @@ function AgentPulse({ agents }: { agents: AgentStatus[] }) {
       {agents.map((agent) => (
         <div
           key={agent.id}
-          className="flex items-center gap-3 border-b border-slate-100 py-2.5 last:border-0"
+          className="flex items-center gap-3 border-b border-black/[0.04] py-2.5 last:border-0"
         >
           {/* Status dot */}
           <span
@@ -38,12 +38,12 @@ function AgentPulse({ agents }: { agents: AgentStatus[] }) {
           />
 
           {/* Name */}
-          <span className="w-28 shrink-0 text-[13px] font-medium text-slate-900">
+          <span className="w-28 shrink-0 text-[13px] font-medium text-black">
             {agent.name}
           </span>
 
           {/* Current task or status */}
-          <span className="flex-1 truncate text-[12px] text-slate-400">
+          <span className="flex-1 truncate text-[12px] text-black/40">
             {agent.currentTask ?? statusLabel[agent.status]}
           </span>
         </div>

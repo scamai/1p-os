@@ -75,7 +75,7 @@ export function PhaseView({ phase, steps, progress, profile }: PhaseViewProps) {
       {/* Back link */}
       <button
         onClick={() => router.push("/launch")}
-        className="mb-6 flex items-center gap-1.5 text-xs text-slate-500 transition-colors duration-150 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+        className="mb-6 flex items-center gap-1.5 text-xs text-black/50 transition-colors duration-150 hover:text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
       >
         <svg
           width="12"
@@ -91,10 +91,10 @@ export function PhaseView({ phase, steps, progress, profile }: PhaseViewProps) {
       </button>
 
       <div className="mb-6">
-        <h1 className="text-base font-semibold text-slate-900">
+        <h1 className="text-base font-semibold text-black">
           {phase.title}
         </h1>
-        <p className="mt-1 text-[13px] text-slate-500">{phase.description}</p>
+        <p className="mt-1 text-[13px] text-black/50">{phase.description}</p>
       </div>
 
       <div className="flex flex-col">
@@ -106,12 +106,12 @@ export function PhaseView({ phase, steps, progress, profile }: PhaseViewProps) {
             <Link
               key={step.id}
               href={`/launch/phase/${phase.slug}/${step.slug}`}
-              className={`group flex items-start gap-3 border-b border-slate-100 px-1 py-3 transition-colors duration-150 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 ${
+              className={`group flex items-start gap-3 border-b border-black/[0.04] px-1 py-3 transition-colors duration-150 hover:bg-black/[0.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1 ${
                 isLast ? "border-b-0" : ""
               }`}
             >
               {/* Checkbox indicator */}
-              <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center border border-slate-300">
+              <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center border border-black/30">
                 {isCompleted && (
                   <svg
                     width="10"
@@ -120,7 +120,7 @@ export function PhaseView({ phase, steps, progress, profile }: PhaseViewProps) {
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
-                    className="text-slate-900"
+                    className="text-black"
                   >
                     <path d="M2 5.5l2 2L8 3" />
                   </svg>
@@ -131,8 +131,8 @@ export function PhaseView({ phase, steps, progress, profile }: PhaseViewProps) {
                 <span
                   className={`text-sm ${
                     isCompleted
-                      ? "text-slate-400 line-through"
-                      : "text-slate-900"
+                      ? "text-black/40 line-through"
+                      : "text-black"
                   }`}
                 >
                   {step.title}
@@ -147,7 +147,7 @@ export function PhaseView({ phase, steps, progress, profile }: PhaseViewProps) {
                     <Badge variant="outline">{step.cost_estimate}</Badge>
                   )}
                   {step.trap_warning && (
-                    <span className="inline-flex h-4 w-4 items-center justify-center bg-slate-100 text-[10px] font-bold text-slate-600">
+                    <span className="inline-flex h-4 w-4 items-center justify-center bg-black/[0.04] text-[10px] font-bold text-black/60">
                       !
                     </span>
                   )}
@@ -161,7 +161,7 @@ export function PhaseView({ phase, steps, progress, profile }: PhaseViewProps) {
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
-                className="mt-1 shrink-0 text-slate-300 transition-colors duration-150 group-hover:text-slate-500"
+                className="mt-1 shrink-0 text-black/30 transition-colors duration-150 group-hover:text-black/50"
               >
                 <path d="M4.5 2l4 4-4 4" />
               </svg>
@@ -171,7 +171,7 @@ export function PhaseView({ phase, steps, progress, profile }: PhaseViewProps) {
       </div>
 
       {visibleSteps.length === 0 && (
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-black/50">
           No steps in this phase match your profile.
         </p>
       )}

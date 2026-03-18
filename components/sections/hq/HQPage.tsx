@@ -65,7 +65,7 @@ function HQPage() {
     <div className="mx-auto max-w-[640px] pb-16">
       {/* Hero */}
       <div>
-        <h1 className="text-[22px] font-bold text-slate-900 leading-tight">
+        <h1 className="text-[22px] font-bold text-black leading-tight">
           Don&apos;t make the mistakes every first-time founder makes.
         </h1>
       </div>
@@ -88,15 +88,15 @@ function HQPage() {
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
-                  className={`text-slate-400 transition-transform duration-150 ${isOpen ? "rotate-90" : ""}`}
+                  className={`text-black/40 transition-transform duration-150 ${isOpen ? "rotate-90" : ""}`}
                 >
                   <polyline points="9 18 15 12 9 6" />
                 </svg>
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-black/40">
                   {CATEGORY_LABELS[category]}
                 </span>
                 {!isOpen && (
-                  <span className="text-[11px] text-slate-400 ml-1">
+                  <span className="text-[11px] text-black/40 ml-1">
                     {items.length}
                   </span>
                 )}
@@ -107,17 +107,17 @@ function HQPage() {
                     <button
                       key={item.id}
                       onClick={() => router.push(item.href)}
-                      className="flex items-start gap-3 border-b border-slate-100 py-3 last:border-0 text-left transition-colors hover:bg-slate-50 -mx-3 px-3"
+                      className="flex items-start gap-3 border-b border-black/[0.04] py-3 last:border-0 text-left transition-colors hover:bg-black/[0.02] -mx-3 px-3"
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="text-[14px] font-medium text-slate-900">
+                        <p className="text-[14px] font-medium text-black">
                           {item.label}
                         </p>
-                        <p className="mt-0.5 text-[13px] text-slate-400">
+                        <p className="mt-0.5 text-[13px] text-black/40">
                           {item.why}
                         </p>
                       </div>
-                      <span className="mt-0.5 shrink-0 text-slate-300">
+                      <span className="mt-0.5 shrink-0 text-black/30">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                           <line x1="5" y1="12" x2="19" y2="12" />
                           <polyline points="12 5 19 12 12 19" />

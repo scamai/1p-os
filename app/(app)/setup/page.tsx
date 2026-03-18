@@ -61,12 +61,12 @@ const TEMPLATE_AGENTS: Record<
 };
 
 const ROLE_COLORS: Record<string, string> = {
-  operations: "bg-slate-900",
-  finance: "bg-slate-700",
-  sales: "bg-slate-500",
-  marketing: "bg-slate-800",
-  "customer-success": "bg-slate-600",
-  product: "bg-slate-400",
+  operations: "bg-black",
+  finance: "bg-black/70",
+  sales: "bg-black/50",
+  marketing: "bg-black/80",
+  "customer-success": "bg-black/60",
+  product: "bg-black/40",
 };
 
 // ─── AI analysis result ──────────────────────────────────────────────────────
@@ -93,7 +93,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
         <div
           key={i}
           className={`h-0.5 flex-1 transition-all duration-300 ${
-            i < current ? "bg-slate-900" : i === current ? "bg-slate-400" : "bg-slate-200"
+            i < current ? "bg-black" : i === current ? "bg-black/40" : "bg-black/[0.08]"
           }`}
         />
       ))}
@@ -366,10 +366,10 @@ export default function SetupPage() {
         <StepIndicator current={currentStep} total={4} />
 
         <div className="text-center mb-10">
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-black tracking-tight">
             Your AI team is ready to be hired
           </h1>
-          <p className="mt-3 text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
+          <p className="mt-3 text-sm text-black/50 max-w-sm mx-auto leading-relaxed">
             1P OS builds a team of AI agents that run your business — finance, ops, sales, support. You stay in control, they do the work.
           </p>
         </div>
@@ -380,13 +380,13 @@ export default function SetupPage() {
             { step: "2", label: "Connect your tools", desc: "Email, calendar, Slack, Stripe — optional" },
             { step: "3", label: "AI reads your business", desc: "And assembles the right team" },
           ].map((item) => (
-            <div key={item.step} className="flex items-start gap-3 px-4 py-3 border border-slate-200">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center bg-slate-900 text-white text-xs font-bold">
+            <div key={item.step} className="flex items-start gap-3 px-4 py-3 border border-black/[0.08]">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center bg-black text-white text-xs font-bold">
                 {item.step}
               </span>
               <div>
-                <p className="text-sm font-medium text-slate-900">{item.label}</p>
-                <p className="text-xs text-slate-500">{item.desc}</p>
+                <p className="text-sm font-medium text-black">{item.label}</p>
+                <p className="text-xs text-black/50">{item.desc}</p>
               </div>
             </div>
           ))}
@@ -396,7 +396,7 @@ export default function SetupPage() {
           <Button onClick={() => setPhase("api-keys")} className="w-full max-w-xs justify-center py-3 text-sm font-semibold">
             Get started
           </Button>
-          <p className="text-[10px] text-slate-400">Takes about 2 minutes</p>
+          <p className="text-[10px] text-black/40">Takes about 2 minutes</p>
         </div>
       </div>
     );
@@ -410,8 +410,8 @@ export default function SetupPage() {
         <StepIndicator current={currentStep} total={4} />
 
         <div className="text-center mb-8">
-          <h1 className="text-xl font-bold text-slate-900">Add your AI key</h1>
-          <p className="mt-2 text-sm text-slate-500 max-w-sm mx-auto">
+          <h1 className="text-xl font-bold text-black">Add your AI key</h1>
+          <p className="mt-2 text-sm text-black/50 max-w-sm mx-auto">
             Your agents need an LLM to think. Anthropic Claude is the primary model.
           </p>
         </div>
@@ -420,8 +420,8 @@ export default function SetupPage() {
           <CardContent className="p-5">
             <div className="flex flex-col gap-4">
               <div>
-                <label className="text-xs font-medium text-slate-700 mb-1.5 block">
-                  Anthropic API Key <span className="text-slate-400">*</span>
+                <label className="text-xs font-medium text-black/70 mb-1.5 block">
+                  Anthropic API Key <span className="text-black/40">*</span>
                 </label>
                 <Input
                   type="password"
@@ -431,20 +431,20 @@ export default function SetupPage() {
                   className="font-mono text-xs"
                 />
                 {keyError && (
-                  <p className="mt-1.5 text-xs text-slate-600">{keyError}</p>
+                  <p className="mt-1.5 text-xs text-black/60">{keyError}</p>
                 )}
                 {keySaved && !keyError && (
                   <div className="mt-1.5 flex items-center gap-1.5">
-                    <svg className="h-3.5 w-3.5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <svg className="h-3.5 w-3.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-xs text-slate-700">Key saved</span>
+                    <span className="text-xs text-black/70">Key saved</span>
                   </div>
                 )}
               </div>
 
-              <div className="border-t border-slate-100 pt-3">
-                <p className="text-[10px] text-slate-400 leading-relaxed">
+              <div className="border-t border-black/[0.04] pt-3">
+                <p className="text-[10px] text-black/40 leading-relaxed">
                   Your key is encrypted with AES-256-GCM and never leaves your server. You can add more LLM providers later in Settings.
                 </p>
               </div>
@@ -472,7 +472,7 @@ export default function SetupPage() {
           )}
           <button
             onClick={() => setPhase("connect")}
-            className="text-xs text-slate-400 hover:text-slate-700 transition-colors"
+            className="text-xs text-black/40 hover:text-black/70 transition-colors"
           >
             Skip — I&apos;ll add it later
           </button>
@@ -489,19 +489,19 @@ export default function SetupPage() {
         <StepIndicator current={currentStep} total={4} />
 
         <div className="text-center mb-8">
-          <h1 className="text-xl font-bold text-slate-900">Connect your accounts</h1>
-          <p className="mt-2 text-sm text-slate-500 max-w-md mx-auto">
+          <h1 className="text-xl font-bold text-black">Connect your accounts</h1>
+          <p className="mt-2 text-sm text-black/50 max-w-md mx-auto">
             The more you connect, the better AI understands your business. Everything is optional.
           </p>
         </div>
 
         {connectError && (
-          <div className="mb-4 border border-slate-200 bg-slate-50 px-4 py-3">
-            <p className="text-sm font-medium text-slate-800">{connectError}</p>
-            <p className="mt-1 text-xs text-slate-600">
-              Add the required env vars to <code className="bg-slate-200 px-1 text-[11px]">.env.local</code> and restart. Or skip this.
+          <div className="mb-4 border border-black/[0.08] bg-black/[0.02] px-4 py-3">
+            <p className="text-sm font-medium text-black/80">{connectError}</p>
+            <p className="mt-1 text-xs text-black/60">
+              Add the required env vars to <code className="bg-black/[0.08] px-1 text-[11px]">.env.local</code> and restart. Or skip this.
             </p>
-            <button onClick={() => setConnectError(null)} className="mt-1 text-xs text-slate-500 underline">Dismiss</button>
+            <button onClick={() => setConnectError(null)} className="mt-1 text-xs text-black/50 underline">Dismiss</button>
           </div>
         )}
 
@@ -520,7 +520,7 @@ export default function SetupPage() {
               : "Continue with default setup"
             }
           </Button>
-          <p className="text-[10px] text-slate-400">
+          <p className="text-[10px] text-black/40">
             {connectedAccounts.length > 0
               ? "AI auto-configures from your accounts"
               : "You can connect accounts anytime in Settings"
@@ -539,14 +539,14 @@ export default function SetupPage() {
         <StepIndicator current={currentStep} total={4} />
 
         <div className="text-center mb-8">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center bg-slate-100">
-            <svg className="h-7 w-7 animate-spin text-slate-600" viewBox="0 0 24 24" fill="none">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center bg-black/[0.04]">
+            <svg className="h-7 w-7 animate-spin text-black/60" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-slate-900">Analyzing your business</h2>
-          <p className="mt-1 text-sm text-slate-500">Reading your connected accounts</p>
+          <h2 className="text-lg font-semibold text-black">Analyzing your business</h2>
+          <p className="mt-1 text-sm text-black/50">Reading your connected accounts</p>
         </div>
 
         <div className="flex flex-col gap-1.5">
@@ -554,18 +554,18 @@ export default function SetupPage() {
             const isLatest = i === analysisProgress.length - 1;
             const isDone = i < analysisProgress.length - 1;
             return (
-              <div key={i} className={`flex items-center gap-2.5 px-3 py-2 transition-all ${isLatest ? "bg-slate-100" : ""}`}>
+              <div key={i} className={`flex items-center gap-2.5 px-3 py-2 transition-all ${isLatest ? "bg-black/[0.04]" : ""}`}>
                 {isDone ? (
-                  <svg className="h-4 w-4 shrink-0 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="h-4 w-4 shrink-0 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 ) : (
-                  <svg className="h-4 w-4 shrink-0 animate-spin text-slate-400" viewBox="0 0 24 24" fill="none">
+                  <svg className="h-4 w-4 shrink-0 animate-spin text-black/40" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                   </svg>
                 )}
-                <span className={`text-xs ${isDone ? "text-slate-500" : "text-slate-900 font-medium"}`}>
+                <span className={`text-xs ${isDone ? "text-black/50" : "text-black font-medium"}`}>
                   {step}
                 </span>
               </div>
@@ -584,30 +584,30 @@ export default function SetupPage() {
         <StepIndicator current={currentStep} total={4} />
 
         <div className="text-center mb-6">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center bg-slate-100">
-            <svg className="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center bg-black/[0.04]">
+            <svg className="h-6 w-6 text-black/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-slate-900">Here&apos;s your team</h2>
-          <p className="mt-1 text-sm text-slate-500">
+          <h2 className="text-lg font-semibold text-black">Here&apos;s your team</h2>
+          <p className="mt-1 text-sm text-black/50">
             Review what AI assembled. You can change everything later.
           </p>
         </div>
 
         {/* Confidence */}
-        <div className="mb-4 border border-slate-200 bg-slate-50 px-4 py-2.5">
+        <div className="mb-4 border border-black/[0.08] bg-black/[0.02] px-4 py-2.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-slate-700">
+            <span className="text-xs font-medium text-black/70">
               AI Confidence: {Math.round(analysis.confidence * 100)}%
             </span>
-            <span className="text-[10px] text-slate-500">
+            <span className="text-[10px] text-black/50">
               Based on {connectedAccounts.length} connected account{connectedAccounts.length !== 1 ? "s" : ""}
             </span>
           </div>
           <div className="mt-1.5 flex flex-wrap gap-1">
             {analysis.signals.map((s, i) => (
-              <span key={i} className="bg-white px-1.5 py-0.5 text-[9px] text-slate-600 border border-slate-200">{s}</span>
+              <span key={i} className="bg-white px-1.5 py-0.5 text-[9px] text-black/60 border border-black/[0.08]">{s}</span>
             ))}
           </div>
         </div>
@@ -616,35 +616,35 @@ export default function SetupPage() {
         <div className="flex flex-col gap-3">
           <Card>
             <CardContent className="p-4">
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Your Business</h3>
+              <h3 className="text-xs font-semibold text-black/50 uppercase tracking-wider mb-2">Your Business</h3>
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-500">Name</span>
-                  <span className="text-sm font-semibold text-slate-900">{analysis.businessName}</span>
+                  <span className="text-xs text-black/50">Name</span>
+                  <span className="text-sm font-semibold text-black">{analysis.businessName}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-500">Industry</span>
-                  <span className="text-sm text-slate-900">{analysis.industry}</span>
+                  <span className="text-xs text-black/50">Industry</span>
+                  <span className="text-sm text-black">{analysis.industry}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-500">Strategy</span>
-                  <span className="text-sm text-slate-900 capitalize">{analysis.suggestedStrategy}</span>
+                  <span className="text-xs text-black/50">Strategy</span>
+                  <span className="text-sm text-black capitalize">{analysis.suggestedStrategy}</span>
                 </div>
               </div>
-              <p className="mt-2 text-[10px] text-slate-400">{analysis.strategyReason}</p>
+              <p className="mt-2 text-[10px] text-black/40">{analysis.strategyReason}</p>
             </CardContent>
           </Card>
 
           {/* Team AI will hire */}
           <Card>
             <CardContent className="p-4">
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+              <h3 className="text-xs font-semibold text-black/50 uppercase tracking-wider mb-3">
                 Your AI Team ({agents.length} agents)
               </h3>
               <div className="flex flex-col gap-2">
                 {agents.map((agent, i) => {
                   const suggestion = analysis.suggestedAgents[i];
-                  const roleColor = ROLE_COLORS[agent.role] ?? "bg-slate-500";
+                  const roleColor = ROLE_COLORS[agent.role] ?? "bg-black/50";
                   return (
                     <div key={agent.name} className="flex items-center gap-2.5">
                       <div className={`flex h-7 w-7 shrink-0 items-center justify-center ${roleColor} text-white text-[10px] font-bold`}>
@@ -652,15 +652,15 @@ export default function SetupPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium text-slate-900">{agent.name}</span>
-                          <span className="text-[10px] text-slate-400 capitalize">{agent.role.replace("-", " ")}</span>
+                          <span className="text-xs font-medium text-black">{agent.name}</span>
+                          <span className="text-[10px] text-black/40 capitalize">{agent.role.replace("-", " ")}</span>
                         </div>
-                        <p className="text-[10px] text-slate-500">
+                        <p className="text-[10px] text-black/50">
                           {suggestion?.reason ?? agent.skills.join(", ")}
                         </p>
                         <div className="flex flex-wrap gap-1 mt-0.5">
                           {agent.skills.map((skill) => (
-                            <span key={skill} className="text-[8px] text-slate-400 bg-slate-100 px-1 py-0.5">{skill}</span>
+                            <span key={skill} className="text-[8px] text-black/40 bg-black/[0.04] px-1 py-0.5">{skill}</span>
                           ))}
                         </div>
                       </div>
@@ -675,13 +675,13 @@ export default function SetupPage() {
           {connectedAccounts.length > 0 && (
             <Card>
               <CardContent className="p-4">
-                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                <h3 className="text-xs font-semibold text-black/50 uppercase tracking-wider mb-2">
                   Connected ({connectedAccounts.length})
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {connectedAccounts.map((a) => (
-                    <span key={a.id} className="inline-flex items-center gap-1 bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-700">
-                      <span className="h-1.5 w-1.5 bg-slate-900" />
+                    <span key={a.id} className="inline-flex items-center gap-1 bg-black/[0.04] px-2 py-0.5 text-[10px] font-medium text-black/70">
+                      <span className="h-1.5 w-1.5 bg-black" />
                       {a.label || a.provider}
                     </span>
                   ))}
@@ -699,18 +699,18 @@ export default function SetupPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setPhase("connect")}
-              className="text-xs text-slate-500 hover:text-slate-900 transition-colors"
+              className="text-xs text-black/50 hover:text-black transition-colors"
             >
               Connect more accounts
             </button>
             <button
               onClick={startAnalysis}
-              className="text-xs text-slate-500 hover:text-slate-900 transition-colors"
+              className="text-xs text-black/50 hover:text-black transition-colors"
             >
               Re-analyze
             </button>
           </div>
-          <p className="text-[10px] text-slate-400">Everything is editable in Settings</p>
+          <p className="text-[10px] text-black/40">Everything is editable in Settings</p>
         </div>
       </div>
     );

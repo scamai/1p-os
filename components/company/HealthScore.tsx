@@ -6,7 +6,7 @@ interface HealthScoreProps {
 function HealthScore({ score, className = "" }: HealthScoreProps) {
   return (
     <span
-      className={`font-mono text-xs text-slate-900 ${className}`}
+      className={`font-mono text-xs text-black ${className}`}
       title="Health Score"
     >
       {score}

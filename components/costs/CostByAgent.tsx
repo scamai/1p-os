@@ -15,19 +15,19 @@ interface CostByAgentProps {
 }
 
 function getBudgetColor(cost: number, budget: number): string {
-  if (budget <= 0) return "bg-slate-100";
+  if (budget <= 0) return "bg-black/[0.04]";
   const ratio = cost / budget;
-  if (ratio >= 1) return "bg-slate-900";
-  if (ratio >= 0.8) return "bg-slate-600";
-  return "bg-slate-400";
+  if (ratio >= 1) return "bg-black";
+  if (ratio >= 0.8) return "bg-black/60";
+  return "bg-black/40";
 }
 
 function getBudgetTextColor(cost: number, budget: number): string {
-  if (budget <= 0) return "text-slate-500";
+  if (budget <= 0) return "text-black/50";
   const ratio = cost / budget;
-  if (ratio >= 1) return "text-slate-900 font-bold";
-  if (ratio >= 0.8) return "text-slate-700";
-  return "text-slate-500";
+  if (ratio >= 1) return "text-black font-bold";
+  if (ratio >= 0.8) return "text-black/70";
+  return "text-black/50";
 }
 
 function CostByAgent({ agents }: CostByAgentProps) {
@@ -36,7 +36,7 @@ function CostByAgent({ agents }: CostByAgentProps) {
 
   if (sorted.length === 0) {
     return (
-      <p className="py-4 text-sm text-slate-500">
+      <p className="py-4 text-sm text-black/50">
         No cost data yet.
       </p>
     );
@@ -54,11 +54,11 @@ function CostByAgent({ agents }: CostByAgentProps) {
             {/* Row: name, role, cost */}
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
-                <span className="font-medium text-slate-900">
+                <span className="font-medium text-black">
                   {agent.name}
                 </span>
                 {agent.role && (
-                  <span className="rounded bg-slate-50 px-1.5 py-0.5 text-[10px] text-slate-500">
+                  <span className="rounded bg-black/[0.02] px-1.5 py-0.5 text-[10px] text-black/50">
                     {agent.role}
                   </span>
                 )}
@@ -69,7 +69,7 @@ function CostByAgent({ agents }: CostByAgentProps) {
             </div>
 
             {/* Cost bar */}
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-50">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-black/[0.02]">
               <div
                 className={`h-full rounded-full transition-all ${barColor}`}
                 style={{
@@ -79,7 +79,7 @@ function CostByAgent({ agents }: CostByAgentProps) {
             </div>
 
             {/* Stats row */}
-            <div className="flex items-center gap-3 text-[10px] text-slate-500">
+            <div className="flex items-center gap-3 text-[10px] text-black/50">
               {agent.tasks !== undefined && (
                 <span>{agent.tasks} tasks</span>
               )}

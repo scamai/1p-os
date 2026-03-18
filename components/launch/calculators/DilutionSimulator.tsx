@@ -40,17 +40,17 @@ export function DilutionSimulator() {
   ];
 
   const rows = [
-    { label: "Founders", pct: founderPct, shade: "bg-slate-900" },
-    { label: "SAFE investors", pct: safePct, shade: "bg-slate-600" },
-    { label: "Option pool", pct: poolPct, shade: "bg-slate-400" },
-    { label: "Series A", pct: seriesAPct, shade: "bg-slate-300" },
+    { label: "Founders", pct: founderPct, shade: "bg-black" },
+    { label: "SAFE investors", pct: safePct, shade: "bg-black/60" },
+    { label: "Option pool", pct: poolPct, shade: "bg-black/40" },
+    { label: "Series A", pct: seriesAPct, shade: "bg-black/30" },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold text-slate-900">SAFE dilution simulator</h3>
-        <p className="mt-1 text-[13px] text-slate-500">
+        <h3 className="text-sm font-semibold text-black">SAFE dilution simulator</h3>
+        <p className="mt-1 text-[13px] text-black/50">
           See how a SAFE converts at different Series A valuations.
         </p>
       </div>
@@ -60,10 +60,10 @@ export function DilutionSimulator() {
         {sliders.map((s) => (
           <div key={s.label}>
             <div className="flex items-center justify-between mb-1">
-              <label className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+              <label className="text-[11px] font-medium uppercase tracking-wider text-black/50">
                 {s.label}
               </label>
-              <span className="text-sm font-semibold tabular-nums text-slate-900">
+              <span className="text-sm font-semibold tabular-nums text-black">
                 {s.format(s.value)}
               </span>
             </div>
@@ -74,7 +74,7 @@ export function DilutionSimulator() {
               step={s.step}
               value={s.value}
               onChange={(e) => s.setValue(Number(e.target.value))}
-              className="w-full accent-slate-900"
+              className="w-full accent-black"
             />
           </div>
         ))}
@@ -82,10 +82,10 @@ export function DilutionSimulator() {
 
       {/* Ownership bar */}
       <div>
-        <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-slate-500">
+        <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-black/50">
           Post-Series A ownership
         </p>
-        <div className="flex h-10 w-full overflow-hidden border border-slate-200">
+        <div className="flex h-10 w-full overflow-hidden border border-black/[0.08]">
           {rows.map((r) => (
             <div
               key={r.label}
@@ -99,24 +99,24 @@ export function DilutionSimulator() {
       </div>
 
       {/* Breakdown table */}
-      <div className="border border-slate-200">
+      <div className="border border-black/[0.08]">
         {rows.map((r) => (
           <div
             key={r.label}
-            className="flex items-center justify-between border-b border-slate-100 px-4 py-2.5 last:border-0"
+            className="flex items-center justify-between border-b border-black/[0.04] px-4 py-2.5 last:border-0"
           >
             <div className="flex items-center gap-2">
               <span className={`h-2.5 w-2.5 ${r.shade}`} />
-              <span className="text-sm text-slate-700">{r.label}</span>
+              <span className="text-sm text-black/70">{r.label}</span>
             </div>
-            <span className="text-sm font-semibold tabular-nums text-slate-900">
+            <span className="text-sm font-semibold tabular-nums text-black">
               {formatPct(r.pct)}
             </span>
           </div>
         ))}
       </div>
 
-      <p className="text-[11px] text-slate-400">
+      <p className="text-[11px] text-black/40">
         Assumes 10M authorized shares, standard YC SAFE (post-money cap), and a single
         Series A round at the specified valuation.
       </p>

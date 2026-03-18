@@ -54,10 +54,10 @@ interface TeamTemplatesProps {
 function TeamTemplates({ onInstall }: TeamTemplatesProps) {
   return (
     <div>
-      <h2 className="mb-1 text-base font-semibold text-slate-900">
+      <h2 className="mb-1 text-base font-semibold text-black">
         Pre-built Teams
       </h2>
-      <p className="mb-4 text-sm text-slate-500">
+      <p className="mb-4 text-sm text-black/50">
         One-click install a complete team of agents.
       </p>
 
@@ -65,24 +65,24 @@ function TeamTemplates({ onInstall }: TeamTemplatesProps) {
         {teamTemplates.map((t) => (
           <Card key={t.id}>
             <CardContent className="p-4">
-              <h3 className="text-sm font-semibold text-slate-900">
+              <h3 className="text-sm font-semibold text-black">
                 {t.name}
               </h3>
-              <p className="mt-1 text-xs text-slate-500">
+              <p className="mt-1 text-xs text-black/50">
                 {t.description}
               </p>
               <div className="mt-2 flex flex-wrap gap-1">
                 {t.agents.map((a) => (
                   <span
                     key={a}
-                    className="rounded bg-slate-50 px-1.5 py-0.5 text-[10px] text-slate-500"
+                    className="rounded bg-black/[0.02] px-1.5 py-0.5 text-[10px] text-black/50"
                   >
                     {a}
                   </span>
                 ))}
               </div>
               <div className="mt-3 flex items-center justify-between">
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-black/50">
                   {t.agentCount} agents &middot; {t.totalEstimatedCost}
                 </span>
                 <Button size="sm" onClick={() => onInstall(t.id)}>

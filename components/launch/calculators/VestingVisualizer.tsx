@@ -39,8 +39,8 @@ export function VestingVisualizer() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold text-slate-900">Vesting schedule builder</h3>
-        <p className="mt-1 text-[13px] text-slate-500">
+        <h3 className="text-sm font-semibold text-black">Vesting schedule builder</h3>
+        <p className="mt-1 text-[13px] text-black/50">
           Standard: 4-year vesting with 1-year cliff, monthly thereafter.
         </p>
       </div>
@@ -48,24 +48,24 @@ export function VestingVisualizer() {
       {/* Controls */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div>
-          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-slate-500">
+          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-black/50">
             Total shares
           </label>
           <input
             type="number"
             value={totalShares}
             onChange={(e) => setTotalShares(Math.max(1000, parseInt(e.target.value) || 0))}
-            className="h-9 w-full border border-slate-200 bg-transparent px-3 text-sm tabular-nums text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+            className="h-9 w-full border border-black/[0.08] bg-transparent px-3 text-sm tabular-nums text-black outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
           />
         </div>
         <div>
-          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-slate-500">
+          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-black/50">
             Vesting period (years)
           </label>
           <select
             value={vestingYears}
             onChange={(e) => setVestingYears(parseInt(e.target.value))}
-            className="h-9 w-full border border-slate-200 bg-transparent px-3 text-sm text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+            className="h-9 w-full border border-black/[0.08] bg-transparent px-3 text-sm text-black outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
           >
             <option value={3}>3 years</option>
             <option value={4}>4 years</option>
@@ -73,13 +73,13 @@ export function VestingVisualizer() {
           </select>
         </div>
         <div>
-          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-slate-500">
+          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-black/50">
             Cliff (months)
           </label>
           <select
             value={cliffMonths}
             onChange={(e) => setCliffMonths(parseInt(e.target.value))}
-            className="h-9 w-full border border-slate-200 bg-transparent px-3 text-sm text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+            className="h-9 w-full border border-black/[0.08] bg-transparent px-3 text-sm text-black outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
           >
             <option value={0}>No cliff</option>
             <option value={6}>6 months</option>
@@ -90,7 +90,7 @@ export function VestingVisualizer() {
       </div>
 
       {/* Visual timeline */}
-      <div className="border border-slate-200 p-4">
+      <div className="border border-black/[0.08] p-4">
         <div className="flex items-end gap-1" style={{ height: 120 }}>
           {schedule.map((point, i) => {
             const height = totalShares > 0 ? (point.vested / totalShares) * 100 : 0;
@@ -99,14 +99,14 @@ export function VestingVisualizer() {
                 key={i}
                 className="flex flex-1 flex-col items-center gap-1"
               >
-                <span className="text-[10px] tabular-nums text-slate-500">
+                <span className="text-[10px] tabular-nums text-black/50">
                   {formatShares(point.vested)}
                 </span>
                 <div
-                  className="w-full bg-slate-900 transition-all duration-300"
+                  className="w-full bg-black transition-all duration-300"
                   style={{ height: `${Math.max(2, height)}%` }}
                 />
-                <span className="text-[10px] text-slate-400">{point.label}</span>
+                <span className="text-[10px] text-black/40">{point.label}</span>
               </div>
             );
           })}
@@ -121,11 +121,11 @@ export function VestingVisualizer() {
           { label: "Fully vested", value: `${vestingYears} years` },
           { label: "Total shares", value: formatShares(totalShares) },
         ].map((stat) => (
-          <div key={stat.label} className="border border-slate-200 p-3">
-            <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+          <div key={stat.label} className="border border-black/[0.08] p-3">
+            <p className="text-[11px] font-medium uppercase tracking-wider text-black/50">
               {stat.label}
             </p>
-            <p className="mt-1 text-sm font-semibold tabular-nums text-slate-900">
+            <p className="mt-1 text-sm font-semibold tabular-nums text-black">
               {stat.value}
             </p>
           </div>

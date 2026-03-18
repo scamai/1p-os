@@ -46,8 +46,8 @@ export function TAMCalculator() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold text-slate-900">TAM / SAM / SOM calculator</h3>
-        <p className="mt-1 text-[13px] text-slate-500">
+        <h3 className="text-sm font-semibold text-black">TAM / SAM / SOM calculator</h3>
+        <p className="mt-1 text-[13px] text-black/50">
           Size your market. Investors expect these numbers in your pitch deck.
         </p>
       </div>
@@ -55,29 +55,29 @@ export function TAMCalculator() {
       {/* Inputs */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-slate-500">
+          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-black/50">
             Total potential customers
           </label>
           <input
             type="number"
             value={totalCustomers}
             onChange={(e) => setTotalCustomers(Math.max(0, parseInt(e.target.value) || 0))}
-            className="h-9 w-full border border-slate-200 bg-transparent px-3 text-sm tabular-nums text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+            className="h-9 w-full border border-black/[0.08] bg-transparent px-3 text-sm tabular-nums text-black outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
           />
         </div>
         <div>
-          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-slate-500">
+          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-black/50">
             Avg. annual revenue per customer
           </label>
           <input
             type="number"
             value={avgRevenue}
             onChange={(e) => setAvgRevenue(Math.max(0, parseInt(e.target.value) || 0))}
-            className="h-9 w-full border border-slate-200 bg-transparent px-3 text-sm tabular-nums text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1"
+            className="h-9 w-full border border-black/[0.08] bg-transparent px-3 text-sm tabular-nums text-black outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-1"
           />
         </div>
         <div>
-          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-slate-500">
+          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-black/50">
             Reachable segment (SAM %)
           </label>
           <div className="flex items-center gap-2">
@@ -87,15 +87,15 @@ export function TAMCalculator() {
               max={100}
               value={reachablePct}
               onChange={(e) => setReachablePct(parseInt(e.target.value))}
-              className="flex-1 accent-slate-900"
+              className="flex-1 accent-black"
             />
-            <span className="w-12 text-right text-sm font-semibold tabular-nums text-slate-900">
+            <span className="w-12 text-right text-sm font-semibold tabular-nums text-black">
               {reachablePct}%
             </span>
           </div>
         </div>
         <div>
-          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-slate-500">
+          <label className="mb-1 block text-[11px] font-medium uppercase tracking-wider text-black/50">
             Realistic capture (SOM %)
           </label>
           <div className="flex items-center gap-2">
@@ -105,9 +105,9 @@ export function TAMCalculator() {
               max={50}
               value={capturePct}
               onChange={(e) => setCapturePct(parseInt(e.target.value))}
-              className="flex-1 accent-slate-900"
+              className="flex-1 accent-black"
             />
-            <span className="w-12 text-right text-sm font-semibold tabular-nums text-slate-900">
+            <span className="w-12 text-right text-sm font-semibold tabular-nums text-black">
               {capturePct}%
             </span>
           </div>
@@ -120,30 +120,30 @@ export function TAMCalculator() {
           <div key={tier.label}>
             <div className="mb-1 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-slate-900">{tier.label}</span>
-                <span className="text-[11px] text-slate-400">{tier.full}</span>
+                <span className="text-sm font-semibold text-black">{tier.label}</span>
+                <span className="text-[11px] text-black/40">{tier.full}</span>
               </div>
-              <span className="text-sm font-semibold tabular-nums text-slate-900">
+              <span className="text-sm font-semibold tabular-nums text-black">
                 {formatMoney(tier.value)}
               </span>
             </div>
-            <div className="h-6 w-full border border-slate-200">
+            <div className="h-6 w-full border border-black/[0.08]">
               <div
-                className="h-full bg-slate-900 transition-all duration-300"
+                className="h-full bg-black transition-all duration-300"
                 style={{ width: `${Math.max(1, tier.width)}%`, opacity: tier.label === "TAM" ? 0.2 : tier.label === "SAM" ? 0.5 : 1 }}
               />
             </div>
-            <p className="mt-0.5 text-[11px] text-slate-400">{tier.description}</p>
+            <p className="mt-0.5 text-[11px] text-black/40">{tier.description}</p>
           </div>
         ))}
       </div>
 
       {/* Pitch-ready summary */}
-      <div className="border border-slate-200 p-4">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500 mb-2">
+      <div className="border border-black/[0.08] p-4">
+        <p className="text-[11px] font-medium uppercase tracking-wider text-black/50 mb-2">
           Pitch-ready summary
         </p>
-        <p className="text-sm text-slate-700">
+        <p className="text-sm text-black/70">
           The total addressable market is {formatMoney(tam)}, with a serviceable market
           of {formatMoney(sam)}. We are targeting {formatMoney(som)} in the first 2-3
           years, representing {capturePct}% of our reachable segment.

@@ -412,11 +412,11 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
       />
 
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-[560px] overflow-hidden rounded-lg border border-slate-200 bg-white shadow-lg">
+      <div className="relative z-10 w-full max-w-[560px] overflow-hidden rounded-lg border border-black/[0.06] bg-white shadow-lg">
         {/* Input row */}
         <div className="flex items-center gap-3 px-5">
           {/* Prompt indicator */}
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-600">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-black">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
@@ -428,7 +428,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={listening ? "Listening..." : "What do you need?"}
-            className="h-14 flex-1 bg-transparent text-[16px] text-slate-900 placeholder:text-slate-400 focus:outline-none"
+            className="h-14 flex-1 bg-transparent text-[16px] text-black placeholder:text-black/40 focus:outline-none"
           />
 
           {/* Mic button */}
@@ -437,10 +437,10 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
             onClick={toggleVoice}
             className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-200 ${
               listening
-                ? "bg-slate-900 text-white shadow-lg shadow-slate-900/25 scale-110"
+                ? "bg-black text-white shadow-lg shadow-black/25 scale-110"
                 : voiceError
-                  ? "bg-slate-200 text-slate-500"
-                  : "bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-700"
+                  ? "bg-black/[0.08] text-black/50"
+                  : "bg-black/[0.04] text-black/50 hover:bg-black/[0.08] hover:text-black/70"
             }`}
             aria-label={listening ? "Stop" : voiceError ? "Mic not working" : "Voice"}
             title={voiceError && micError ? micError : undefined}
@@ -468,7 +468,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
             {voice.levels.map((v, i) => (
               <div
                 key={i}
-                className="w-[4px] rounded-full bg-slate-400"
+                className="w-[4px] rounded-full bg-black/40"
                 style={{
                   height: `${Math.max(3, Math.min(24, 3 + Math.pow(v, 0.6) * 21))}px`,
                   opacity: Math.max(0.3, Math.min(1, v * 2.5)),
@@ -479,54 +479,54 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
           </div>
         )}
 
-        <div className="mx-5 border-t border-slate-100" />
+        <div className="mx-5 border-t border-black/[0.04]" />
 
         {/* Intent preview */}
         <div className="px-5 py-3">
           {micError ? (
             <div className="flex items-center gap-2.5">
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-200">
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-black/[0.08]">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               </div>
-              <span className="text-[13px] text-slate-600">{micError}</span>
+              <span className="text-[13px] text-black/60">{micError}</span>
             </div>
           ) : executed ? (
             <div className="flex items-center gap-2.5">
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-200">
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-black/[0.08]">
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
               </div>
-              <span className="text-[13px] text-slate-700">{executed}</span>
+              <span className="text-[13px] text-black/70">{executed}</span>
             </div>
           ) : parsing ? (
             <div className="flex items-center gap-2.5">
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900" />
-              <span className="text-[13px] text-slate-500">Thinking...</span>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-black/30 border-t-black" />
+              <span className="text-[13px] text-black/50">Thinking...</span>
             </div>
           ) : intent ? (
             <button
               onClick={() => executeIntent(intent)}
-              className="flex w-full items-center gap-2.5 rounded-lg py-1 text-left transition-colors hover:bg-slate-50 -mx-2 px-2"
+              className="flex w-full items-center gap-2.5 rounded-lg py-1 text-left transition-colors hover:bg-black/[0.02] -mx-2 px-2"
             >
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-100">
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-black/[0.04]">
                 <ActionIcon action={intent.action} />
               </div>
-              <span className="flex-1 text-[13px] text-slate-800">{intent.display_text}</span>
-              <span className="text-[11px] text-slate-400">
+              <span className="flex-1 text-[13px] text-black/80">{intent.display_text}</span>
+              <span className="text-[11px] text-black/40">
                 &#x23CE; run
               </span>
             </button>
           ) : input.trim() ? (
-            <p className="text-[13px] text-slate-400">
+            <p className="text-[13px] text-black/40">
               Enter to run
             </p>
           ) : (
             <div className="space-y-1">
-              <p className="text-[11px] font-medium text-slate-400">Try saying</p>
+              <p className="text-[11px] font-medium text-black/40">Try saying</p>
               <div className="flex flex-wrap gap-1.5">
                 {[
                   "Go to finance",
@@ -543,7 +543,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
                       const parsed = parseIntent(s);
                       setIntent(parsed);
                     }}
-                    className="rounded-full border border-slate-200 px-2.5 py-1 text-[11px] text-slate-500 transition-colors hover:border-slate-300 hover:text-slate-700"
+                    className="rounded-full border border-black/[0.06] px-2.5 py-1 text-[11px] text-black/50 transition-colors hover:border-black/[0.12] hover:text-black/70"
                   >
                     {s}
                   </button>
@@ -554,11 +554,11 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
         </div>
 
         {/* Keyboard hints */}
-        <div className="flex items-center justify-between border-t border-slate-100 px-5 py-2">
-          <span className="text-[10px] text-slate-400">
+        <div className="flex items-center justify-between border-t border-black/[0.04] px-5 py-2">
+          <span className="text-[10px] text-black/40">
             &#x23CE; execute &middot; esc close
           </span>
-          <span className="text-[10px] text-slate-400">
+          <span className="text-[10px] text-black/40">
             &#x2318;&#x21E7;V voice
           </span>
         </div>
@@ -570,7 +570,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
 // ── Action icon by type ──
 
 function ActionIcon({ action }: { action: string }) {
-  const cls = "text-slate-500";
+  const cls = "text-black/50";
   switch (action) {
     case "navigate":
       return (
@@ -588,7 +588,7 @@ function ActionIcon({ action }: { action: string }) {
     case "kill_switch":
     case "pause_agent":
       return (
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-slate-900">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-black">
           <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="9" y1="9" x2="15" y2="15" /><line x1="15" y1="9" x2="9" y2="15" />
         </svg>
       );
@@ -616,13 +616,13 @@ function ActionIcon({ action }: { action: string }) {
       );
     case "approve_decision":
       return (
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-slate-900">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-black">
           <polyline points="20 6 9 17 4 12" />
         </svg>
       );
     case "reject_decision":
       return (
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-slate-900">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-black">
           <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       );

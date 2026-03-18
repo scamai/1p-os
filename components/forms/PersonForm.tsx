@@ -85,12 +85,12 @@ function ContactForm({ onClose, prefill }: ContactFormProps) {
         placeholder="email@example.com"
       />
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="type" className="text-sm font-medium text-slate-600">Type</label>
+        <label htmlFor="type" className="text-sm font-medium text-black/60">Type</label>
         <select
           id="type"
           value={type}
           onChange={(e) => setType(e.target.value)}
-          className="h-9 w-full rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="h-9 w-full rounded-md border border-black/[0.08] bg-transparent px-3 text-sm text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
         >
           <option value="client">Client</option>
           <option value="lead">Lead</option>
@@ -104,18 +104,18 @@ function ContactForm({ onClose, prefill }: ContactFormProps) {
         placeholder="Company name"
       />
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="notes" className="text-sm font-medium text-slate-600">Notes</label>
+        <label htmlFor="notes" className="text-sm font-medium text-black/60">Notes</label>
         <textarea
           id="notes"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Additional notes"
           rows={3}
-          className="w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="w-full rounded-md border border-black/[0.08] bg-transparent px-3 py-2 text-sm text-black placeholder:text-black/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
         />
       </div>
       {error && (
-        <p className="text-sm text-slate-500">{error}</p>
+        <p className="text-sm text-black/50">{error}</p>
       )}
       <div className="flex items-center justify-end gap-3 pt-2">
         <Button type="button" variant="ghost" onClick={onClose}>

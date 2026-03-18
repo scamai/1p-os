@@ -26,8 +26,8 @@ function StatusStrip({ metrics }: { metrics: HQMetrics }) {
     <div className="grid grid-cols-5 gap-x-4">
       {items.map((item) => (
         <div key={item.label}>
-          <p className="text-[11px] text-slate-400">{item.label}</p>
-          <p className="mt-0.5 font-mono text-lg font-semibold text-slate-900">
+          <p className="text-[11px] text-black/40">{item.label}</p>
+          <p className="mt-0.5 font-mono text-lg font-semibold text-black">
             {item.value}
           </p>
         </div>

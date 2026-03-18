@@ -30,11 +30,11 @@ const STATUS_LABELS: Record<Investor["status"], string> = {
 };
 
 const STATUS_COLORS: Record<Investor["status"], string> = {
-  intro: "bg-slate-200 text-slate-700",
-  meeting: "bg-slate-300 text-slate-800",
-  termsheet: "bg-slate-700 text-white",
+  intro: "bg-black/[0.08] text-black/70",
+  meeting: "bg-black/30 text-black/80",
+  termsheet: "bg-black/70 text-white",
   committed: "bg-black text-white",
-  passed: "bg-slate-100 text-slate-400",
+  passed: "bg-black/[0.04] text-black/40",
 };
 
 const ROUND_PRESETS = ["Pre-seed", "Seed", "Series A", "Series B"];
@@ -157,8 +157,8 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-[640px]">
       <Education {...EDUCATION.fundraising} />
-      <h1 className="text-lg font-semibold text-slate-900">Fundraising</h1>
-      <p className="mt-1 text-sm text-slate-500">
+      <h1 className="text-lg font-semibold text-black">Fundraising</h1>
+      <p className="mt-1 text-sm text-black/50">
         Track fundraising rounds, investor pipeline, and capital raised.
       </p>
 
@@ -171,7 +171,7 @@ export default function Page() {
             className={`px-3 py-1.5 text-sm rounded-md border transition-colors ${
               r.id === effectiveActiveRoundId
                 ? "bg-black text-white border-black"
-                : "bg-white text-slate-700 border-slate-200 hover:border-slate-400"
+                : "bg-white text-black/70 border-black/[0.08] hover:border-black/40"
             }`}
           >
             {r.name}
@@ -179,7 +179,7 @@ export default function Page() {
         ))}
         <button
           onClick={() => setShowRoundForm(true)}
-          className="px-3 py-1.5 text-sm rounded-md border border-dashed border-slate-300 text-slate-500 hover:border-slate-400 hover:text-slate-700"
+          className="px-3 py-1.5 text-sm rounded-md border border-dashed border-black/30 text-black/50 hover:border-black/40 hover:text-black/70"
         >
           + Round
         </button>
@@ -187,11 +187,11 @@ export default function Page() {
 
       {/* Add round form */}
       {showRoundForm && (
-        <div className="mt-4 border border-slate-200 rounded-lg p-4 bg-white">
-          <h3 className="text-sm font-medium text-slate-900 mb-3">New Round</h3>
+        <div className="mt-4 border border-black/[0.08] rounded-lg p-4 bg-white">
+          <h3 className="text-sm font-medium text-black mb-3">New Round</h3>
           <div className="grid grid-cols-1 gap-3">
             <div>
-              <label className="block text-xs text-slate-500 mb-1">Round Name</label>
+              <label className="block text-xs text-black/50 mb-1">Round Name</label>
               <div className="flex gap-2 flex-wrap">
                 {ROUND_PRESETS.map((p) => (
                   <button
@@ -200,7 +200,7 @@ export default function Page() {
                     className={`px-2 py-1 text-xs rounded border ${
                       rName === p
                         ? "bg-black text-white border-black"
-                        : "border-slate-200 text-slate-600 hover:border-slate-400"
+                        : "border-black/[0.08] text-black/60 hover:border-black/40"
                     }`}
                   >
                     {p}
@@ -211,28 +211,28 @@ export default function Page() {
                 value={rName}
                 onChange={(e) => setRName(e.target.value)}
                 placeholder="Or type a custom name"
-                className="mt-2 w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                className="mt-2 w-full border border-black/[0.08] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs text-slate-500 mb-1">Target ($)</label>
+                <label className="block text-xs text-black/50 mb-1">Target ($)</label>
                 <input
                   type="number"
                   value={rTarget}
                   onChange={(e) => setRTarget(e.target.value)}
                   placeholder="500000"
-                  className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                  className="w-full border border-black/[0.08] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-1">Valuation ($)</label>
+                <label className="block text-xs text-black/50 mb-1">Valuation ($)</label>
                 <input
                   type="number"
                   value={rVal}
                   onChange={(e) => setRVal(e.target.value)}
                   placeholder="5000000"
-                  className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                  className="w-full border border-black/[0.08] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                 />
               </div>
             </div>
@@ -240,13 +240,13 @@ export default function Page() {
           <div className="flex gap-2 mt-4">
             <button
               onClick={addRound}
-              className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-slate-800"
+              className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-black/80"
             >
               Create Round
             </button>
             <button
               onClick={() => setShowRoundForm(false)}
-              className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900"
+              className="px-4 py-2 text-sm text-black/60 hover:text-black"
             >
               Cancel
             </button>
@@ -259,28 +259,28 @@ export default function Page() {
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-medium text-slate-900">{activeRound.name}</h2>
+              <h2 className="text-base font-medium text-black">{activeRound.name}</h2>
               {activeRound.valuation > 0 && (
-                <p className="text-xs text-slate-500">Valuation: {fmt(activeRound.valuation)}</p>
+                <p className="text-xs text-black/50">Valuation: {fmt(activeRound.valuation)}</p>
               )}
             </div>
             <button
               onClick={() => deleteRound(activeRound.id)}
-              className="text-xs text-slate-400 hover:text-slate-900"
+              className="text-xs text-black/40 hover:text-black"
             >
               Delete round
             </button>
           </div>
 
           {/* Progress bar */}
-          <div className="mt-4 border border-slate-200 rounded-lg p-4 bg-white">
+          <div className="mt-4 border border-black/[0.08] rounded-lg p-4 bg-white">
             <div className="flex items-center justify-between text-sm mb-2">
-              <span className="text-slate-600">
+              <span className="text-black/60">
                 {fmt(raised())} raised of {fmt(activeRound.target)}
               </span>
-              <span className="font-medium text-slate-900">{pct}%</span>
+              <span className="font-medium text-black">{pct}%</span>
             </div>
-            <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
+            <div className="w-full h-3 bg-black/[0.04] rounded-full overflow-hidden">
               <div
                 className="h-full bg-black rounded-full transition-all duration-500"
                 style={{ width: `${pct}%` }}
@@ -290,7 +290,7 @@ export default function Page() {
 
           {/* Investor pipeline */}
           <div className="mt-6 flex items-center justify-between">
-            <h3 className="text-sm font-medium text-slate-900">
+            <h3 className="text-sm font-medium text-black">
               Investor Pipeline ({roundInvestors.length})
             </h3>
             <button
@@ -298,7 +298,7 @@ export default function Page() {
                 resetInvestorForm();
                 setShowInvestorForm(true);
               }}
-              className="text-sm text-slate-600 hover:text-black"
+              className="text-sm text-black/60 hover:text-black"
             >
               + Add Investor
             </button>
@@ -306,33 +306,33 @@ export default function Page() {
 
           {/* Investor form */}
           {showInvestorForm && (
-            <div className="mt-3 border border-slate-200 rounded-lg p-4 bg-white">
-              <h3 className="text-sm font-medium text-slate-900 mb-3">
+            <div className="mt-3 border border-black/[0.08] rounded-lg p-4 bg-white">
+              <h3 className="text-sm font-medium text-black mb-3">
                 {editingInvestor ? "Edit Investor" : "Add Investor"}
               </h3>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Name</label>
+                  <label className="block text-xs text-black/50 mb-1">Name</label>
                   <input
                     value={iName}
                     onChange={(e) => setIName(e.target.value)}
-                    className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                    className="w-full border border-black/[0.08] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Firm</label>
+                  <label className="block text-xs text-black/50 mb-1">Firm</label>
                   <input
                     value={iFirm}
                     onChange={(e) => setIFirm(e.target.value)}
-                    className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                    className="w-full border border-black/[0.08] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Status</label>
+                  <label className="block text-xs text-black/50 mb-1">Status</label>
                   <select
                     value={iStatus}
                     onChange={(e) => setIStatus(e.target.value as Investor["status"])}
-                    className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black bg-white"
+                    className="w-full border border-black/[0.08] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black bg-white"
                   >
                     {Object.entries(STATUS_LABELS).map(([k, v]) => (
                       <option key={k} value={k}>{v}</option>
@@ -340,28 +340,28 @@ export default function Page() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-500 mb-1">Amount ($)</label>
+                  <label className="block text-xs text-black/50 mb-1">Amount ($)</label>
                   <input
                     type="number"
                     value={iAmount}
                     onChange={(e) => setIAmount(e.target.value)}
-                    className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                    className="w-full border border-black/[0.08] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                   />
                 </div>
               </div>
               <div className="mt-3">
-                <label className="block text-xs text-slate-500 mb-1">Notes</label>
+                <label className="block text-xs text-black/50 mb-1">Notes</label>
                 <textarea
                   value={iNotes}
                   onChange={(e) => setINotes(e.target.value)}
                   rows={2}
-                  className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black resize-none"
+                  className="w-full border border-black/[0.08] rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black resize-none"
                 />
               </div>
               <div className="flex gap-2 mt-3">
                 <button
                   onClick={saveInvestor}
-                  className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-slate-800"
+                  className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-black/80"
                 >
                   {editingInvestor ? "Update" : "Add"}
                 </button>
@@ -370,7 +370,7 @@ export default function Page() {
                     setShowInvestorForm(false);
                     resetInvestorForm();
                   }}
-                  className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900"
+                  className="px-4 py-2 text-sm text-black/60 hover:text-black"
                 >
                   Cancel
                 </button>
@@ -381,18 +381,18 @@ export default function Page() {
           {/* Investor list */}
           <div className="mt-3 space-y-2">
             {roundInvestors.length === 0 && (
-              <p className="text-sm text-slate-400 py-4 text-center">No investors yet. Add your first investor above.</p>
+              <p className="text-sm text-black/40 py-4 text-center">No investors yet. Add your first investor above.</p>
             )}
             {roundInvestors.map((inv) => (
               <div
                 key={inv.id}
-                className="border border-slate-200 rounded-lg p-3 bg-white flex items-start justify-between gap-3"
+                className="border border-black/[0.08] rounded-lg p-3 bg-white flex items-start justify-between gap-3"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-slate-900">{inv.name}</span>
+                    <span className="text-sm font-medium text-black">{inv.name}</span>
                     {inv.firm && (
-                      <span className="text-xs text-slate-500">{inv.firm}</span>
+                      <span className="text-xs text-black/50">{inv.firm}</span>
                     )}
                   </div>
                   <div className="flex items-center gap-2 mt-1">
@@ -400,23 +400,23 @@ export default function Page() {
                       {STATUS_LABELS[inv.status]}
                     </span>
                     {inv.amount > 0 && (
-                      <span className="text-xs text-slate-600">{fmt(inv.amount)}</span>
+                      <span className="text-xs text-black/60">{fmt(inv.amount)}</span>
                     )}
                   </div>
                   {inv.notes && (
-                    <p className="text-xs text-slate-500 mt-1 truncate">{inv.notes}</p>
+                    <p className="text-xs text-black/50 mt-1 truncate">{inv.notes}</p>
                   )}
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
                   <button
                     onClick={() => openEditInvestor(inv)}
-                    className="text-xs text-slate-400 hover:text-slate-700 px-1"
+                    className="text-xs text-black/40 hover:text-black/70 px-1"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => deleteInvestor(inv.id)}
-                    className="text-xs text-slate-400 hover:text-slate-900 px-1"
+                    className="text-xs text-black/40 hover:text-black px-1"
                   >
                     Delete
                   </button>
@@ -429,10 +429,10 @@ export default function Page() {
 
       {rounds.length === 0 && !showRoundForm && (
         <div className="mt-12 text-center">
-          <p className="text-sm text-slate-500">No fundraising rounds yet.</p>
+          <p className="text-sm text-black/50">No fundraising rounds yet.</p>
           <button
             onClick={() => setShowRoundForm(true)}
-            className="mt-3 px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-slate-800"
+            className="mt-3 px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-black/80"
           >
             Create Your First Round
           </button>

@@ -189,12 +189,12 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
         onClick={() => navigateTo(item.href)}
         className={`group flex w-full items-center gap-3 px-3 py-[7px] text-left transition-colors duration-100 ${
           active
-            ? "text-indigo-600 font-medium"
-            : "text-slate-700 hover:text-slate-900"
+            ? "text-black font-medium"
+            : "text-black/70 hover:text-black"
         }`}
       >
         <span className={`flex h-4 w-4 shrink-0 items-center justify-center ${
-          active ? "text-indigo-600" : "text-slate-400 group-hover:text-slate-600"
+          active ? "text-black" : "text-black/40 group-hover:text-black/60"
         }`}>
           {item.icon}
         </span>
@@ -213,20 +213,20 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
         onClick={disabled ? undefined : () => navigateTo(item.href)}
         className={`flex w-full items-center pl-9 pr-3 py-[5px] text-left transition-colors duration-100 ${
           disabled
-            ? "text-slate-300 cursor-default"
+            ? "text-black/30 cursor-default"
             : active
-              ? "text-indigo-600 font-medium"
-              : "text-slate-600 hover:text-slate-900"
+              ? "text-black font-medium"
+              : "text-black/60 hover:text-black"
         }`}
       >
         <span className="flex-1 truncate text-[14px]">{item.label}</span>
         {disabled && (
-          <span className="shrink-0 bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-400">
+          <span className="shrink-0 bg-black/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-black/40">
             Soon
           </span>
         )}
         {!disabled && item.count !== undefined && item.count > 0 && (
-          <span className="shrink-0 bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+          <span className="shrink-0 bg-black/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-black/60">
             {item.count}
           </span>
         )}
@@ -245,12 +245,12 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
           onClick={() => toggleGroup(group.id)}
           className={`flex w-full items-center gap-3 px-3 py-[7px] text-left transition-colors duration-100 ${
             hasActive
-              ? "text-slate-900 font-medium"
-              : "text-slate-700 hover:text-slate-900"
+              ? "text-black font-medium"
+              : "text-black/70 hover:text-black"
           }`}
         >
           <span className={`flex h-4 w-4 shrink-0 items-center justify-center ${
-            hasActive ? "text-slate-900" : "text-slate-400"
+            hasActive ? "text-black" : "text-black/40"
           }`}>
             {group.icon}
           </span>
@@ -270,13 +270,13 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
   const sidebarContent = (
     <>
       {/* Header */}
-      <div className="flex h-14 items-center justify-between px-4 border-b border-slate-200">
-        <span className="text-[14px] font-bold tracking-tight text-slate-900">
-          1 Person Co.
+      <div className="flex h-14 items-center justify-between px-4 border-b border-black/[0.06]">
+        <span className="font-heading text-[18px] italic font-extralight tracking-[-0.02em] text-black">
+          1P
         </span>
         <button
           onClick={onOpenCommandBar}
-          className="flex h-7 w-7 items-center justify-center text-slate-400 hover:text-slate-600 transition-colors"
+          className="flex h-7 w-7 items-center justify-center text-black/40 hover:text-black/60 transition-colors"
           aria-label="Search"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -295,7 +295,7 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
       </nav>
 
       {/* Bottom section */}
-      <div className="border-t border-slate-200 px-1 py-2">
+      <div className="border-t border-black/[0.06] px-1 py-2">
         {nav.bottom.map(renderTopItem)}
       </div>
     </>
@@ -304,14 +304,14 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
   return (
     <>
       {/* Desktop */}
-      <aside className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 z-30 w-[220px] border-r border-slate-200 bg-white">
+      <aside className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 z-30 w-[220px] border-r border-black/[0.06] bg-white">
         {sidebarContent}
       </aside>
 
       {/* Mobile hamburger */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="fixed left-3 top-3 z-40 flex h-10 w-10 items-center justify-center text-slate-500 hover:text-slate-600 md:hidden"
+        className="fixed left-3 top-3 z-40 flex h-10 w-10 items-center justify-center text-black/50 hover:text-black/60 md:hidden"
         aria-label="Open menu"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -321,9 +321,9 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
 
       {/* Mobile overlay */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-black/20 md:hidden" onClick={() => setMobileOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-black/10 md:hidden" onClick={() => setMobileOpen(false)} />
       )}
-      <aside className={`fixed left-0 top-0 bottom-0 z-50 flex w-[220px] flex-col border-r border-slate-200 bg-white transition-transform duration-200 md:hidden ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside className={`fixed left-0 top-0 bottom-0 z-50 flex w-[220px] flex-col border-r border-black/[0.06] bg-white transition-transform duration-200 md:hidden ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
         {sidebarContent}
       </aside>
     </>

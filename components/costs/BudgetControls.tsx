@@ -76,7 +76,7 @@ function BudgetControls({
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-2">
-            <label className="text-sm text-slate-500">
+            <label className="text-sm text-black/50">
               Alert when spending reaches {threshold}% of daily budget
             </label>
             <input
@@ -86,9 +86,9 @@ function BudgetControls({
               step="5"
               value={threshold}
               onChange={(e) => setThreshold(parseInt(e.target.value))}
-              className="w-full accent-slate-100"
+              className="w-full accent-black/[0.04]"
             />
-            <div className="flex justify-between text-xs text-slate-500">
+            <div className="flex justify-between text-xs text-black/50">
               <span>50%</span>
               <span>100%</span>
             </div>
@@ -120,7 +120,7 @@ function BudgetControls({
                       }
                     />
                   </div>
-                  <span className="pb-2 text-xs text-slate-500">
+                  <span className="pb-2 text-xs text-black/50">
                     /day
                   </span>
                 </div>

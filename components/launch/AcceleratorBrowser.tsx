@@ -91,17 +91,17 @@ export function AcceleratorBrowser({ programs, profile }: AcceleratorBrowserProp
   return (
     <div className="mx-auto max-w-2xl px-6 py-8">
       <div className="mb-8">
-        <h1 className="text-base font-semibold text-slate-900">
+        <h1 className="text-base font-semibold text-black">
           Accelerator Programs
         </h1>
-        <p className="mt-1 text-[13px] text-slate-500">
+        <p className="mt-1 text-[13px] text-black/50">
           Browse programs and find your best match
         </p>
       </div>
 
       {!profile ? (
-        <div className="flex items-center justify-center border border-slate-200 px-4 py-12">
-          <p className="text-[13px] text-slate-500">
+        <div className="flex items-center justify-center border border-black/[0.08] px-4 py-12">
+          <p className="text-[13px] text-black/50">
             Complete your founder onboarding to get personalized accelerator
             matches.
           </p>
@@ -115,8 +115,8 @@ export function AcceleratorBrowser({ programs, profile }: AcceleratorBrowserProp
           </div>
 
           {programs.length === 0 ? (
-            <div className="flex items-center justify-center border border-slate-200 px-4 py-12">
-              <p className="text-[13px] text-slate-500">
+            <div className="flex items-center justify-center border border-black/[0.08] px-4 py-12">
+              <p className="text-[13px] text-black/50">
                 No accelerator programs available yet.
               </p>
             </div>
@@ -132,13 +132,13 @@ export function AcceleratorBrowser({ programs, profile }: AcceleratorBrowserProp
                       <div className="flex items-start justify-between">
                         <CardTitle>{program.name}</CardTitle>
                         {score != null && (
-                          <span className="text-xs font-medium text-slate-700 tabular-nums">
+                          <span className="text-xs font-medium text-black/70 tabular-nums">
                             {score}% match
                           </span>
                         )}
                       </div>
                       {program.description && (
-                        <p className="mt-1 text-[13px] text-slate-500">
+                        <p className="mt-1 text-[13px] text-black/50">
                           {program.description}
                         </p>
                       )}
@@ -146,48 +146,48 @@ export function AcceleratorBrowser({ programs, profile }: AcceleratorBrowserProp
                     <CardContent>
                       {score != null && (
                         <div className="mb-4">
-                          <div className="h-1.5 w-full bg-slate-100">
+                          <div className="h-1.5 w-full bg-black/[0.04]">
                             <div
-                              className="h-1.5 bg-slate-900 transition-all duration-150"
+                              className="h-1.5 bg-black transition-all duration-150"
                               style={{ width: `${Math.min(score, 100)}%` }}
                             />
                           </div>
                           {reasons.length > 0 && (
-                            <p className="mt-1.5 text-xs text-slate-400">
+                            <p className="mt-1.5 text-xs text-black/40">
                               {reasons.join(" · ")}
                             </p>
                           )}
                         </div>
                       )}
 
-                      <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500">
+                      <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-black/50">
                         {program.investment_amount != null && (
                           <div>
-                            <span className="text-slate-400">Investment: </span>
-                            <span className="text-slate-700">
+                            <span className="text-black/40">Investment: </span>
+                            <span className="text-black/70">
                               {formatCurrency(program.investment_amount)}
                             </span>
                           </div>
                         )}
                         {program.equity_taken != null && (
                           <div>
-                            <span className="text-slate-400">Equity: </span>
-                            <span className="text-slate-700">
+                            <span className="text-black/40">Equity: </span>
+                            <span className="text-black/70">
                               {program.equity_taken}%
                             </span>
                           </div>
                         )}
                         {program.program_length_weeks != null && (
                           <div>
-                            <span className="text-slate-400">Length: </span>
-                            <span className="text-slate-700">
+                            <span className="text-black/40">Length: </span>
+                            <span className="text-black/70">
                               {program.program_length_weeks} weeks
                             </span>
                           </div>
                         )}
                         <div>
-                          <span className="text-slate-400">Deadline: </span>
-                          <span className="text-slate-700">
+                          <span className="text-black/40">Deadline: </span>
+                          <span className="text-black/70">
                             {program.deadline
                               ? new Date(program.deadline).toLocaleDateString(
                                   "en-US",
@@ -201,10 +201,10 @@ export function AcceleratorBrowser({ programs, profile }: AcceleratorBrowserProp
                       {program.notable_alumni &&
                         program.notable_alumni.length > 0 && (
                           <div className="mt-3">
-                            <span className="text-xs text-slate-400">
+                            <span className="text-xs text-black/40">
                               Notable alumni:{" "}
                             </span>
-                            <span className="text-xs text-slate-600">
+                            <span className="text-xs text-black/60">
                               {program.notable_alumni.join(", ")}
                             </span>
                           </div>
@@ -232,7 +232,7 @@ export function AcceleratorBrowser({ programs, profile }: AcceleratorBrowserProp
         </>
       )}
 
-      <p className="mt-12 text-xs text-slate-400 leading-relaxed">
+      <p className="mt-12 text-xs text-black/40 leading-relaxed">
         Program details are sourced from public information. Verify deadlines
         and terms on official program websites.
       </p>

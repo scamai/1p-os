@@ -60,7 +60,7 @@ function ProjectForm({ onClose, prefill }: ProjectFormProps) {
         placeholder="Client name"
       />
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="description" className="text-sm font-medium text-slate-600">
+        <label htmlFor="description" className="text-sm font-medium text-black/60">
           Description
         </label>
         <textarea
@@ -69,7 +69,7 @@ function ProjectForm({ onClose, prefill }: ProjectFormProps) {
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Project description"
           rows={3}
-          className="w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+          className="w-full rounded-md border border-black/[0.08] bg-transparent px-3 py-2 text-sm text-black placeholder:text-black/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/30"
         />
       </div>
       <Input
@@ -88,7 +88,7 @@ function ProjectForm({ onClose, prefill }: ProjectFormProps) {
         onChange={(e) => setStartDate(e.target.value)}
       />
       {error && (
-        <p className="text-sm text-slate-500">{error}</p>
+        <p className="text-sm text-black/50">{error}</p>
       )}
       <div className="flex items-center justify-end gap-3 pt-2">
         <Button type="button" variant="ghost" onClick={onClose}>

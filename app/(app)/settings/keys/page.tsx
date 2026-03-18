@@ -71,8 +71,8 @@ export default function ApiKeysPage() {
     return (
       <div className="mx-auto max-w-2xl">
         <div className="animate-pulse space-y-4">
-          <div className="h-6 w-48 rounded bg-slate-100" />
-          <div className="h-32 rounded bg-slate-100" />
+          <div className="h-6 w-48 rounded bg-black/[0.04]" />
+          <div className="h-32 rounded bg-black/[0.04]" />
         </div>
       </div>
     );
@@ -80,10 +80,10 @@ export default function ApiKeysPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="mb-1 text-lg font-semibold text-slate-900">
+      <h1 className="mb-1 text-lg font-semibold text-black">
         AI Infrastructure
       </h1>
-      <p className="mb-6 text-sm text-slate-500">
+      <p className="mb-6 text-sm text-black/50">
         Choose how your agents access AI models.
       </p>
 
@@ -92,8 +92,8 @@ export default function ApiKeysPage() {
         <CardContent className="p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-slate-500">Current mode</p>
-              <p className="text-sm font-semibold text-slate-900">
+              <p className="text-xs text-black/50">Current mode</p>
+              <p className="text-sm font-semibold text-black">
                 {infraMode === "cloud" ? "1P OS Cloud (Smart Router)" : "Bring Your Own Keys"}
               </p>
             </div>
@@ -103,28 +103,28 @@ export default function ApiKeysPage() {
           </div>
 
           {infraMode === "cloud" ? (
-            <div className="mt-3 rounded-md bg-slate-50 p-3">
-              <p className="text-xs text-slate-600">
+            <div className="mt-3 rounded-md bg-black/[0.02] p-3">
+              <p className="text-xs text-black/60">
                 All AI calls route through 1P OS. We pick the best model for each task automatically.
                 No API keys needed.
               </p>
               <button
                 type="button"
                 onClick={switchToBYOK}
-                className="mt-2 text-xs font-medium text-slate-900 underline underline-offset-2 hover:text-slate-600 transition-colors"
+                className="mt-2 text-xs font-medium text-black underline underline-offset-2 hover:text-black/60 transition-colors"
               >
                 Switch to Bring Your Own Keys
               </button>
             </div>
           ) : (
-            <div className="mt-3 rounded-md bg-slate-50 p-3">
-              <p className="text-xs text-slate-600">
+            <div className="mt-3 rounded-md bg-black/[0.02] p-3">
+              <p className="text-xs text-black/60">
                 You manage your own API keys and billing with each provider.
               </p>
               <button
                 type="button"
                 onClick={switchToCloud}
-                className="mt-2 text-xs font-medium text-slate-900 underline underline-offset-2 hover:text-slate-600 transition-colors"
+                className="mt-2 text-xs font-medium text-black underline underline-offset-2 hover:text-black/60 transition-colors"
               >
                 Switch to 1P OS Cloud (no keys needed)
               </button>
@@ -142,10 +142,10 @@ export default function ApiKeysPage() {
               Save Keys
             </Button>
             {saved && (
-              <span className="text-sm text-slate-700">Saved!</span>
+              <span className="text-sm text-black/70">Saved!</span>
             )}
           </div>
-          <p className="mt-2 text-[10px] text-slate-500">
+          <p className="mt-2 text-[10px] text-black/50">
             Keys are encrypted with AES-256-GCM before storage. We never log or expose raw keys.
           </p>
         </>

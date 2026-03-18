@@ -10,21 +10,21 @@ export function OutputNode({ data, selected }: NodeProps) {
   return (
     <div
       className={`min-w-[160px] rounded-xl border-2 bg-white shadow-sm transition-shadow ${
-        selected ? "border-slate-900 shadow-slate-100" : "border-slate-200"
+        selected ? "border-black shadow-black/[0.04]" : "border-black/[0.08]"
       }`}
     >
       {/* Target handle (top) */}
       <Handle
         type="target"
         position={Position.Top}
-        className="!h-3 !w-3 !rounded-full !border-2 !border-slate-400 !bg-white"
+        className="!h-3 !w-3 !rounded-full !border-2 !border-black/40 !bg-white"
       />
 
       <div className="flex items-center gap-2 px-3 py-2.5">
-        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-slate-900 text-[11px] text-white">
+        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-black text-[11px] text-white">
           ✓
         </div>
-        <p className="text-[12px] font-semibold text-slate-800">{d.label}</p>
+        <p className="text-[12px] font-semibold text-black/80">{d.label}</p>
       </div>
     </div>
   );

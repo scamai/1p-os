@@ -30,13 +30,13 @@ function TemplateCard({
   onPreview: (t: LegalTemplate) => void;
 }) {
   return (
-    <div className="group border border-slate-200 rounded-md bg-white p-5 transition-colors duration-150 hover:border-slate-300">
+    <div className="group border border-black/[0.08] rounded-md bg-white p-5 transition-colors duration-150 hover:border-black/30">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h3 className="text-sm font-semibold text-slate-900">
+          <h3 className="text-sm font-semibold text-black">
             {template.title}
           </h3>
-          <p className="mt-1 text-[13px] text-slate-500 leading-relaxed">
+          <p className="mt-1 text-[13px] text-black/50 leading-relaxed">
             {fillText(template.description, data)}
           </p>
         </div>
@@ -84,8 +84,8 @@ function PreviewModal({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 p-4 pt-12 pb-12">
       <div className="w-full max-w-2xl rounded-md bg-white shadow-xl">
-        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-          <h2 className="text-sm font-semibold text-slate-900">
+        <div className="flex items-center justify-between border-b border-black/[0.08] px-6 py-4">
+          <h2 className="text-sm font-semibold text-black">
             {template.title}
           </h2>
           <div className="flex items-center gap-2">
@@ -98,7 +98,7 @@ function PreviewModal({
             </Button>
             <button
               onClick={onClose}
-              className="p-1 text-slate-400 hover:text-slate-600 transition-colors"
+              className="p-1 text-black/40 hover:text-black/60 transition-colors"
             >
               <svg
                 className="h-5 w-5"
@@ -120,18 +120,18 @@ function PreviewModal({
           {template.sections.map((section, i) => (
             <div key={i} className={i > 0 ? "mt-6" : ""}>
               {section.heading && (
-                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-2">
+                <h3 className="text-xs font-bold text-black uppercase tracking-wide mb-2">
                   {fillText(section.heading, data)}
                 </h3>
               )}
-              <div className="text-[13px] text-slate-700 leading-relaxed whitespace-pre-line">
+              <div className="text-[13px] text-black/70 leading-relaxed whitespace-pre-line">
                 {fillText(section.body, data)}
               </div>
             </div>
           ))}
         </div>
-        <div className="border-t border-slate-200 px-6 py-3">
-          <p className="text-xs text-slate-400">
+        <div className="border-t border-black/[0.08] px-6 py-3">
+          <p className="text-xs text-black/40">
             Not legal advice. Have a lawyer review before signing.
           </p>
         </div>
@@ -160,11 +160,11 @@ export function TemplateBrowser({ initialData }: TemplateBrowserProps) {
     <div className="mx-auto max-w-2xl px-6 py-8">
       {/* Hero */}
       <div className="mb-10">
-        <h1 className="text-base font-semibold text-slate-900">Templates</h1>
-        <p className="mt-2 text-[15px] text-slate-700 leading-relaxed">
+        <h1 className="text-base font-semibold text-black">Templates</h1>
+        <p className="mt-2 text-[15px] text-black/70 leading-relaxed">
           What costs $10,000 from a lawyer. Free.
         </p>
-        <p className="mt-1 text-[13px] text-slate-500 leading-relaxed">
+        <p className="mt-1 text-[13px] text-black/50 leading-relaxed">
           Board consent, stock purchase agreement, 83(b) election, IP
           assignment, CIIA, mutual NDA, contractor agreement, co-founder
           agreement — auto-filled with your details, downloaded as PDF, MIT
@@ -173,8 +173,8 @@ export function TemplateBrowser({ initialData }: TemplateBrowserProps) {
       </div>
 
       {/* Auto-fill fields */}
-      <div className="mb-8 border border-slate-200 rounded-md bg-slate-50/50 p-5">
-        <p className="text-xs font-medium text-slate-500 uppercase tracking-widest mb-4">
+      <div className="mb-8 border border-black/[0.08] rounded-md bg-black/[0.02]/50 p-5">
+        <p className="text-xs font-medium text-black/50 uppercase tracking-widest mb-4">
           Auto-fill details
         </p>
         <div className="grid grid-cols-3 gap-3">
@@ -213,8 +213,8 @@ export function TemplateBrowser({ initialData }: TemplateBrowserProps) {
       </div>
 
       {/* Footer */}
-      <div className="mt-10 border-t border-slate-100 pt-6">
-        <p className="text-xs text-slate-400 leading-relaxed">
+      <div className="mt-10 border-t border-black/[0.04] pt-6">
+        <p className="text-xs text-black/40 leading-relaxed">
           Templates are MIT licensed and provided for educational purposes. Have
           a lawyer review any legal documents before signing. Update them
           whenever you want.

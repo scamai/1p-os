@@ -82,9 +82,9 @@ function CoreBanner({ section, onAction }: CoreBannerProps) {
     <div className="mb-4 space-y-2">
       {/* Status line */}
       {status && status.alerts > 0 && (
-        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-4 py-2">
-          <span className="h-2 w-2 rounded-full bg-slate-900" />
-          <span className="text-xs text-slate-600">{status.summary}</span>
+        <div className="flex items-center gap-2 rounded-lg border border-black/[0.08] bg-black/[0.02] px-4 py-2">
+          <span className="h-2 w-2 rounded-full bg-black" />
+          <span className="text-xs text-black/60">{status.summary}</span>
         </div>
       )}
 
@@ -94,23 +94,23 @@ function CoreBanner({ section, onAction }: CoreBannerProps) {
           key={insight.id}
           className={`flex items-start justify-between rounded-lg border px-4 py-3 ${
             insight.priority === "high"
-              ? "border-slate-300 bg-slate-50"
-              : "border-slate-200 bg-white"
+              ? "border-black/30 bg-black/[0.02]"
+              : "border-black/[0.08] bg-white"
           }`}
         >
           <div className="flex items-start gap-3 min-w-0">
             <span
               className={`mt-0.5 h-2 w-2 shrink-0 rounded-full ${
                 insight.type === "alert"
-                  ? "bg-slate-900"
+                  ? "bg-black"
                   : insight.type === "suggestion"
-                    ? "bg-slate-500"
-                    : "bg-slate-300"
+                    ? "bg-black/50"
+                    : "bg-black/30"
               }`}
             />
             <div className="min-w-0">
-              <p className="text-sm font-medium text-slate-900">{insight.title}</p>
-              <p className="mt-0.5 text-xs text-slate-500 truncate">{insight.detail}</p>
+              <p className="text-sm font-medium text-black">{insight.title}</p>
+              <p className="mt-0.5 text-xs text-black/50 truncate">{insight.detail}</p>
             </div>
           </div>
 
@@ -118,14 +118,14 @@ function CoreBanner({ section, onAction }: CoreBannerProps) {
             {insight.action && onAction && (
               <button
                 onClick={() => handleAction(insight)}
-                className="text-xs font-medium text-slate-900 hover:text-slate-600 transition-colors"
+                className="text-xs font-medium text-black hover:text-black/60 transition-colors"
               >
                 {insight.action.label}
               </button>
             )}
             <button
               onClick={() => dismiss(insight.id)}
-              className="text-slate-300 hover:text-slate-500 transition-colors"
+              className="text-black/30 hover:text-black/50 transition-colors"
               aria-label="Dismiss"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

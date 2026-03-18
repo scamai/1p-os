@@ -2,9 +2,9 @@ import * as React from "react";
 
 const variants = {
   default:
-    "bg-slate-100 text-slate-700",
+    "bg-black/[0.04] text-black/70",
   accent:
-    "bg-indigo-50 text-indigo-700",
+    "bg-black/[0.04] text-black/70",
   success:
     "bg-emerald-50 text-emerald-700",
   warning:
@@ -12,7 +12,7 @@ const variants = {
   destructive:
     "bg-red-50 text-red-700",
   outline:
-    "border border-slate-200 text-slate-600 bg-transparent",
+    "border border-black/[0.06] text-black/60 bg-transparent",
 } as const;
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
