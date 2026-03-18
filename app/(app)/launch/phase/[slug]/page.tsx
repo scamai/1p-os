@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { getUserId } from "@/lib/supabase/dev-user";
 import { PhaseView } from "@/components/launch/PhaseView";
 
 interface PhasePageProps {
@@ -12,13 +13,14 @@ export default async function PhasePage({ params }: PhasePageProps) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
+  if (!user && process.env.DEV_BYPASS !== "true") redirect("/auth/login");
+  const userId = getUserId(user);
 
   // Fetch founder profile
   const { data: profile } = await supabase
     .from("founder_profiles")
     .select("*")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .single();
 
   if (!profile) redirect("/launch/onboarding");
@@ -44,7 +46,7 @@ export default async function PhasePage({ params }: PhasePageProps) {
   const { data: progress } = await supabase
     .from("user_launch_progress")
     .select("*")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .in("step_id", stepIds);
 
   return (

@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { getUserId } from "@/lib/supabase/dev-user";
 import { InvestorBrowser } from "@/components/launch/InvestorBrowser";
 
 export default async function InvestorsPage() {
@@ -7,7 +8,8 @@ export default async function InvestorsPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
+  if (!user && process.env.DEV_BYPASS !== "true") redirect("/auth/login");
+  const userId = getUserId(user);
 
   const { data: investors } = await supabase
     .from("investor_database")
@@ -19,7 +21,7 @@ export default async function InvestorsPage() {
   const { data: tracking } = await supabase
     .from("user_investor_tracking")
     .select("*")
-    .eq("user_id", user.id);
+    .eq("user_id", userId);
 
   return <InvestorBrowser investors={investors ?? []} tracking={tracking ?? []} />;
 }

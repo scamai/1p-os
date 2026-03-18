@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { getUserId } from "@/lib/supabase/dev-user";
 import { TeamView } from "./TeamView";
 
 export default async function TeamPage() {
@@ -8,12 +9,13 @@ export default async function TeamPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/auth/login");
+  if (!user && process.env.DEV_BYPASS !== "true") redirect("/auth/login");
+  const userId = getUserId(user);
 
   const { data: business } = await supabase
     .from("businesses")
     .select("id")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .single();
 
   const { data: agents } = await supabase

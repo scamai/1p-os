@@ -8,7 +8,7 @@ export default async function CompanyPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/auth/login");
+  if (!user && process.env.DEV_BYPASS !== "true") redirect("/auth/login");
 
   return <HQPage />;
 }

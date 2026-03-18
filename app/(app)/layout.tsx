@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { getUserId } from "@/lib/supabase/dev-user";
 import { AppShell } from "./AppShell";
 
 export default async function AppLayout({
@@ -12,9 +13,10 @@ export default async function AppLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
+  if (!user && process.env.DEV_BYPASS !== "true") {
     redirect("/auth/login");
   }
+  const userId = getUserId(user);
 
   // Fetch business data for header — may not exist for new users
   let business = null;
@@ -33,7 +35,7 @@ export default async function AppLayout({
     const { data } = await supabase
       .from("businesses")
       .select("*")
-      .eq("user_id", user.id)
+      .eq("user_id", userId)
       .single();
     business = data;
     businessId = business?.id ?? "";

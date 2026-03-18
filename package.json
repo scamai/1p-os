@@ -33,6 +33,7 @@
     "cloudflare": "^5.2.0",
     "dagre": "^0.8.5",
     "groq-sdk": "^1.1.1",
+    "jspdf": "^4.2.1",
     "mem0ai": "^2.3.0",
     "neo4j-driver": "^6.0.1",
     "next": "^14.2.35",

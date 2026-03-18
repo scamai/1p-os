@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { getUserId } from "@/lib/supabase/dev-user";
 import { StepView } from "@/components/launch/StepView";
 
 interface StepPageProps {
@@ -12,13 +13,14 @@ export default async function StepPage({ params }: StepPageProps) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/auth/login");
+  if (!user && process.env.DEV_BYPASS !== "true") redirect("/auth/login");
+  const userId = getUserId(user);
 
   // Fetch founder profile
   const { data: profile } = await supabase
     .from("founder_profiles")
     .select("*")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .single();
 
   if (!profile) redirect("/launch/onboarding");
@@ -46,7 +48,7 @@ export default async function StepPage({ params }: StepPageProps) {
   const { data: progressArr } = await supabase
     .from("user_launch_progress")
     .select("*")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .eq("step_id", step.id);
 
   const progress = progressArr?.[0] ?? null;
@@ -64,7 +66,7 @@ export default async function StepPage({ params }: StepPageProps) {
       step={step}
       progress={progress}
       allSteps={allSteps ?? []}
-      userId={user.id}
+      userId={userId}
     />
   );
 }
