@@ -98,7 +98,7 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
         id: "money",
         label: "Money",
         icon: <DollarIcon />,
-        defaultOpen: true,
+        defaultOpen: false,
         items: [
           { id: "fundraising", icon: <RocketIcon />, label: "Fundraising", href: "/money/fundraising" },
           { id: "runrate", icon: <TrendIcon />, label: "Runrate", href: "/money/runrate" },
@@ -112,7 +112,7 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
         id: "business",
         label: "Business",
         icon: <MapIcon />,
-        defaultOpen: true,
+        defaultOpen: false,
         items: [
           { id: "biz-model", icon: <LayersIcon />, label: "Business Model", href: "/business/model" },
           { id: "pricing", icon: <TagIcon />, label: "Pricing Strategy", href: "/business/pricing" },
@@ -125,7 +125,7 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
         id: "legal",
         label: "Legal",
         icon: <ShieldIcon />,
-        defaultOpen: true,
+        defaultOpen: false,
         items: [
           { id: "contracts", icon: <FileIcon />, label: "Templates", href: "/legal/contracts" },
           { id: "legal-safes", icon: <TagIcon />, label: "SAFEs", href: "/legal/safes" },
