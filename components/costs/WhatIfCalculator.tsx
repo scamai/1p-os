@@ -43,7 +43,7 @@ function WhatIfCalculator() {
           setEstimate(data);
         }
       } catch (err) {
-        console.error("[WhatIfCalculator] Failed to fetch estimate:", err);
+        // silent
       } finally {
         if (!cancelled) setLoading(false);
       }

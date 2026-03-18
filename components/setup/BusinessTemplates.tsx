@@ -141,7 +141,7 @@ function BusinessTemplates({ onApply }: BusinessTemplatesProps) {
       </div>
 
       {error && (
-        <p className="mt-4 text-sm text-red-400">{error}</p>
+        <p className="mt-4 text-sm text-zinc-400">{error}</p>
       )}
 
       <button

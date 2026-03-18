@@ -187,8 +187,8 @@ function buildFlowFromWorkflows(
       source: prevNodeId,
       target: outputId,
       animated: false,
-      style: { stroke: "#22c55e", strokeWidth: 2 },
-      markerEnd: { type: MarkerType.ArrowClosed, color: "#22c55e" },
+      style: { stroke: "#71717a", strokeWidth: 2 },
+      markerEnd: { type: MarkerType.ArrowClosed, color: "#71717a" },
     });
 
     yOffset += 400;
@@ -391,16 +391,16 @@ export function WorkflowCanvas({ departments, workflows }: WorkflowCanvasProps) 
           />
           <MiniMap
             nodeColor={(n) => {
-              if (n.type === "trigger") return "#3b82f6";
-              if (n.type === "output") return "#22c55e";
-              if (n.type === "condition") return "#f59e0b";
+              if (n.type === "trigger") return "#18181b";
+              if (n.type === "output") return "#52525b";
+              if (n.type === "condition") return "#71717a";
               return (n.data as Record<string, unknown>)?.deptColor as string ?? "#71717a";
             }}
             maskColor="rgba(0,0,0,0.08)"
             className="!bg-zinc-50 !border-zinc-200"
           />
           <Panel position="top-right" className="flex gap-2">
-            <span className="rounded-md bg-zinc-900/80 px-2.5 py-1 text-[10px] font-medium text-zinc-300 backdrop-blur-sm">
+            <span className="rounded-md bg-zinc-900/80 px-2.5 py-1 text-[10px] font-medium text-zinc-300">
               Drag nodes from palette · Connect handles · Delete with Backspace
             </span>
           </Panel>

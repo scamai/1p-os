@@ -407,12 +407,12 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[18vh]">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 backdrop-blur-sm"
+        className="fixed inset-0 bg-black/20"
         onClick={onClose}
       />
 
       {/* Modal */}
-      <div className="relative z-10 w-full max-w-[560px] overflow-hidden rounded-2xl border border-zinc-200 bg-white/90 shadow-2xl backdrop-blur-xl">
+      <div className="relative z-10 w-full max-w-[560px] overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-2xl">
         {/* Input row */}
         <div className="flex items-center gap-3 px-5">
           {/* Prompt indicator */}
@@ -437,9 +437,9 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
             onClick={toggleVoice}
             className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-200 ${
               listening
-                ? "bg-red-500 text-white shadow-lg shadow-red-500/25 scale-110"
+                ? "bg-zinc-900 text-white shadow-lg shadow-zinc-900/25 scale-110"
                 : voiceError
-                  ? "bg-red-100 text-red-500"
+                  ? "bg-zinc-200 text-zinc-500"
                   : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200 hover:text-zinc-700"
             }`}
             aria-label={listening ? "Stop" : voiceError ? "Mic not working" : "Voice"}
@@ -468,7 +468,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
             {voice.levels.map((v, i) => (
               <div
                 key={i}
-                className="w-[4px] rounded-full bg-red-400"
+                className="w-[4px] rounded-full bg-zinc-400"
                 style={{
                   height: `${Math.max(3, Math.min(24, 3 + Math.pow(v, 0.6) * 21))}px`,
                   opacity: Math.max(0.3, Math.min(1, v * 2.5)),
@@ -485,18 +485,18 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
         <div className="px-5 py-3">
           {micError ? (
             <div className="flex items-center gap-2.5">
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-200">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#52525b" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
               </div>
-              <span className="text-[13px] text-red-600">{micError}</span>
+              <span className="text-[13px] text-zinc-600">{micError}</span>
             </div>
           ) : executed ? (
             <div className="flex items-center gap-2.5">
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-200">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#18181b" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
               </div>
@@ -588,7 +588,7 @@ function ActionIcon({ action }: { action: string }) {
     case "kill_switch":
     case "pause_agent":
       return (
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-red-500">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-zinc-900">
           <rect x="3" y="3" width="18" height="18" rx="2" /><line x1="9" y1="9" x2="15" y2="15" /><line x1="15" y1="9" x2="9" y2="15" />
         </svg>
       );
@@ -616,13 +616,13 @@ function ActionIcon({ action }: { action: string }) {
       );
     case "approve_decision":
       return (
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-emerald-500">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-zinc-900">
           <polyline points="20 6 9 17 4 12" />
         </svg>
       );
     case "reject_decision":
       return (
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-red-500">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-zinc-900">
           <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       );

@@ -83,10 +83,11 @@ function AgentHireForm({ onClose, prefill }: AgentHireFormProps) {
         required
       />
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-zinc-600">
+        <label htmlFor="agent-description" className="text-sm font-medium text-zinc-600">
           Description of what you need
         </label>
         <textarea
+          id="agent-description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Describe the tasks and responsibilities for this agent..."

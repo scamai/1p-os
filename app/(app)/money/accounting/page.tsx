@@ -181,7 +181,7 @@ export default function Page() {
               </div>
               <button
                 onClick={() => removeItem(section, i)}
-                className="text-xs text-zinc-300 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="text-xs text-zinc-300 hover:text-zinc-900 opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 ×
               </button>

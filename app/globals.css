@@ -9,9 +9,9 @@
   --muted-foreground: #737373;
   --border: #e5e5e5;
   --ring: #18181b;
-  --destructive: #ef4444;
-  --success: #22c55e;
-  --warning: #f59e0b;
+  --destructive: #3f3f46;
+  --success: #3f3f46;
+  --warning: #52525b;
   --accent: #18181b;
   --accent-dim: #a1a1aa;
   --surface: #f7f7f8;
@@ -25,9 +25,17 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-kerning: normal;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular numbers for aligned data columns */
+.font-mono,
+[class*="tabular-nums"] {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Monospace for data */
@@ -50,11 +58,16 @@ body {
   background: rgba(0, 0, 0, 0.15);
 }
 
-/* Glass effect utility */
-.glass {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 @layer utilities {

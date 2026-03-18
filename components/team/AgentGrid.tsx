@@ -68,7 +68,7 @@ function AgentGrid({ agents, onSelect, onDelete, onHireAgent }: AgentGridProps) 
           {/* Confirm delete inline */}
           {confirmId === agent.id && (
             <div
-              className="absolute inset-0 z-10 flex items-center justify-center gap-3 rounded-lg bg-white/95 backdrop-blur-sm"
+              className="absolute inset-0 z-10 flex items-center justify-center gap-3 rounded-lg bg-white/95"
               onClick={(e) => e.stopPropagation()}
             >
               <span className="text-xs text-zinc-500">Delete {agent.name}?</span>

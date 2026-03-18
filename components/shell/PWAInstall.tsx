@@ -60,7 +60,7 @@ export function PWAInstall() {
         </button>
         <button
           onClick={handleInstall}
-          className="rounded bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-emerald-500"
+          className="rounded bg-zinc-700 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-zinc-600"
         >
           Install
         </button>

@@ -35,7 +35,7 @@ function InlineFormSheet({
       {/* Backdrop */}
       <div
         className={`
-          fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-200
+          fixed inset-0 z-40 bg-black/20 transition-opacity duration-200
           ${open ? "opacity-100" : "pointer-events-none opacity-0"}
         `}
         onClick={onClose}
@@ -50,7 +50,7 @@ function InlineFormSheet({
           ${open ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0 pointer-events-none"}
         `}
       >
-        <div className="mx-4 mt-4 max-h-[80vh] overflow-y-auto rounded-xl border border-zinc-200 bg-white/90 shadow-2xl backdrop-blur-xl">
+        <div className="mx-4 mt-4 max-h-[80vh] overflow-y-auto rounded-xl border border-zinc-200 bg-white shadow-2xl">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-zinc-200 px-6 py-4">
             <h2 className="text-sm font-medium text-zinc-600">{title}</h2>

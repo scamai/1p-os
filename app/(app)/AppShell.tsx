@@ -339,7 +339,7 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
       {wizardIntent && (
         <>
           <div
-            className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-black/20"
             onClick={() => setWizardIntent(null)}
           />
           <div className="fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-lg">

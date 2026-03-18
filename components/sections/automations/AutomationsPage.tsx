@@ -230,7 +230,7 @@ function AutomationsPage() {
           </button>
           <button
             onClick={handleDelete}
-            className="rounded-md bg-red-600 px-3 py-1.5 text-xs text-white hover:bg-red-700"
+            className="rounded-md bg-zinc-900 px-3 py-1.5 text-xs text-white hover:bg-zinc-800"
           >
             Delete
           </button>
@@ -299,14 +299,14 @@ function SchedulesTab({
                         <span className="mx-1">&middot;</span>
                         <span>Last: {timeAgo(job.last_run_at)}</span>
                         {job.last_status && (
-                          <span className={job.last_status === "error" ? "text-red-500 ml-1" : "text-emerald-500 ml-1"}>
+                          <span className={job.last_status === "error" ? "text-zinc-900 ml-1" : "text-zinc-900 ml-1"}>
                             ({job.last_status})
                           </span>
                         )}
                       </>
                     )}
                     {job.consecutive_errors > 0 && (
-                      <span className="text-red-500 ml-1">
+                      <span className="text-zinc-900 ml-1">
                         {job.consecutive_errors} error{job.consecutive_errors !== 1 ? "s" : ""}
                       </span>
                     )}
@@ -321,7 +321,7 @@ function SchedulesTab({
                   </button>
                   <button
                     onClick={() => onDelete(job.id, job.name)}
-                    className="text-[11px] text-zinc-400 hover:text-red-500 transition-colors"
+                    className="text-[11px] text-zinc-400 hover:text-zinc-900 transition-colors"
                   >
                     Delete
                   </button>
@@ -407,7 +407,7 @@ function TriggersTab({
                   </button>
                   <button
                     onClick={() => onDelete(trigger.id, trigger.name)}
-                    className="text-[11px] text-zinc-400 hover:text-red-500 transition-colors"
+                    className="text-[11px] text-zinc-400 hover:text-zinc-900 transition-colors"
                   >
                     Delete
                   </button>
@@ -488,7 +488,7 @@ function HistoryTab({
                   {run.status}
                 </Badge>
                 {run.error_message && (
-                  <p className="mt-0.5 text-[10px] text-red-500 truncate max-w-[200px]">
+                  <p className="mt-0.5 text-[10px] text-zinc-900 truncate max-w-[200px]">
                     {run.error_message}
                   </p>
                 )}
@@ -686,7 +686,7 @@ function CreateJobModal({
           onChange={(e) => setMessage(e.target.value)}
         />
 
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        {error && <p className="text-xs text-zinc-800">{error}</p>}
 
         <div className="mt-2 flex items-center justify-end gap-2">
           <button
@@ -845,7 +845,7 @@ function CreateTriggerModal({
           onChange={(e) => setActionMessage(e.target.value)}
         />
 
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        {error && <p className="text-xs text-zinc-800">{error}</p>}
 
         <div className="mt-2 flex items-center justify-end gap-2">
           <button

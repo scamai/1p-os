@@ -22,14 +22,14 @@ function EmptyState({
       {icon && (
         <div className="mb-4 text-zinc-600">{icon}</div>
       )}
-      <p className="text-[13px] text-zinc-600">{title}</p>
+      <p className="text-[13px] font-medium text-zinc-700">{title}</p>
       {description && (
-        <p className="mt-1.5 max-w-sm text-[13px] text-zinc-700">{description}</p>
+        <p className="mt-1.5 max-w-sm text-[13px] text-zinc-500">{description}</p>
       )}
       {action && (
         <button
           onClick={action.onClick}
-          className="mt-4 text-[13px] text-zinc-900 transition-colors duration-200 hover:underline"
+          className="mt-4 text-[13px] text-zinc-900 transition-colors duration-150 hover:underline"
         >
           {action.label}
         </button>

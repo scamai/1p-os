@@ -100,10 +100,10 @@ const INITIAL_PRODUCTS: Product[] = [
 
 function StatusDot({ status }: { status: CodeInstance["status"] }) {
   const colors = {
-    running: "bg-emerald-400",
+    running: "bg-zinc-900",
     stopped: "bg-zinc-300",
-    deploying: "bg-amber-400 animate-pulse",
-    error: "bg-red-400",
+    deploying: "bg-zinc-500 animate-pulse",
+    error: "bg-zinc-900",
   };
   return <span className={`inline-block h-1.5 w-1.5 rounded-full ${colors[status]}`} />;
 }
@@ -380,7 +380,7 @@ function NewProductDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/20" onClick={onClose} />
       <div className="relative z-10 w-full max-w-md rounded-xl border border-zinc-200 bg-white p-6 shadow-xl">
         <h3 className="text-[15px] font-semibold text-zinc-900">New Product</h3>
         <div className="mt-4 flex flex-col gap-3">

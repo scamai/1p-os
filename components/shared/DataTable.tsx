@@ -1,24 +1,24 @@
 import * as React from "react";
 
-interface Column {
+interface Column<T = Record<string, unknown>> {
   key: string;
   label: string;
-  render?: (value: any, row: any) => React.ReactNode;
+  render?: (value: unknown, row: T) => React.ReactNode;
 }
 
-interface DataTableProps {
-  columns: Column[];
-  data: any[];
-  onRowClick?: (row: any) => void;
+interface DataTableProps<T = Record<string, unknown>> {
+  columns: Column<T>[];
+  data: T[];
+  onRowClick?: (row: T) => void;
   emptyMessage?: string;
 }
 
-function DataTable({
+function DataTable<T extends Record<string, unknown>>({
   columns,
   data,
   onRowClick,
   emptyMessage = "No data available",
-}: DataTableProps) {
+}: DataTableProps<T>) {
   if (data.length === 0) {
     return (
       <div className="flex items-center justify-center px-4 py-12">
@@ -47,8 +47,11 @@ function DataTable({
             <tr
               key={rowIndex}
               onClick={onRowClick ? () => onRowClick(row) : undefined}
-              className={`transition-colors duration-200 ${
-                onRowClick ? "cursor-pointer" : ""
+              onKeyDown={onRowClick ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onRowClick(row); } } : undefined}
+              tabIndex={onRowClick ? 0 : undefined}
+              role={onRowClick ? "button" : undefined}
+              className={`transition-colors duration-150 ${
+                onRowClick ? "cursor-pointer focus-visible:outline-none focus-visible:bg-zinc-100" : ""
               } hover:bg-zinc-50`}
             >
               {columns.map((col, colIndex) => (
@@ -60,7 +63,7 @@ function DataTable({
                 >
                   {col.render
                     ? col.render(row[col.key], row)
-                    : (row[col.key] ?? "\u2014")}
+                    : (String(row[col.key] ?? "\u2014"))}
                 </td>
               ))}
             </tr>

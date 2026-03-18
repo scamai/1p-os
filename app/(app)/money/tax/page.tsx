@@ -456,7 +456,7 @@ export default function Page() {
                 </div>
                 <button
                   onClick={() => deleteDeduction(d.id)}
-                  className="text-xs text-zinc-300 hover:text-red-600"
+                  className="text-xs text-zinc-300 hover:text-zinc-900"
                 >
                   ×
                 </button>

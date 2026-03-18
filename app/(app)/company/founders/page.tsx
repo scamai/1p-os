@@ -355,13 +355,13 @@ export default function FoundersPage() {
             </span>
             <span
               className={`text-[13px] font-mono font-semibold ${
-                totalEquity > 100 ? "text-red-600" : "text-zinc-900"
+                totalEquity > 100 ? "text-zinc-800" : "text-zinc-900"
               }`}
             >
               {totalEquity.toFixed(1)}%
             </span>
             {totalEquity > 100 && (
-              <span className="text-[11px] text-red-500">
+              <span className="text-[11px] text-zinc-800">
                 Over-allocated by {(totalEquity - 100).toFixed(1)}%
               </span>
             )}
@@ -436,7 +436,7 @@ export default function FoundersPage() {
                       </button>
                       <button
                         onClick={() => handleDelete(f.id)}
-                        className="rounded px-2 py-1 text-[12px] text-zinc-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                        className="rounded px-2 py-1 text-[12px] text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
                       >
                         Delete
                       </button>

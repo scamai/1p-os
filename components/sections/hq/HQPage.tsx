@@ -96,7 +96,7 @@ function HQPage() {
                   {CATEGORY_LABELS[category]}
                 </span>
                 {!isOpen && (
-                  <span className="text-[11px] text-zinc-300 ml-1">
+                  <span className="text-[11px] text-zinc-400 ml-1">
                     {items.length}
                   </span>
                 )}

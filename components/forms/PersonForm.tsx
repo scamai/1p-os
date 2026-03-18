@@ -85,8 +85,9 @@ function ContactForm({ onClose, prefill }: ContactFormProps) {
         placeholder="email@example.com"
       />
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-zinc-600">Type</label>
+        <label htmlFor="type" className="text-sm font-medium text-zinc-600">Type</label>
         <select
+          id="type"
           value={type}
           onChange={(e) => setType(e.target.value)}
           className="h-9 w-full rounded-md border border-zinc-200 bg-transparent px-3 text-sm text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-300"
@@ -103,8 +104,9 @@ function ContactForm({ onClose, prefill }: ContactFormProps) {
         placeholder="Company name"
       />
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-zinc-600">Notes</label>
+        <label htmlFor="notes" className="text-sm font-medium text-zinc-600">Notes</label>
         <textarea
+          id="notes"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           placeholder="Additional notes"

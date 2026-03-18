@@ -187,7 +187,7 @@ function ConnectAccounts({
 
                   return (
                     <div key={option.id}>
-                      <div className="flex items-center justify-between rounded-lg border border-zinc-200 px-3 py-2.5 transition-colors hover:bg-zinc-50/50">
+                      <div className="flex items-center justify-between border border-zinc-200 px-3 py-2.5 transition-colors hover:bg-zinc-50/50">
                         <div className="flex items-center gap-3">
                           <svg
                             width="16"
@@ -209,7 +209,7 @@ function ConnectAccounts({
                             <p className="text-[11px] text-zinc-500">
                               {active ? (
                                 <>
-                                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 mr-1" />
+                                  <span className="inline-block h-1.5 w-1.5 bg-zinc-900 mr-1" />
                                   {conn.label}
                                 </>
                               ) : (
@@ -225,7 +225,7 @@ function ConnectAccounts({
                               <Badge variant="success">Connected</Badge>
                               <button
                                 onClick={() => onDisconnect(option.id)}
-                                className="text-[11px] text-zinc-400 hover:text-red-500 transition-colors"
+                                className="text-[11px] text-zinc-400 hover:text-zinc-900 transition-colors"
                               >
                                 Disconnect
                               </button>
@@ -252,7 +252,7 @@ function ConnectAccounts({
                       </div>
 
                       {isExpanded && option.fields && (
-                        <div className="ml-7 mt-1 mb-2 rounded-lg border border-zinc-200 bg-zinc-50 p-3">
+                        <div className="ml-7 mt-1 mb-2 border border-zinc-200 bg-zinc-50 p-3">
                           <div className="flex flex-col gap-2">
                             {option.fields.map((field) => (
                               <Input
@@ -294,7 +294,7 @@ function ConnectAccounts({
         })}
       </div>
 
-      <div className="mt-6 rounded-lg border border-zinc-100 bg-zinc-50 p-3">
+      <div className="mt-6 border border-zinc-100 bg-zinc-50 p-3">
         <p className="text-[10px] text-zinc-400">
           Credentials are encrypted with AES-256-GCM. Sensitive actions always require your approval.
           You can connect more accounts anytime in Settings.

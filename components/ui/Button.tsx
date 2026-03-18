@@ -2,13 +2,13 @@ import * as React from "react";
 
 const variants = {
   default:
-    "bg-zinc-900 text-white hover:bg-zinc-800",
+    "bg-zinc-900 text-white hover:bg-zinc-800 active:bg-zinc-950",
   destructive:
-    "bg-zinc-100 text-zinc-900 hover:bg-zinc-200",
+    "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 active:bg-zinc-300",
   outline:
-    "border border-zinc-200 bg-transparent text-zinc-900 hover:bg-zinc-100",
+    "border border-zinc-200 bg-transparent text-zinc-900 hover:bg-zinc-100 active:bg-zinc-200",
   ghost:
-    "bg-transparent text-zinc-900 hover:bg-zinc-100",
+    "bg-transparent text-zinc-900 hover:bg-zinc-100 active:bg-zinc-200",
 } as const;
 
 const sizes = {
@@ -40,7 +40,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={`inline-flex items-center justify-center font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-300 disabled:pointer-events-none disabled:opacity-50 ${variants[variant]} ${sizes[size]} ${className}`}
+        className={`inline-flex items-center justify-center font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50 ${variants[variant]} ${sizes[size]} ${className}`}
         disabled={disabled || loading}
         {...props}
       >

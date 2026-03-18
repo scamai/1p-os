@@ -75,7 +75,7 @@ function BusinessTab() {
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none transition-colors focus:border-zinc-400"
+          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 transition-colors focus:border-zinc-400"
         />
       </label>
 
@@ -84,7 +84,7 @@ function BusinessTab() {
         <select
           value={entity}
           onChange={(e) => setEntity(e.target.value)}
-          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none transition-colors focus:border-zinc-400"
+          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 transition-colors focus:border-zinc-400"
         >
           <option value="llc">LLC</option>
           <option value="corp">Corp</option>
@@ -99,7 +99,7 @@ function BusinessTab() {
           type="text"
           value={industry}
           onChange={(e) => setIndustry(e.target.value)}
-          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none transition-colors focus:border-zinc-400"
+          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 transition-colors focus:border-zinc-400"
         />
       </label>
 
@@ -108,7 +108,7 @@ function BusinessTab() {
         <select
           value={timezone}
           onChange={(e) => setTimezone(e.target.value)}
-          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none transition-colors focus:border-zinc-400"
+          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 transition-colors focus:border-zinc-400"
         >
           <option value="America/New_York">America/New_York</option>
           <option value="America/Chicago">America/Chicago</option>
@@ -126,7 +126,7 @@ function BusinessTab() {
         <select
           value={currency}
           onChange={(e) => setCurrency(e.target.value)}
-          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none transition-colors focus:border-zinc-400"
+          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 transition-colors focus:border-zinc-400"
         >
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
@@ -252,7 +252,7 @@ function SecurityTab() {
             min="0"
             value={budgetDaily}
             onChange={(e) => setBudgetDaily(parseFloat(e.target.value) || 0)}
-            className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus:border-zinc-400"
+            className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 focus:border-zinc-400"
           />
         </label>
         <label className="block">
@@ -263,7 +263,7 @@ function SecurityTab() {
             min="0"
             value={budgetMonthly}
             onChange={(e) => setBudgetMonthly(parseFloat(e.target.value) || 0)}
-            className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus:border-zinc-400"
+            className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 focus:border-zinc-400"
           />
         </label>
       </div>
@@ -306,7 +306,7 @@ function SecurityTab() {
               min="1"
               value={cbThreshold}
               onChange={(e) => setCbThreshold(parseFloat(e.target.value) || 0)}
-              className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus:border-zinc-400"
+              className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 focus:border-zinc-400"
             />
           </label>
         )}
@@ -642,7 +642,7 @@ function AIFeaturesTab() {
                   <p className="text-[13px] text-zinc-500">{feature.name}</p>
                   <p className="text-[11px] text-zinc-400">{feature.desc}</p>
                 </div>
-                <span className="shrink-0 rounded-full bg-zinc-100 px-2 py-0.5 text-[9px] font-medium text-zinc-400">
+                <span className="shrink-0 rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-400">
                   Coming Soon
                 </span>
               </div>

@@ -248,7 +248,7 @@ function AlwaysOnVoice({ onAction, onOpenCommandBar }: AlwaysOnVoiceProps) {
         onError: (err) => {
           // Ignore no-speech and aborted errors — just restart
           if (err.includes("No speech") || err.includes("aborted") || err === "") return;
-          console.warn("[AlwaysOnVoice]", err);
+          // silent
         },
         onStateChange: (state) => {
           if (state === "idle" && activeRef.current) {
@@ -274,10 +274,10 @@ function AlwaysOnVoice({ onAction, onOpenCommandBar }: AlwaysOnVoiceProps) {
 
   // Minimal always-on indicator (bottom-left)
   return (
-    <div className="fixed bottom-4 left-4 z-50 flex items-center gap-2 rounded-full bg-zinc-900/90 px-3 py-1.5 shadow-lg ring-1 ring-white/10 backdrop-blur-sm">
+    <div className="fixed bottom-4 left-4 z-50 flex items-center gap-2 rounded-full bg-zinc-900/90 px-3 py-1.5 shadow-lg ring-1 ring-white/10">
       <div className="relative flex h-3 w-3 items-center justify-center">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40" />
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-zinc-400 opacity-40" />
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-zinc-400" />
       </div>
       <span className="text-[10px] font-medium text-zinc-400">Voice on</span>
       {lastHeard && (

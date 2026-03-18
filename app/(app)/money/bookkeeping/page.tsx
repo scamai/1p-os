@@ -307,7 +307,7 @@ export default function Page() {
               </div>
               <button
                 onClick={() => deleteTransaction(t.id)}
-                className="text-xs text-zinc-300 hover:text-red-600 shrink-0"
+                className="text-xs text-zinc-300 hover:text-zinc-900 shrink-0"
               >
                 ×
               </button>

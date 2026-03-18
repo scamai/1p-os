@@ -8,9 +8,9 @@ import type { AgentHandoff } from "@/lib/agents/collaboration";
 // ---------------------------------------------------------------------------
 
 const STATUS_STYLE: Record<AgentHandoff["status"], { label: string; bg: string; text: string }> = {
-  pending: { label: "Pending", bg: "bg-amber-50", text: "text-amber-700" },
-  accepted: { label: "Accepted", bg: "bg-blue-50", text: "text-blue-700" },
-  completed: { label: "Done", bg: "bg-emerald-50", text: "text-emerald-700" },
+  pending: { label: "Pending", bg: "bg-zinc-100", text: "text-zinc-600" },
+  accepted: { label: "Accepted", bg: "bg-zinc-100", text: "text-zinc-700" },
+  completed: { label: "Done", bg: "bg-zinc-100", text: "text-zinc-700" },
 };
 
 const TYPE_LABEL: Record<AgentHandoff["type"], string> = {

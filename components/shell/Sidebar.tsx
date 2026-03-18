@@ -221,7 +221,7 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
       >
         <span className="flex-1 truncate text-[14px]">{item.label}</span>
         {disabled && (
-          <span className="shrink-0 bg-zinc-100 px-1.5 py-0.5 text-[9px] font-medium text-zinc-400">
+          <span className="shrink-0 bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-400">
             Soon
           </span>
         )}
@@ -311,7 +311,7 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
       {/* Mobile hamburger */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="fixed left-3 top-3 z-40 flex h-8 w-8 items-center justify-center text-zinc-500 hover:text-zinc-600 md:hidden"
+        className="fixed left-3 top-3 z-40 flex h-10 w-10 items-center justify-center text-zinc-500 hover:text-zinc-600 md:hidden"
         aria-label="Open menu"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">

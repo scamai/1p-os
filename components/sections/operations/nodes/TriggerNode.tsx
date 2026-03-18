@@ -12,16 +12,16 @@ export function TriggerNode({ data, selected }: NodeProps) {
   return (
     <div
       className={`min-w-[220px] rounded-xl border-2 bg-white shadow-sm transition-shadow ${
-        selected ? "border-blue-500 shadow-blue-100" : "border-blue-200"
+        selected ? "border-zinc-900 shadow-zinc-100" : "border-zinc-200"
       }`}
     >
       {/* Header */}
-      <div className="flex items-center gap-2 rounded-t-[10px] bg-blue-50 px-3 py-2">
-        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-500 text-[11px] text-white">
+      <div className="flex items-center gap-2 rounded-t-[10px] bg-zinc-100 px-3 py-2">
+        <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-zinc-900 text-[11px] text-white">
           ⚡
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-[12px] font-semibold text-blue-900 truncate">{d.label}</p>
+          <p className="text-[12px] font-semibold text-zinc-900 truncate">{d.label}</p>
         </div>
       </div>
 
@@ -37,7 +37,7 @@ export function TriggerNode({ data, selected }: NodeProps) {
       <Handle
         type="source"
         position={Position.Bottom}
-        className="!h-3 !w-3 !rounded-full !border-2 !border-blue-400 !bg-white"
+        className="!h-3 !w-3 !rounded-full !border-2 !border-zinc-400 !bg-white"
       />
     </div>
   );

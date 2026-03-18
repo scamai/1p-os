@@ -338,7 +338,7 @@ export default function SolutionDeckPage() {
                 <div className="w-px h-5 bg-zinc-200 mx-1" />
                 <button
                   onClick={() => deleteSlide(current.id)}
-                  className="h-7 w-7 rounded flex items-center justify-center text-zinc-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                  className="h-7 w-7 rounded flex items-center justify-center text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
                   title="Delete slide"
                 >
                   <svg

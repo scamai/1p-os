@@ -21,17 +21,16 @@ function TabBar({ tabs, active, onChange, className = "" }: TabBarProps) {
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(tab)}
-            className={`relative pb-2.5 text-[13px] font-medium transition-colors duration-200 ${
+            className={`relative pb-2.5 text-[13px] font-medium transition-colors duration-150 ${
               isActive
                 ? "text-zinc-900"
-                : "text-zinc-600 hover:text-zinc-500"
+                : "text-zinc-500 hover:text-zinc-700"
             }`}
           >
             {tab}
             {isActive && (
               <span
-                className="absolute inset-x-0 bottom-0 h-[1.5px] bg-zinc-900"
-                style={{ bottom: "-8px" }}
+                className="absolute inset-x-0 -bottom-2 h-[1.5px] bg-zinc-900"
               />
             )}
           </button>

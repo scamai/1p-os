@@ -345,18 +345,18 @@ function ChannelsPage() {
 
       {/* Config error banner */}
       {configError && (
-        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
+        <div className="mt-4 rounded-lg border border-zinc-200 bg-zinc-100 px-4 py-3">
           <div className="flex items-start gap-2">
-            <svg className="h-4 w-4 shrink-0 text-amber-500 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-4 w-4 shrink-0 text-zinc-500 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
             </svg>
             <div className="flex-1">
-              <p className="text-sm font-medium text-amber-800">{configError.message}</p>
-              <p className="mt-1 text-xs text-amber-600">
-                Add the required environment variables to your <code className="rounded bg-amber-100 px-1">.env.local</code> file, then restart the server.
+              <p className="text-sm font-medium text-zinc-800">{configError.message}</p>
+              <p className="mt-1 text-xs text-zinc-600">
+                Add the required environment variables to your <code className="rounded bg-zinc-200 px-1">.env.local</code> file, then restart the server.
               </p>
             </div>
-            <button onClick={() => setConfigError(null)} className="text-amber-400 hover:text-amber-600">
+            <button onClick={() => setConfigError(null)} className="text-zinc-400 hover:text-zinc-600">
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -397,7 +397,7 @@ function ChannelsPage() {
                       <p className="text-[11px] text-zinc-500">
                         {isConnected ? (
                           <>
-                            <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 mr-1" />
+                            <span className="inline-block h-1.5 w-1.5 rounded-full bg-zinc-900 mr-1" />
                             {integration.label}
                             {integration.last_synced_at && (
                               <span className="text-zinc-400">
@@ -406,7 +406,7 @@ function ChannelsPage() {
                             )}
                           </>
                         ) : integration?.status === "error" ? (
-                          <span className="text-red-500">Connection error — reconnect</span>
+                          <span className="text-zinc-900">Connection error — reconnect</span>
                         ) : (
                           <span className="text-zinc-400">
                             {provider?.description ?? "Not connected"}
@@ -423,7 +423,7 @@ function ChannelsPage() {
                         <button
                           onClick={() => setConfirmDisconnect(integration)}
                           disabled={disconnecting === integration.id}
-                          className="text-xs text-zinc-400 hover:text-red-500 transition-colors"
+                          className="text-xs text-zinc-400 hover:text-zinc-900 transition-colors"
                         >
                           {disconnecting === integration.id ? "..." : "Disconnect"}
                         </button>
@@ -503,7 +503,7 @@ function ChannelsPage() {
                     className="flex items-center justify-between rounded-lg border border-zinc-200 px-3 py-2"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      <span className="inline-block h-1.5 w-1.5 rounded-full bg-zinc-900" />
                       <span className="text-sm text-zinc-900 capitalize">
                         {conn.toolkitSlug.replace(/_/g, " ")}
                       </span>
@@ -513,7 +513,7 @@ function ChannelsPage() {
                     </div>
                     <button
                       onClick={() => handleComposioDisconnect(conn.id)}
-                      className="text-xs text-zinc-400 hover:text-red-500 transition-colors"
+                      className="text-xs text-zinc-400 hover:text-zinc-900 transition-colors"
                     >
                       Disconnect
                     </button>
@@ -565,13 +565,13 @@ function ChannelsPage() {
                         disabled={isConnected || composioConnecting === app.slug}
                         className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-left text-xs transition-colors ${
                           isConnected
-                            ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                            ? "border-zinc-200 bg-zinc-100 text-zinc-700"
                             : "border-zinc-200 hover:bg-zinc-50 text-zinc-700"
                         }`}
                       >
                         <span className="font-medium">{app.name}</span>
                         {isConnected && (
-                          <svg className="ml-auto h-3 w-3 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <svg className="ml-auto h-3 w-3 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         )}
@@ -711,7 +711,7 @@ function ChannelsPage() {
           ))}
 
           {apiKeyError && (
-            <p className="text-xs text-red-600">{apiKeyError}</p>
+            <p className="text-xs text-zinc-800">{apiKeyError}</p>
           )}
 
           <div className="mt-2 flex items-center justify-end gap-2">
@@ -761,7 +761,7 @@ function ChannelsPage() {
             </button>
             <button
               onClick={() => confirmDisconnect && handleDisconnect(confirmDisconnect)}
-              className="rounded-md bg-red-600 px-3 py-1.5 text-xs text-white hover:bg-red-700 transition-colors"
+              className="rounded-md bg-zinc-900 px-3 py-1.5 text-xs text-white hover:bg-zinc-800 transition-colors"
             >
               Disconnect
             </button>
@@ -851,7 +851,7 @@ const COMPOSIO_POPULAR_APPS = [
 
 function CheckIcon() {
   return (
-    <svg className="h-3 w-3 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <svg className="h-3 w-3 text-zinc-900 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
     </svg>
   );

@@ -85,7 +85,7 @@ function CostDashboard() {
           setAgents(data.byAgent ?? []);
         }
       } catch (err) {
-        console.error("[CostDashboard] Failed to fetch cost data:", err);
+        // silent
       } finally {
         if (!cancelled) setLoading(false);
       }

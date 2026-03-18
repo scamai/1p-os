@@ -7,7 +7,7 @@ function Card({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`border border-zinc-200 bg-white text-zinc-900 transition-colors hover:border-zinc-500/20 ${className}`}
+      className={`border border-zinc-200 bg-white text-zinc-900 transition-colors duration-150 hover:border-zinc-300 ${className}`}
       {...props}
     >
       {children}

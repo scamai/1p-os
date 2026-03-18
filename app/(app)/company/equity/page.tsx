@@ -326,7 +326,7 @@ export default function EquityPage() {
                       </button>
                       <button
                         onClick={() => handleDelete(s.id)}
-                        className="rounded px-2 py-1 text-[12px] text-zinc-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                        className="rounded px-2 py-1 text-[12px] text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
                       >
                         Delete
                       </button>

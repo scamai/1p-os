@@ -1,10 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  compress: true,
+  productionBrowserSourceMaps: false,
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
     },
+    optimizePackageImports: ['@supabase/supabase-js'],
   },
 };
 

@@ -43,21 +43,21 @@ const ALERT_STYLES: Record<
   { border: string; bg: string; text: string; label: string }
 > = {
   overdue: {
-    border: "border-amber-300",
-    bg: "bg-amber-50",
-    text: "text-amber-800",
+    border: "border-zinc-200",
+    bg: "bg-zinc-100",
+    text: "text-zinc-600",
     label: "Overdue",
   },
   budget: {
-    border: "border-amber-300",
-    bg: "bg-amber-50",
-    text: "text-amber-800",
+    border: "border-zinc-200",
+    bg: "bg-zinc-100",
+    text: "text-zinc-600",
     label: "Budget",
   },
   error: {
-    border: "border-red-300",
-    bg: "bg-red-50",
-    text: "text-red-800",
+    border: "border-zinc-200",
+    bg: "bg-zinc-200",
+    text: "text-zinc-800",
     label: "Error",
   },
 };

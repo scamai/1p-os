@@ -33,7 +33,7 @@ function AgentSidebar({ agents }: AgentSidebarProps) {
               {agent.initial}
             </div>
             <AgentStatusDot status={agent.status} />
-            <span className="hidden text-[9px] text-zinc-500 group-hover:block">
+            <span className="hidden text-[10px] text-zinc-500 group-hover:block">
               {agent.name.split(" ")[0]}
             </span>
           </button>

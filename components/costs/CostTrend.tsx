@@ -80,7 +80,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
                 x={padding.left - 4}
                 y={y + 3}
                 textAnchor="end"
-                className="text-[7px] fill-zinc-500"
+                className="text-[10px] fill-zinc-500"
               >
                 ${value.toFixed(2)}
               </text>
@@ -104,7 +104,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
             <text
               x={padding.left + chartW + 2}
               y={budgetY + 3}
-              className="text-[7px] fill-zinc-500"
+              className="text-[10px] fill-zinc-500"
               opacity="0.8"
             >
               budget
@@ -181,7 +181,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
               x={points[hoveredIndex].x}
               y={points[hoveredIndex].y - 11}
               textAnchor="middle"
-              className="text-[8px] font-medium fill-[#09090b]"
+              className="text-[10px] font-medium fill-[#09090b]"
             >
               ${data[hoveredIndex].cost.toFixed(2)}
             </text>
@@ -194,7 +194,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
             <text
               x={padding.left}
               y={height - 4}
-              className="text-[7px] fill-zinc-500"
+              className="text-[10px] fill-zinc-500"
             >
               {formatDate(data[0].date)}
             </text>
@@ -203,7 +203,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
                 x={padding.left + chartW / 2}
                 y={height - 4}
                 textAnchor="middle"
-                className="text-[7px] fill-zinc-500"
+                className="text-[10px] fill-zinc-500"
               >
                 {formatDate(data[Math.floor(data.length / 2)].date)}
               </text>
@@ -212,7 +212,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
               x={padding.left + chartW}
               y={height - 4}
               textAnchor="end"
-              className="text-[7px] fill-zinc-500"
+              className="text-[10px] fill-zinc-500"
             >
               {formatDate(data[data.length - 1].date)}
             </text>

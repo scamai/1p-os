@@ -74,7 +74,8 @@ function Modal({
           </div>
           <button
             onClick={onClose}
-            className="ml-4 p-1 text-zinc-500 transition-colors hover:text-zinc-900"
+            aria-label="Close"
+            className="ml-4 flex h-8 w-8 items-center justify-center text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900"
           >
             <svg
               width="14"

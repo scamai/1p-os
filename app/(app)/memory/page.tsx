@@ -34,20 +34,20 @@ interface MemoryItem {
 // ---------------------------------------------------------------------------
 
 const CATEGORY_COLORS: Record<string, string> = {
-  fact: "bg-blue-50 text-blue-700 border-blue-200",
-  preference: "bg-purple-50 text-purple-700 border-purple-200",
-  relationship: "bg-green-50 text-green-700 border-green-200",
-  event: "bg-amber-50 text-amber-700 border-amber-200",
-  insight: "bg-rose-50 text-rose-700 border-rose-200",
+  fact: "bg-zinc-100 text-zinc-700 border-zinc-200",
+  preference: "bg-zinc-100 text-zinc-700 border-zinc-200",
+  relationship: "bg-zinc-100 text-zinc-700 border-zinc-200",
+  event: "bg-zinc-100 text-zinc-700 border-zinc-200",
+  insight: "bg-zinc-100 text-zinc-700 border-zinc-200",
   uncategorized: "bg-zinc-50 text-zinc-600 border-zinc-200",
 };
 
 const CATEGORY_BAR_COLORS: Record<string, string> = {
-  fact: "bg-blue-500",
-  preference: "bg-purple-500",
-  relationship: "bg-green-500",
-  event: "bg-amber-500",
-  insight: "bg-rose-500",
+  fact: "bg-zinc-900",
+  preference: "bg-zinc-700",
+  relationship: "bg-zinc-600",
+  event: "bg-zinc-500",
+  insight: "bg-zinc-800",
   uncategorized: "bg-zinc-400",
 };
 
@@ -260,7 +260,7 @@ export default function MemoryPage() {
   if (error) {
     return (
       <div className="mx-auto max-w-2xl py-12 text-center">
-        <p className="text-sm text-red-600">{error}</p>
+        <p className="text-sm text-zinc-800">{error}</p>
       </div>
     );
   }
@@ -277,7 +277,7 @@ export default function MemoryPage() {
         </div>
         <div className="flex items-center gap-2">
           {stats?.semantic && (
-            <span className="shrink-0 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700 border border-emerald-200">
+            <span className="shrink-0 rounded-full bg-zinc-100 px-2.5 py-0.5 text-[11px] font-medium text-zinc-700 border border-zinc-200">
               Semantic
             </span>
           )}
@@ -341,7 +341,7 @@ export default function MemoryPage() {
             </div>
           </div>
           {addError && (
-            <p className="text-[12px] text-red-600">{addError}</p>
+            <p className="text-[12px] text-zinc-800">{addError}</p>
           )}
           <div className="flex justify-end">
             <button
@@ -711,7 +711,7 @@ function MemoryRow({
           {onDelete && (
             <button
               onClick={() => onDelete(memory.id)}
-              className="hidden group-hover:flex h-6 w-6 items-center justify-center rounded text-zinc-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+              className="hidden group-hover:flex h-6 w-6 items-center justify-center rounded text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
               aria-label="Delete memory"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

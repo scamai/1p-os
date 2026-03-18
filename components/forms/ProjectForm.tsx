@@ -60,10 +60,11 @@ function ProjectForm({ onClose, prefill }: ProjectFormProps) {
         placeholder="Client name"
       />
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-zinc-600">
+        <label htmlFor="description" className="text-sm font-medium text-zinc-600">
           Description
         </label>
         <textarea
+          id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Project description"

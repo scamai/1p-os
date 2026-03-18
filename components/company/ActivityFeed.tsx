@@ -6,11 +6,11 @@ import type { ActivityEvent, ActivityEventType } from "@/lib/activity/feed";
 // ── Color mapping by event type ──
 
 const DOT_COLOR: Record<ActivityEventType, string> = {
-  task_completed: "bg-emerald-500",
-  decision_created: "bg-amber-400",
-  goal_decomposed: "bg-blue-500",
-  email_sent: "bg-violet-500",
-  error: "bg-red-500",
+  task_completed: "bg-zinc-900",
+  decision_created: "bg-zinc-500",
+  goal_decomposed: "bg-zinc-900",
+  email_sent: "bg-zinc-700",
+  error: "bg-zinc-900",
   heartbeat_start: "bg-zinc-400",
   heartbeat_end: "bg-zinc-400",
 };
@@ -82,10 +82,10 @@ function LiveDot() {
   return (
     <span className="inline-flex items-center gap-1.5">
       <span className="relative flex h-2 w-2">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-zinc-400 opacity-75" />
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-zinc-900" />
       </span>
-      <span className="text-[11px] font-medium uppercase tracking-wider text-emerald-600">
+      <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-700">
         Live
       </span>
     </span>

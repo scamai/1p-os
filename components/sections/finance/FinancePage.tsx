@@ -2,7 +2,12 @@
 
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/Card";
-import { CostTrend } from "@/components/costs/CostTrend";
+import dynamic from "next/dynamic";
+
+const CostTrend = dynamic(
+  () => import("@/components/costs/CostTrend").then((m) => ({ default: m.CostTrend })),
+  { ssr: false, loading: () => <div className="h-[200px]" /> }
+);
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -103,21 +108,21 @@ function formatDate(dateStr: string): string {
 
 function statusColor(status: string): string {
   switch (status) {
-    case "paid": return "bg-emerald-50 text-emerald-700";
-    case "sent": return "bg-blue-50 text-blue-700";
-    case "overdue": return "bg-red-50 text-red-700";
+    case "paid": return "bg-zinc-100 text-zinc-700";
+    case "sent": return "bg-zinc-50 text-zinc-600";
+    case "overdue": return "bg-zinc-200 text-zinc-800";
     case "draft": return "bg-zinc-100 text-zinc-500";
     default: return "bg-zinc-100 text-zinc-500";
   }
 }
 
 const ROLE_COLORS: Record<string, string> = {
-  operations: "bg-blue-500",
-  finance: "bg-emerald-500",
-  sales: "bg-amber-500",
-  marketing: "bg-purple-500",
-  "customer-success": "bg-rose-500",
-  product: "bg-cyan-500",
+  operations: "bg-zinc-900",
+  finance: "bg-zinc-700",
+  sales: "bg-zinc-500",
+  marketing: "bg-zinc-800",
+  "customer-success": "bg-zinc-600",
+  product: "bg-zinc-400",
 };
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -469,9 +474,9 @@ function FinancePage({ onAction }: FinancePageProps) {
         <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
           <div
             className={`h-full rounded-full transition-all duration-500 ${
-              budgetUsedPct >= 90 ? "bg-red-500"
-              : budgetUsedPct >= 70 ? "bg-amber-500"
-              : "bg-emerald-500"
+              budgetUsedPct >= 90 ? "bg-zinc-900"
+              : budgetUsedPct >= 70 ? "bg-zinc-700"
+              : "bg-zinc-500"
             }`}
             style={{ width: `${budgetUsedPct}%` }}
           />
@@ -490,7 +495,7 @@ function FinancePage({ onAction }: FinancePageProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-semibold text-zinc-900">Monthly Runrate</h2>
-              <span className="text-[9px] text-zinc-400 uppercase tracking-wider">
+              <span className="text-[10px] text-zinc-400 uppercase tracking-wider">
                 Day {dayOfMonth} of {daysInMonth}
               </span>
             </div>
@@ -503,7 +508,7 @@ function FinancePage({ onAction }: FinancePageProps) {
               {profitMargin !== 0 && (
                 <div className="flex items-center justify-between text-[10px]">
                   <span className="text-zinc-400">Profit margin</span>
-                  <span className={`font-mono font-semibold ${profitMargin >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+                  <span className={`font-mono font-semibold ${profitMargin >= 0 ? "text-zinc-700" : "text-zinc-800"}`}>
                     {profitMargin.toFixed(1)}%
                   </span>
                 </div>
@@ -514,7 +519,7 @@ function FinancePage({ onAction }: FinancePageProps) {
               <div className="h-1 w-full overflow-hidden rounded-full bg-zinc-100">
                 <div className="h-full rounded-full bg-zinc-300" style={{ width: `${Math.round(monthProgress * 100)}%` }} />
               </div>
-              <p className="mt-1 text-[9px] text-zinc-400 text-right">{daysRemaining} days remaining</p>
+              <p className="mt-1 text-[10px] text-zinc-400 text-right">{daysRemaining} days remaining</p>
             </div>
           </CardContent>
         </Card>
@@ -524,7 +529,7 @@ function FinancePage({ onAction }: FinancePageProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-sm font-semibold text-zinc-900">Annual Projection</h2>
-              <span className="text-[9px] text-zinc-400 uppercase tracking-wider">
+              <span className="text-[10px] text-zinc-400 uppercase tracking-wider">
                 Based on current pace
               </span>
             </div>
@@ -539,7 +544,7 @@ function FinancePage({ onAction }: FinancePageProps) {
               </div>
               <div className="border-t border-zinc-100 pt-2 flex items-center justify-between">
                 <span className="text-xs font-semibold text-zinc-900">Net Profit</span>
-                <span className={`text-sm font-mono font-bold ${annualProfitRunrate >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+                <span className={`text-sm font-mono font-bold ${annualProfitRunrate >= 0 ? "text-zinc-700" : "text-zinc-800"}`}>
                   {formatMoney(annualProfitRunrate)}/yr
                 </span>
               </div>
@@ -547,11 +552,11 @@ function FinancePage({ onAction }: FinancePageProps) {
 
             {/* Pending income callout */}
             {pendingIncome > 0 && (
-              <div className="mt-3 rounded-md bg-blue-50 px-3 py-2">
-                <p className="text-[10px] font-medium text-blue-700">
+              <div className="mt-3 rounded-md bg-zinc-50 px-3 py-2">
+                <p className="text-[10px] font-medium text-zinc-600">
                   {formatMoney(pendingIncome)} in outstanding invoices
                 </p>
-                <p className="text-[9px] text-blue-500">
+                <p className="text-[10px] text-zinc-500">
                   If collected, annual revenue would be {formatMoney(annualRevenueRunrate + pendingIncome * 12)}/yr
                 </p>
               </div>
@@ -607,7 +612,7 @@ function FinancePage({ onAction }: FinancePageProps) {
                         <span className="text-xs font-medium text-zinc-900 truncate">
                           {inv.client_name}
                         </span>
-                        <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-medium ${statusColor(inv.status)}`}>
+                        <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-medium ${statusColor(inv.status)}`}>
                           {inv.status}
                         </span>
                       </div>
@@ -631,9 +636,9 @@ function FinancePage({ onAction }: FinancePageProps) {
             {/* Invoice summary bar */}
             {invoices.length > 0 && (
               <div className="mt-3 flex items-center gap-3 border-t border-zinc-100 pt-2">
-                <SummaryPill label="Paid" value={formatMoney(revenue)} className="text-emerald-700 bg-emerald-50" />
-                {outstanding > 0 && <SummaryPill label="Owed" value={formatMoney(outstanding)} className="text-blue-700 bg-blue-50" />}
-                {overdue > 0 && <SummaryPill label="Overdue" value={formatMoney(overdue)} className="text-red-700 bg-red-50" />}
+                <SummaryPill label="Paid" value={formatMoney(revenue)} className="text-zinc-700 bg-zinc-100" />
+                {outstanding > 0 && <SummaryPill label="Owed" value={formatMoney(outstanding)} className="text-zinc-600 bg-zinc-50" />}
+                {overdue > 0 && <SummaryPill label="Overdue" value={formatMoney(overdue)} className="text-zinc-800 bg-zinc-200" />}
               </div>
             )}
           </CardContent>
@@ -671,12 +676,12 @@ function FinancePage({ onAction }: FinancePageProps) {
                         <div className="mt-0.5 h-1 w-full overflow-hidden rounded-full bg-zinc-100">
                           <div
                             className={`h-full rounded-full transition-all ${
-                              pct >= 90 ? "bg-red-500" : pct >= 70 ? "bg-amber-400" : "bg-zinc-400"
+                              pct >= 90 ? "bg-zinc-900" : pct >= 70 ? "bg-zinc-700" : "bg-zinc-400"
                             }`}
                             style={{ width: `${pct}%` }}
                           />
                         </div>
-                        <div className="mt-0.5 flex items-center gap-2 text-[9px] text-zinc-400">
+                        <div className="mt-0.5 flex items-center gap-2 text-[10px] text-zinc-400">
                           <span>{agent.tasksCompleted} tasks</span>
                           {agent.hoursSaved > 0 && <span>{agent.hoursSaved.toFixed(1)}h saved</span>}
                           <span className="ml-auto">{pct}% of {formatMoney(agent.monthlyBudget)}</span>
@@ -714,15 +719,15 @@ function FinancePage({ onAction }: FinancePageProps) {
               <div
                 key={s.id}
                 className={`rounded-lg border px-4 py-3 ${
-                  s.priority === "high" ? "border-amber-200 bg-amber-50/50"
+                  s.priority === "high" ? "border-zinc-200 bg-zinc-100/50"
                   : "border-zinc-200 bg-white"
                 }`}
               >
                 <div className="flex items-start gap-3">
                   <div className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
-                    s.type === "earn" ? "bg-emerald-100 text-emerald-600"
-                    : s.type === "save" ? "bg-blue-100 text-blue-600"
-                    : s.type === "warn" ? "bg-amber-100 text-amber-600"
+                    s.type === "earn" ? "bg-zinc-100 text-zinc-700"
+                    : s.type === "save" ? "bg-zinc-100 text-zinc-600"
+                    : s.type === "warn" ? "bg-zinc-100 text-zinc-600"
                     : "bg-zinc-100 text-zinc-600"
                   }`}>
                     {s.type === "earn" && <DollarIcon />}
@@ -734,7 +739,7 @@ function FinancePage({ onAction }: FinancePageProps) {
                     <p className="text-xs font-semibold text-zinc-900">{s.title}</p>
                     <p className="mt-0.5 text-[11px] text-zinc-500">{s.description}</p>
                     {s.impact && (
-                      <span className="mt-1 inline-block rounded-full bg-zinc-100 px-2 py-0.5 text-[9px] font-medium text-zinc-600">
+                      <span className="mt-1 inline-block rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-600">
                         Impact: {s.impact}
                       </span>
                     )}
@@ -806,7 +811,7 @@ function FinancePage({ onAction }: FinancePageProps) {
                           <span className="text-xs font-medium text-zinc-900 truncate">{exp.description}</span>
                           <SourceBadge source={exp.source} />
                           {exp.recurring && (
-                            <span className="text-[8px] text-zinc-400 bg-zinc-100 rounded px-1 py-0.5">recurring</span>
+                            <span className="text-[10px] text-zinc-400 bg-zinc-100 rounded px-1 py-0.5">recurring</span>
                           )}
                         </div>
                         {exp.vendor && <p className="text-[10px] text-zinc-400">{exp.vendor}</p>}
@@ -855,11 +860,11 @@ function FinancePage({ onAction }: FinancePageProps) {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-medium text-zinc-900">{r.person}</span>
-                        <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-medium ${
-                          r.status === "paid" ? "bg-emerald-50 text-emerald-700"
-                          : r.status === "approved" ? "bg-blue-50 text-blue-700"
-                          : r.status === "rejected" ? "bg-red-50 text-red-700"
-                          : "bg-amber-50 text-amber-700"
+                        <span className={`rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
+                          r.status === "paid" ? "bg-zinc-100 text-zinc-700"
+                          : r.status === "approved" ? "bg-zinc-50 text-zinc-600"
+                          : r.status === "rejected" ? "bg-zinc-200 text-zinc-800"
+                          : "bg-zinc-100 text-zinc-600"
                         }`}>
                           {r.status}
                         </span>
@@ -1006,8 +1011,8 @@ function FinancePage({ onAction }: FinancePageProps) {
                     <p className="text-xs font-medium text-zinc-900">{item.type}</p>
                     <p className="text-[10px] text-zinc-500">{item.desc}</p>
                   </div>
-                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${
-                    item.status === "active" ? "bg-emerald-50 text-emerald-700" : "bg-zinc-100 text-zinc-500"
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                    item.status === "active" ? "bg-zinc-100 text-zinc-700" : "bg-zinc-100 text-zinc-500"
                   }`}>
                     {item.status === "active" ? "Active" : "Coming soon"}
                   </span>
@@ -1079,8 +1084,8 @@ function FinancePage({ onAction }: FinancePageProps) {
                     <p className="text-xs font-medium text-zinc-900">{item.label}</p>
                     <p className="text-[10px] text-zinc-500">Due: {item.due}</p>
                   </div>
-                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-medium ${
-                    item.status === "upcoming" ? "bg-amber-50 text-amber-700"
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                    item.status === "upcoming" ? "bg-zinc-100 text-zinc-600"
                     : item.status === "na" ? "bg-zinc-100 text-zinc-400"
                     : "bg-zinc-100 text-zinc-500"
                   }`}>
@@ -1090,9 +1095,9 @@ function FinancePage({ onAction }: FinancePageProps) {
               ))}
             </div>
 
-            <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
-              <p className="text-xs font-semibold text-amber-800">Tax filing requires human approval</p>
-              <p className="text-[10px] text-amber-600 mt-0.5">
+            <div className="mt-4 rounded-lg border border-zinc-200 bg-zinc-100 px-4 py-3">
+              <p className="text-xs font-semibold text-zinc-800">Tax filing requires human approval</p>
+              <p className="text-[10px] text-zinc-600 mt-0.5">
                 Your AI CFO can prepare returns and estimates, but all filings must be reviewed and approved by you or your accountant before submission.
               </p>
             </div>
@@ -1128,7 +1133,7 @@ function FinancePage({ onAction }: FinancePageProps) {
                       <p className="text-[10px] text-zinc-500">{c.role} &middot; {c.access}</p>
                     </div>
                   </div>
-                  <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-medium text-emerald-700">Active</span>
+                  <span className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-700">Active</span>
                 </div>
               ))}
             </div>
@@ -1172,7 +1177,7 @@ function FinancePage({ onAction }: FinancePageProps) {
                   <p className="text-[10px] text-zinc-500 mb-2">{ctrl.desc}</p>
                   <div className="flex flex-wrap gap-1 mb-3">
                     {ctrl.permissions.map((p) => (
-                      <span key={p} className="rounded bg-zinc-100 px-1.5 py-0.5 text-[8px] text-zinc-500">{p}</span>
+                      <span key={p} className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] text-zinc-500">{p}</span>
                     ))}
                   </div>
                   <button
@@ -1209,7 +1214,7 @@ function FinancePage({ onAction }: FinancePageProps) {
                   }`}
                 >
                   {sw.name}
-                  {sw.status === "coming" && <span className="block text-[8px] text-zinc-400 mt-0.5">coming soon</span>}
+                  {sw.status === "coming" && <span className="block text-[10px] text-zinc-400 mt-0.5">coming soon</span>}
                 </button>
               ))}
             </div>
@@ -1253,7 +1258,7 @@ function MetricCard({
   sub: string;
   trend: "up" | "down" | "warn" | "neutral";
 }) {
-  const trendIcon = trend === "up" ? "text-emerald-600" : trend === "down" ? "text-red-600" : trend === "warn" ? "text-amber-600" : "text-zinc-400";
+  const trendIcon = trend === "up" ? "text-zinc-700" : trend === "down" ? "text-zinc-800" : trend === "warn" ? "text-zinc-600" : "text-zinc-400";
   return (
     <Card>
       <CardContent className="p-3">
@@ -1305,7 +1310,7 @@ function RunrateRow({
         </svg>
         <span className={`text-xs font-mono font-semibold ${
           bold
-            ? positive ? "text-emerald-600" : "text-red-600"
+            ? positive ? "text-zinc-700" : "text-zinc-800"
             : "text-zinc-900"
         }`}>
           {formatMoney(projected)}
@@ -1317,15 +1322,15 @@ function RunrateRow({
 
 function SourceBadge({ source }: { source: string }) {
   const config: Record<string, { label: string; className: string }> = {
-    email: { label: "email", className: "bg-purple-50 text-purple-600" },
-    bank: { label: "bank", className: "bg-blue-50 text-blue-600" },
-    stripe: { label: "stripe", className: "bg-indigo-50 text-indigo-600" },
+    email: { label: "email", className: "bg-zinc-100 text-zinc-600" },
+    bank: { label: "bank", className: "bg-zinc-100 text-zinc-600" },
+    stripe: { label: "stripe", className: "bg-zinc-100 text-zinc-600" },
     agent: { label: "agent", className: "bg-zinc-100 text-zinc-600" },
     manual: { label: "manual", className: "bg-zinc-100 text-zinc-400" },
   };
   const c = config[source] ?? config.manual;
   return (
-    <span className={`rounded px-1 py-0.5 text-[8px] font-medium ${c.className}`}>
+    <span className={`rounded px-1 py-0.5 text-[10px] font-medium ${c.className}`}>
       {c.label}
     </span>
   );
@@ -1351,17 +1356,17 @@ function DataSourceCard({
   alwaysAvailable?: boolean;
 }) {
   return (
-    <div className={`rounded-lg border p-3 transition-colors ${connected ? "border-emerald-200 bg-emerald-50/30" : "border-zinc-200"}`}>
+    <div className={`rounded-lg border p-3 transition-colors ${connected ? "border-zinc-200 bg-zinc-50/30" : "border-zinc-200"}`}>
       <div className="flex items-center gap-2 mb-1.5">
         <div className="text-zinc-400">{icon}</div>
         <span className="text-xs font-medium text-zinc-900">{name}</span>
         {connected && !alwaysAvailable && (
-          <span className="ml-auto inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          <span className="ml-auto inline-block h-1.5 w-1.5 rounded-full bg-zinc-900" />
         )}
       </div>
       <p className="text-[10px] text-zinc-400 mb-2">{description}</p>
       {connected && lastSync && (
-        <p className="text-[9px] text-zinc-400 mb-1.5">
+        <p className="text-[10px] text-zinc-400 mb-1.5">
           Synced {lastSync} &middot; {items ?? 0} items
         </p>
       )}

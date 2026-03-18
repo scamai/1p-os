@@ -168,7 +168,7 @@ function CanvasPage() {
   const handleSend = () => {
     if (!prompt.trim()) return;
     // In production, this would send to the agent to generate/update canvas
-    console.log("[CanvasPage] prompt:", prompt, "canvas:", selected.id);
+    // TODO: send to agent to generate/update canvas
     setPrompt("");
   };
 

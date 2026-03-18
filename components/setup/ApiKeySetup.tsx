@@ -208,7 +208,7 @@ function ApiKeySetup({ keys, onChange, compact = false }: ApiKeySetupProps) {
                         <label className="text-xs font-medium text-zinc-700">
                           {provider.label}
                           {provider.required && (
-                            <span className="ml-0.5 text-red-500">*</span>
+                            <span className="ml-0.5 text-zinc-900">*</span>
                           )}
                         </label>
                       </div>
@@ -221,7 +221,7 @@ function ApiKeySetup({ keys, onChange, compact = false }: ApiKeySetupProps) {
                       />
                       {(keys[provider.envVar] ?? "").length > 0 && (
                         <svg
-                          className="h-4 w-4 shrink-0 text-emerald-500"
+                          className="h-4 w-4 shrink-0 text-zinc-900"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"

@@ -1,11 +1,11 @@
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 
 const STATUS_COLORS: Record<string, string> = {
-  working: "#22c55e",
+  working: "#18181b",
   idle: "#a1a1aa",
-  paused: "#f59e0b",
-  needs_input: "#eab308",
-  error: "#ef4444",
+  paused: "#71717a",
+  needs_input: "#52525b",
+  error: "#3f3f46",
 };
 
 interface AgentStepData {
@@ -61,7 +61,7 @@ export function AgentStepNode({ data, selected }: NodeProps) {
             <p className="text-[12px] font-semibold text-zinc-900 truncate">{d.agentName}</p>
           </div>
           <p
-            className="text-[9px] font-medium"
+            className="text-[10px] font-medium"
             style={{ color: d.deptColor }}
           >
             {d.department}

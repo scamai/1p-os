@@ -266,7 +266,7 @@ export default function Page() {
             </div>
             <button
               onClick={() => deleteRound(activeRound.id)}
-              className="text-xs text-zinc-400 hover:text-red-600"
+              className="text-xs text-zinc-400 hover:text-zinc-900"
             >
               Delete round
             </button>
@@ -416,7 +416,7 @@ export default function Page() {
                   </button>
                   <button
                     onClick={() => deleteInvestor(inv.id)}
-                    className="text-xs text-zinc-400 hover:text-red-600 px-1"
+                    className="text-xs text-zinc-400 hover:text-zinc-900 px-1"
                   >
                     Delete
                   </button>

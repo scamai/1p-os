@@ -165,7 +165,7 @@ function AIWizard({ intent, onClose, onComplete }: AIWizardProps) {
         </div>
         <button
           onClick={onClose}
-          className="flex h-7 w-7 items-center justify-center rounded-md text-zinc-400 transition-colors hover:text-zinc-700"
+          className="flex h-8 w-8 items-center justify-center rounded-md text-zinc-400 transition-colors hover:text-zinc-700"
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
             <path d="M3 3l8 8M11 3l-8 8" />

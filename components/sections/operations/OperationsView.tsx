@@ -46,7 +46,7 @@ const DEPARTMENTS: Department[] = [
     id: "sales",
     name: "Sales",
     icon: "S",
-    color: "#3b82f6",
+    color: "#18181b",
     agents: [
       { id: "a1", name: "Lead Qualifier", role: "Scores and qualifies inbound leads", status: "working", tasksToday: 12, costToday: 0.34 },
       { id: "a2", name: "Proposal Writer", role: "Drafts proposals and quotes", status: "idle", tasksToday: 3, costToday: 0.18 },
@@ -56,7 +56,7 @@ const DEPARTMENTS: Department[] = [
     id: "support",
     name: "Support",
     icon: "H",
-    color: "#10b981",
+    color: "#3f3f46",
     agents: [
       { id: "a3", name: "Ticket Resolver", role: "Handles customer tickets", status: "working", tasksToday: 18, costToday: 0.22 },
     ],
@@ -65,7 +65,7 @@ const DEPARTMENTS: Department[] = [
     id: "content",
     name: "Content",
     icon: "C",
-    color: "#8b5cf6",
+    color: "#52525b",
     agents: [
       { id: "a4", name: "Content Writer", role: "Blog posts, social, newsletter", status: "working", tasksToday: 5, costToday: 0.41 },
     ],
@@ -74,7 +74,7 @@ const DEPARTMENTS: Department[] = [
     id: "finance",
     name: "Finance",
     icon: "F",
-    color: "#f59e0b",
+    color: "#71717a",
     agents: [
       { id: "a5", name: "Bookkeeper", role: "Reconciles transactions, tracks expenses", status: "idle", tasksToday: 8, costToday: 0.12 },
       { id: "a6", name: "Invoice Agent", role: "Sends and follows up on invoices", status: "paused", tasksToday: 0, costToday: 0 },
@@ -84,7 +84,7 @@ const DEPARTMENTS: Department[] = [
     id: "ops",
     name: "Operations",
     icon: "O",
-    color: "#ef4444",
+    color: "#a1a1aa",
     agents: [
       { id: "a7", name: "Ops Coordinator", role: "Orchestrates cross-team workflows", status: "working", tasksToday: 24, costToday: 0.15 },
     ],
@@ -135,11 +135,11 @@ const WORKFLOWS: Workflow[] = [
 // --- Status helpers ---
 
 const STATUS_COLORS: Record<AgentStatus, string> = {
-  working: "#22c55e",
+  working: "#18181b",
   idle: "#a1a1aa",
-  paused: "#f59e0b",
-  needs_input: "#eab308",
-  error: "#ef4444",
+  paused: "#71717a",
+  needs_input: "#52525b",
+  error: "#3f3f46",
 };
 
 const STATUS_LABELS: Record<AgentStatus, string> = {
@@ -241,7 +241,7 @@ function OrgStructureView({ departments }: { departments: Department[] }) {
 
       <div className="flex justify-center mb-4">
         <div className="inline-flex items-center gap-2 rounded-lg border-2 border-zinc-900 bg-zinc-900 px-4 py-2">
-          <div className="h-2 w-2 rounded-full bg-emerald-400" />
+          <div className="h-2 w-2 rounded-full bg-zinc-400" />
           <span className="text-[13px] font-semibold text-white">You — Founder</span>
         </div>
       </div>

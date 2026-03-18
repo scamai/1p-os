@@ -65,7 +65,7 @@ export function useVoiceShortcut(
 ) {
   const voice = useHandyVoice({
     onTranscript,
-    onError: (err) => console.warn("[Voice]", err),
+    onError: () => { /* silent */ },
   });
 
   React.useEffect(() => {
@@ -115,15 +115,15 @@ export function VoiceOverlay({
 
   return (
     <div className="fixed bottom-6 left-1/2 z-[60] -translate-x-1/2 animate-in fade-in slide-in-from-bottom-2 duration-200">
-      <div className="flex h-10 items-center gap-2 rounded-full bg-zinc-900/95 px-4 shadow-xl backdrop-blur-sm ring-1 ring-white/10">
+      <div className="flex h-10 items-center gap-2 rounded-full bg-zinc-900/95 px-4 shadow-xl ring-1 ring-white/10">
         {/* Mic dot / spinner */}
         <div className="flex h-5 w-5 items-center justify-center">
           {state === "recording" ? (
-            <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]" />
+            <div className="h-2.5 w-2.5 animate-pulse rounded-full bg-zinc-400 shadow-[0_0_8px_rgba(161,161,170,0.6)]" />
           ) : state === "loading" ? (
             <div className="h-3.5 w-3.5 animate-spin rounded-full border-[1.5px] border-zinc-600 border-t-zinc-300" />
           ) : (
-            <div className="h-2 w-2 animate-pulse rounded-full bg-amber-400" />
+            <div className="h-2 w-2 animate-pulse rounded-full bg-zinc-500" />
           )}
         </div>
 
@@ -182,7 +182,7 @@ export function VoiceOverlay({
 
         {/* Shortcut hint */}
         {state === "recording" && (
-          <span className="text-[9px] text-zinc-600 ml-1 hidden sm:inline">
+          <span className="text-[10px] text-zinc-600 ml-1 hidden sm:inline">
             ⌘⇧V
           </span>
         )}
@@ -210,7 +210,6 @@ export function MicButton({
     },
     onError: (err) => {
       setMicError(err);
-      console.warn("[MicButton]", err);
     },
   });
 
@@ -230,7 +229,7 @@ export function MicButton({
           isActive
             ? "bg-zinc-900 text-white"
             : isError
-              ? "text-red-500"
+              ? "text-zinc-900"
               : "text-zinc-400 hover:text-zinc-600"
         } ${className}`}
         aria-label={isActive ? "Stop listening" : isError ? "Mic not working — tap to retry" : "Voice input (⌘⇧V)"}
