@@ -35,7 +35,7 @@ const EDUCATION: Record<string, PageEducation> = {
   "/company/incorporation": {
     title: "First time incorporating? Read this",
     items: [
-      { term: "LLC vs C-Corp", explanation: "LLC is simpler and cheaper — good for freelancers and small businesses. C-Corp is required for VC funding (YC, a16z, etc). If you might raise money, go C-Corp from the start." },
+      { term: "LLC vs C-Corp", explanation: "LLC is simpler and cheaper — good for freelancers and small businesses. C-Corp is required for VC funding. If you might raise money, go C-Corp from the start." },
       { term: "Delaware", explanation: "Most startups incorporate in Delaware even if they're based elsewhere. Delaware has business-friendly courts, predictable laws, and every VC lawyer knows Delaware law. It's the standard." },
       { term: "EIN", explanation: "Employer Identification Number — it's like a social security number for your company. Free from the IRS, takes 5 minutes online. You need it to open a bank account." },
       { term: "83(b) Election", explanation: "If you receive restricted stock, file this IRS form within 30 days. It lets you pay taxes on the stock's current (low) value instead of its future (hopefully high) value. Missing this deadline can cost you thousands." },
@@ -63,11 +63,11 @@ const EDUCATION: Record<string, PageEducation> = {
   "/company/accelerator": {
     title: "How accelerators work",
     items: [
-      { term: "What's an Accelerator?", explanation: "A 3-6 month program that gives you money, mentorship, and a network in exchange for equity (usually 5-10%). The best ones (YC, a16z) can 10x your chances of success." },
-      { term: "Equity", explanation: "The percentage of your company you give up. YC takes 7% for $500K. Some programs take 0% (like StartX). Weigh the equity cost against the value of the network and brand." },
+      { term: "What's an Accelerator?", explanation: "A 3-6 month program that gives you money, mentorship, and a network in exchange for equity (usually 5-10%). The best programs dramatically increase your chances of success." },
+      { term: "Equity", explanation: "The percentage of your company you give up. Top accelerators typically take 5-10% for $150K-500K. Some programs take 0%. Weigh the equity cost against the value of the network and brand." },
       { term: "Demo Day", explanation: "The final event where you pitch to hundreds of investors at once. A good demo day pitch can raise your entire seed round in a few weeks." },
       { term: "Batch", explanation: "Accelerators run in batches — groups of startups that go through the program together. Your batch-mates become your closest startup friends and support network." },
-      { term: "When to Apply", explanation: "Apply as early as possible — even pre-product. YC has funded companies with just an idea and a strong team. The earlier you get in, the more the program helps." },
+      { term: "When to Apply", explanation: "Apply as early as possible — even pre-product. Top accelerators have funded companies with just an idea and a strong team. The earlier you get in, the more the program helps." },
     ],
   },
   "/money/fundraising": {
@@ -75,7 +75,7 @@ const EDUCATION: Record<string, PageEducation> = {
     items: [
       { term: "Pre-seed vs Seed vs Series A", explanation: "Pre-seed ($50K-500K): idea stage, friends/family/angels. Seed ($500K-3M): early product, first customers. Series A ($5-15M): proven product-market fit, scaling." },
       { term: "Valuation", explanation: "What your company is 'worth.' At pre-seed, it's mostly made up. A $5M valuation means if an investor puts in $500K, they get 10%. Don't obsess over valuation — focus on getting funded." },
-      { term: "SAFE", explanation: "Simple Agreement for Future Equity. The standard way to raise pre-seed/seed money. Not a loan, not equity yet — it converts to shares later when you do a priced round. YC created it." },
+      { term: "SAFE", explanation: "Simple Agreement for Future Equity. The standard way to raise pre-seed/seed money. Not a loan, not equity yet — it converts to shares later when you do a priced round." },
       { term: "Lead Investor", explanation: "The first investor who commits and sets the terms. Once you have a lead, other investors follow. Finding a lead is the hardest part — everything gets easier after." },
       { term: "Runway", explanation: "How many months until you run out of money. If you have $300K and spend $25K/month, you have 12 months of runway. Always raise before you need to — start 6 months before you'd run out." },
     ],
@@ -86,7 +86,7 @@ const EDUCATION: Record<string, PageEducation> = {
       { term: "SAFE", explanation: "Simple Agreement for Future Equity — invented by Y Combinator. You give an investor money now, they get shares later when you raise a priced round. No interest, no maturity date, minimal legal fees." },
       { term: "Valuation Cap", explanation: "The maximum valuation at which the SAFE converts to equity. If the cap is $10M and you raise at $20M, the SAFE holder converts at $10M (getting twice as many shares). Lower cap = better deal for the investor." },
       { term: "Discount", explanation: "An alternative to a cap. If the discount is 20%, the SAFE holder gets shares at 20% less than what new investors pay. Some SAFEs have both a cap and discount — the investor gets whichever is better for them." },
-      { term: "Post-money vs Pre-money SAFE", explanation: "Post-money SAFEs (the YC standard) are simpler: if the cap is $10M and someone invests $1M, they own exactly 10%. Pre-money SAFEs are trickier because dilution math changes. Use post-money." },
+      { term: "Post-money vs Pre-money SAFE", explanation: "Post-money SAFEs are simpler: if the cap is $10M and someone invests $1M, they own exactly 10%. Pre-money SAFEs are trickier because dilution math changes. Use post-money." },
       { term: "Pro Rata Rights", explanation: "The right for an investor to maintain their ownership percentage in future rounds by investing more. Standard in most SAFEs. It's a good thing — it means your early investors can keep backing you." },
     ],
   },

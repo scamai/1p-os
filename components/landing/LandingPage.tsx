@@ -2,214 +2,81 @@
 
 import Link from "next/link";
 
-const MISTAKES = [
-  {
-    number: "01",
-    mistake: "No cap table",
-    result: "Equity fights kill 62% of startups with co-founders.",
-    fix: "Built-in cap table, vesting schedules, dilution modeling.",
-  },
-  {
-    number: "02",
-    mistake: "No bookkeeping",
-    result: "Tax season panic. Investors walk when books are messy.",
-    fix: "Transaction logging, categorization, monthly summaries.",
-  },
-  {
-    number: "03",
-    mistake: "No runway tracking",
-    result: "You run out of money and don't see it coming.",
-    fix: "Revenue, expenses, cash balance. Runway calculated live.",
-  },
-  {
-    number: "04",
-    mistake: "No contracts",
-    result: "Handshake deals go wrong. No legal protection.",
-    fix: "Contract tracking, status pipeline, expiration alerts.",
-  },
-  {
-    number: "05",
-    mistake: "No compliance",
-    result: "Missed filings, penalties, legal exposure.",
-    fix: "Checklist of corporate, tax, employment, data requirements.",
-  },
-  {
-    number: "06",
-    mistake: "No pitch deck",
-    result: "Can't articulate your business. Investors pass.",
-    fix: "Guided deck builder. Problem, solution, market, traction.",
-  },
-];
-
-const SECTIONS = [
-  { label: "Company", items: ["Founders & Equity", "Ideation", "Incorporation", "Pitch Deck", "Accelerators"] },
-  { label: "Money", items: ["Fundraising", "Runrate", "Bookkeeping", "Accounting", "Auditing", "Tax"] },
-  { label: "Business", items: ["Business Model", "Pricing", "Market Research", "Go-to-Market", "Marketing"] },
-  { label: "Legal", items: ["Contracts", "SAFEs", "Compliance", "IP & Trademarks"] },
-];
-
 function LandingPage() {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Nav */}
-      <nav className="flex items-center justify-between px-6 py-4 max-w-5xl mx-auto">
-        <span className="text-[15px] font-bold text-slate-900">1P OS</span>
-        <div className="flex items-center gap-4">
-          <Link href="/auth/login" className="text-[13px] text-slate-500 hover:text-slate-900 transition-colors">
-            Sign in
-          </Link>
-          <Link
-            href="/auth/signup"
-            className="bg-slate-900 text-white px-4 py-1.5 text-[13px] font-medium hover:bg-slate-800 transition-colors"
-          >
-            Start free
-          </Link>
-        </div>
-      </nav>
+    <div className="flex min-h-screen flex-col bg-white text-black">
+      {/* Top right links */}
+      <div className="mx-auto flex w-full max-w-5xl items-center justify-end gap-6 px-6 pt-6">
+        <a
+          href="https://github.com/scamai/1p-os"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-black/40 transition-colors duration-150 hover:text-black"
+          aria-label="GitHub"
+        >
+          <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <Link
+          href="/auth/login"
+          className="text-sm text-black/40 transition-colors duration-150 hover:text-black"
+        >
+          Login
+        </Link>
+      </div>
 
       {/* Hero */}
-      <section className="max-w-3xl mx-auto px-6 pt-20 pb-16">
-        <p className="text-[13px] font-medium text-slate-400 uppercase tracking-wider mb-4">
-          For first-time founders
-        </p>
-        <h1 className="text-[40px] leading-[1.1] font-bold text-slate-900 tracking-tight">
-          Every mistake a first-time founder makes is already solved here.
+      <section className="mx-auto flex flex-1 max-w-5xl flex-col justify-center px-6 pb-32 pt-28 md:pt-40">
+        <h1 className="max-w-3xl font-heading text-[clamp(2.5rem,7vw,4.5rem)] italic font-extralight leading-none tracking-[-0.02em] text-black">
+          1 Person Company
         </h1>
-        <p className="mt-6 text-[17px] leading-relaxed text-slate-500 max-w-xl">
-          No cap table. No bookkeeping. No contracts. No runway tracking.
-          First-time founders lose money, equity, and their company
-          because nobody told them what to set up on day one.
+        <p className="mt-6 font-heading text-[clamp(1.125rem,2.5vw,1.75rem)] italic font-normal leading-[1.3] text-black/70">
+          without stress
         </p>
-        <p className="mt-4 text-[17px] leading-relaxed text-slate-500 max-w-xl">
-          1P OS is the operating system that has it all built in.
-          Every tool, every checklist, every workflow — from incorporation
-          to fundraising to tax filing. AI agents handle the work.
-          You make the decisions.
+        <p className="mt-8 max-w-xl text-[17px] leading-[1.7] text-black/50">
+          We made the mistakes so you don&apos;t have to. Missed deadlines,
+          wrong entity type, messy cap tables, no IP protection — we learned
+          every lesson the expensive way. Now it&apos;s all here: templates,
+          calculators, and step-by-step guidance to get it right from day one.
         </p>
-        <div className="mt-8 flex items-center gap-4">
+        <div className="mt-12 flex flex-wrap items-center gap-4">
           <Link
             href="/auth/signup"
-            className="bg-slate-900 text-white px-6 py-2.5 text-[14px] font-medium hover:bg-slate-800 transition-colors"
+            className="bg-black px-6 py-3 text-[15px] font-medium text-white transition-opacity duration-150 hover:opacity-80"
           >
-            Start building your company
+            Get started &rarr;
           </Link>
-          <span className="text-[13px] text-slate-400">Free. Self-hosted. Open source.</span>
         </div>
-      </section>
-
-      {/* Mistakes Section */}
-      <section className="max-w-3xl mx-auto px-6 py-16 border-t border-slate-100">
-        <p className="text-[13px] font-medium text-slate-400 uppercase tracking-wider mb-2">
-          Why we built this
-        </p>
-        <h2 className="text-[28px] font-bold text-slate-900 tracking-tight">
-          6 mistakes that kill first-time startups.
-        </h2>
-        <p className="mt-3 text-[15px] text-slate-500 max-w-lg">
-          Every one of these is preventable. 1P OS prevents them by default.
-        </p>
-
-        <div className="mt-10 flex flex-col gap-6">
-          {MISTAKES.map((m) => (
-            <div key={m.number} className="flex gap-5">
-              <span className="shrink-0 text-[13px] font-mono font-bold text-slate-300 pt-0.5">
-                {m.number}
-              </span>
-              <div className="flex-1 border-b border-slate-100 pb-6">
-                <p className="text-[15px] font-semibold text-slate-900">{m.mistake}</p>
-                <p className="mt-1 text-[14px] text-slate-500">{m.result}</p>
-                <p className="mt-2 text-[13px] text-slate-400">
-                  <span className="font-medium text-slate-600">1P OS:</span> {m.fix}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* What's Inside */}
-      <section className="max-w-3xl mx-auto px-6 py-16 border-t border-slate-100">
-        <p className="text-[13px] font-medium text-slate-400 uppercase tracking-wider mb-2">
-          What&apos;s inside
-        </p>
-        <h2 className="text-[28px] font-bold text-slate-900 tracking-tight">
-          Everything a solo founder needs. Nothing extra.
-        </h2>
-
-        <div className="mt-10 grid grid-cols-2 gap-8 sm:grid-cols-4">
-          {SECTIONS.map((section) => (
-            <div key={section.label}>
-              <p className="text-[13px] font-semibold text-slate-900 mb-2">{section.label}</p>
-              <ul className="space-y-1">
-                {section.items.map((item) => (
-                  <li key={item} className="text-[13px] text-slate-500">{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* AI Agents */}
-      <section className="max-w-3xl mx-auto px-6 py-16 border-t border-slate-100">
-        <p className="text-[13px] font-medium text-slate-400 uppercase tracking-wider mb-2">
-          How it works
-        </p>
-        <h2 className="text-[28px] font-bold text-slate-900 tracking-tight">
-          AI agents do the work. You make the calls.
-        </h2>
-        <div className="mt-8 flex flex-col gap-5">
-          <div className="flex items-start gap-4">
-            <span className="shrink-0 flex h-8 w-8 items-center justify-center bg-slate-100 text-[13px] font-bold text-slate-600">1</span>
-            <div>
-              <p className="text-[15px] font-medium text-slate-900">Connect your accounts</p>
-              <p className="mt-0.5 text-[14px] text-slate-500">Email, calendar, Stripe, Slack. AI reads your business and builds your team.</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <span className="shrink-0 flex h-8 w-8 items-center justify-center bg-slate-100 text-[13px] font-bold text-slate-600">2</span>
-            <div>
-              <p className="text-[15px] font-medium text-slate-900">Agents work autonomously</p>
-              <p className="mt-0.5 text-[14px] text-slate-500">Invoice tracking, lead follow-ups, bookkeeping, scheduling. They run 24/7.</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-4">
-            <span className="shrink-0 flex h-8 w-8 items-center justify-center bg-slate-100 text-[13px] font-bold text-slate-600">3</span>
-            <div>
-              <p className="text-[15px] font-medium text-slate-900">You approve what matters</p>
-              <p className="mt-0.5 text-[14px] text-slate-500">Payments, contracts, tax filings — agents ask before acting on anything important.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="max-w-3xl mx-auto px-6 py-20 border-t border-slate-100 text-center">
-        <h2 className="text-[28px] font-bold text-slate-900 tracking-tight">
-          Don&apos;t learn these lessons the hard way.
-        </h2>
-        <p className="mt-3 text-[15px] text-slate-500">
-          Every tool your startup needs, from day one.
-        </p>
-        <Link
-          href="/auth/signup"
-          className="mt-8 inline-block bg-slate-900 text-white px-8 py-3 text-[14px] font-medium hover:bg-slate-800 transition-colors"
-        >
-          Start building your company
-        </Link>
-        <p className="mt-4 text-[12px] text-slate-400">
-          AGPLv3 open source. Self-host free. You own everything.
-        </p>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-100 px-6 py-6 max-w-5xl mx-auto">
-        <div className="flex items-center justify-between">
-          <span className="text-[12px] text-slate-400">1P OS</span>
-          <div className="flex gap-4">
-            <Link href="/auth/login" className="text-[12px] text-slate-400 hover:text-slate-600 transition-colors">Sign in</Link>
-            <Link href="/auth/signup" className="text-[12px] text-slate-400 hover:text-slate-600 transition-colors">Sign up</Link>
+      <footer className="border-t border-black/10">
+        <div className="mx-auto max-w-5xl px-6 py-8">
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/scamai/1p-os"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-black/20 transition-colors duration-150 hover:text-black"
+              aria-label="GitHub"
+            >
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </a>
+            <a
+              href="https://x.com/ScamAI_Official"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-black/20 transition-colors duration-150 hover:text-black"
+              aria-label="X"
+            >
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
           </div>
+          <p className="mt-4 text-[12px] leading-relaxed text-black/30">
+            A public repo from Reality Inc. (Scam.ai). Not legal, tax, or financial advice.
+          </p>
+          <p className="mt-2 text-[12px] text-black/20">
+            &copy; {new Date().getFullYear()} 1 Person Company
+          </p>
         </div>
       </footer>
     </div>
