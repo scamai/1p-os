@@ -1,0 +1,33 @@
+name: 1p-os
+region: sfo
+services:
+  - name: web
+    github:
+      repo: scamai/1p-os
+      branch: mvp
+      deploy_on_push: true
+    dockerfile_path: Dockerfile
+    http_port: 3000
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+    envs:
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        value: "REPLACE_ME"
+        type: GENERAL
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        value: "REPLACE_ME"
+        type: GENERAL
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        value: "REPLACE_ME"
+        type: SECRET
+      - key: ENCRYPTION_KEY
+        value: "REPLACE_ME"
+        type: SECRET
+      - key: NEXT_PUBLIC_APP_URL
+        value: "${APP_URL}"
+        type: GENERAL
+      - key: DEPLOYMENT_MODE
+        value: "cloud"
+        type: GENERAL
