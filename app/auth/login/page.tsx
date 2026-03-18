@@ -19,16 +19,23 @@ function GoogleIcon() {
 function LoginContent() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState(
-    searchParams.get("error") === "auth_failed" ? "Authentication failed. Please try again." : ""
-  );
+  const [error, setError] = React.useState("");
+
+  // Show callback error only once
+  React.useEffect(() => {
+    if (searchParams.get("error") === "auth_failed") {
+      setError("Login failed. Please try again.");
+      // Clean URL
+      window.history.replaceState({}, "", "/auth/login");
+    }
+  }, [searchParams]);
 
   const handleGoogle = async () => {
     setLoading(true);
     setError("");
     try {
       const supabase = createClient();
-      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+      const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
@@ -37,9 +44,12 @@ function LoginContent() {
       if (oauthError) {
         setError(oauthError.message);
         setLoading(false);
+      } else if (!data?.url) {
+        setError("No redirect URL returned. Check Supabase Google provider config.");
+        setLoading(false);
       }
-    } catch {
-      setError("Something went wrong. Please try again.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Connection failed. Check your internet.");
       setLoading(false);
     }
   };
@@ -51,7 +61,7 @@ function LoginContent() {
       </Link>
 
       {error && (
-        <p className="mb-6 text-xs text-black/70 bg-black/[0.03] px-4 py-3">{error}</p>
+        <p className="mb-6 text-xs text-black/70 bg-black/[0.03] px-4 py-3 text-left">{error}</p>
       )}
 
       <button
