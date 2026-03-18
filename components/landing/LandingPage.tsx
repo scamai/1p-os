@@ -61,8 +61,8 @@ function BeforeAfterSlider() {
       <div
         ref={containerRef}
         className="relative aspect-[4/5] w-full cursor-col-resize select-none overflow-hidden border border-black/[0.08] bg-[#FAFAFA]"
-        onMouseDown={(e) => { dragging.current = true; updatePos(e.clientX); }}
-        onTouchStart={(e) => { dragging.current = true; updatePos(e.touches[0].clientX); }}
+        onMouseDown={(e) => handleStart(e.clientX)}
+        onTouchStart={(e) => handleStart(e.touches[0].clientX)}
       >
         {/* Before side (full width, always visible behind) */}
         <div className="absolute inset-0 p-6 md:p-8">
@@ -226,9 +226,9 @@ const SECTIONS = [
   },
   {
     num: "03",
-    label: "Your plan",
-    title: "Answer 5 questions. Get a personalized launch plan.",
-    body: "Solo or co-founder? SaaS or services? Raising money? Where do you live? Based on your answers, we build a step-by-step plan tailored to your situation. No generic advice. Only the steps that apply to you, in the right order, one at a time.",
+    label: "The playbook",
+    title: "Every step, in order. Nothing missed.",
+    body: "Incorporate. File your 83(b). Sign your legal docs. Set up your cap table. Start compliance. Build your investor pipeline. The entire launch process laid out step by step — one screen at a time, with every template and calculator built in.",
   },
   {
     num: "04",
@@ -381,8 +381,8 @@ function LandingPage() {
             {[
               {
                 n: "1",
-                title: "Answer 5 questions",
-                body: "Solo or co-founder? SaaS or services? Raising VC? We personalize everything from your answers.",
+                title: "Sign up",
+                body: "Create an account in 30 seconds. No credit card. No onboarding quiz. Just start.",
               },
               {
                 n: "2",
@@ -440,8 +440,8 @@ function LandingPage() {
             Don&apos;t learn the hard way.
           </h2>
           <p className="mx-auto mt-5 max-w-[400px] text-[15px] leading-[1.7] text-white/40">
-            15 minutes to a personalized plan. Every template, calculator, and deadline
-            tracker included. Free.
+            Every template, calculator, and deadline tracker you need to launch.
+            Step by step. Free.
           </p>
           <div className="mt-10">
             <Link
