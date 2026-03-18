@@ -192,7 +192,7 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
         // Search
         case "search":
           if (params?.query) {
-            router.push(`/company?q=${encodeURIComponent(params.query as string)}`);
+            router.push(`/launch?q=${encodeURIComponent(params.query as string)}`);
           }
           break;
         // Automations
