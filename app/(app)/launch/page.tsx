@@ -22,8 +22,8 @@ export default async function LaunchPage() {
     profile = data;
   } catch { /* table may not exist */ }
 
-  // If no profile, redirect to onboarding
-  if (!profile) redirect("/launch/onboarding");
+  // If no profile and not in dev bypass, redirect to onboarding
+  if (!profile && process.env.DEV_BYPASS !== "true") redirect("/launch/onboarding");
 
   // Fetch phases, steps, progress, reminders — all optional
   let phases: any[] = [];
@@ -46,7 +46,7 @@ export default async function LaunchPage() {
 
   return (
     <LaunchDashboard
-      profile={profile}
+      profile={profile ?? { company_name: "My Company", is_solo: true, planning_to_raise: false, home_state: "CA" }}
       phases={phases ?? []}
       steps={steps ?? []}
       progress={progress ?? []}
