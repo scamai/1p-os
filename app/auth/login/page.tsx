@@ -4,7 +4,6 @@ import * as React from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Logo } from "@/components/shared/Logo";
 
 function GoogleIcon() {
   return (
@@ -17,7 +16,7 @@ function GoogleIcon() {
   );
 }
 
-export default function LoginPage() {
+function LoginContent() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(
@@ -39,45 +38,57 @@ export default function LoginPage() {
         setError(oauthError.message);
         setLoading(false);
       }
-    } catch (err) {
+    } catch {
       setError("Something went wrong. Please try again.");
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white px-4">
-      <div className="w-full max-w-sm text-center">
-        <Link href="/" className="mb-10 inline-block">
-          <Logo className="h-8 w-auto text-black" />
-        </Link>
+    <div className="w-full max-w-sm text-center">
+      <Link href="/" className="mb-10 inline-block font-heading text-2xl italic font-extralight tracking-[-0.02em] text-black">
+        1P
+      </Link>
 
-        {error && (
-          <p className="mb-6 text-xs text-black/70 bg-black/[0.03] px-4 py-3">{error}</p>
+      {error && (
+        <p className="mb-6 text-xs text-black/70 bg-black/[0.03] px-4 py-3">{error}</p>
+      )}
+
+      <button
+        onClick={handleGoogle}
+        disabled={loading}
+        className="flex h-12 w-full items-center justify-center gap-3 border border-black/10 bg-white text-sm font-medium text-black transition-colors duration-150 hover:bg-black/[0.02] disabled:opacity-50"
+      >
+        {loading ? (
+          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+          </svg>
+        ) : (
+          <GoogleIcon />
         )}
+        {loading ? "Redirecting..." : "Continue with Google"}
+      </button>
 
-        <button
-          onClick={handleGoogle}
-          disabled={loading}
-          className="flex h-12 w-full items-center justify-center gap-3 border border-black/10 bg-white text-sm font-medium text-black transition-colors duration-150 hover:bg-black/[0.02] disabled:opacity-50"
-        >
-          {loading ? (
-            <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-            </svg>
-          ) : (
-            <GoogleIcon />
-          )}
-          {loading ? "Redirecting..." : "Continue with Google"}
-        </button>
+      <p className="mt-8 text-[11px] text-black/30 leading-relaxed">
+        Sign in or create an account automatically.
+        <br />
+        By continuing, you agree to our terms of service.
+      </p>
+    </div>
+  );
+}
 
-        <p className="mt-8 text-[11px] text-black/30 leading-relaxed">
-          Sign in or create an account automatically.
-          <br />
-          By continuing, you agree to our terms of service.
-        </p>
-      </div>
+export default function LoginPage() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-white px-4">
+      <React.Suspense fallback={
+        <div className="w-full max-w-sm text-center">
+          <span className="font-heading text-2xl italic font-extralight tracking-[-0.02em] text-black">1P</span>
+        </div>
+      }>
+        <LoginContent />
+      </React.Suspense>
     </div>
   );
 }

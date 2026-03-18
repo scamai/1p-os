@@ -1,15 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Logo } from "@/components/shared/Logo";
-
 function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-white text-black">
       {/* Top bar */}
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 pt-6">
-        <Link href="/" aria-label="Home">
-          <Logo className="h-7 w-auto text-black" />
+        <Link href="/" className="font-heading text-lg italic font-extralight tracking-[-0.02em] text-black">
+          1P
         </Link>
         <div className="flex items-center gap-6">
         <a
