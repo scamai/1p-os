@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
 import { useSingletonData } from "@/lib/hooks/useSingletonData";
 
@@ -108,12 +108,85 @@ export default function Page() {
     update({ blocks: newBlocks });
   }
 
-  function getBlock(id: string) {
+  const getBlock = useCallback((id: string) => {
     return blocks.find((b) => b.id === id)!;
-  }
+  }, [blocks]);
 
   const totalItems = blocks.reduce((s, b) => s + b.items.length, 0);
   const filledBlocks = blocks.filter((b) => b.items.length > 0).length;
+
+  const exportPDF = useCallback(() => {
+    // Build a print-optimized HTML document
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Business Model Canvas</title>
+<style>
+  @page { size: landscape; margin: 0.5in; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Instrument Sans', -apple-system, system-ui, sans-serif; color: #000; }
+  h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; font-style: italic; font-size: 24px; margin-bottom: 16px; }
+  .meta { font-size: 10px; color: rgba(0,0,0,0.4); margin-bottom: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(10, 1fr); border: 1px solid #000; }
+  .cell { border-right: 1px solid #000; padding: 10px; min-height: 140px; }
+  .cell:last-child { border-right: none; }
+  .cell-title { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.5); margin-bottom: 6px; }
+  .cell-item { font-size: 10px; color: rgba(0,0,0,0.7); margin-bottom: 3px; padding-left: 8px; text-indent: -8px; }
+  .cell-item::before { content: "– "; color: rgba(0,0,0,0.3); }
+  .span2 { grid-column: span 2; }
+  .tall { grid-row: span 2; min-height: 280px; }
+  .stacked { display: flex; flex-direction: column; }
+  .stacked > div { flex: 1; padding: 10px; }
+  .stacked > div:first-child { border-bottom: 1px solid #000; }
+  .bottom { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #000; }
+  .bottom > div:first-child { border-right: 1px solid #000; }
+  .bottom .cell { min-height: 100px; }
+  .footer { margin-top: 16px; font-size: 9px; color: rgba(0,0,0,0.3); }
+</style>
+</head>
+<body>
+<h1>Business Model Canvas</h1>
+<p class="meta">${filledBlocks}/9 blocks filled · ${totalItems} items · Exported ${new Date().toLocaleDateString()}</p>
+<div class="grid">
+  <div class="span2 cell tall">${renderBlockHTML("key-partners")}</div>
+  <div class="span2 stacked cell">${renderStackedHTML("key-activities", "key-resources")}</div>
+  <div class="span2 cell tall">${renderBlockHTML("value-props")}</div>
+  <div class="span2 stacked cell">${renderStackedHTML("customer-relationships", "channels")}</div>
+  <div class="span2 cell tall" style="border-right:none">${renderBlockHTML("customer-segments")}</div>
+</div>
+<div class="bottom" style="border:1px solid #000;border-top:none;">
+  <div class="cell">${renderBlockHTML("cost-structure")}</div>
+  <div class="cell">${renderBlockHTML("revenue-streams")}</div>
+</div>
+<p class="footer">1 Person Company · 1press.com</p>
+</body>
+</html>`;
+
+    const win = window.open("", "_blank");
+    if (!win) return;
+    win.document.write(html);
+    win.document.close();
+    // Auto-trigger print dialog after a short delay
+    setTimeout(() => win.print(), 300);
+
+    function renderBlockHTML(id: string): string {
+      const b = getBlock(id);
+      return \`<div class="cell-title">\${b.title}</div>\${
+        b.items.length > 0
+          ? b.items.map((item) => \`<div class="cell-item">\${escapeHTML(item)}</div>\`).join("")
+          : \`<div style="font-size:9px;color:rgba(0,0,0,0.2);font-style:italic">\${escapeHTML(b.hint)}</div>\`
+      }\`;
+    }
+
+    function renderStackedHTML(topId: string, bottomId: string): string {
+      return \`<div>\${renderBlockHTML(topId)}</div><div>\${renderBlockHTML(bottomId)}</div>\`;
+    }
+
+    function escapeHTML(str: string): string {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+  }, [blocks, filledBlocks, totalItems, getBlock]);
 
   if (loading) return null;
 
@@ -130,6 +203,12 @@ export default function Page() {
         <div className="flex items-center gap-4">
           <span className="text-[11px] text-black/40">{filledBlocks}/9 blocks filled</span>
           <span className="text-[11px] text-black/40">{totalItems} items</span>
+          <button
+            onClick={exportPDF}
+            className="h-7 px-3 text-[11px] font-medium text-black border border-black/[0.08] hover:bg-black/[0.02] transition-colors"
+          >
+            Export PDF
+          </button>
           <button
             onClick={() => update({ blocks: DEFAULT_BLOCKS })}
             className="text-[11px] text-black/40 hover:text-black/60"

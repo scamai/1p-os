@@ -292,10 +292,10 @@ function LandingPage() {
             <GitHubIcon />
           </a>
           <Link
-            href="/auth/login"
+            href="/launch/onboarding"
             className="text-[13px] text-black/40 transition-colors duration-150 hover:text-black"
           >
-            Sign in
+            Dashboard
           </Link>
         </div>
       </header>
@@ -321,7 +321,7 @@ function LandingPage() {
             {/* CTA */}
             <div className="mt-10">
               <Link
-                href="/auth/signup"
+                href="/launch/onboarding"
                 className="bg-black px-7 py-3.5 text-[14px] font-medium uppercase tracking-[0.1em] text-white transition-opacity duration-150 hover:opacity-80"
               >
                 Get started
@@ -445,7 +445,7 @@ function LandingPage() {
           </p>
           <div className="mt-10">
             <Link
-              href="/auth/signup"
+              href="/launch/onboarding"
               className="inline-flex bg-white px-8 py-3.5 text-[14px] font-medium uppercase tracking-[0.1em] text-black transition-opacity duration-150 hover:opacity-80"
             >
               Get started

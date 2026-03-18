@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { getUserId } from "@/lib/supabase/dev-user";
 import { PhaseView } from "@/components/launch/PhaseView";
 
 interface PhasePageProps {
@@ -10,11 +9,7 @@ interface PhasePageProps {
 export default async function PhasePage({ params }: PhasePageProps) {
   const { slug } = await params;
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user && process.env.DEV_BYPASS !== "true") redirect("/auth/login");
-  const userId = getUserId(user);
+  const userId = "00000000-0000-0000-0000-000000000000";
 
   // Fetch founder profile
   const { data: profile } = await supabase
