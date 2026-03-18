@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { Button } from "@/components/ui/Button";
+import { EXCEL_TEMPLATES, type ExcelTemplate } from "@/lib/templates/generate-excel";
 
 interface LineItem {
   label: string;
@@ -308,6 +310,41 @@ export default function Page() {
           )}
         </div>
       )}
+
+      {/* Excel Templates */}
+      <div className="mt-8">
+        <h2 className="text-sm font-semibold text-black mb-1">Spreadsheet Templates</h2>
+        <p className="text-[13px] text-black/50 mb-4">
+          Download pre-formatted Excel templates for accounting and financial tracking.
+        </p>
+        <div className="flex flex-col gap-3">
+          {EXCEL_TEMPLATES.map((template) => (
+            <div
+              key={template.id}
+              className="border border-black/[0.08] rounded-md bg-white p-4 hover:border-black/30 transition-colors"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold text-black">
+                    {template.title}
+                  </h3>
+                  <p className="mt-1 text-[12px] text-black/50 leading-relaxed">
+                    {template.description}
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  variant="default"
+                  onClick={() => template.generate()}
+                  className="shrink-0"
+                >
+                  .xlsx
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

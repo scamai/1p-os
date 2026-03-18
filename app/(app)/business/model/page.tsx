@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
 import { useSingletonData } from "@/lib/hooks/useSingletonData";
 
@@ -45,12 +45,15 @@ function CanvasBlock({
 }) {
   const [draft, setDraft] = useState("");
   const [focused, setFocused] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   function addItem() {
     const text = draft.trim();
     if (!text) return;
     onUpdate({ ...block, items: [...block.items, text] });
     setDraft("");
+    // Re-focus input after React re-render
+    requestAnimationFrame(() => inputRef.current?.focus());
   }
 
   return (
@@ -77,6 +80,7 @@ function CanvasBlock({
       </ul>
       <div className="flex gap-1 mt-auto">
         <input
+          ref={inputRef}
           type="text"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}

@@ -1,317 +1,243 @@
 "use client";
 
-import { useState } from "react";
-import { useTableData } from "@/lib/hooks/useTableData";
+import { useState, useCallback } from "react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import {
+  LEGAL_TEMPLATES,
+  FillData,
+  fillText,
+  type LegalTemplate,
+} from "@/lib/templates/legal-templates";
 
-type ContractType = "NDA" | "MSA" | "SOW" | "Employment" | "Other";
-type ContractStatus = "draft" | "sent" | "signed" | "expired";
-
-type Contract = {
-  id: string;
-  name: string;
-  counterparty: string;
-  type: ContractType;
-  status: ContractStatus;
-  start_date: string;
-  end_date: string;
-  value: number;
-  notes: string;
-};
-
-const STATUS_STYLES: Record<ContractStatus, string> = {
-  draft: "bg-black/[0.04] text-black/60",
-  sent: "bg-black/[0.08] text-black/70",
-  signed: "bg-black text-white",
-  expired: "bg-black/30 text-black/50",
-};
-
-const TYPE_STYLES: Record<ContractType, string> = {
-  NDA: "bg-black/[0.04] text-black/60",
-  MSA: "bg-black/[0.08] text-black/70",
-  SOW: "bg-black/30 text-black/80",
-  Employment: "bg-black text-white",
-  Other: "bg-black/[0.02] text-black/50 border border-black/[0.08]",
-};
-
-const EMPTY_CONTRACT: Omit<Contract, "id"> = {
-  name: "",
-  counterparty: "",
-  type: "NDA",
-  status: "draft",
-  start_date: "",
-  end_date: "",
-  value: 0,
-  notes: "",
-};
-
-export default function Page() {
-  const { data: contracts, loading, create, update, remove } = useTableData<Contract>("contracts");
-  const [editing, setEditing] = useState<Contract | null>(null);
-  const [isNew, setIsNew] = useState(false);
-  const [filterStatus, setFilterStatus] = useState<ContractStatus | "all">("all");
-  const [filterType, setFilterType] = useState<ContractType | "all">("all");
-
-  async function save() {
-    if (!editing) return;
-    if (isNew) {
-      const { id: _id, ...rest } = editing;
-      await create(rest);
-    } else {
-      const { id: _id, ...rest } = editing;
-      await update(editing.id, rest);
-    }
-    setEditing(null);
-    setIsNew(false);
-  }
-
-  async function handleRemove(id: string) {
-    await remove(id);
-  }
-
-  function startNew() {
-    setEditing({ id: "", ...EMPTY_CONTRACT });
-    setIsNew(true);
-  }
-
-  const filtered = contracts.filter((c) => {
-    if (filterStatus !== "all" && c.status !== filterStatus) return false;
-    if (filterType !== "all" && c.type !== filterType) return false;
-    return true;
-  });
-
-  const totalValue = filtered.reduce((s, c) => s + c.value, 0);
-
-  if (loading) return null;
-
+function TemplateCard({
+  template,
+  data,
+  onDownloadPDF,
+  onDownloadDOCX,
+  onPreview,
+}: {
+  template: LegalTemplate;
+  data: FillData;
+  onDownloadPDF: (t: LegalTemplate) => void;
+  onDownloadDOCX: (t: LegalTemplate) => void;
+  onPreview: (t: LegalTemplate) => void;
+}) {
   return (
-    <div className="mx-auto max-w-4xl">
-      <Education {...EDUCATION.contracts} />
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-lg font-semibold text-black">Contracts</h1>
-          <p className="mt-1 text-sm text-black/50">
-            Track agreements, NDAs, and service contracts.
+    <div className="group border border-black/[0.08] rounded-md bg-white p-5 transition-colors duration-150 hover:border-black/30">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <h3 className="text-sm font-semibold text-black">
+            {template.title}
+          </h3>
+          <p className="mt-1 text-[13px] text-black/50 leading-relaxed">
+            {fillText(template.description, data)}
           </p>
         </div>
-        <button
-          onClick={startNew}
-          className="text-sm px-3 py-1.5 bg-black text-white rounded hover:bg-black/80"
-        >
-          Add Contract
-        </button>
-      </div>
-
-      {/* Filters */}
-      <div className="flex gap-3 mb-4">
-        <div>
-          <label className="block text-xs text-black/50 mb-1">Status</label>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value as ContractStatus | "all")}
-            className="text-sm border border-black/[0.08] rounded px-2 py-1 text-black/70 focus:outline-none focus:ring-1 focus:ring-black/40"
+        <div className="flex items-center gap-2 shrink-0 pt-0.5">
+          <Button size="sm" variant="ghost" onClick={() => onPreview(template)}>
+            Preview
+          </Button>
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => onDownloadDOCX(template)}
           >
-            <option value="all">All</option>
-            <option value="draft">Draft</option>
-            <option value="sent">Sent</option>
-            <option value="signed">Signed</option>
-            <option value="expired">Expired</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-xs text-black/50 mb-1">Type</label>
-          <select
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value as ContractType | "all")}
-            className="text-sm border border-black/[0.08] rounded px-2 py-1 text-black/70 focus:outline-none focus:ring-1 focus:ring-black/40"
+            DOCX
+          </Button>
+          <Button
+            size="sm"
+            variant="default"
+            onClick={() => onDownloadPDF(template)}
           >
-            <option value="all">All</option>
-            <option value="NDA">NDA</option>
-            <option value="MSA">MSA</option>
-            <option value="SOW">SOW</option>
-            <option value="Employment">Employment</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div className="ml-auto self-end text-xs text-black/40">
-          {filtered.length} contract{filtered.length !== 1 ? "s" : ""} | Total value: $
-          {totalValue.toLocaleString()}
+            PDF
+          </Button>
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/* Edit Modal */}
-      {editing && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
-            <h2 className="text-sm font-semibold text-black mb-4">
-              {isNew ? "New" : "Edit"} Contract
-            </h2>
-            <div className="space-y-3">
-              <div>
-                <label className="block text-xs text-black/50 mb-1">Contract Name</label>
-                <input
-                  type="text"
-                  value={editing.name}
-                  onChange={(e) => setEditing({ ...editing, name: e.target.value })}
-                  className="w-full text-sm border border-black/[0.08] rounded px-2 py-1.5 text-black focus:outline-none focus:ring-1 focus:ring-black/40"
-                />
-              </div>
-              <div>
-                <label className="block text-xs text-black/50 mb-1">Counterparty</label>
-                <input
-                  type="text"
-                  value={editing.counterparty}
-                  onChange={(e) => setEditing({ ...editing, counterparty: e.target.value })}
-                  className="w-full text-sm border border-black/[0.08] rounded px-2 py-1.5 text-black focus:outline-none focus:ring-1 focus:ring-black/40"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs text-black/50 mb-1">Type</label>
-                  <select
-                    value={editing.type}
-                    onChange={(e) => setEditing({ ...editing, type: e.target.value as ContractType })}
-                    className="w-full text-sm border border-black/[0.08] rounded px-2 py-1.5 text-black focus:outline-none focus:ring-1 focus:ring-black/40"
-                  >
-                    <option value="NDA">NDA</option>
-                    <option value="MSA">MSA</option>
-                    <option value="SOW">SOW</option>
-                    <option value="Employment">Employment</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs text-black/50 mb-1">Status</label>
-                  <select
-                    value={editing.status}
-                    onChange={(e) => setEditing({ ...editing, status: e.target.value as ContractStatus })}
-                    className="w-full text-sm border border-black/[0.08] rounded px-2 py-1.5 text-black focus:outline-none focus:ring-1 focus:ring-black/40"
-                  >
-                    <option value="draft">Draft</option>
-                    <option value="sent">Sent</option>
-                    <option value="signed">Signed</option>
-                    <option value="expired">Expired</option>
-                  </select>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs text-black/50 mb-1">Start Date</label>
-                  <input
-                    type="date"
-                    value={editing.start_date}
-                    onChange={(e) => setEditing({ ...editing, start_date: e.target.value })}
-                    className="w-full text-sm border border-black/[0.08] rounded px-2 py-1.5 text-black focus:outline-none focus:ring-1 focus:ring-black/40"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs text-black/50 mb-1">End Date</label>
-                  <input
-                    type="date"
-                    value={editing.end_date}
-                    onChange={(e) => setEditing({ ...editing, end_date: e.target.value })}
-                    className="w-full text-sm border border-black/[0.08] rounded px-2 py-1.5 text-black focus:outline-none focus:ring-1 focus:ring-black/40"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs text-black/50 mb-1">Value ($)</label>
-                <input
-                  type="number"
-                  min={0}
-                  value={editing.value}
-                  onChange={(e) => setEditing({ ...editing, value: parseFloat(e.target.value) || 0 })}
-                  className="w-full text-sm border border-black/[0.08] rounded px-2 py-1.5 text-black focus:outline-none focus:ring-1 focus:ring-black/40"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end gap-2 mt-4">
-              <button
-                onClick={() => { setEditing(null); setIsNew(false); }}
-                className="text-sm px-3 py-1.5 border border-black/[0.08] rounded text-black/60 hover:bg-black/[0.02]"
+function PreviewModal({
+  template,
+  data,
+  onClose,
+  onDownloadPDF,
+  onDownloadDOCX,
+}: {
+  template: LegalTemplate;
+  data: FillData;
+  onClose: () => void;
+  onDownloadPDF: (t: LegalTemplate) => void;
+  onDownloadDOCX: (t: LegalTemplate) => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 p-4 pt-12 pb-12">
+      <div className="w-full max-w-2xl rounded-md bg-white shadow-xl">
+        <div className="flex items-center justify-between border-b border-black/[0.08] px-6 py-4">
+          <h2 className="text-sm font-semibold text-black">
+            {template.title}
+          </h2>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => onDownloadDOCX(template)}
+            >
+              DOCX
+            </Button>
+            <Button
+              size="sm"
+              variant="default"
+              onClick={() => onDownloadPDF(template)}
+            >
+              PDF
+            </Button>
+            <button
+              onClick={onClose}
+              className="p-1 text-black/40 hover:text-black/60 transition-colors"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
               >
-                Cancel
-              </button>
-              <button
-                onClick={save}
-                className="text-sm px-3 py-1.5 bg-black text-white rounded hover:bg-black/80"
-              >
-                Save
-              </button>
-            </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
         </div>
-      )}
-
-      {/* Table */}
-      {filtered.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-black/[0.08] rounded-lg">
-          <p className="text-sm text-black/40">
-            {contracts.length === 0
-              ? "No contracts yet. Add your first one."
-              : "No contracts match filters."}
+        <div className="max-h-[70vh] overflow-y-auto px-8 py-6">
+          {template.sections.map((section, i) => (
+            <div key={i} className={i > 0 ? "mt-6" : ""}>
+              {section.heading && (
+                <h3 className="text-xs font-bold text-black uppercase tracking-wide mb-2">
+                  {fillText(section.heading, data)}
+                </h3>
+              )}
+              <div className="text-[13px] text-black/70 leading-relaxed whitespace-pre-line">
+                {fillText(section.body, data)}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="border-t border-black/[0.08] px-6 py-3">
+          <p className="text-xs text-black/40">
+            Not legal advice. Have a lawyer review before signing.
           </p>
         </div>
-      ) : (
-        <div className="border border-black/[0.08] rounded-lg overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-black/[0.02] border-b border-black/[0.08]">
-                {["Name", "Counterparty", "Type", "Status", "Dates", "Value", ""].map((h) => (
-                  <th
-                    key={h}
-                    className="text-left px-3 py-2 text-xs font-semibold text-black/50 uppercase tracking-wide"
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((c, i) => (
-                <tr
-                  key={c.id}
-                  className={`border-b border-black/[0.04] ${i % 2 === 0 ? "bg-white" : "bg-black/[0.02]"}`}
-                >
-                  <td className="px-3 py-2 text-black font-medium">{c.name || "Untitled"}</td>
-                  <td className="px-3 py-2 text-black/70">{c.counterparty}</td>
-                  <td className="px-3 py-2">
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${TYPE_STYLES[c.type]}`}>
-                      {c.type}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2">
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${STATUS_STYLES[c.status]}`}>
-                      {c.status}
-                    </span>
-                  </td>
-                  <td className="px-3 py-2 text-xs text-black/50">
-                    {c.start_date && <span>{c.start_date}</span>}
-                    {c.start_date && c.end_date && <span> - </span>}
-                    {c.end_date && <span>{c.end_date}</span>}
-                  </td>
-                  <td className="px-3 py-2 text-black/70">${c.value.toLocaleString()}</td>
-                  <td className="px-3 py-2">
-                    <div className="flex gap-1">
-                      <button
-                        onClick={() => { setEditing(c); setIsNew(false); }}
-                        className="text-xs text-black/40 hover:text-black/70"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleRemove(c.id)}
-                        className="text-xs text-black/40 hover:text-black/70"
-                      >
-                        Del
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      </div>
+    </div>
+  );
+}
+
+export default function Page() {
+  const [companyName, setCompanyName] = useState("");
+  const [founderName, setFounderName] = useState("");
+  const [state, setState] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [preview, setPreview] = useState<LegalTemplate | null>(null);
+
+  const data: FillData = { companyName, founderName, state, customerName };
+
+  const handleDownloadPDF = useCallback(
+    async (template: LegalTemplate) => {
+      const { generatePDF } = await import("@/lib/templates/generate-pdf");
+      generatePDF(template, data);
+    },
+    [data]
+  );
+
+  const handleDownloadDOCX = useCallback(
+    async (template: LegalTemplate) => {
+      const { generateDOCX } = await import("@/lib/templates/generate-docx");
+      generateDOCX(template, data);
+    },
+    [data]
+  );
+
+  return (
+    <div className="mx-auto max-w-2xl">
+      <Education {...EDUCATION.contracts} />
+
+      <div className="mb-10">
+        <h1 className="text-lg font-semibold text-black">Contract Templates</h1>
+        <p className="mt-1 text-sm text-black/50">
+          Download sample contract templates as PDF or DOCX. Auto-filled with your company details.
+        </p>
+      </div>
+
+      {/* Auto-fill fields */}
+      <div className="mb-8 border border-black/[0.08] rounded-md bg-black/[0.02] p-5">
+        <p className="text-xs font-medium text-black/50 uppercase tracking-widest mb-4">
+          Auto-fill details
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          <Input
+            label="Company name"
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+            placeholder="Acme Inc."
+          />
+          <Input
+            label="Founder name"
+            value={founderName}
+            onChange={(e) => setFounderName(e.target.value)}
+            placeholder="Jane Smith"
+          />
+          <Input
+            label="State"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            placeholder="Delaware"
+          />
+          <Input
+            label="Counterparty name"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            placeholder="John Doe / Globex Corp"
+          />
         </div>
+      </div>
+
+      {/* Template list */}
+      <div className="flex flex-col gap-3">
+        {LEGAL_TEMPLATES.map((template) => (
+          <TemplateCard
+            key={template.id}
+            template={template}
+            data={data}
+            onDownloadPDF={handleDownloadPDF}
+            onDownloadDOCX={handleDownloadDOCX}
+            onPreview={setPreview}
+          />
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div className="mt-10 border-t border-black/[0.04] pt-6">
+        <p className="text-xs text-black/40 leading-relaxed">
+          Templates are MIT licensed and provided for educational purposes. Have
+          a lawyer review any legal documents before signing.
+        </p>
+      </div>
+
+      {/* Preview modal */}
+      {preview && (
+        <PreviewModal
+          template={preview}
+          data={data}
+          onClose={() => setPreview(null)}
+          onDownloadPDF={handleDownloadPDF}
+          onDownloadDOCX={handleDownloadDOCX}
+        />
       )}
     </div>
   );

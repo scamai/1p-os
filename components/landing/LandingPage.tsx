@@ -216,37 +216,37 @@ const SECTIONS = [
     num: "01",
     label: "You have an idea",
     title: "You want to build something. You don\u2019t know where to start.",
-    body: "Should you incorporate? LLC or C-Corp? Delaware or your home state? What\u2019s an 83(b)? Do you need a co-founder agreement? Every answer leads to ten more questions. The information is out there \u2014 buried in Reddit, scattered across blogs, locked behind $500/hr lawyers. You shouldn\u2019t need a law degree to start a company.",
+    body: "LLC or C-Corp? If you pick LLC, most VCs won\u2019t even talk to you. Delaware or your home state? Delaware \u2014 but now you owe franchise tax in a state you\u2019ve never been to, and if you miss it you lose good standing. What\u2019s an 83(b) election? It\u2019s a form you file with the IRS within 30 days of receiving stock \u2014 miss the deadline and you could owe six figures in taxes on stock you can\u2019t even sell. Do you need a co-founder agreement? Yes, and without vesting your co-founder can walk away with half the company after two months. The information exists \u2014 buried in Reddit threads, scattered across contradictory blog posts, locked behind $500/hr lawyers. You shouldn\u2019t need a law degree to start a company.",
   },
   {
     num: "02",
     label: "We\u2019ve been there",
     title: "We made every mistake so you can skip them all.",
-    body: "Filed the wrong entity. Missed a tax deadline. Split equity without vesting. Forgot the IP assignment. Paid a lawyer $10,000 for templates we could have generated in minutes. Every painful lesson became a step in this platform. Now the entire playbook is here \u2014 free, open source, and guided.",
+    body: "Filed as an LLC and had to convert to a C-Corp when investors wouldn\u2019t touch us. Missed the 83(b) election deadline and got a surprise tax bill. Gave a co-founder 50% equity with no vesting \u2014 they left after three months with half the company. Forgot the IP assignment and had to track down a contractor in another country to sign one. Signed a SAFE without understanding dilution and gave away 40% of the company before Series A. Paid a lawyer $10,000 for boilerplate templates. Missed Delaware franchise tax and had to pay penalties to reinstate. Every painful lesson became a step in this platform.",
   },
   {
     num: "03",
     label: "The playbook",
     title: "Every step, in order. Nothing missed.",
-    body: "Incorporate. File your 83(b). Sign your legal docs. Set up your cap table. Start compliance. Build your investor pipeline. The entire launch process laid out step by step — one screen at a time, with every template and calculator built in.",
+    body: "Incorporate as a Delaware C-Corp. Get your EIN from the IRS. File your 83(b) election within 30 days \u2014 not 31. Sign your IP assignment so the company actually owns what you built. Set up your cap table before you promise equity to anyone. Get your CIIA in place before your first hire or contractor. File for S-Corp election if it saves you on self-employment tax. Register for franchise tax. Set up your registered agent. The entire launch process laid out step by step \u2014 one screen at a time, with every template and calculator built in.",
   },
   {
     num: "04",
     label: "The tools",
     title: "Legal templates, calculators, investor database \u2014 all built in.",
-    body: "14 legal documents auto-filled with your company data. Equity split calculator. SAFE dilution simulator. Vesting schedule builder. Investor database you can search and track. Pitch deck framework. Accelerator matching. Everything a first-time founder needs, nothing extra.",
+    body: "Board consent to authorize your own stock issuance \u2014 you need this and most founders don\u2019t know it. Stock purchase agreement with 4-year vesting and 1-year cliff \u2014 the standard VCs expect. 83(b) election letter pre-filled and ready to mail. IP assignment so your company legally owns your code. CIIA for every employee and contractor. Mutual NDA that doesn\u2019t scare away partners. SAFE dilution simulator so you know exactly what you\u2019re giving up before you sign. Cap table that updates automatically as you issue shares. Investor database you can search by stage, sector, and check size.",
   },
   {
     num: "05",
     label: "The safety net",
     title: "Dangerous deadlines enforced, not just mentioned.",
-    body: "File your 83(b) election late and it costs you $50K. Miss your franchise tax and you lose good standing. We create automatic countdowns the moment you complete each step. Critical deadlines get 30-day, 7-day, and day-of alerts. You\u2019ll never miss one.",
+    body: "The 83(b) election has a hard 30-day deadline \u2014 the IRS will not grant extensions, no exceptions, no appeals. Miss it and you\u2019re taxed on the fair market value of your stock when it vests, not when you bought it for $0.0001. Delaware franchise tax is due March 1 every year \u2014 miss it and you lose good standing, which means you can\u2019t raise, can\u2019t close deals, can\u2019t operate. Annual report due the same day. S-Corp election deadline is March 15. Quarterly estimated tax payments. State tax registrations. We create automatic countdowns the moment you complete each step. 30-day, 7-day, and day-of alerts. The deadlines that ruin companies don\u2019t get missed.",
   },
   {
     num: "06",
     label: "The result",
     title: "Incorporated, compliant, investor-ready. In a day.",
-    body: "Delaware C-Corp filed. EIN in hand. Legal docs signed. Cap table clean. Compliance calendar running. Pitch deck structured. Investor pipeline started. What takes most founders weeks of confusion and thousands of dollars \u2014 done in a day, for free.",
+    body: "Delaware C-Corp filed. EIN in hand. 83(b) mailed. IP assigned to the company. Board consent signed. Stock purchase agreement executed. Cap table clean with proper vesting. CIIA ready for your first hire. Franchise tax calendar set. Compliance reminders running. SAFE terms you actually understand. Pitch deck structured around the framework investors expect. What takes most founders weeks of Googling, thousands in legal fees, and at least one expensive mistake \u2014 done in a day, for free.",
   },
 ];
 

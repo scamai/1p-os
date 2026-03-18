@@ -123,13 +123,10 @@ export function OnboardingQuiz() {
       data: { user },
     } = await supabase.auth.getUser();
 
-    if (!user) {
-      router.push("/auth/login");
-      return;
-    }
+    const userId = user?.id ?? "00000000-0000-0000-0000-000000000000";
 
     const { error } = await supabase.from("founder_profiles").insert({
-      user_id: user.id,
+      user_id: userId,
       company_name: data.company_name.trim(),
       founder_type: data.founder_type,
       cofounder_count:

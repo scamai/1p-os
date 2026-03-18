@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { Button } from "@/components/ui/Button";
+import { EXCEL_TEMPLATES } from "@/lib/templates/generate-excel";
 
 interface AuditItem {
   id: string;
@@ -313,6 +315,28 @@ export default function Page() {
           </div>
         );
       })}
+
+      {/* Excel Template */}
+      <div className="mt-8">
+        <h2 className="text-sm font-semibold text-black mb-3">Download Template</h2>
+        {(() => {
+          const auditTemplate = EXCEL_TEMPLATES.find((t) => t.id === "audit-checklist");
+          if (!auditTemplate) return null;
+          return (
+            <div className="border border-black/[0.08] rounded-md bg-white p-4 hover:border-black/30 transition-colors">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold text-black">{auditTemplate.title}</h3>
+                  <p className="mt-1 text-[12px] text-black/50">{auditTemplate.description}</p>
+                </div>
+                <Button size="sm" variant="default" onClick={() => auditTemplate.generate()} className="shrink-0">
+                  .xlsx
+                </Button>
+              </div>
+            </div>
+          );
+        })()}
+      </div>
     </div>
   );
 }

@@ -26,7 +26,7 @@ export function generatePDF(template: LegalTemplate, data: FillData): void {
 
   function writeHeading(text: string) {
     const filled = fillText(text, data);
-    doc.setFont("helvetica", "bold");
+    doc.setFont("times", "bold");
     doc.setFontSize(11);
     const lines = doc.splitTextToSize(filled, maxWidth) as string[];
     checkPage(lines.length * lineHeight + paraSpacing);
@@ -39,7 +39,7 @@ export function generatePDF(template: LegalTemplate, data: FillData): void {
 
   function writeBody(text: string) {
     const filled = fillText(text, data);
-    doc.setFont("helvetica", "normal");
+    doc.setFont("times", "normal");
     doc.setFontSize(10);
 
     const paragraphs = filled.split("\n");
@@ -60,7 +60,7 @@ export function generatePDF(template: LegalTemplate, data: FillData): void {
 
   // Title
   const title = fillText(template.sections[0]?.heading || template.title, data);
-  doc.setFont("helvetica", "bold");
+  doc.setFont("times", "bold");
   doc.setFontSize(13);
   const titleLines = doc.splitTextToSize(title, maxWidth) as string[];
   for (const line of titleLines) {
@@ -93,7 +93,7 @@ export function generatePDF(template: LegalTemplate, data: FillData): void {
   const totalPages = doc.getNumberOfPages();
   for (let i = 1; i <= totalPages; i++) {
     doc.setPage(i);
-    doc.setFont("helvetica", "normal");
+    doc.setFont("times", "normal");
     doc.setFontSize(8);
     doc.setTextColor(150);
     const footer = `${fillText(template.title, data)} — Page ${i} of ${totalPages}`;

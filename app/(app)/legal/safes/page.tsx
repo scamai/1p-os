@@ -1,8 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useTableData } from "@/lib/hooks/useTableData";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { Button } from "@/components/ui/Button";
+import {
+  SAFE_TEMPLATES,
+  fillText,
+  type LegalTemplate,
+  type FillData,
+} from "@/lib/templates/legal-templates";
 
 type SafeStatus = "signed" | "pending";
 
@@ -21,6 +28,29 @@ export default function Page() {
   const [editing, setEditing] = useState<Safe | null>(null);
   const [isNew, setIsNew] = useState(false);
   const [totalShares, setTotalShares] = useState(10000000);
+
+  const fillData: FillData = {
+    companyName: "",
+    founderName: "",
+    state: "",
+    customerName: "",
+  };
+
+  const handleDownloadPDF = useCallback(
+    async (template: LegalTemplate) => {
+      const { generatePDF } = await import("@/lib/templates/generate-pdf");
+      generatePDF(template, fillData);
+    },
+    [fillData]
+  );
+
+  const handleDownloadDOCX = useCallback(
+    async (template: LegalTemplate) => {
+      const { generateDOCX } = await import("@/lib/templates/generate-docx");
+      generateDOCX(template, fillData);
+    },
+    [fillData]
+  );
 
   async function save() {
     if (!editing) return;
@@ -276,6 +306,52 @@ export default function Page() {
         </table>
         <p className="text-[11px] text-black/40 mt-2">
           This is a simplified estimate. Actual conversion depends on priced round terms. Does not account for discount conversion or option pool.
+        </p>
+      </div>
+
+      {/* SAFE Templates */}
+      <div className="mt-8">
+        <h2 className="text-sm font-semibold text-black mb-1">SAFE Templates</h2>
+        <p className="text-[13px] text-black/50 mb-4">
+          Download standard SAFE agreements as PDF or DOCX. Fill in your details before sending to investors.
+        </p>
+        <div className="flex flex-col gap-3">
+          {SAFE_TEMPLATES.map((template) => (
+            <div
+              key={template.id}
+              className="border border-black/[0.08] rounded-md bg-white p-4 hover:border-black/30 transition-colors"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold text-black">
+                    {template.title}
+                  </h3>
+                  <p className="mt-1 text-[12px] text-black/50 leading-relaxed">
+                    {template.description}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 shrink-0 pt-0.5">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleDownloadDOCX(template)}
+                  >
+                    DOCX
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="default"
+                    onClick={() => handleDownloadPDF(template)}
+                  >
+                    PDF
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-black/40 mt-3">
+          Based on the YC SAFE standard. Not legal advice — have a lawyer review before signing.
         </p>
       </div>
     </div>

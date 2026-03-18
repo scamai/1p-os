@@ -127,7 +127,7 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
         icon: <ShieldIcon />,
         defaultOpen: true,
         items: [
-          { id: "contracts", icon: <FileIcon />, label: "Contracts", href: "/legal/contracts" },
+          { id: "contracts", icon: <FileIcon />, label: "Templates", href: "/legal/contracts" },
           { id: "legal-safes", icon: <TagIcon />, label: "SAFEs", href: "/legal/safes" },
           { id: "ip", icon: <LightbulbIcon />, label: "IP & Trademarks", href: "/legal/ip" },
         ],

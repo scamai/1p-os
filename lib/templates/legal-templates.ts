@@ -20,6 +20,7 @@ export interface FillData {
   companyName: string;
   founderName: string;
   state: string;
+  customerName: string;
 }
 
 function d(): string {
@@ -35,6 +36,7 @@ export function fillText(text: string, data: FillData): string {
     .replace(/\{\{COMPANY\}\}/g, data.companyName || "________")
     .replace(/\{\{FOUNDER\}\}/g, data.founderName || "________")
     .replace(/\{\{STATE\}\}/g, data.state || "________")
+    .replace(/\{\{CUSTOMER\}\}/g, data.customerName || "________")
     .replace(/\{\{DATE\}\}/g, d());
 }
 
@@ -233,7 +235,7 @@ export const LEGAL_TEMPLATES: LegalTemplate[] = [
       },
       {
         heading: "6. GENERAL",
-        body: "6.1 Governing Law. This Agreement shall be governed by the laws of the State of {{STATE}}.\n\n6.2 Entire Agreement. This Agreement constitutes the entire agreement regarding confidentiality and invention assignment.\n\n6.3 Severability. If any provision is found to be unenforceable, the remaining provisions shall remain in effect.\n\n\nCOMPANY:\n{{COMPANY}}\n\nBy: _______________________________\nName: {{FOUNDER}}\nTitle: President\n\nEMPLOYEE:\n\n_______________________________\nName: ___________________________\nDate: {{DATE}}",
+        body: "6.1 Governing Law. This Agreement shall be governed by the laws of the State of {{STATE}}.\n\n6.2 Entire Agreement. This Agreement constitutes the entire agreement regarding confidentiality and invention assignment.\n\n6.3 Severability. If any provision is found to be unenforceable, the remaining provisions shall remain in effect.\n\n\nCOMPANY:\n{{COMPANY}}\n\nBy: _______________________________\nName: {{FOUNDER}}\nTitle: President\n\nEMPLOYEE:\n\n_______________________________\nName: {{CUSTOMER}}\nDate: {{DATE}}",
       },
     ],
   },
@@ -245,7 +247,7 @@ export const LEGAL_TEMPLATES: LegalTemplate[] = [
     sections: [
       {
         heading: "MUTUAL NON-DISCLOSURE AGREEMENT",
-        body: "This Mutual Non-Disclosure Agreement (\"Agreement\") is entered into as of {{DATE}} by and between:\n\n{{COMPANY}}, a {{STATE}} corporation (\"Party A\")\n\nand\n\n_________________________ (\"Party B\")\n\n(each a \"Party\" and collectively the \"Parties\").",
+        body: "This Mutual Non-Disclosure Agreement (\"Agreement\") is entered into as of {{DATE}} by and between:\n\n{{COMPANY}}, a {{STATE}} corporation (\"Party A\")\n\nand\n\n{{CUSTOMER}} (\"Party B\")\n\n(each a \"Party\" and collectively the \"Parties\").",
       },
       {
         heading: "1. PURPOSE",
@@ -273,7 +275,7 @@ export const LEGAL_TEMPLATES: LegalTemplate[] = [
       },
       {
         heading: "7. GOVERNING LAW",
-        body: "This Agreement shall be governed by the laws of the State of {{STATE}}.\n\n\nPARTY A:\n{{COMPANY}}\n\nBy: _______________________________\nName: {{FOUNDER}}\nTitle: President\nDate: {{DATE}}\n\nPARTY B:\n\nBy: _______________________________\nName: ___________________________\nTitle: ___________________________\nDate: ___________________________",
+        body: "This Agreement shall be governed by the laws of the State of {{STATE}}.\n\n\nPARTY A:\n{{COMPANY}}\n\nBy: _______________________________\nName: {{FOUNDER}}\nTitle: President\nDate: {{DATE}}\n\nPARTY B:\n\nBy: _______________________________\nName: {{CUSTOMER}}\nTitle: ___________________________\nDate: ___________________________",
       },
     ],
   },
@@ -285,7 +287,7 @@ export const LEGAL_TEMPLATES: LegalTemplate[] = [
     sections: [
       {
         heading: "INDEPENDENT CONTRACTOR AGREEMENT",
-        body: "This Independent Contractor Agreement (\"Agreement\") is entered into as of {{DATE}} by and between {{COMPANY}}, a {{STATE}} corporation (the \"Company\"), and _________________________ (the \"Contractor\").",
+        body: "This Independent Contractor Agreement (\"Agreement\") is entered into as of {{DATE}} by and between {{COMPANY}}, a {{STATE}} corporation (the \"Company\"), and {{CUSTOMER}} (the \"Contractor\").",
       },
       {
         heading: "1. SERVICES",
@@ -313,7 +315,7 @@ export const LEGAL_TEMPLATES: LegalTemplate[] = [
       },
       {
         heading: "7. GENERAL PROVISIONS",
-        body: "7.1 Governing Law. This Agreement shall be governed by the laws of the State of {{STATE}}.\n\n7.2 Entire Agreement. This Agreement constitutes the entire agreement between the parties.\n\n7.3 Non-Solicitation. During the term and for 12 months after, the Contractor shall not solicit Company employees.\n\n\nCOMPANY:\n{{COMPANY}}\n\nBy: _______________________________\nName: {{FOUNDER}}\nTitle: President\n\nCONTRACTOR:\n\n_______________________________\nName: ___________________________\nDate: {{DATE}}",
+        body: "7.1 Governing Law. This Agreement shall be governed by the laws of the State of {{STATE}}.\n\n7.2 Entire Agreement. This Agreement constitutes the entire agreement between the parties.\n\n7.3 Non-Solicitation. During the term and for 12 months after, the Contractor shall not solicit Company employees.\n\n\nCOMPANY:\n{{COMPANY}}\n\nBy: _______________________________\nName: {{FOUNDER}}\nTitle: President\n\nCONTRACTOR:\n\n_______________________________\nName: {{CUSTOMER}}\nDate: {{DATE}}",
       },
     ],
   },
@@ -325,7 +327,7 @@ export const LEGAL_TEMPLATES: LegalTemplate[] = [
     sections: [
       {
         heading: "CO-FOUNDER AGREEMENT",
-        body: "This Co-Founder Agreement (\"Agreement\") is entered into as of {{DATE}} by and between the following individuals (each a \"Founder\" and collectively the \"Founders\"):\n\n1. {{FOUNDER}}\n2. _________________________\n\nin connection with the formation and operation of {{COMPANY}}, a {{STATE}} corporation (the \"Company\").",
+        body: "This Co-Founder Agreement (\"Agreement\") is entered into as of {{DATE}} by and between the following individuals (each a \"Founder\" and collectively the \"Founders\"):\n\n1. {{FOUNDER}}\n2. {{CUSTOMER}}\n\nin connection with the formation and operation of {{COMPANY}}, a {{STATE}} corporation (the \"Company\").",
       },
       {
         heading: "1. ROLES AND RESPONSIBILITIES",
@@ -357,7 +359,138 @@ export const LEGAL_TEMPLATES: LegalTemplate[] = [
       },
       {
         heading: "8. GENERAL PROVISIONS",
-        body: "8.1 Governing Law. This Agreement shall be governed by the laws of the State of {{STATE}}.\n\n8.2 Entire Agreement. This Agreement constitutes the entire agreement between the Founders.\n\n8.3 Amendments. Amendments require written consent of all Founders.\n\n8.4 Severability. If any provision is found unenforceable, the remainder shall continue in effect.\n\n\nFOUNDER 1:\n\n_______________________________\n{{FOUNDER}}\nDate: {{DATE}}\n\nFOUNDER 2:\n\n_______________________________\nName: ___________________________\nDate: ___________________________",
+        body: "8.1 Governing Law. This Agreement shall be governed by the laws of the State of {{STATE}}.\n\n8.2 Entire Agreement. This Agreement constitutes the entire agreement between the Founders.\n\n8.3 Amendments. Amendments require written consent of all Founders.\n\n8.4 Severability. If any provision is found unenforceable, the remainder shall continue in effect.\n\n\nFOUNDER 1:\n\n_______________________________\n{{FOUNDER}}\nDate: {{DATE}}\n\nFOUNDER 2:\n\n_______________________________\nName: {{CUSTOMER}}\nDate: ___________________________",
+      },
+    ],
+  },
+];
+
+export const SAFE_TEMPLATES: LegalTemplate[] = [
+  {
+    id: "safe-valuation-cap",
+    title: "SAFE — Valuation Cap, No Discount",
+    description:
+      "Standard post-money SAFE with a valuation cap. The most common SAFE type for early-stage fundraising.",
+    sections: [
+      {
+        heading: "SAFE (Simple Agreement for Future Equity)",
+        body: "THIS CERTIFIES THAT in exchange for the payment by {{CUSTOMER}} (the \"Investor\") of $[AMOUNT] (the \"Purchase Amount\") on or about {{DATE}}, {{COMPANY}}, a {{STATE}} corporation (the \"Company\"), hereby issues to the Investor the right to certain shares of the Company's capital stock, subject to the terms set forth below.",
+      },
+      {
+        heading: "1. EVENTS",
+        body: "(a) Equity Financing. If there is an Equity Financing before the termination of this SAFE, on the initial closing of such Equity Financing, this SAFE will automatically convert into the number of shares of Safe Preferred Stock equal to the Purchase Amount divided by the Conversion Price.\n\nThe \"Conversion Price\" means either: (1) the Safe Price, or (2) the Discount Price, whichever calculation results in a greater number of shares of Safe Preferred Stock.\n\nThe \"Safe Price\" means the price per share equal to the Post-Money Valuation Cap divided by the Company Capitalization.\n\n(b) Liquidity Event. If there is a Liquidity Event before the termination of this SAFE, the Investor will, at its option, either (i) receive a cash payment equal to the Purchase Amount (the \"Cash-Out Amount\") or (ii) automatically receive from the Company a number of shares of Common Stock equal to the Purchase Amount divided by the Liquidity Price.\n\n(c) Dissolution Event. If there is a Dissolution Event before the termination of this SAFE, the Company will pay an amount equal to the Purchase Amount, due and payable to the Investor immediately prior to, or concurrent with, the consummation of the Dissolution Event.",
+      },
+      {
+        heading: "2. DEFINITIONS",
+        body: "\"Company Capitalization\" means the sum, as of immediately prior to the Equity Financing, of: (1) all shares of Capital Stock (on an as-converted basis) issued and outstanding, assuming exercise or conversion of all outstanding vested and unvested options, warrants and other convertible securities, but excluding (i) this SAFE, (ii) all other SAFEs, and (iii) convertible promissory notes; and (2) all shares of Common Stock reserved and available for future grant under any equity incentive or similar plan of the Company, and/or any equity incentive or similar plan to be created or increased in connection with the Equity Financing.\n\n\"Equity Financing\" means a bona fide transaction or series of transactions with the principal purpose of raising capital, pursuant to which the Company issues and sells Preferred Stock at a fixed valuation, including but not limited to a pre-money or post-money valuation.\n\n\"Liquidity Event\" means a Change of Control or an IPO.\n\n\"Liquidity Price\" means the price per share equal to the Post-Money Valuation Cap divided by the Liquidity Capitalization.\n\n\"Post-Money Valuation Cap\" means $[VALUATION CAP].\n\n\"Safe Preferred Stock\" means the shares of a series of Preferred Stock issued to the Investor in an Equity Financing, having the identical rights, privileges, preferences and restrictions as the shares of Standard Preferred Stock, other than with respect to: (i) the per share liquidation preference, which will equal the Conversion Price; and (ii) the conversion price for purposes of price-based anti-dilution protection, which will equal the Conversion Price.",
+      },
+      {
+        heading: "3. COMPANY REPRESENTATIONS",
+        body: "(a) The Company is a corporation duly organized, validly existing and in good standing under the laws of the State of {{STATE}}.\n\n(b) The execution, delivery and performance of this SAFE is within the power of the Company and has been duly authorized by all necessary actions.\n\n(c) This SAFE constitutes a legal, valid and binding obligation of the Company, enforceable against the Company in accordance with its terms.",
+      },
+      {
+        heading: "4. INVESTOR REPRESENTATIONS",
+        body: "(a) The Investor has full legal capacity, power and authority to execute and deliver this SAFE and to perform its obligations hereunder.\n\n(b) The Investor is an accredited investor as such term is defined in Rule 501 of Regulation D under the Securities Act.\n\n(c) The Investor is purchasing this SAFE for its own account for investment, not as a nominee or agent, and not with a view to, or for resale in connection with, the distribution thereof.",
+      },
+      {
+        heading: "5. MISCELLANEOUS",
+        body: "(a) Any provision of this SAFE may be amended, waived or modified only upon the written consent of the Company and the Investor.\n\n(b) Any notice required or permitted by this SAFE will be deemed sufficient when sent by email to the relevant address listed on the signature page.\n\n(c) The Investor is not entitled, as a holder of this SAFE, to vote or receive dividends or be deemed the holder of Capital Stock for any purpose.\n\n(d) Neither this SAFE nor the rights in this SAFE are transferable or assignable, by operation of law or otherwise, by the Investor without the prior written consent of the Company.\n\n(e) This SAFE shall be governed by and construed in accordance with the laws of the State of {{STATE}}.\n\n(f) This SAFE expires and is no longer valid if the Purchase Amount is not paid within 30 days of the date of this SAFE.\n\n\nCOMPANY:\n{{COMPANY}}\n\nBy: _______________________________\nName: {{FOUNDER}}\nTitle: President\nDate: {{DATE}}\n\nINVESTOR:\n\nBy: _______________________________\nName: {{CUSTOMER}}\nDate: ___________________________\n\nPurchase Amount: $[AMOUNT]\nPost-Money Valuation Cap: $[VALUATION CAP]",
+      },
+    ],
+  },
+  {
+    id: "safe-discount",
+    title: "SAFE — Discount, No Valuation Cap",
+    description:
+      "Post-money SAFE with a discount rate and no valuation cap. Used when valuation is hard to set but investors want a discount.",
+    sections: [
+      {
+        heading: "SAFE (Simple Agreement for Future Equity)",
+        body: "THIS CERTIFIES THAT in exchange for the payment by {{CUSTOMER}} (the \"Investor\") of $[AMOUNT] (the \"Purchase Amount\") on or about {{DATE}}, {{COMPANY}}, a {{STATE}} corporation (the \"Company\"), hereby issues to the Investor the right to certain shares of the Company's capital stock, subject to the terms set forth below.",
+      },
+      {
+        heading: "1. EVENTS",
+        body: "(a) Equity Financing. If there is an Equity Financing before the termination of this SAFE, on the initial closing of such Equity Financing, this SAFE will automatically convert into the number of shares of Safe Preferred Stock equal to the Purchase Amount divided by the Discount Price.\n\nThe \"Discount Price\" means the price per share of the Standard Preferred Stock sold in the Equity Financing multiplied by the Discount Rate.\n\n(b) Liquidity Event. If there is a Liquidity Event before the termination of this SAFE, the Investor will, at its option, either (i) receive a cash payment equal to the Purchase Amount or (ii) automatically receive from the Company a number of shares of Common Stock equal to the Purchase Amount divided by the Liquidity Price.\n\n(c) Dissolution Event. If there is a Dissolution Event before the termination of this SAFE, the Company will pay an amount equal to the Purchase Amount, due and payable to the Investor immediately prior to, or concurrent with, the consummation of the Dissolution Event.",
+      },
+      {
+        heading: "2. DEFINITIONS",
+        body: "\"Discount Rate\" means [__]% (e.g., 80% for a 20% discount).\n\n\"Equity Financing\" means a bona fide transaction or series of transactions with the principal purpose of raising capital, pursuant to which the Company issues and sells Preferred Stock at a fixed valuation.\n\n\"Liquidity Event\" means a Change of Control or an IPO.\n\n\"Liquidity Price\" means the price per share equal to the fair market value of the Common Stock at the time of the Liquidity Event, as determined by reference to the purchase price payable in connection with such Liquidity Event, divided by the number of shares of outstanding Common Stock.\n\n\"Safe Preferred Stock\" means the shares of a series of Preferred Stock issued to the Investor in an Equity Financing, having the identical rights, privileges, preferences and restrictions as the shares of Standard Preferred Stock.",
+      },
+      {
+        heading: "3. COMPANY REPRESENTATIONS",
+        body: "(a) The Company is a corporation duly organized, validly existing and in good standing under the laws of the State of {{STATE}}.\n\n(b) The execution, delivery and performance of this SAFE is within the power of the Company and has been duly authorized.\n\n(c) This SAFE constitutes a legal, valid and binding obligation of the Company.",
+      },
+      {
+        heading: "4. INVESTOR REPRESENTATIONS",
+        body: "(a) The Investor has full legal capacity to execute and deliver this SAFE.\n\n(b) The Investor is an accredited investor as defined in Rule 501 of Regulation D.\n\n(c) The Investor is purchasing this SAFE for its own account for investment, not with a view to resale or distribution.",
+      },
+      {
+        heading: "5. MISCELLANEOUS",
+        body: "(a) This SAFE may be amended only with written consent of both parties.\n\n(b) The Investor is not entitled to vote or receive dividends as a holder of this SAFE.\n\n(c) This SAFE is not transferable without the Company's written consent.\n\n(d) This SAFE shall be governed by the laws of the State of {{STATE}}.\n\n\nCOMPANY:\n{{COMPANY}}\n\nBy: _______________________________\nName: {{FOUNDER}}\nTitle: President\nDate: {{DATE}}\n\nINVESTOR:\n\nBy: _______________________________\nName: {{CUSTOMER}}\nDate: ___________________________\n\nPurchase Amount: $[AMOUNT]\nDiscount Rate: [__]%",
+      },
+    ],
+  },
+  {
+    id: "safe-cap-and-discount",
+    title: "SAFE — Valuation Cap + Discount",
+    description:
+      "Post-money SAFE with both a valuation cap and discount rate. Investor converts at whichever gives more shares.",
+    sections: [
+      {
+        heading: "SAFE (Simple Agreement for Future Equity)",
+        body: "THIS CERTIFIES THAT in exchange for the payment by {{CUSTOMER}} (the \"Investor\") of $[AMOUNT] (the \"Purchase Amount\") on or about {{DATE}}, {{COMPANY}}, a {{STATE}} corporation (the \"Company\"), hereby issues to the Investor the right to certain shares of the Company's capital stock, subject to the terms set forth below.",
+      },
+      {
+        heading: "1. EVENTS",
+        body: "(a) Equity Financing. If there is an Equity Financing before the termination of this SAFE, on the initial closing of such Equity Financing, this SAFE will automatically convert into the number of shares of Safe Preferred Stock equal to the Purchase Amount divided by the Conversion Price.\n\nThe \"Conversion Price\" means the lower of: (1) the Safe Price, or (2) the Discount Price.\n\nThe \"Safe Price\" means the price per share equal to the Post-Money Valuation Cap divided by the Company Capitalization.\n\nThe \"Discount Price\" means the price per share of the Standard Preferred Stock sold in the Equity Financing multiplied by the Discount Rate.\n\n(b) Liquidity Event. If there is a Liquidity Event before the termination of this SAFE, the Investor will, at its option, either (i) receive a cash payment equal to the Purchase Amount or (ii) automatically receive shares of Common Stock equal to the Purchase Amount divided by the Liquidity Price.\n\n(c) Dissolution Event. If there is a Dissolution Event, the Company will pay an amount equal to the Purchase Amount to the Investor prior to or concurrent with the Dissolution Event.",
+      },
+      {
+        heading: "2. DEFINITIONS",
+        body: "\"Company Capitalization\" means all shares of Capital Stock issued and outstanding on an as-converted basis, assuming exercise of all outstanding options and warrants, plus all shares reserved under equity incentive plans.\n\n\"Discount Rate\" means [__]% (e.g., 80% for a 20% discount).\n\n\"Equity Financing\" means a bona fide transaction raising capital through sale of Preferred Stock.\n\n\"Liquidity Price\" means the Post-Money Valuation Cap divided by the Liquidity Capitalization.\n\n\"Post-Money Valuation Cap\" means $[VALUATION CAP].",
+      },
+      {
+        heading: "3. COMPANY REPRESENTATIONS",
+        body: "(a) The Company is duly organized and in good standing under the laws of {{STATE}}.\n\n(b) This SAFE has been duly authorized and constitutes a valid and binding obligation.",
+      },
+      {
+        heading: "4. INVESTOR REPRESENTATIONS",
+        body: "(a) The Investor is an accredited investor.\n\n(b) The Investor is purchasing for investment, not for resale.",
+      },
+      {
+        heading: "5. MISCELLANEOUS",
+        body: "(a) Amendments require written consent of both parties.\n\n(b) The Investor has no voting rights or dividend rights under this SAFE.\n\n(c) Not transferable without Company consent.\n\n(d) Governed by the laws of {{STATE}}.\n\n\nCOMPANY:\n{{COMPANY}}\n\nBy: _______________________________\nName: {{FOUNDER}}\nTitle: President\nDate: {{DATE}}\n\nINVESTOR:\n\nBy: _______________________________\nName: {{CUSTOMER}}\nDate: ___________________________\n\nPurchase Amount: $[AMOUNT]\nPost-Money Valuation Cap: $[VALUATION CAP]\nDiscount Rate: [__]%",
+      },
+    ],
+  },
+  {
+    id: "safe-mfn",
+    title: "SAFE — MFN, No Cap, No Discount",
+    description:
+      "Most Favored Nation SAFE. No cap or discount, but if the company issues a future SAFE with better terms, this one gets those terms.",
+    sections: [
+      {
+        heading: "SAFE (Simple Agreement for Future Equity)",
+        body: "THIS CERTIFIES THAT in exchange for the payment by {{CUSTOMER}} (the \"Investor\") of $[AMOUNT] (the \"Purchase Amount\") on or about {{DATE}}, {{COMPANY}}, a {{STATE}} corporation (the \"Company\"), hereby issues to the Investor the right to certain shares of the Company's capital stock, subject to the terms set forth below.",
+      },
+      {
+        heading: "1. EVENTS",
+        body: "(a) Equity Financing. If there is an Equity Financing before the termination of this SAFE, on the initial closing of such Equity Financing, this SAFE will automatically convert into the number of shares of Safe Preferred Stock equal to the Purchase Amount divided by the price per share of the Standard Preferred Stock sold in the Equity Financing.\n\n(b) Liquidity Event. If there is a Liquidity Event before the termination of this SAFE, the Investor will receive a cash payment equal to the Purchase Amount.\n\n(c) Dissolution Event. If there is a Dissolution Event, the Company will pay the Purchase Amount to the Investor prior to or concurrent with the Dissolution Event.",
+      },
+      {
+        heading: "2. MFN PROVISION",
+        body: "If the Company issues any subsequent SAFE (a \"Subsequent SAFE\") with terms more favorable to the investor of such Subsequent SAFE (including but not limited to a valuation cap or discount rate), the Company shall promptly notify the Investor and, at the Investor's election, this SAFE shall be amended to include the more favorable terms of the Subsequent SAFE.\n\nThe Investor must notify the Company in writing within 30 days of receiving notice of the Subsequent SAFE terms to elect to amend this SAFE.",
+      },
+      {
+        heading: "3. COMPANY REPRESENTATIONS",
+        body: "(a) The Company is duly organized and in good standing under the laws of {{STATE}}.\n\n(b) This SAFE has been duly authorized and constitutes a valid and binding obligation.\n\n(c) The Company will promptly notify the Investor of any Subsequent SAFE issuance.",
+      },
+      {
+        heading: "4. INVESTOR REPRESENTATIONS",
+        body: "(a) The Investor is an accredited investor.\n\n(b) The Investor is purchasing for investment, not for resale.",
+      },
+      {
+        heading: "5. MISCELLANEOUS",
+        body: "(a) Amendments require written consent of both parties (except as provided in the MFN provision).\n\n(b) The Investor has no voting rights or dividend rights under this SAFE.\n\n(c) Not transferable without Company consent.\n\n(d) Governed by the laws of {{STATE}}.\n\n\nCOMPANY:\n{{COMPANY}}\n\nBy: _______________________________\nName: {{FOUNDER}}\nTitle: President\nDate: {{DATE}}\n\nINVESTOR:\n\nBy: _______________________________\nName: {{CUSTOMER}}\nDate: ___________________________\n\nPurchase Amount: $[AMOUNT]",
       },
     ],
   },

@@ -21,12 +21,14 @@ interface TemplateBrowserProps {
 function TemplateCard({
   template,
   data,
-  onDownload,
+  onDownloadPDF,
+  onDownloadDOCX,
   onPreview,
 }: {
   template: LegalTemplate;
   data: FillData;
-  onDownload: (t: LegalTemplate) => void;
+  onDownloadPDF: (t: LegalTemplate) => void;
+  onDownloadDOCX: (t: LegalTemplate) => void;
   onPreview: (t: LegalTemplate) => void;
 }) {
   return (
@@ -46,22 +48,16 @@ function TemplateCard({
           </Button>
           <Button
             size="sm"
-            variant="default"
-            onClick={() => onDownload(template)}
+            variant="outline"
+            onClick={() => onDownloadDOCX(template)}
           >
-            <svg
-              className="h-3.5 w-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-              />
-            </svg>
+            DOCX
+          </Button>
+          <Button
+            size="sm"
+            variant="default"
+            onClick={() => onDownloadPDF(template)}
+          >
             PDF
           </Button>
         </div>
@@ -74,12 +70,14 @@ function PreviewModal({
   template,
   data,
   onClose,
-  onDownload,
+  onDownloadPDF,
+  onDownloadDOCX,
 }: {
   template: LegalTemplate;
   data: FillData;
   onClose: () => void;
-  onDownload: (t: LegalTemplate) => void;
+  onDownloadPDF: (t: LegalTemplate) => void;
+  onDownloadDOCX: (t: LegalTemplate) => void;
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 p-4 pt-12 pb-12">
@@ -91,10 +89,17 @@ function PreviewModal({
           <div className="flex items-center gap-2">
             <Button
               size="sm"
-              variant="default"
-              onClick={() => onDownload(template)}
+              variant="outline"
+              onClick={() => onDownloadDOCX(template)}
             >
-              Download PDF
+              DOCX
+            </Button>
+            <Button
+              size="sm"
+              variant="default"
+              onClick={() => onDownloadPDF(template)}
+            >
+              PDF
             </Button>
             <button
               onClick={onClose}
@@ -144,14 +149,23 @@ export function TemplateBrowser({ initialData }: TemplateBrowserProps) {
   const [companyName, setCompanyName] = useState(initialData.companyName);
   const [founderName, setFounderName] = useState(initialData.founderName);
   const [state, setState] = useState(initialData.state);
+  const [customerName, setCustomerName] = useState("");
   const [preview, setPreview] = useState<LegalTemplate | null>(null);
 
-  const data: FillData = { companyName, founderName, state };
+  const data: FillData = { companyName, founderName, state, customerName };
 
-  const handleDownload = useCallback(
+  const handleDownloadPDF = useCallback(
     async (template: LegalTemplate) => {
       const { generatePDF } = await import("@/lib/templates/generate-pdf");
       generatePDF(template, data);
+    },
+    [data]
+  );
+
+  const handleDownloadDOCX = useCallback(
+    async (template: LegalTemplate) => {
+      const { generateDOCX } = await import("@/lib/templates/generate-docx");
+      generateDOCX(template, data);
     },
     [data]
   );
@@ -167,8 +181,8 @@ export function TemplateBrowser({ initialData }: TemplateBrowserProps) {
         <p className="mt-1 text-[13px] text-black/50 leading-relaxed">
           Board consent, stock purchase agreement, 83(b) election, IP
           assignment, CIIA, mutual NDA, contractor agreement, co-founder
-          agreement — auto-filled with your details, downloaded as PDF, MIT
-          licensed.
+          agreement — auto-filled with your details, downloaded as PDF or DOCX,
+          MIT licensed.
         </p>
       </div>
 
@@ -177,7 +191,7 @@ export function TemplateBrowser({ initialData }: TemplateBrowserProps) {
         <p className="text-xs font-medium text-black/50 uppercase tracking-widest mb-4">
           Auto-fill details
         </p>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           <Input
             label="Company name"
             value={companyName}
@@ -196,6 +210,12 @@ export function TemplateBrowser({ initialData }: TemplateBrowserProps) {
             onChange={(e) => setState(e.target.value)}
             placeholder="Delaware"
           />
+          <Input
+            label="Counterparty name"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            placeholder="John Doe / Globex Corp"
+          />
         </div>
       </div>
 
@@ -206,7 +226,8 @@ export function TemplateBrowser({ initialData }: TemplateBrowserProps) {
             key={template.id}
             template={template}
             data={data}
-            onDownload={handleDownload}
+            onDownloadPDF={handleDownloadPDF}
+            onDownloadDOCX={handleDownloadDOCX}
             onPreview={setPreview}
           />
         ))}
@@ -227,7 +248,8 @@ export function TemplateBrowser({ initialData }: TemplateBrowserProps) {
           template={preview}
           data={data}
           onClose={() => setPreview(null)}
-          onDownload={handleDownload}
+          onDownloadPDF={handleDownloadPDF}
+          onDownloadDOCX={handleDownloadDOCX}
         />
       )}
     </div>
