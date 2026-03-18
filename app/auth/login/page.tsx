@@ -3,6 +3,8 @@
 import * as React from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { Logo } from "@/components/shared/Logo";
 
 function GoogleIcon() {
   return (
@@ -17,37 +19,64 @@ function GoogleIcon() {
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
-  const error = searchParams.get("error") === "auth_failed" ? "Authentication failed. Please try again." : "";
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(
+    searchParams.get("error") === "auth_failed" ? "Authentication failed. Please try again." : ""
+  );
 
   const handleGoogle = async () => {
-    const supabase = createClient();
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+    setLoading(true);
+    setError("");
+    try {
+      const supabase = createClient();
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (oauthError) {
+        setError(oauthError.message);
+        setLoading(false);
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+      setLoading(false);
+    }
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-4">
       <div className="w-full max-w-sm text-center">
-        <h1 className="text-xl font-semibold text-black">Sign in</h1>
-        <p className="mt-1 mb-8 text-sm text-black/50">
-          Continue with your Google account.
-        </p>
+        <Link href="/" className="mb-10 inline-block">
+          <Logo className="h-8 w-auto text-black" />
+        </Link>
 
         {error && (
-          <p className="mb-4 text-xs text-black/70">{error}</p>
+          <p className="mb-6 text-xs text-black/70 bg-black/[0.03] px-4 py-3">{error}</p>
         )}
 
         <button
           onClick={handleGoogle}
-          className="flex h-11 w-full items-center justify-center gap-2.5 border border-black/10 bg-white text-sm font-medium text-black transition-colors duration-150 hover:bg-black/[0.02]"
+          disabled={loading}
+          className="flex h-12 w-full items-center justify-center gap-3 border border-black/10 bg-white text-sm font-medium text-black transition-colors duration-150 hover:bg-black/[0.02] disabled:opacity-50"
         >
-          <GoogleIcon />
-          Continue with Google
+          {loading ? (
+            <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+            </svg>
+          ) : (
+            <GoogleIcon />
+          )}
+          {loading ? "Redirecting..." : "Continue with Google"}
         </button>
+
+        <p className="mt-8 text-[11px] text-black/30 leading-relaxed">
+          Sign in or create an account automatically.
+          <br />
+          By continuing, you agree to our terms of service.
+        </p>
       </div>
     </div>
   );

@@ -1,12 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { Logo } from "@/components/shared/Logo";
 
 function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-white text-black">
-      {/* Top right links */}
-      <div className="mx-auto flex w-full max-w-5xl items-center justify-end gap-6 px-6 pt-6">
+      {/* Top bar */}
+      <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-6 pt-6">
+        <Link href="/" aria-label="Home">
+          <Logo className="h-7 w-auto text-black" />
+        </Link>
+        <div className="flex items-center gap-6">
         <a
           href="https://github.com/scamai/1p-os"
           target="_blank"
@@ -20,8 +25,9 @@ function LandingPage() {
           href="/auth/login"
           className="text-sm text-black/40 transition-colors duration-150 hover:text-black"
         >
-          Login
+          Sign in
         </Link>
+        </div>
       </div>
 
       {/* Hero */}
@@ -30,7 +36,7 @@ function LandingPage() {
           1 Person Company
         </h1>
         <p className="mt-6 font-heading text-[clamp(1.125rem,2.5vw,1.75rem)] italic font-normal leading-[1.3] text-black/70">
-          without stress
+          build your startup without stress
         </p>
         <p className="mt-8 max-w-xl text-[17px] leading-[1.7] text-black/50">
           We made the mistakes so you don&apos;t have to. Missed deadlines,
@@ -40,7 +46,7 @@ function LandingPage() {
         </p>
         <div className="mt-12 flex flex-wrap items-center gap-4">
           <Link
-            href="/auth/signup"
+            href="/auth/login"
             className="bg-black px-6 py-3 text-[15px] font-medium text-white transition-opacity duration-150 hover:opacity-80"
           >
             Get started &rarr;
@@ -75,7 +81,7 @@ function LandingPage() {
             A public repo from Reality Inc. (Scam.ai). Not legal, tax, or financial advice.
           </p>
           <p className="mt-2 text-[12px] text-black/20">
-            &copy; {new Date().getFullYear()} 1 Person Company
+            Reality Inc.
           </p>
         </div>
       </footer>

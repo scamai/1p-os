@@ -1,0 +1,6 @@
+<svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="120" fill="white"/>
+  <path d="M28 18L38 8L54 8L36 108L20 108L35 28L28 32Z" fill="black"/>
+  <path d="M50 8L92 8C104 8 112 18 110 32C108 46 96 56 84 56L62 56L54 108L38 108L50 8Z M64 20L58 44L78 44C86 44 93 37 94 28C95 19 90 20 82 20L64 20Z" fill="black" fill-rule="evenodd"/>
+  <path d="M108 24L120 16L116 28L108 24Z" fill="black"/>
+</svg>
