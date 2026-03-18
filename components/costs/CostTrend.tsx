@@ -12,7 +12,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
 
   if (data.length === 0) {
     return (
-      <p className="py-4 text-sm text-zinc-500">
+      <p className="py-4 text-sm text-slate-500">
         No trend data yet.
       </p>
     );
@@ -80,7 +80,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
                 x={padding.left - 4}
                 y={y + 3}
                 textAnchor="end"
-                className="text-[10px] fill-zinc-500"
+                className="text-[10px] fill-slate-500"
               >
                 ${value.toFixed(2)}
               </text>
@@ -104,7 +104,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
             <text
               x={padding.left + chartW + 2}
               y={budgetY + 3}
-              className="text-[10px] fill-zinc-500"
+              className="text-[10px] fill-slate-500"
               opacity="0.8"
             >
               budget
@@ -194,7 +194,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
             <text
               x={padding.left}
               y={height - 4}
-              className="text-[10px] fill-zinc-500"
+              className="text-[10px] fill-slate-500"
             >
               {formatDate(data[0].date)}
             </text>
@@ -203,7 +203,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
                 x={padding.left + chartW / 2}
                 y={height - 4}
                 textAnchor="middle"
-                className="text-[10px] fill-zinc-500"
+                className="text-[10px] fill-slate-500"
               >
                 {formatDate(data[Math.floor(data.length / 2)].date)}
               </text>
@@ -212,7 +212,7 @@ function CostTrend({ data, budgetLine }: CostTrendProps) {
               x={padding.left + chartW}
               y={height - 4}
               textAnchor="end"
-              className="text-[10px] fill-zinc-500"
+              className="text-[10px] fill-slate-500"
             >
               {formatDate(data[data.length - 1].date)}
             </text>

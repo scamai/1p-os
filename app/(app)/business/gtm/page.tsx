@@ -44,9 +44,9 @@ const DEFAULT_TASKS: Omit<GtmTask, "id">[] = [
 ];
 
 const STATUS_COLORS: Record<TaskStatus, string> = {
-  todo: "bg-zinc-100 text-zinc-600",
-  "in-progress": "bg-zinc-900 text-white",
-  done: "bg-zinc-300 text-zinc-700",
+  todo: "bg-slate-100 text-slate-600",
+  "in-progress": "bg-slate-900 text-white",
+  done: "bg-slate-300 text-slate-700",
 };
 
 export default function Page() {
@@ -95,8 +95,8 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-4xl">
       <Education {...EDUCATION.gtm} />
-      <h1 className="text-lg font-semibold text-zinc-900">Go-to-Market</h1>
-      <p className="mt-1 text-sm text-zinc-500 mb-6">
+      <h1 className="text-lg font-semibold text-slate-900">Go-to-Market</h1>
+      <p className="mt-1 text-sm text-slate-500 mb-6">
         Plan your launch checklist, channels, and timeline.
       </p>
 
@@ -109,19 +109,19 @@ export default function Page() {
           return (
             <div
               key={phase.id}
-              className="border border-zinc-200 rounded-lg p-4 bg-white"
+              className="border border-slate-200 rounded-lg p-4 bg-white"
             >
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-sm font-semibold text-zinc-900">
+                <h2 className="text-sm font-semibold text-slate-900">
                   {phase.name}
                 </h2>
-                <span className="text-xs text-zinc-400">
+                <span className="text-xs text-slate-400">
                   {done}/{total} complete
                 </span>
               </div>
-              <div className="w-full h-1 bg-zinc-100 rounded mb-3">
+              <div className="w-full h-1 bg-slate-100 rounded mb-3">
                 <div
-                  className="h-1 bg-zinc-900 rounded transition-all"
+                  className="h-1 bg-slate-900 rounded transition-all"
                   style={{ width: total ? `${(done / total) * 100}%` : "0%" }}
                 />
               </div>
@@ -137,15 +137,15 @@ export default function Page() {
                     <span
                       className={`text-sm flex-1 ${
                         task.status === "done"
-                          ? "text-zinc-400 line-through"
-                          : "text-zinc-700"
+                          ? "text-slate-400 line-through"
+                          : "text-slate-700"
                       }`}
                     >
                       {task.title}
                     </span>
                     <button
                       onClick={() => removeTask(task.id)}
-                      className="text-xs text-zinc-300 hover:text-zinc-600 opacity-0 group-hover:opacity-100"
+                      className="text-xs text-slate-300 hover:text-slate-600 opacity-0 group-hover:opacity-100"
                     >
                       ✕
                     </button>
@@ -161,11 +161,11 @@ export default function Page() {
                   }
                   onKeyDown={(e) => e.key === "Enter" && addTask(phase.id)}
                   placeholder="Add task..."
-                  className="flex-1 text-sm border border-zinc-200 rounded px-2 py-1 text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+                  className="flex-1 text-sm border border-slate-200 rounded px-2 py-1 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400"
                 />
                 <button
                   onClick={() => addTask(phase.id)}
-                  className="text-xs px-2 py-1 bg-zinc-100 text-zinc-700 rounded hover:bg-zinc-200"
+                  className="text-xs px-2 py-1 bg-slate-100 text-slate-700 rounded hover:bg-slate-200"
                 >
                   Add
                 </button>

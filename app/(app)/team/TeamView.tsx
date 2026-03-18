@@ -179,11 +179,11 @@ function TeamView({ agents: serverAgents }: TeamViewProps) {
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-zinc-900">Team</h1>
+        <h1 className="text-lg font-semibold text-slate-900">Team</h1>
         <div className="flex items-center gap-3">
           <button
             onClick={handleHireAgent}
-            className="text-sm text-zinc-500 transition-colors hover:text-zinc-900"
+            className="text-sm text-slate-500 transition-colors hover:text-slate-900"
           >
             + Hire Agent
           </button>
@@ -211,15 +211,15 @@ function TeamView({ agents: serverAgents }: TeamViewProps) {
       )}
 
       {chatAgent && (
-        <div className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-zinc-200 bg-white shadow-xl">
+        <div className="fixed inset-y-0 right-0 z-50 w-full max-w-sm border-l border-slate-200 bg-white shadow-xl">
           <div className="flex h-full flex-col">
-            <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-2">
-              <span className="text-sm font-medium text-zinc-900">
+            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-2">
+              <span className="text-sm font-medium text-slate-900">
                 Chat with {chatAgent.name}
               </span>
               <button
                 onClick={() => setChatAgentId(null)}
-                className="rounded-sm p-1 text-zinc-500 hover:text-zinc-900"
+                className="rounded-sm p-1 text-slate-500 hover:text-slate-900"
               >
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <path d="M1 1l12 12M13 1L1 13" />

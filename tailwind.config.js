@@ -7,26 +7,45 @@ module.exports = {
   ],
   darkMode: 'class',
   theme: {
+    borderRadius: {
+      none: '0',
+      sm: '4px',
+      DEFAULT: '6px',
+      md: '6px',
+      lg: '8px',
+      xl: '12px',
+      full: '9999px',
+    },
     extend: {
+      colors: {
+        accent: {
+          DEFAULT: '#4F46E5',
+          light: '#EEF2FF',
+          foreground: '#ffffff',
+        },
+      },
+      fontFamily: {
+        sans: ['var(--font-dm-sans)', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+        mono: ['var(--font-mono)', 'JetBrains Mono', 'SF Mono', 'Fira Code', 'monospace'],
+      },
+      fontSize: {
+        'micro': ['0.625rem', { lineHeight: '0.875rem' }],
+        'caption': ['0.6875rem', { lineHeight: '1rem' }],
+        'label': ['0.8125rem', { lineHeight: '1.25rem' }],
+      },
       animation: {
-        'feed-in': 'feedIn 0.5s ease-out',
+        'feed-in': 'feedIn 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+        'fade-in': 'fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
       },
       keyframes: {
         feedIn: {
-          '0%': { opacity: '0', transform: 'translateY(-8px)' },
+          '0%': { opacity: '0', transform: 'translateY(-6px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-      },
-      colors: {},
-      fontSize: {
-        /** Dense UI type scale (Inter optimized) */
-        'micro': ['0.625rem', { lineHeight: '0.875rem' }],   /* 10px — badges, metadata */
-        'caption': ['0.6875rem', { lineHeight: '1rem' }],     /* 11px — labels, hints */
-        'label': ['0.8125rem', { lineHeight: '1.25rem' }],    /* 13px — secondary text */
-      },
-      fontFamily: {
-        sans: ['var(--font-inter)', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        mono: ['JetBrains Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', 'monospace'],
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
     },
   },

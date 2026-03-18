@@ -46,21 +46,21 @@ export function PWAInstall() {
   };
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto flex max-w-md items-center justify-between gap-3 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-3 shadow-lg sm:left-auto sm:right-4">
-      <p className="text-sm text-zinc-300">
+    <div className="fixed bottom-4 left-4 right-4 z-50 mx-auto flex max-w-md items-center justify-between gap-3 rounded-lg border border-slate-800 bg-slate-900 px-4 py-3 shadow-lg sm:left-auto sm:right-4">
+      <p className="text-sm text-slate-300">
         Install <span className="font-semibold text-white">1P OS</span> for a
         native app experience
       </p>
       <div className="flex shrink-0 gap-2">
         <button
           onClick={handleDismiss}
-          className="rounded px-3 py-1.5 text-xs text-zinc-400 transition-colors hover:text-zinc-200"
+          className="rounded px-3 py-1.5 text-xs text-slate-400 transition-colors hover:text-slate-200"
         >
           Dismiss
         </button>
         <button
           onClick={handleInstall}
-          className="rounded bg-zinc-700 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-zinc-600"
+          className="rounded bg-slate-700 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-slate-600"
         >
           Install
         </button>

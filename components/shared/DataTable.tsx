@@ -22,7 +22,7 @@ function DataTable<T extends Record<string, unknown>>({
   if (data.length === 0) {
     return (
       <div className="flex items-center justify-center px-4 py-12">
-        <p className="text-[13px] text-zinc-600">{emptyMessage}</p>
+        <p className="text-[13px] text-slate-600">{emptyMessage}</p>
       </div>
     );
   }
@@ -35,7 +35,7 @@ function DataTable<T extends Record<string, unknown>>({
             {columns.map((col) => (
               <th
                 key={col.key}
-                className="px-4 py-2 text-left font-mono text-[11px] font-medium uppercase tracking-widest text-zinc-600"
+                className="px-4 py-2 text-left font-mono text-[11px] font-medium uppercase tracking-widest text-slate-600"
               >
                 {col.label}
               </th>
@@ -51,14 +51,14 @@ function DataTable<T extends Record<string, unknown>>({
               tabIndex={onRowClick ? 0 : undefined}
               role={onRowClick ? "button" : undefined}
               className={`transition-colors duration-150 ${
-                onRowClick ? "cursor-pointer focus-visible:outline-none focus-visible:bg-zinc-100" : ""
-              } hover:bg-zinc-50`}
+                onRowClick ? "cursor-pointer focus-visible:outline-none focus-visible:bg-slate-100" : ""
+              } hover:bg-slate-50`}
             >
               {columns.map((col, colIndex) => (
                 <td
                   key={col.key}
                   className={`px-4 py-3 ${
-                    colIndex === 0 ? "text-zinc-800" : "text-zinc-500"
+                    colIndex === 0 ? "text-slate-800" : "text-slate-500"
                   }`}
                 >
                   {col.render

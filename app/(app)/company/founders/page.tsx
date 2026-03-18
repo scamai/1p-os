@@ -43,12 +43,12 @@ function EquityPie({ founders }: { founders: Founder[] }) {
 
   const segments: { label: string; percent: number; shade: string }[] = [];
   const shades = [
-    "bg-zinc-900",
-    "bg-zinc-700",
-    "bg-zinc-500",
-    "bg-zinc-400",
-    "bg-zinc-300",
-    "bg-zinc-200",
+    "bg-slate-900",
+    "bg-slate-700",
+    "bg-slate-500",
+    "bg-slate-400",
+    "bg-slate-300",
+    "bg-slate-200",
   ];
 
   founders.forEach((f, i) => {
@@ -63,7 +63,7 @@ function EquityPie({ founders }: { founders: Founder[] }) {
     segments.push({
       label: "Unallocated",
       percent: unallocated,
-      shade: "bg-zinc-100",
+      shade: "bg-slate-100",
     });
   }
 
@@ -71,13 +71,13 @@ function EquityPie({ founders }: { founders: Founder[] }) {
   let cumulative = 0;
   const gradientParts: string[] = [];
   const colorMap: Record<string, string> = {
-    "bg-zinc-900": "#18181b",
-    "bg-zinc-700": "#3f3f46",
-    "bg-zinc-500": "#71717a",
-    "bg-zinc-400": "#a1a1aa",
-    "bg-zinc-300": "#d4d4d8",
-    "bg-zinc-200": "#e4e4e7",
-    "bg-zinc-100": "#f4f4f5",
+    "bg-slate-900": "#0F172A",
+    "bg-slate-700": "#3f3f46",
+    "bg-slate-500": "#71717a",
+    "bg-slate-400": "#94A3B8",
+    "bg-slate-300": "#d4d4d8",
+    "bg-slate-200": "#e4e4e7",
+    "bg-slate-100": "#f4f4f5",
   };
 
   segments.forEach((seg) => {
@@ -95,7 +95,7 @@ function EquityPie({ founders }: { founders: Founder[] }) {
   return (
     <div className="flex items-center gap-6">
       <div
-        className="h-32 w-32 shrink-0 rounded-full border border-zinc-200"
+        className="h-32 w-32 shrink-0 rounded-full border border-slate-200"
         style={{
           background: segments.length > 0
             ? `conic-gradient(${gradientParts.join(", ")})`
@@ -105,11 +105,11 @@ function EquityPie({ founders }: { founders: Founder[] }) {
       <div className="space-y-1.5">
         {segments.map((seg, i) => (
           <div key={i} className="flex items-center gap-2">
-            <div className={`h-3 w-3 rounded-sm ${seg.shade} border border-zinc-300`} />
-            <span className="text-[12px] text-zinc-700">
+            <div className={`h-3 w-3 rounded-sm ${seg.shade} border border-slate-300`} />
+            <span className="text-[12px] text-slate-700">
               {seg.label}
             </span>
-            <span className="text-[12px] font-mono text-zinc-500">
+            <span className="text-[12px] font-mono text-slate-500">
               {seg.percent.toFixed(1)}%
             </span>
           </div>
@@ -194,8 +194,8 @@ export default function FoundersPage() {
       <Education {...EDUCATION.founders} />
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-zinc-900">Founders</h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <h1 className="text-lg font-semibold text-slate-900">Founders</h1>
+          <p className="mt-1 text-sm text-slate-500">
             Manage your founding team, equity splits, and vesting schedules.
           </p>
         </div>
@@ -204,7 +204,7 @@ export default function FoundersPage() {
             resetForm();
             setShowForm(!showForm);
           }}
-          className="h-8 rounded-md bg-zinc-900 px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+          className="h-8 rounded-md bg-slate-900 px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
         >
           {showForm ? "Cancel" : "+ Add Founder"}
         </button>
@@ -214,30 +214,30 @@ export default function FoundersPage() {
       {showForm && (
         <form
           onSubmit={handleSubmit}
-          className="mt-6 rounded-xl border border-zinc-200 bg-white p-5 space-y-4"
+          className="mt-6 rounded-xl border border-slate-200 bg-white p-5 space-y-4"
         >
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Full Name
               </label>
               <input
                 required
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
                 placeholder="Jane Smith"
               />
             </div>
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Email
               </label>
               <input
                 type="email"
                 value={formEmail}
                 onChange={(e) => setFormEmail(e.target.value)}
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
                 placeholder="jane@company.com"
               />
             </div>
@@ -245,13 +245,13 @@ export default function FoundersPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Role
               </label>
               <select
                 value={formRole}
                 onChange={(e) => setFormRole(e.target.value)}
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-2 text-[13px] text-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-2 text-[13px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900"
               >
                 {ROLES.map((r) => (
                   <option key={r} value={r}>
@@ -261,7 +261,7 @@ export default function FoundersPage() {
               </select>
             </div>
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Equity %
               </label>
               <input
@@ -272,20 +272,20 @@ export default function FoundersPage() {
                 required
                 value={formEquity}
                 onChange={(e) => setFormEquity(e.target.value)}
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] font-mono text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Vesting (months)
               </label>
               <select
                 value={formVesting}
                 onChange={(e) => setFormVesting(e.target.value)}
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-2 text-[13px] text-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-2 text-[13px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900"
               >
                 <option value="36">36 months</option>
                 <option value="48">48 months</option>
@@ -294,13 +294,13 @@ export default function FoundersPage() {
               </select>
             </div>
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Cliff (months)
               </label>
               <select
                 value={formCliff}
                 onChange={(e) => setFormCliff(e.target.value)}
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-2 text-[13px] text-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-2 text-[13px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900"
               >
                 <option value="0">No cliff</option>
                 <option value="6">6 months</option>
@@ -309,14 +309,14 @@ export default function FoundersPage() {
               </select>
             </div>
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Start Date
               </label>
               <input
                 type="date"
                 value={formStart}
                 onChange={(e) => setFormStart(e.target.value)}
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] text-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900"
               />
             </div>
           </div>
@@ -328,13 +328,13 @@ export default function FoundersPage() {
                 setShowForm(false);
                 resetForm();
               }}
-              className="h-8 rounded-md border border-zinc-200 px-3 text-[13px] font-medium text-zinc-600 hover:bg-zinc-50 transition-colors"
+              className="h-8 rounded-md border border-slate-200 px-3 text-[13px] font-medium text-slate-600 hover:bg-slate-50 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="h-8 rounded-md bg-zinc-900 px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+              className="h-8 rounded-md bg-slate-900 px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
             >
               {editing ? "Save Changes" : "Add Founder"}
             </button>
@@ -344,24 +344,24 @@ export default function FoundersPage() {
 
       {/* Equity Pie */}
       {founders.length > 0 && (
-        <div className="mt-8 rounded-xl border border-zinc-200 bg-white p-5">
-          <h2 className="text-[13px] font-semibold text-zinc-700 mb-4">
+        <div className="mt-8 rounded-xl border border-slate-200 bg-white p-5">
+          <h2 className="text-[13px] font-semibold text-slate-700 mb-4">
             Equity Split
           </h2>
           <EquityPie founders={founders} />
           <div className="mt-4 flex items-center gap-3">
-            <span className="text-[12px] text-zinc-500">
+            <span className="text-[12px] text-slate-500">
               Total allocated:
             </span>
             <span
               className={`text-[13px] font-mono font-semibold ${
-                totalEquity > 100 ? "text-zinc-800" : "text-zinc-900"
+                totalEquity > 100 ? "text-slate-800" : "text-slate-900"
               }`}
             >
               {totalEquity.toFixed(1)}%
             </span>
             {totalEquity > 100 && (
-              <span className="text-[11px] text-zinc-800">
+              <span className="text-[11px] text-slate-800">
                 Over-allocated by {(totalEquity - 100).toFixed(1)}%
               </span>
             )}
@@ -371,57 +371,57 @@ export default function FoundersPage() {
 
       {/* Founders Table */}
       {founders.length > 0 && (
-        <div className="mt-6 rounded-xl border border-zinc-200 bg-white overflow-hidden">
+        <div className="mt-6 rounded-xl border border-slate-200 bg-white overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-zinc-100 bg-zinc-50">
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+              <tr className="border-b border-slate-100 bg-slate-50">
+                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-slate-500">
                   Name
                 </th>
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-slate-500">
                   Role
                 </th>
-                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-slate-500">
                   Equity
                 </th>
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-slate-500">
                   Vesting
                 </th>
-                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-slate-500">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100">
+            <tbody className="divide-y divide-slate-100">
               {founders.map((f) => (
                 <tr
                   key={f.id}
-                  className="hover:bg-zinc-50 transition-colors"
+                  className="hover:bg-slate-50 transition-colors"
                 >
                   <td className="px-4 py-3">
-                    <p className="text-[13px] font-medium text-zinc-900">
+                    <p className="text-[13px] font-medium text-slate-900">
                       {f.name}
                     </p>
                     {f.email && (
-                      <p className="text-[11px] text-zinc-400">{f.email}</p>
+                      <p className="text-[11px] text-slate-400">{f.email}</p>
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <span className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-[11px] font-medium text-zinc-600">
+                    <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-600">
                       {f.role}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <span className="text-[13px] font-mono font-semibold text-zinc-900">
+                    <span className="text-[13px] font-mono font-semibold text-slate-900">
                       {f.equity_pct.toFixed(1)}%
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-[12px] text-zinc-600">
+                    <span className="text-[12px] text-slate-600">
                       {Math.round(f.vesting_months / 12)}yr / {f.cliff_months}mo cliff
                     </span>
                     {f.start_date && (
-                      <p className="text-[11px] text-zinc-400">
+                      <p className="text-[11px] text-slate-400">
                         from {f.start_date}
                       </p>
                     )}
@@ -430,13 +430,13 @@ export default function FoundersPage() {
                     <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => openEdit(f)}
-                        className="rounded px-2 py-1 text-[12px] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+                        className="rounded px-2 py-1 text-[12px] text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(f.id)}
-                        className="rounded px-2 py-1 text-[12px] text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+                        className="rounded px-2 py-1 text-[12px] text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                       >
                         Delete
                       </button>
@@ -452,7 +452,7 @@ export default function FoundersPage() {
       {/* Empty state */}
       {founders.length === 0 && !showForm && (
         <div className="mt-12 text-center">
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-slate-500">
             No founders added yet. Click &quot;+ Add Founder&quot; to get started.
           </p>
         </div>

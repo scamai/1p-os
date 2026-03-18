@@ -221,30 +221,30 @@ export default function IncorporationPage() {
     <div className="mx-auto max-w-[800px]">
       <Education {...EDUCATION.incorporation} />
       <div>
-        <h1 className="text-lg font-semibold text-zinc-900">Incorporation</h1>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h1 className="text-lg font-semibold text-slate-900">Incorporation</h1>
+        <p className="mt-1 text-sm text-slate-500">
           Step-by-step checklist to legally set up your company. Pre-filled for
           US LLC and C-Corp formation.
         </p>
       </div>
 
       {/* Progress */}
-      <div className="mt-6 rounded-xl border border-zinc-200 bg-white p-5">
+      <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[13px] font-medium text-zinc-700">
+          <span className="text-[13px] font-medium text-slate-700">
             Formation Progress
           </span>
-          <span className="text-[13px] font-mono font-semibold text-zinc-900">
+          <span className="text-[13px] font-mono font-semibold text-slate-900">
             {progress}%
           </span>
         </div>
-        <div className="h-2.5 rounded-full bg-zinc-100 overflow-hidden">
+        <div className="h-2.5 rounded-full bg-slate-100 overflow-hidden">
           <div
-            className="h-full rounded-full bg-zinc-900 transition-all duration-500"
+            className="h-full rounded-full bg-slate-900 transition-all duration-500"
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="mt-2 text-[12px] text-zinc-400">
+        <p className="mt-2 text-[12px] text-slate-400">
           {doneCount} of {steps.length} steps completed
         </p>
       </div>
@@ -262,14 +262,14 @@ export default function IncorporationPage() {
               }
               className={`rounded-xl border p-3 text-left transition-all ${
                 expandedCategory === cat
-                  ? "border-zinc-900 bg-zinc-50 ring-1 ring-zinc-900"
-                  : "border-zinc-200 bg-white hover:border-zinc-300"
+                  ? "border-slate-900 bg-slate-50 ring-1 ring-slate-900"
+                  : "border-slate-200 bg-white hover:border-slate-300"
               }`}
             >
-              <p className="text-[11px] font-medium text-zinc-500 truncate">
+              <p className="text-[11px] font-medium text-slate-500 truncate">
                 {cat}
               </p>
-              <p className="mt-0.5 text-[14px] font-mono font-semibold text-zinc-900">
+              <p className="mt-0.5 text-[14px] font-mono font-semibold text-slate-900">
                 {catDone}/{items.length}
               </p>
             </button>
@@ -295,10 +295,10 @@ export default function IncorporationPage() {
                 className="flex w-full items-center justify-between mb-3"
               >
                 <div className="flex items-center gap-2">
-                  <h2 className="text-[13px] font-semibold text-zinc-700">
+                  <h2 className="text-[13px] font-semibold text-slate-700">
                     {category}
                   </h2>
-                  <span className="text-[11px] text-zinc-400">
+                  <span className="text-[11px] text-slate-400">
                     {catDone}/{items.length}
                   </span>
                 </div>
@@ -311,7 +311,7 @@ export default function IncorporationPage() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className={`text-zinc-400 transition-transform ${
+                  className={`text-slate-400 transition-transform ${
                     isExpanded ? "rotate-180" : ""
                   }`}
                 >
@@ -320,11 +320,11 @@ export default function IncorporationPage() {
               </button>
 
               {isExpanded && (
-                <div className="rounded-xl border border-zinc-200 bg-white divide-y divide-zinc-100">
+                <div className="rounded-xl border border-slate-200 bg-white divide-y divide-slate-100">
                   {items.map((step) => (
                     <div
                       key={step.id}
-                      className="flex items-start gap-3 px-4 py-3.5 hover:bg-zinc-50 transition-colors"
+                      className="flex items-start gap-3 px-4 py-3.5 hover:bg-slate-50 transition-colors"
                     >
                       <button
                         onClick={() => toggleStep(step.id)}
@@ -333,8 +333,8 @@ export default function IncorporationPage() {
                         <div
                           className={`flex h-5 w-5 items-center justify-center rounded-md border-2 transition-colors ${
                             step.status === "done"
-                              ? "border-zinc-900 bg-zinc-900"
-                              : "border-zinc-300 hover:border-zinc-400"
+                              ? "border-slate-900 bg-slate-900"
+                              : "border-slate-300 hover:border-slate-400"
                           }`}
                         >
                           {step.status === "done" && (
@@ -358,15 +358,15 @@ export default function IncorporationPage() {
                         <p
                           className={`text-[13px] font-medium ${
                             step.status === "done"
-                              ? "text-zinc-400 line-through"
-                              : "text-zinc-900"
+                              ? "text-slate-400 line-through"
+                              : "text-slate-900"
                           }`}
                         >
                           {step.title}
                         </p>
                         <p
                           className={`mt-1 text-[12px] leading-relaxed ${
-                            step.status === "done" ? "text-zinc-300" : "text-zinc-500"
+                            step.status === "done" ? "text-slate-300" : "text-slate-500"
                           }`}
                         >
                           {step.description}
@@ -376,7 +376,7 @@ export default function IncorporationPage() {
                             href={step.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-zinc-500 hover:text-zinc-900 transition-colors"
+                            className="mt-1.5 inline-flex items-center gap-1 text-[11px] text-slate-500 hover:text-slate-900 transition-colors"
                           >
                             <svg
                               width="10"
@@ -417,7 +417,7 @@ export default function IncorporationPage() {
             }
             setExpandedCategory(null);
           }}
-          className="text-[12px] text-zinc-400 hover:text-zinc-600 transition-colors"
+          className="text-[12px] text-slate-400 hover:text-slate-600 transition-colors"
         >
           Reset checklist
         </button>

@@ -2,15 +2,17 @@ import * as React from "react";
 
 const variants = {
   default:
-    "bg-zinc-50 text-zinc-900",
+    "bg-slate-100 text-slate-700",
+  accent:
+    "bg-indigo-50 text-indigo-700",
   success:
-    "bg-zinc-100 text-zinc-700",
+    "bg-emerald-50 text-emerald-700",
   warning:
-    "bg-zinc-200 text-zinc-600",
+    "bg-amber-50 text-amber-700",
   destructive:
-    "bg-zinc-200 text-zinc-700",
+    "bg-red-50 text-red-700",
   outline:
-    "border border-zinc-200 text-zinc-500 bg-transparent",
+    "border border-slate-200 text-slate-600 bg-transparent",
 } as const;
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
@@ -25,7 +27,7 @@ function Badge({
 }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 text-xs font-medium ${variants[variant]} ${className}`}
+      className={`inline-flex items-center rounded-sm px-2 py-0.5 text-xs font-medium ${variants[variant]} ${className}`}
       {...props}
     >
       {children}

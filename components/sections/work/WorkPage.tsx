@@ -38,48 +38,48 @@ function TaskRow({ task }: { task: Task }) {
   return (
     <>
       <div
-        className="flex items-center justify-between border-b border-zinc-100 py-3 cursor-pointer transition-colors hover:bg-zinc-50 last:border-0"
+        className="flex items-center justify-between border-b border-slate-100 py-3 cursor-pointer transition-colors hover:bg-slate-50 last:border-0"
         onClick={() => setExpanded(!expanded)}
       >
         <div className="flex items-center gap-3">
           {task.status === "running" && (
-            <div className="h-2 w-2 animate-pulse rounded-full bg-zinc-900" />
+            <div className="h-2 w-2 animate-pulse rounded-full bg-slate-900" />
           )}
           {task.status === "queued" && (
-            <div className="h-2 w-2 rounded-full bg-zinc-300" />
+            <div className="h-2 w-2 rounded-full bg-slate-300" />
           )}
           {task.status === "blocked" && (
-            <div className="h-2 w-2 rounded-full bg-zinc-500" />
+            <div className="h-2 w-2 rounded-full bg-slate-500" />
           )}
           {task.status === "done" && (
-            <div className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-zinc-200">
-              <svg className="h-2 w-2 text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+            <div className="flex h-3.5 w-3.5 items-center justify-center rounded-full bg-slate-200">
+              <svg className="h-2 w-2 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
                 <path d="M5 13l4 4L19 7" />
               </svg>
             </div>
           )}
           <div>
-            <p className={`text-[13px] ${task.status === "done" ? "text-zinc-500" : "text-zinc-900"}`}>
+            <p className={`text-[13px] ${task.status === "done" ? "text-slate-500" : "text-slate-900"}`}>
               {task.title}
             </p>
-            <p className="text-[11px] text-zinc-400">
+            <p className="text-[11px] text-slate-400">
               {task.agent} · {task.started}
             </p>
           </div>
         </div>
         {task.cost > 0 && (
-          <span className="font-mono text-[11px] text-zinc-400">
+          <span className="font-mono text-[11px] text-slate-400">
             ${task.cost.toFixed(2)}
           </span>
         )}
       </div>
 
       {expanded && (
-        <div className="border-b border-zinc-100 bg-zinc-50 px-4 py-3">
-          <p className="text-[12px] text-zinc-600">{task.description}</p>
+        <div className="border-b border-slate-100 bg-slate-50 px-4 py-3">
+          <p className="text-[12px] text-slate-600">{task.description}</p>
           {task.status === "blocked" && (
             <button
-              className="mt-2 text-[12px] font-medium text-zinc-900 hover:underline"
+              className="mt-2 text-[12px] font-medium text-slate-900 hover:underline"
               onClick={(e) => e.stopPropagation()}
             >
               Approve Access
@@ -114,9 +114,9 @@ function WorkPage({ onAction }: WorkPageProps) {
   return (
     <div className="mx-auto max-w-3xl">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-zinc-900">Work</h1>
+        <h1 className="text-lg font-semibold text-slate-900">Work</h1>
         <button
-          className="text-[13px] text-zinc-500 transition-colors hover:text-zinc-900"
+          className="text-[13px] text-slate-500 transition-colors hover:text-slate-900"
           onClick={() => handleAction("new_project")}
         >
           + New Task
@@ -126,20 +126,20 @@ function WorkPage({ onAction }: WorkPageProps) {
       {/* Summary */}
       <div className="mt-4 grid grid-cols-4 gap-6">
         <div>
-          <p className="text-[11px] text-zinc-500">Running</p>
-          <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">{active.length}</p>
+          <p className="text-[11px] text-slate-500">Running</p>
+          <p className="mt-1 font-mono text-lg font-semibold text-slate-900">{active.length}</p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Queued</p>
-          <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">{queued.length}</p>
+          <p className="text-[11px] text-slate-500">Queued</p>
+          <p className="mt-1 font-mono text-lg font-semibold text-slate-900">{queued.length}</p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Done Today</p>
-          <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">{done.length}</p>
+          <p className="text-[11px] text-slate-500">Done Today</p>
+          <p className="mt-1 font-mono text-lg font-semibold text-slate-900">{done.length}</p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Cost Today</p>
-          <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">${totalCostToday.toFixed(2)}</p>
+          <p className="text-[11px] text-slate-500">Cost Today</p>
+          <p className="mt-1 font-mono text-lg font-semibold text-slate-900">${totalCostToday.toFixed(2)}</p>
         </div>
       </div>
 
@@ -154,7 +154,7 @@ function WorkPage({ onAction }: WorkPageProps) {
         {displayed.length > 0 ? (
           displayed.map((task) => <TaskRow key={task.id} task={task} />)
         ) : (
-          <div className="py-8 text-center text-[13px] text-zinc-500">
+          <div className="py-8 text-center text-[13px] text-slate-500">
             No tasks in this category.
           </div>
         )}

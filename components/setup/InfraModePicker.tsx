@@ -45,10 +45,10 @@ const modes = [
 function InfraModePicker({ selected, onSelect }: InfraModePickerProps) {
   return (
     <div>
-      <h2 className="mb-1 text-lg font-semibold text-zinc-900">
+      <h2 className="mb-1 text-lg font-semibold text-slate-900">
         How do you want to run AI?
       </h2>
-      <p className="mb-6 text-sm text-zinc-500">
+      <p className="mb-6 text-sm text-slate-500">
         Use our cloud to get started instantly, or bring your own API keys.
         You can switch anytime.
       </p>
@@ -63,40 +63,40 @@ function InfraModePicker({ selected, onSelect }: InfraModePickerProps) {
               onClick={() => onSelect(mode.id)}
               className={`rounded-lg border px-4 py-4 text-left transition-all ${
                 isSelected
-                  ? "border-zinc-900 bg-zinc-50"
-                  : "border-zinc-200 hover:border-zinc-300 hover:bg-zinc-50/50"
+                  ? "border-slate-900 bg-slate-50"
+                  : "border-slate-200 hover:border-slate-300 hover:bg-slate-50/50"
               }`}
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-zinc-900">
+                    <span className="text-sm font-medium text-slate-900">
                       {mode.name}
                     </span>
                     {mode.recommended && (
-                      <span className="text-[10px] text-zinc-400">Recommended</span>
+                      <span className="text-[10px] text-slate-400">Recommended</span>
                     )}
                     {isSelected && (
-                      <svg className="h-3.5 w-3.5 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <svg className="h-3.5 w-3.5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     )}
                   </div>
-                  <p className="mt-0.5 text-xs text-zinc-500">{mode.description}</p>
+                  <p className="mt-0.5 text-xs text-slate-500">{mode.description}</p>
                 </div>
               </div>
 
               <ul className="mt-3 flex flex-col gap-1">
                 {mode.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-xs text-zinc-500">
-                    <span className="h-1 w-1 shrink-0 rounded-full bg-zinc-300" />
+                  <li key={f} className="flex items-center gap-2 text-xs text-slate-500">
+                    <span className="h-1 w-1 shrink-0 rounded-full bg-slate-300" />
                     {f}
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-3 border-t border-zinc-100 pt-2">
-                <p className="text-[10px] text-zinc-400 uppercase tracking-wider">
+              <div className="mt-3 border-t border-slate-100 pt-2">
+                <p className="text-[10px] text-slate-400 uppercase tracking-wider">
                   {mode.pricing}
                 </p>
               </div>

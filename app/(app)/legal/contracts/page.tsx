@@ -20,18 +20,18 @@ type Contract = {
 };
 
 const STATUS_STYLES: Record<ContractStatus, string> = {
-  draft: "bg-zinc-100 text-zinc-600",
-  sent: "bg-zinc-200 text-zinc-700",
-  signed: "bg-zinc-900 text-white",
-  expired: "bg-zinc-300 text-zinc-500",
+  draft: "bg-slate-100 text-slate-600",
+  sent: "bg-slate-200 text-slate-700",
+  signed: "bg-slate-900 text-white",
+  expired: "bg-slate-300 text-slate-500",
 };
 
 const TYPE_STYLES: Record<ContractType, string> = {
-  NDA: "bg-zinc-100 text-zinc-600",
-  MSA: "bg-zinc-200 text-zinc-700",
-  SOW: "bg-zinc-300 text-zinc-800",
-  Employment: "bg-zinc-900 text-white",
-  Other: "bg-zinc-50 text-zinc-500 border border-zinc-200",
+  NDA: "bg-slate-100 text-slate-600",
+  MSA: "bg-slate-200 text-slate-700",
+  SOW: "bg-slate-300 text-slate-800",
+  Employment: "bg-slate-900 text-white",
+  Other: "bg-slate-50 text-slate-500 border border-slate-200",
 };
 
 const EMPTY_CONTRACT: Omit<Contract, "id"> = {
@@ -89,14 +89,14 @@ export default function Page() {
       <Education {...EDUCATION.contracts} />
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-lg font-semibold text-zinc-900">Contracts</h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <h1 className="text-lg font-semibold text-slate-900">Contracts</h1>
+          <p className="mt-1 text-sm text-slate-500">
             Track agreements, NDAs, and service contracts.
           </p>
         </div>
         <button
           onClick={startNew}
-          className="text-sm px-3 py-1.5 bg-zinc-900 text-white rounded hover:bg-zinc-800"
+          className="text-sm px-3 py-1.5 bg-slate-900 text-white rounded hover:bg-slate-800"
         >
           Add Contract
         </button>
@@ -105,11 +105,11 @@ export default function Page() {
       {/* Filters */}
       <div className="flex gap-3 mb-4">
         <div>
-          <label className="block text-xs text-zinc-500 mb-1">Status</label>
+          <label className="block text-xs text-slate-500 mb-1">Status</label>
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value as ContractStatus | "all")}
-            className="text-sm border border-zinc-200 rounded px-2 py-1 text-zinc-700 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+            className="text-sm border border-slate-200 rounded px-2 py-1 text-slate-700 focus:outline-none focus:ring-1 focus:ring-slate-400"
           >
             <option value="all">All</option>
             <option value="draft">Draft</option>
@@ -119,11 +119,11 @@ export default function Page() {
           </select>
         </div>
         <div>
-          <label className="block text-xs text-zinc-500 mb-1">Type</label>
+          <label className="block text-xs text-slate-500 mb-1">Type</label>
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value as ContractType | "all")}
-            className="text-sm border border-zinc-200 rounded px-2 py-1 text-zinc-700 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+            className="text-sm border border-slate-200 rounded px-2 py-1 text-slate-700 focus:outline-none focus:ring-1 focus:ring-slate-400"
           >
             <option value="all">All</option>
             <option value="NDA">NDA</option>
@@ -133,7 +133,7 @@ export default function Page() {
             <option value="Other">Other</option>
           </select>
         </div>
-        <div className="ml-auto self-end text-xs text-zinc-400">
+        <div className="ml-auto self-end text-xs text-slate-400">
           {filtered.length} contract{filtered.length !== 1 ? "s" : ""} | Total value: $
           {totalValue.toLocaleString()}
         </div>
@@ -143,35 +143,35 @@ export default function Page() {
       {editing && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl">
-            <h2 className="text-sm font-semibold text-zinc-900 mb-4">
+            <h2 className="text-sm font-semibold text-slate-900 mb-4">
               {isNew ? "New" : "Edit"} Contract
             </h2>
             <div className="space-y-3">
               <div>
-                <label className="block text-xs text-zinc-500 mb-1">Contract Name</label>
+                <label className="block text-xs text-slate-500 mb-1">Contract Name</label>
                 <input
                   type="text"
                   value={editing.name}
                   onChange={(e) => setEditing({ ...editing, name: e.target.value })}
-                  className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+                  className="w-full text-sm border border-slate-200 rounded px-2 py-1.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-400"
                 />
               </div>
               <div>
-                <label className="block text-xs text-zinc-500 mb-1">Counterparty</label>
+                <label className="block text-xs text-slate-500 mb-1">Counterparty</label>
                 <input
                   type="text"
                   value={editing.counterparty}
                   onChange={(e) => setEditing({ ...editing, counterparty: e.target.value })}
-                  className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+                  className="w-full text-sm border border-slate-200 rounded px-2 py-1.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-400"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-zinc-500 mb-1">Type</label>
+                  <label className="block text-xs text-slate-500 mb-1">Type</label>
                   <select
                     value={editing.type}
                     onChange={(e) => setEditing({ ...editing, type: e.target.value as ContractType })}
-                    className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+                    className="w-full text-sm border border-slate-200 rounded px-2 py-1.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-400"
                   >
                     <option value="NDA">NDA</option>
                     <option value="MSA">MSA</option>
@@ -181,11 +181,11 @@ export default function Page() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-zinc-500 mb-1">Status</label>
+                  <label className="block text-xs text-slate-500 mb-1">Status</label>
                   <select
                     value={editing.status}
                     onChange={(e) => setEditing({ ...editing, status: e.target.value as ContractStatus })}
-                    className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+                    className="w-full text-sm border border-slate-200 rounded px-2 py-1.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-400"
                   >
                     <option value="draft">Draft</option>
                     <option value="sent">Sent</option>
@@ -196,45 +196,45 @@ export default function Page() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-zinc-500 mb-1">Start Date</label>
+                  <label className="block text-xs text-slate-500 mb-1">Start Date</label>
                   <input
                     type="date"
                     value={editing.start_date}
                     onChange={(e) => setEditing({ ...editing, start_date: e.target.value })}
-                    className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+                    className="w-full text-sm border border-slate-200 rounded px-2 py-1.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-400"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-zinc-500 mb-1">End Date</label>
+                  <label className="block text-xs text-slate-500 mb-1">End Date</label>
                   <input
                     type="date"
                     value={editing.end_date}
                     onChange={(e) => setEditing({ ...editing, end_date: e.target.value })}
-                    className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+                    className="w-full text-sm border border-slate-200 rounded px-2 py-1.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-400"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-xs text-zinc-500 mb-1">Value ($)</label>
+                <label className="block text-xs text-slate-500 mb-1">Value ($)</label>
                 <input
                   type="number"
                   min={0}
                   value={editing.value}
                   onChange={(e) => setEditing({ ...editing, value: parseFloat(e.target.value) || 0 })}
-                  className="w-full text-sm border border-zinc-200 rounded px-2 py-1.5 text-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-400"
+                  className="w-full text-sm border border-slate-200 rounded px-2 py-1.5 text-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-400"
                 />
               </div>
             </div>
             <div className="flex justify-end gap-2 mt-4">
               <button
                 onClick={() => { setEditing(null); setIsNew(false); }}
-                className="text-sm px-3 py-1.5 border border-zinc-200 rounded text-zinc-600 hover:bg-zinc-50"
+                className="text-sm px-3 py-1.5 border border-slate-200 rounded text-slate-600 hover:bg-slate-50"
               >
                 Cancel
               </button>
               <button
                 onClick={save}
-                className="text-sm px-3 py-1.5 bg-zinc-900 text-white rounded hover:bg-zinc-800"
+                className="text-sm px-3 py-1.5 bg-slate-900 text-white rounded hover:bg-slate-800"
               >
                 Save
               </button>
@@ -245,22 +245,22 @@ export default function Page() {
 
       {/* Table */}
       {filtered.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-zinc-200 rounded-lg">
-          <p className="text-sm text-zinc-400">
+        <div className="text-center py-16 border border-dashed border-slate-200 rounded-lg">
+          <p className="text-sm text-slate-400">
             {contracts.length === 0
               ? "No contracts yet. Add your first one."
               : "No contracts match filters."}
           </p>
         </div>
       ) : (
-        <div className="border border-zinc-200 rounded-lg overflow-hidden">
+        <div className="border border-slate-200 rounded-lg overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-zinc-50 border-b border-zinc-200">
+              <tr className="bg-slate-50 border-b border-slate-200">
                 {["Name", "Counterparty", "Type", "Status", "Dates", "Value", ""].map((h) => (
                   <th
                     key={h}
-                    className="text-left px-3 py-2 text-xs font-semibold text-zinc-500 uppercase tracking-wide"
+                    className="text-left px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wide"
                   >
                     {h}
                   </th>
@@ -271,10 +271,10 @@ export default function Page() {
               {filtered.map((c, i) => (
                 <tr
                   key={c.id}
-                  className={`border-b border-zinc-100 ${i % 2 === 0 ? "bg-white" : "bg-zinc-50"}`}
+                  className={`border-b border-slate-100 ${i % 2 === 0 ? "bg-white" : "bg-slate-50"}`}
                 >
-                  <td className="px-3 py-2 text-zinc-900 font-medium">{c.name || "Untitled"}</td>
-                  <td className="px-3 py-2 text-zinc-700">{c.counterparty}</td>
+                  <td className="px-3 py-2 text-slate-900 font-medium">{c.name || "Untitled"}</td>
+                  <td className="px-3 py-2 text-slate-700">{c.counterparty}</td>
                   <td className="px-3 py-2">
                     <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${TYPE_STYLES[c.type]}`}>
                       {c.type}
@@ -285,23 +285,23 @@ export default function Page() {
                       {c.status}
                     </span>
                   </td>
-                  <td className="px-3 py-2 text-xs text-zinc-500">
+                  <td className="px-3 py-2 text-xs text-slate-500">
                     {c.start_date && <span>{c.start_date}</span>}
                     {c.start_date && c.end_date && <span> - </span>}
                     {c.end_date && <span>{c.end_date}</span>}
                   </td>
-                  <td className="px-3 py-2 text-zinc-700">${c.value.toLocaleString()}</td>
+                  <td className="px-3 py-2 text-slate-700">${c.value.toLocaleString()}</td>
                   <td className="px-3 py-2">
                     <div className="flex gap-1">
                       <button
                         onClick={() => { setEditing(c); setIsNew(false); }}
-                        className="text-xs text-zinc-400 hover:text-zinc-700"
+                        className="text-xs text-slate-400 hover:text-slate-700"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleRemove(c.id)}
-                        className="text-xs text-zinc-400 hover:text-zinc-700"
+                        className="text-xs text-slate-400 hover:text-slate-700"
                       >
                         Del
                       </button>

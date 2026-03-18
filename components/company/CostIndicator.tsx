@@ -6,7 +6,7 @@ interface CostIndicatorProps {
 
 function CostIndicator({ spent, budget, className = "" }: CostIndicatorProps) {
   return (
-    <span className={`font-mono text-xs text-zinc-900 ${className}`} title="Daily spend / budget">
+    <span className={`font-mono text-xs text-slate-900 ${className}`} title="Daily spend / budget">
       ${spent.toFixed(2)}/${budget}
     </span>
   );

@@ -64,27 +64,27 @@ function BusinessTab() {
   };
 
   if (!loaded) {
-    return <div className="animate-pulse space-y-4"><div className="h-4 w-48 rounded bg-zinc-100" /><div className="h-8 rounded bg-zinc-100" /><div className="h-8 rounded bg-zinc-100" /></div>;
+    return <div className="animate-pulse space-y-4"><div className="h-4 w-48 rounded bg-slate-100" /><div className="h-8 rounded bg-slate-100" /><div className="h-8 rounded bg-slate-100" /></div>;
   }
 
   return (
     <div className="space-y-5">
       <label className="block">
-        <span className="text-[12px] text-zinc-500">Business Name</span>
+        <span className="text-[12px] text-slate-500">Business Name</span>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 transition-colors focus:border-zinc-400"
+          className="mt-1 block w-full bg-transparent border-b border-slate-200 pb-1.5 text-[13px] text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 transition-colors focus:border-slate-400"
         />
       </label>
 
       <label className="block">
-        <span className="text-[12px] text-zinc-500">Entity Type</span>
+        <span className="text-[12px] text-slate-500">Entity Type</span>
         <select
           value={entity}
           onChange={(e) => setEntity(e.target.value)}
-          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 transition-colors focus:border-zinc-400"
+          className="mt-1 block w-full bg-transparent border-b border-slate-200 pb-1.5 text-[13px] text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 transition-colors focus:border-slate-400"
         >
           <option value="llc">LLC</option>
           <option value="corp">Corp</option>
@@ -94,21 +94,21 @@ function BusinessTab() {
       </label>
 
       <label className="block">
-        <span className="text-[12px] text-zinc-500">Industry</span>
+        <span className="text-[12px] text-slate-500">Industry</span>
         <input
           type="text"
           value={industry}
           onChange={(e) => setIndustry(e.target.value)}
-          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 transition-colors focus:border-zinc-400"
+          className="mt-1 block w-full bg-transparent border-b border-slate-200 pb-1.5 text-[13px] text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 transition-colors focus:border-slate-400"
         />
       </label>
 
       <label className="block">
-        <span className="text-[12px] text-zinc-500">Timezone</span>
+        <span className="text-[12px] text-slate-500">Timezone</span>
         <select
           value={timezone}
           onChange={(e) => setTimezone(e.target.value)}
-          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 transition-colors focus:border-zinc-400"
+          className="mt-1 block w-full bg-transparent border-b border-slate-200 pb-1.5 text-[13px] text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 transition-colors focus:border-slate-400"
         >
           <option value="America/New_York">America/New_York</option>
           <option value="America/Chicago">America/Chicago</option>
@@ -122,11 +122,11 @@ function BusinessTab() {
       </label>
 
       <label className="block">
-        <span className="text-[12px] text-zinc-500">Currency</span>
+        <span className="text-[12px] text-slate-500">Currency</span>
         <select
           value={currency}
           onChange={(e) => setCurrency(e.target.value)}
-          className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 transition-colors focus:border-zinc-400"
+          className="mt-1 block w-full bg-transparent border-b border-slate-200 pb-1.5 text-[13px] text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 transition-colors focus:border-slate-400"
         >
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
@@ -140,11 +140,11 @@ function BusinessTab() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="text-[12px] text-zinc-500 transition-colors hover:text-zinc-900 disabled:opacity-50"
+          className="text-[12px] text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-50"
         >
           {saving ? "Saving..." : "Save"}
         </button>
-        {saved && <span className="text-[12px] text-zinc-400">Saved</span>}
+        {saved && <span className="text-[12px] text-slate-400">Saved</span>}
       </div>
     </div>
   );
@@ -243,35 +243,35 @@ function SecurityTab() {
     <div className="space-y-8">
       {/* Budget */}
       <div className="space-y-4">
-        <p className="text-xs font-medium text-zinc-900">Budget Limits</p>
+        <p className="text-xs font-medium text-slate-900">Budget Limits</p>
         <label className="block">
-          <span className="text-[12px] text-zinc-500">Daily budget ($)</span>
+          <span className="text-[12px] text-slate-500">Daily budget ($)</span>
           <input
             type="number"
             step="0.50"
             min="0"
             value={budgetDaily}
             onChange={(e) => setBudgetDaily(parseFloat(e.target.value) || 0)}
-            className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 focus:border-zinc-400"
+            className="mt-1 block w-full bg-transparent border-b border-slate-200 pb-1.5 text-[13px] text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 focus:border-slate-400"
           />
         </label>
         <label className="block">
-          <span className="text-[12px] text-zinc-500">Monthly budget ($)</span>
+          <span className="text-[12px] text-slate-500">Monthly budget ($)</span>
           <input
             type="number"
             step="5"
             min="0"
             value={budgetMonthly}
             onChange={(e) => setBudgetMonthly(parseFloat(e.target.value) || 0)}
-            className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 focus:border-zinc-400"
+            className="mt-1 block w-full bg-transparent border-b border-slate-200 pb-1.5 text-[13px] text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 focus:border-slate-400"
           />
         </label>
       </div>
 
       {/* Alert */}
       <div className="space-y-2">
-        <p className="text-xs font-medium text-zinc-900">Alerts</p>
-        <label className="text-[12px] text-zinc-500">
+        <p className="text-xs font-medium text-slate-900">Alerts</p>
+        <label className="text-[12px] text-slate-500">
           Alert at {alertThreshold}% of daily budget
         </label>
         <input
@@ -281,32 +281,32 @@ function SecurityTab() {
           step="5"
           value={alertThreshold}
           onChange={(e) => setAlertThreshold(parseInt(e.target.value))}
-          className="w-full accent-zinc-900"
+          className="w-full accent-slate-900"
         />
       </div>
 
       {/* Circuit Breaker */}
       <div className="space-y-3">
-        <p className="text-xs font-medium text-zinc-900">Circuit Breaker</p>
-        <label className="flex items-center gap-2 text-[13px] text-zinc-700 cursor-pointer">
+        <p className="text-xs font-medium text-slate-900">Circuit Breaker</p>
+        <label className="flex items-center gap-2 text-[13px] text-slate-700 cursor-pointer">
           <input
             type="checkbox"
             checked={cbEnabled}
             onChange={(e) => setCbEnabled(e.target.checked)}
-            className="accent-zinc-900"
+            className="accent-slate-900"
           />
           Auto-pause agents if daily spend exceeds threshold
         </label>
         {cbEnabled && (
           <label className="block">
-            <span className="text-[12px] text-zinc-500">Threshold ($)</span>
+            <span className="text-[12px] text-slate-500">Threshold ($)</span>
             <input
               type="number"
               step="1"
               min="1"
               value={cbThreshold}
               onChange={(e) => setCbThreshold(parseFloat(e.target.value) || 0)}
-              className="mt-1 block w-full bg-transparent border-b border-zinc-200 pb-1.5 text-[13px] text-zinc-900 outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 focus:border-zinc-400"
+              className="mt-1 block w-full bg-transparent border-b border-slate-200 pb-1.5 text-[13px] text-slate-900 outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-1 focus:border-slate-400"
             />
           </label>
         )}
@@ -316,33 +316,33 @@ function SecurityTab() {
         <button
           onClick={handleSaveBudget}
           disabled={saving}
-          className="text-[12px] text-zinc-500 transition-colors hover:text-zinc-900 disabled:opacity-50"
+          className="text-[12px] text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-50"
         >
           {saving ? "Saving..." : "Save"}
         </button>
-        {saved && <span className="text-[12px] text-zinc-400">Saved</span>}
+        {saved && <span className="text-[12px] text-slate-400">Saved</span>}
       </div>
 
       {/* Exec Approvals */}
       {approvals.length > 0 && (
         <div className="space-y-3">
-          <p className="text-xs font-medium text-zinc-900">Pending Approvals</p>
+          <p className="text-xs font-medium text-slate-900">Pending Approvals</p>
           {approvals.map((item) => (
-            <div key={item.id} className="flex items-center justify-between border-b border-zinc-100 pb-2.5">
+            <div key={item.id} className="flex items-center justify-between border-b border-slate-100 pb-2.5">
               <div>
-                <p className="text-[13px] text-zinc-900">{item.action}</p>
-                <p className="text-[11px] text-zinc-500">{item.agent}</p>
+                <p className="text-[13px] text-slate-900">{item.action}</p>
+                <p className="text-[11px] text-slate-500">{item.agent}</p>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => handleApproval(item.id, "approve")}
-                  className="text-[12px] text-zinc-500 transition-colors hover:text-zinc-900"
+                  className="text-[12px] text-slate-500 transition-colors hover:text-slate-900"
                 >
                   Approve
                 </button>
                 <button
                   onClick={() => handleApproval(item.id, "deny")}
-                  className="text-[12px] text-zinc-400 transition-colors hover:text-zinc-700"
+                  className="text-[12px] text-slate-400 transition-colors hover:text-slate-700"
                 >
                   Deny
                 </button>
@@ -357,10 +357,10 @@ function SecurityTab() {
 
       {/* Kill Switch */}
       <div className="space-y-2">
-        <p className="text-xs font-medium text-zinc-900">Emergency</p>
+        <p className="text-xs font-medium text-slate-900">Emergency</p>
         <button
           onClick={handleKillSwitch}
-          className="rounded border border-zinc-300 px-4 py-2 text-[13px] text-zinc-700 transition-colors hover:bg-zinc-100"
+          className="rounded border border-slate-300 px-4 py-2 text-[13px] text-slate-700 transition-colors hover:bg-slate-100"
         >
           Stop All Agents
         </button>
@@ -418,7 +418,7 @@ function ModelsTab() {
   return (
     <div className="space-y-6">
       <div className="space-y-3">
-        <p className="text-xs font-medium text-zinc-900">Routing Strategy</p>
+        <p className="text-xs font-medium text-slate-900">Routing Strategy</p>
         <div className="space-y-2">
           {strategies.map((s) => (
             <button
@@ -427,24 +427,24 @@ function ModelsTab() {
               disabled={saving}
               className={`flex w-full items-center gap-3 rounded-lg border px-4 py-3 text-left transition-all ${
                 strategy === s.id
-                  ? "border-zinc-900 bg-zinc-50"
-                  : "border-zinc-200 hover:border-zinc-300"
+                  ? "border-slate-900 bg-slate-50"
+                  : "border-slate-200 hover:border-slate-300"
               }`}
             >
-              <span className={`inline-block h-2 w-2 rounded-full ${strategy === s.id ? "bg-zinc-900" : "bg-zinc-300"}`} />
+              <span className={`inline-block h-2 w-2 rounded-full ${strategy === s.id ? "bg-slate-900" : "bg-slate-300"}`} />
               <div>
-                <p className={`text-[13px] ${strategy === s.id ? "text-zinc-900 font-medium" : "text-zinc-600"}`}>{s.label}</p>
-                <p className="text-[11px] text-zinc-400">{s.desc}</p>
+                <p className={`text-[13px] ${strategy === s.id ? "text-slate-900 font-medium" : "text-slate-600"}`}>{s.label}</p>
+                <p className="text-[11px] text-slate-400">{s.desc}</p>
               </div>
             </button>
           ))}
         </div>
-        {saved && <span className="text-[12px] text-zinc-400">Strategy updated</span>}
+        {saved && <span className="text-[12px] text-slate-400">Strategy updated</span>}
       </div>
 
       <a
         href="/settings/models"
-        className="inline-block text-[12px] text-zinc-500 transition-colors hover:text-zinc-900"
+        className="inline-block text-[12px] text-slate-500 transition-colors hover:text-slate-900"
       >
         View full model routing details →
       </a>
@@ -486,21 +486,21 @@ function APIKeysTab() {
 
   return (
     <div className="space-y-6">
-      <p className="text-[12px] text-zinc-500">
-        Stored in <code className="rounded bg-zinc-100 px-1 py-0.5 text-[11px] font-mono">.env.local</code>
+      <p className="text-[12px] text-slate-500">
+        Stored in <code className="rounded bg-slate-100 px-1 py-0.5 text-[11px] font-mono">.env.local</code>
       </p>
 
       <div className="space-y-3">
         {keys.map((key) => (
           <div
             key={key.name}
-            className="flex items-center justify-between border-b border-zinc-100 pb-2.5"
+            className="flex items-center justify-between border-b border-slate-100 pb-2.5"
           >
             <div className="flex items-center gap-3">
-              <span className="text-[13px] text-zinc-900">{key.name}</span>
-              <span className="font-mono text-[11px] text-zinc-400">{key.envVar}</span>
+              <span className="text-[13px] text-slate-900">{key.name}</span>
+              <span className="font-mono text-[11px] text-slate-400">{key.envVar}</span>
             </div>
-            <span className={`text-[12px] ${key.set ? "text-zinc-900" : "text-zinc-400"}`}>
+            <span className={`text-[12px] ${key.set ? "text-slate-900" : "text-slate-400"}`}>
               {key.set ? "Configured" : "Not set"}
             </span>
           </div>
@@ -541,47 +541,47 @@ function UsageTab() {
   }, []);
 
   if (!usage) {
-    return <div className="animate-pulse space-y-4"><div className="h-4 w-32 rounded bg-zinc-100" /><div className="h-16 rounded bg-zinc-100" /></div>;
+    return <div className="animate-pulse space-y-4"><div className="h-4 w-32 rounded bg-slate-100" /><div className="h-16 rounded bg-slate-100" /></div>;
   }
 
   return (
     <div className="space-y-8">
       <div>
-        <p className="text-xs font-medium text-zinc-900">This Month</p>
+        <p className="text-xs font-medium text-slate-900">This Month</p>
         <div className="mt-3 grid grid-cols-3 gap-8">
           <div>
-            <p className="text-[11px] text-zinc-500">API Calls</p>
-            <p className="font-mono text-lg font-semibold text-zinc-900">{usage.apiCalls.toLocaleString()}</p>
+            <p className="text-[11px] text-slate-500">API Calls</p>
+            <p className="font-mono text-lg font-semibold text-slate-900">{usage.apiCalls.toLocaleString()}</p>
           </div>
           <div>
-            <p className="text-[11px] text-zinc-500">Tokens</p>
-            <p className="font-mono text-lg font-semibold text-zinc-900">
+            <p className="text-[11px] text-slate-500">Tokens</p>
+            <p className="font-mono text-lg font-semibold text-slate-900">
               {usage.tokens >= 1_000_000 ? `${(usage.tokens / 1_000_000).toFixed(1)}M` : `${(usage.tokens / 1_000).toFixed(0)}k`}
             </p>
           </div>
           <div>
-            <p className="text-[11px] text-zinc-500">Total Cost</p>
-            <p className="font-mono text-lg font-semibold text-zinc-900">${usage.cost.toFixed(2)}</p>
+            <p className="text-[11px] text-slate-500">Total Cost</p>
+            <p className="font-mono text-lg font-semibold text-slate-900">${usage.cost.toFixed(2)}</p>
           </div>
         </div>
       </div>
 
       {usage.agents.length > 0 && (
         <div className="space-y-3">
-          <p className="text-xs font-medium text-zinc-900">Per Agent</p>
+          <p className="text-xs font-medium text-slate-900">Per Agent</p>
           {usage.agents.map((a) => (
-            <div key={a.name} className="flex items-center justify-between border-b border-zinc-100 pb-2.5">
+            <div key={a.name} className="flex items-center justify-between border-b border-slate-100 pb-2.5">
               <div>
-                <span className="text-[13px] text-zinc-900">{a.name}</span>
-                <span className="ml-2 text-[11px] text-zinc-400">{a.tasks} tasks</span>
+                <span className="text-[13px] text-slate-900">{a.name}</span>
+                <span className="ml-2 text-[11px] text-slate-400">{a.tasks} tasks</span>
               </div>
-              <span className="font-mono text-[13px] text-zinc-500">${a.cost.toFixed(2)}</span>
+              <span className="font-mono text-[13px] text-slate-500">${a.cost.toFixed(2)}</span>
             </div>
           ))}
         </div>
       )}
 
-      <p className="text-[11px] text-zinc-400">
+      <p className="text-[11px] text-slate-400">
         Self-hosted. You pay providers directly.
       </p>
     </div>
@@ -618,20 +618,20 @@ const AI_FEATURES = [
 function AIFeaturesTab() {
   return (
     <div className="space-y-8">
-      <p className="text-[12px] text-zinc-500">
+      <p className="text-[12px] text-slate-500">
         In development.
       </p>
 
       {AI_FEATURES.map((group) => (
         <div key={group.category} className="space-y-3">
-          <p className="text-xs font-medium text-zinc-900">{group.category}</p>
+          <p className="text-xs font-medium text-slate-900">{group.category}</p>
           <div className="space-y-1">
             {group.features.map((feature) => (
               <div
                 key={feature.name}
-                className="flex items-center gap-3 rounded-lg border border-zinc-100 bg-zinc-50/50 px-4 py-3 opacity-50"
+                className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50/50 px-4 py-3 opacity-50"
               >
-                <span className="flex h-4 w-4 shrink-0 items-center justify-center text-zinc-300">
+                <span className="flex h-4 w-4 shrink-0 items-center justify-center text-slate-300">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10" />
                     <line x1="12" y1="8" x2="12" y2="12" />
@@ -639,10 +639,10 @@ function AIFeaturesTab() {
                   </svg>
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px] text-zinc-500">{feature.name}</p>
-                  <p className="text-[11px] text-zinc-400">{feature.desc}</p>
+                  <p className="text-[13px] text-slate-500">{feature.name}</p>
+                  <p className="text-[11px] text-slate-400">{feature.desc}</p>
                 </div>
-                <span className="shrink-0 rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-400">
+                <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-400">
                   Coming Soon
                 </span>
               </div>
@@ -661,9 +661,9 @@ function SettingsPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="text-lg font-semibold text-zinc-900">Settings</h1>
+      <h1 className="text-lg font-semibold text-slate-900">Settings</h1>
 
-      <div className="mt-6 border-b border-zinc-200">
+      <div className="mt-6 border-b border-slate-200">
         <TabBar tabs={TABS} active={activeTab} onChange={setActiveTab} />
       </div>
 

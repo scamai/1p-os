@@ -29,10 +29,10 @@ const SHAREHOLDER_TYPES = [
 // ---------------------------------------------------------------------------
 
 const TYPE_STYLES: Record<string, string> = {
-  founder: "border-zinc-300 bg-zinc-100 text-zinc-700",
-  investor: "border-zinc-300 bg-zinc-50 text-zinc-600",
-  advisor: "border-zinc-200 bg-white text-zinc-500",
-  esop: "border-zinc-200 bg-white text-zinc-400",
+  founder: "border-slate-300 bg-slate-100 text-slate-700",
+  investor: "border-slate-300 bg-slate-50 text-slate-600",
+  advisor: "border-slate-200 bg-white text-slate-500",
+  esop: "border-slate-200 bg-white text-slate-400",
 };
 
 // ---------------------------------------------------------------------------
@@ -113,10 +113,10 @@ export default function EquityPage() {
       <Education {...EDUCATION.equity} />
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-zinc-900">
+          <h1 className="text-lg font-semibold text-slate-900">
             Cap Table
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-slate-500">
             Track shareholders, shares outstanding, and model dilution.
           </p>
         </div>
@@ -125,7 +125,7 @@ export default function EquityPage() {
             resetForm();
             setShowForm(!showForm);
           }}
-          className="h-8 rounded-md bg-zinc-900 px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+          className="h-8 rounded-md bg-slate-900 px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
         >
           {showForm ? "Cancel" : "+ Add Shareholder"}
         </button>
@@ -135,23 +135,23 @@ export default function EquityPage() {
       {showForm && (
         <form
           onSubmit={handleSubmit}
-          className="mt-6 rounded-xl border border-zinc-200 bg-white p-5 space-y-4"
+          className="mt-6 rounded-xl border border-slate-200 bg-white p-5 space-y-4"
         >
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Shareholder Name
               </label>
               <input
                 required
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
                 placeholder="Jane Smith"
               />
             </div>
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Type
               </label>
               <select
@@ -159,7 +159,7 @@ export default function EquityPage() {
                 onChange={(e) =>
                   setFormType(e.target.value as Shareholder["type"])
                 }
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-2 text-[13px] text-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-2 text-[13px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900"
               >
                 {SHAREHOLDER_TYPES.map((t) => (
                   <option key={t.value} value={t.value}>
@@ -172,7 +172,7 @@ export default function EquityPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Number of Shares
               </label>
               <input
@@ -181,17 +181,17 @@ export default function EquityPage() {
                 required
                 value={formShares}
                 onChange={(e) => setFormShares(e.target.value)}
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] font-mono text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900"
               />
             </div>
             <div>
-              <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+              <label className="block text-[12px] font-medium text-slate-500 mb-1">
                 Note (optional)
               </label>
               <input
                 value={formNote}
                 onChange={(e) => setFormNote(e.target.value)}
-                className="h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                className="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
                 placeholder="e.g. SAFE, Series A, advisor grant"
               />
             </div>
@@ -204,13 +204,13 @@ export default function EquityPage() {
                 setShowForm(false);
                 resetForm();
               }}
-              className="h-8 rounded-md border border-zinc-200 px-3 text-[13px] font-medium text-zinc-600 hover:bg-zinc-50 transition-colors"
+              className="h-8 rounded-md border border-slate-200 px-3 text-[13px] font-medium text-slate-600 hover:bg-slate-50 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="h-8 rounded-md bg-zinc-900 px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+              className="h-8 rounded-md bg-slate-900 px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
             >
               {editing ? "Save Changes" : "Add Shareholder"}
             </button>
@@ -221,27 +221,27 @@ export default function EquityPage() {
       {/* Summary Cards */}
       {shareholders.length > 0 && (
         <div className="mt-6 grid grid-cols-3 gap-3">
-          <div className="rounded-xl border border-zinc-200 bg-white p-4">
-            <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+          <div className="rounded-xl border border-slate-200 bg-white p-4">
+            <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
               Total Shares
             </p>
-            <p className="mt-1 text-xl font-semibold font-mono text-zinc-900">
+            <p className="mt-1 text-xl font-semibold font-mono text-slate-900">
               {totalShares.toLocaleString()}
             </p>
           </div>
-          <div className="rounded-xl border border-zinc-200 bg-white p-4">
-            <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+          <div className="rounded-xl border border-slate-200 bg-white p-4">
+            <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
               Shareholders
             </p>
-            <p className="mt-1 text-xl font-semibold font-mono text-zinc-900">
+            <p className="mt-1 text-xl font-semibold font-mono text-slate-900">
               {shareholders.length}
             </p>
           </div>
-          <div className="rounded-xl border border-zinc-200 bg-white p-4">
-            <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+          <div className="rounded-xl border border-slate-200 bg-white p-4">
+            <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
               ESOP Pool
             </p>
-            <p className="mt-1 text-xl font-semibold font-mono text-zinc-900">
+            <p className="mt-1 text-xl font-semibold font-mono text-slate-900">
               {totalShares > 0
                 ? (
                     (shareholders
@@ -259,39 +259,39 @@ export default function EquityPage() {
 
       {/* Cap Table */}
       {shareholders.length > 0 && (
-        <div className="mt-6 rounded-xl border border-zinc-200 bg-white overflow-hidden">
+        <div className="mt-6 rounded-xl border border-slate-200 bg-white overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-zinc-100 bg-zinc-50">
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+              <tr className="border-b border-slate-100 bg-slate-50">
+                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-slate-500">
                   Shareholder
                 </th>
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-slate-500">
                   Type
                 </th>
-                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-slate-500">
                   Shares
                 </th>
-                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-slate-500">
                   Ownership
                 </th>
-                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-slate-500">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100">
+            <tbody className="divide-y divide-slate-100">
               {shareholders.map((s) => (
                 <tr
                   key={s.id}
-                  className="hover:bg-zinc-50 transition-colors"
+                  className="hover:bg-slate-50 transition-colors"
                 >
                   <td className="px-4 py-3">
-                    <p className="text-[13px] font-medium text-zinc-900">
+                    <p className="text-[13px] font-medium text-slate-900">
                       {s.name}
                     </p>
                     {s.notes && (
-                      <p className="text-[11px] text-zinc-400">{s.notes}</p>
+                      <p className="text-[11px] text-slate-400">{s.notes}</p>
                     )}
                   </td>
                   <td className="px-4 py-3">
@@ -304,12 +304,12 @@ export default function EquityPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <span className="text-[13px] font-mono text-zinc-900">
+                    <span className="text-[13px] font-mono text-slate-900">
                       {s.shares.toLocaleString()}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <span className="text-[13px] font-mono font-semibold text-zinc-900">
+                    <span className="text-[13px] font-mono font-semibold text-slate-900">
                       {totalShares > 0
                         ? ((s.shares / totalShares) * 100).toFixed(2)
                         : "0.00"}
@@ -320,13 +320,13 @@ export default function EquityPage() {
                     <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => openEdit(s)}
-                        className="rounded px-2 py-1 text-[12px] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+                        className="rounded px-2 py-1 text-[12px] text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(s.id)}
-                        className="rounded px-2 py-1 text-[12px] text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+                        className="rounded px-2 py-1 text-[12px] text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                       >
                         Delete
                       </button>
@@ -336,15 +336,15 @@ export default function EquityPage() {
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-zinc-200 bg-zinc-50">
-                <td className="px-4 py-2.5 text-[12px] font-semibold text-zinc-700">
+              <tr className="border-t border-slate-200 bg-slate-50">
+                <td className="px-4 py-2.5 text-[12px] font-semibold text-slate-700">
                   Total
                 </td>
                 <td />
-                <td className="px-4 py-2.5 text-right text-[13px] font-mono font-semibold text-zinc-900">
+                <td className="px-4 py-2.5 text-right text-[13px] font-mono font-semibold text-slate-900">
                   {totalShares.toLocaleString()}
                 </td>
-                <td className="px-4 py-2.5 text-right text-[13px] font-mono font-semibold text-zinc-900">
+                <td className="px-4 py-2.5 text-right text-[13px] font-mono font-semibold text-slate-900">
                   100.00%
                 </td>
                 <td />
@@ -356,19 +356,19 @@ export default function EquityPage() {
 
       {/* Ownership Bar */}
       {shareholders.length > 0 && (
-        <div className="mt-6 rounded-xl border border-zinc-200 bg-white p-5">
-          <h2 className="text-[13px] font-semibold text-zinc-700 mb-3">
+        <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
+          <h2 className="text-[13px] font-semibold text-slate-700 mb-3">
             Ownership Breakdown
           </h2>
-          <div className="h-6 rounded-full bg-zinc-100 overflow-hidden flex">
+          <div className="h-6 rounded-full bg-slate-100 overflow-hidden flex">
             {shareholders.map((s, i) => {
               const pct = totalShares > 0 ? (s.shares / totalShares) * 100 : 0;
               const shades = [
-                "bg-zinc-900",
-                "bg-zinc-700",
-                "bg-zinc-500",
-                "bg-zinc-400",
-                "bg-zinc-300",
+                "bg-slate-900",
+                "bg-slate-700",
+                "bg-slate-500",
+                "bg-slate-400",
+                "bg-slate-300",
               ];
               return (
                 <div
@@ -378,7 +378,7 @@ export default function EquityPage() {
                   title={`${s.name}: ${pct.toFixed(2)}%`}
                 >
                   <div className="absolute -top-8 left-1/2 -translate-x-1/2 hidden group-hover:block z-10">
-                    <div className="whitespace-nowrap rounded bg-zinc-800 px-2 py-1 text-[10px] text-white shadow-lg">
+                    <div className="whitespace-nowrap rounded bg-slate-800 px-2 py-1 text-[10px] text-white shadow-lg">
                       {s.name}: {pct.toFixed(1)}%
                     </div>
                   </div>
@@ -389,18 +389,18 @@ export default function EquityPage() {
           <div className="mt-3 flex flex-wrap gap-3">
             {shareholders.map((s, i) => {
               const shades = [
-                "bg-zinc-900",
-                "bg-zinc-700",
-                "bg-zinc-500",
-                "bg-zinc-400",
-                "bg-zinc-300",
+                "bg-slate-900",
+                "bg-slate-700",
+                "bg-slate-500",
+                "bg-slate-400",
+                "bg-slate-300",
               ];
               return (
                 <div key={s.id} className="flex items-center gap-1.5">
                   <div
                     className={`h-2.5 w-2.5 rounded-sm ${shades[i % shades.length]}`}
                   />
-                  <span className="text-[11px] text-zinc-600">{s.name}</span>
+                  <span className="text-[11px] text-slate-600">{s.name}</span>
                 </div>
               );
             })}
@@ -409,17 +409,17 @@ export default function EquityPage() {
       )}
 
       {/* Dilution Calculator */}
-      <div className="mt-8 rounded-xl border border-zinc-200 bg-white p-5">
-        <h2 className="text-[13px] font-semibold text-zinc-700 mb-1">
+      <div className="mt-8 rounded-xl border border-slate-200 bg-white p-5">
+        <h2 className="text-[13px] font-semibold text-slate-700 mb-1">
           Dilution Calculator
         </h2>
-        <p className="text-[12px] text-zinc-400 mb-4">
+        <p className="text-[12px] text-slate-400 mb-4">
           Model how a funding round affects ownership percentages.
         </p>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+            <label className="block text-[12px] font-medium text-slate-500 mb-1">
               Raise Amount ($)
             </label>
             <input
@@ -428,11 +428,11 @@ export default function EquityPage() {
               value={raiseAmount}
               onChange={(e) => setRaiseAmount(e.target.value)}
               placeholder="500000"
-              className="h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] font-mono text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+              className="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] font-mono text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
             />
           </div>
           <div>
-            <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+            <label className="block text-[12px] font-medium text-slate-500 mb-1">
               Pre-Money Valuation ($)
             </label>
             <input
@@ -441,7 +441,7 @@ export default function EquityPage() {
               value={preMoneyVal}
               onChange={(e) => setPreMoneyVal(e.target.value)}
               placeholder="5000000"
-              className="h-9 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] font-mono text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+              className="h-9 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] font-mono text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
             />
           </div>
         </div>
@@ -449,27 +449,27 @@ export default function EquityPage() {
         {raise > 0 && preMoney > 0 && (
           <div className="mt-4 space-y-3">
             <div className="grid grid-cols-3 gap-3">
-              <div className="rounded-lg border border-zinc-100 bg-zinc-50 p-3">
-                <p className="text-[11px] font-medium text-zinc-500">
+              <div className="rounded-lg border border-slate-100 bg-slate-50 p-3">
+                <p className="text-[11px] font-medium text-slate-500">
                   Post-Money
                 </p>
-                <p className="mt-0.5 text-[14px] font-mono font-semibold text-zinc-900">
+                <p className="mt-0.5 text-[14px] font-mono font-semibold text-slate-900">
                   ${postMoney.toLocaleString()}
                 </p>
               </div>
-              <div className="rounded-lg border border-zinc-100 bg-zinc-50 p-3">
-                <p className="text-[11px] font-medium text-zinc-500">
+              <div className="rounded-lg border border-slate-100 bg-slate-50 p-3">
+                <p className="text-[11px] font-medium text-slate-500">
                   Investor Gets
                 </p>
-                <p className="mt-0.5 text-[14px] font-mono font-semibold text-zinc-900">
+                <p className="mt-0.5 text-[14px] font-mono font-semibold text-slate-900">
                   {dilutionPercent.toFixed(2)}%
                 </p>
               </div>
-              <div className="rounded-lg border border-zinc-100 bg-zinc-50 p-3">
-                <p className="text-[11px] font-medium text-zinc-500">
+              <div className="rounded-lg border border-slate-100 bg-slate-50 p-3">
+                <p className="text-[11px] font-medium text-slate-500">
                   New Shares
                 </p>
-                <p className="mt-0.5 text-[14px] font-mono font-semibold text-zinc-900">
+                <p className="mt-0.5 text-[14px] font-mono font-semibold text-slate-900">
                   {newInvestorShares.toLocaleString()}
                 </p>
               </div>
@@ -477,8 +477,8 @@ export default function EquityPage() {
 
             {/* Post-round ownership */}
             {shareholders.length > 0 && (
-              <div className="rounded-lg border border-zinc-100 bg-zinc-50 p-4">
-                <p className="text-[12px] font-medium text-zinc-600 mb-2">
+              <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
+                <p className="text-[12px] font-medium text-slate-600 mb-2">
                   Post-Round Ownership
                 </p>
                 <div className="space-y-1.5">
@@ -496,25 +496,25 @@ export default function EquityPage() {
                         key={s.id}
                         className="flex items-center justify-between"
                       >
-                        <span className="text-[12px] text-zinc-700">
+                        <span className="text-[12px] text-slate-700">
                           {s.name}
                         </span>
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-mono text-zinc-400 line-through">
+                          <span className="text-[11px] font-mono text-slate-400 line-through">
                             {prePct.toFixed(2)}%
                           </span>
-                          <span className="text-[12px] font-mono font-semibold text-zinc-900">
+                          <span className="text-[12px] font-mono font-semibold text-slate-900">
                             {postPct.toFixed(2)}%
                           </span>
                         </div>
                       </div>
                     );
                   })}
-                  <div className="flex items-center justify-between border-t border-zinc-200 pt-1.5 mt-1.5">
-                    <span className="text-[12px] font-medium text-zinc-700">
+                  <div className="flex items-center justify-between border-t border-slate-200 pt-1.5 mt-1.5">
+                    <span className="text-[12px] font-medium text-slate-700">
                       New Investor
                     </span>
-                    <span className="text-[12px] font-mono font-semibold text-zinc-900">
+                    <span className="text-[12px] font-mono font-semibold text-slate-900">
                       {dilutionPercent.toFixed(2)}%
                     </span>
                   </div>
@@ -528,7 +528,7 @@ export default function EquityPage() {
       {/* Empty state */}
       {shareholders.length === 0 && !showForm && (
         <div className="mt-12 text-center">
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-slate-500">
             No shareholders yet. Click &quot;+ Add Shareholder&quot; to build
             your cap table.
           </p>

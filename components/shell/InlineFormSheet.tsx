@@ -50,14 +50,14 @@ function InlineFormSheet({
           ${open ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0 pointer-events-none"}
         `}
       >
-        <div className="mx-4 mt-4 max-h-[80vh] overflow-y-auto rounded-xl border border-zinc-200 bg-white shadow-2xl">
+        <div className="mx-4 mt-4 max-h-[80vh] overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-2xl">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-zinc-200 px-6 py-4">
-            <h2 className="text-sm font-medium text-zinc-600">{title}</h2>
+          <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+            <h2 className="text-sm font-medium text-slate-600">{title}</h2>
             <button
               onClick={onClose}
               aria-label="Close"
-              className="flex h-7 w-7 items-center justify-center rounded-md text-zinc-600 transition-colors duration-200 hover:text-zinc-600"
+              className="flex h-7 w-7 items-center justify-center rounded-md text-slate-600 transition-colors duration-200 hover:text-slate-600"
             >
               <svg
                 width="14"

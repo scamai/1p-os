@@ -51,7 +51,7 @@ function CompanyView({ cards, agents, metrics, activity }: CompanyViewProps) {
       {/* 3. Pending decisions */}
       {pendingCards.length > 0 && (
         <div className="mt-8">
-          <p className="mb-3 text-[11px] font-medium uppercase tracking-wider text-zinc-400">
+          <p className="mb-3 text-[11px] font-medium uppercase tracking-wider text-slate-400">
             Needs your attention
           </p>
           <DecisionFeed cards={cards} onAction={handleDecisionAction} />
@@ -61,14 +61,14 @@ function CompanyView({ cards, agents, metrics, activity }: CompanyViewProps) {
       {/* Show "all clear" when no decisions */}
       {pendingCards.length === 0 && cards.length === 0 && (
         <div className="mt-8 py-8 text-center">
-          <p className="text-sm text-zinc-500">All clear. Your business is running.</p>
+          <p className="text-sm text-slate-500">All clear. Your business is running.</p>
         </div>
       )}
 
       {/* 4. Agent pulse */}
       {agents.length > 0 && (
         <div className="mt-8">
-          <p className="mb-3 text-[11px] font-medium uppercase tracking-wider text-zinc-400">
+          <p className="mb-3 text-[11px] font-medium uppercase tracking-wider text-slate-400">
             Agents
           </p>
           <AgentPulse agents={agents} />
@@ -78,7 +78,7 @@ function CompanyView({ cards, agents, metrics, activity }: CompanyViewProps) {
       {/* 5. Activity timeline */}
       {activity.length > 0 && (
         <div className="mt-8">
-          <p className="mb-3 text-[11px] font-medium uppercase tracking-wider text-zinc-400">
+          <p className="mb-3 text-[11px] font-medium uppercase tracking-wider text-slate-400">
             Recent activity
           </p>
           <ActivityTimeline events={activity} />

@@ -157,10 +157,10 @@ function ConnectAccounts({
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-zinc-900">
+          <h2 className="text-lg font-semibold text-slate-900">
             Connect your accounts
           </h2>
-          <p className="mt-0.5 text-sm text-zinc-500">
+          <p className="mt-0.5 text-sm text-slate-500">
             Give your AI team access to your tools. All actions go through the safety pipeline.
           </p>
         </div>
@@ -176,7 +176,7 @@ function ConnectAccounts({
 
           return (
             <div key={cat}>
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+              <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
                 {CATEGORY_LABELS[cat]}
               </p>
               <div className="flex flex-col gap-1">
@@ -187,7 +187,7 @@ function ConnectAccounts({
 
                   return (
                     <div key={option.id}>
-                      <div className="flex items-center justify-between border border-zinc-200 px-3 py-2.5 transition-colors hover:bg-zinc-50/50">
+                      <div className="flex items-center justify-between border border-slate-200 px-3 py-2.5 transition-colors hover:bg-slate-50/50">
                         <div className="flex items-center gap-3">
                           <svg
                             width="16"
@@ -198,18 +198,18 @@ function ConnectAccounts({
                             strokeWidth="1.5"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            className="shrink-0 text-zinc-400"
+                            className="shrink-0 text-slate-400"
                           >
                             <path d={option.icon} />
                           </svg>
                           <div>
-                            <p className="text-sm font-medium text-zinc-900">
+                            <p className="text-sm font-medium text-slate-900">
                               {option.name}
                             </p>
-                            <p className="text-[11px] text-zinc-500">
+                            <p className="text-[11px] text-slate-500">
                               {active ? (
                                 <>
-                                  <span className="inline-block h-1.5 w-1.5 bg-zinc-900 mr-1" />
+                                  <span className="inline-block h-1.5 w-1.5 bg-slate-900 mr-1" />
                                   {conn.label}
                                 </>
                               ) : (
@@ -225,7 +225,7 @@ function ConnectAccounts({
                               <Badge variant="success">Connected</Badge>
                               <button
                                 onClick={() => onDisconnect(option.id)}
-                                className="text-[11px] text-zinc-400 hover:text-zinc-900 transition-colors"
+                                className="text-[11px] text-slate-400 hover:text-slate-900 transition-colors"
                               >
                                 Disconnect
                               </button>
@@ -243,7 +243,7 @@ function ConnectAccounts({
                               onClick={() =>
                                 setExpandedApiKey(isExpanded ? null : option.id)
                               }
-                              className="text-xs text-zinc-500 hover:text-zinc-900 transition-colors"
+                              className="text-xs text-slate-500 hover:text-slate-900 transition-colors"
                             >
                               {isExpanded ? "Cancel" : "Configure"}
                             </button>
@@ -252,7 +252,7 @@ function ConnectAccounts({
                       </div>
 
                       {isExpanded && option.fields && (
-                        <div className="ml-7 mt-1 mb-2 border border-zinc-200 bg-zinc-50 p-3">
+                        <div className="ml-7 mt-1 mb-2 border border-slate-200 bg-slate-50 p-3">
                           <div className="flex flex-col gap-2">
                             {option.fields.map((field) => (
                               <Input
@@ -294,8 +294,8 @@ function ConnectAccounts({
         })}
       </div>
 
-      <div className="mt-6 border border-zinc-100 bg-zinc-50 p-3">
-        <p className="text-[10px] text-zinc-400">
+      <div className="mt-6 border border-slate-100 bg-slate-50 p-3">
+        <p className="text-[10px] text-slate-400">
           Credentials are encrypted with AES-256-GCM. Sensitive actions always require your approval.
           You can connect more accounts anytime in Settings.
         </p>

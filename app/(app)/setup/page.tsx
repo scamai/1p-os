@@ -61,12 +61,12 @@ const TEMPLATE_AGENTS: Record<
 };
 
 const ROLE_COLORS: Record<string, string> = {
-  operations: "bg-zinc-900",
-  finance: "bg-zinc-700",
-  sales: "bg-zinc-500",
-  marketing: "bg-zinc-800",
-  "customer-success": "bg-zinc-600",
-  product: "bg-zinc-400",
+  operations: "bg-slate-900",
+  finance: "bg-slate-700",
+  sales: "bg-slate-500",
+  marketing: "bg-slate-800",
+  "customer-success": "bg-slate-600",
+  product: "bg-slate-400",
 };
 
 // ─── AI analysis result ──────────────────────────────────────────────────────
@@ -93,7 +93,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
         <div
           key={i}
           className={`h-0.5 flex-1 transition-all duration-300 ${
-            i < current ? "bg-zinc-900" : i === current ? "bg-zinc-400" : "bg-zinc-200"
+            i < current ? "bg-slate-900" : i === current ? "bg-slate-400" : "bg-slate-200"
           }`}
         />
       ))}
@@ -106,9 +106,9 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
 export default function SetupPage() {
   const router = useRouter();
 
-  // Phase: welcome → api-keys → connect → analyzing → review → launching → done
+  // Phase: welcome → api-keys → connect → analyzing → review
   const [phase, setPhase] = React.useState<
-    "welcome" | "api-keys" | "connect" | "analyzing" | "review" | "launching" | "done"
+    "welcome" | "api-keys" | "connect" | "analyzing" | "review"
   >("welcome");
 
   // API keys
@@ -126,11 +126,8 @@ export default function SetupPage() {
   const [analysis, setAnalysis] = React.useState<AIAnalysis | null>(null);
   const [analysisProgress, setAnalysisProgress] = React.useState<string[]>([]);
 
-  // Launch visualization
-  const [hiredAgents, setHiredAgents] = React.useState<Set<number>>(new Set());
-  const [installedSkills, setInstalledSkills] = React.useState<Map<number, Set<number>>>(new Map());
-  const [wiringStep, setWiringStep] = React.useState(0);
-  const [launchPhase, setLaunchPhase] = React.useState<"hiring" | "skills" | "wiring" | "done">("hiring");
+  // Saving
+  const [saving, setSaving] = React.useState(false);
 
   // ── Step mapping for indicator ──────────────────────────────────────────────
 
@@ -140,8 +137,6 @@ export default function SetupPage() {
     connect: 2,
     analyzing: 3,
     review: 3,
-    launching: 3,
-    done: 3,
   };
   const currentStep = STEP_MAP[phase] ?? 0;
 
@@ -342,41 +337,7 @@ export default function SetupPage() {
 
   const handleLaunch = async () => {
     if (!analysis) return;
-
-    setPhase("launching");
-    setLaunchPhase("hiring");
-    setHiredAgents(new Set());
-    setInstalledSkills(new Map());
-    setWiringStep(0);
-
-    for (let i = 0; i < agents.length; i++) {
-      await delay(500);
-      setHiredAgents((prev) => new Set(prev).add(i));
-    }
-
-    await delay(300);
-    setLaunchPhase("skills");
-
-    for (let a = 0; a < agents.length; a++) {
-      for (let s = 0; s < agents[a].skills.length; s++) {
-        await delay(150);
-        setInstalledSkills((prev) => {
-          const next = new Map(prev);
-          const set = new Set(next.get(a) ?? []);
-          set.add(s);
-          next.set(a, set);
-          return next;
-        });
-      }
-    }
-
-    await delay(300);
-    setLaunchPhase("wiring");
-
-    for (let i = 0; i < 5; i++) {
-      await delay(400);
-      setWiringStep(i + 1);
-    }
+    setSaving(true);
 
     try {
       await fetch("/api/ai/setup", {
@@ -394,10 +355,7 @@ export default function SetupPage() {
       });
     } catch { /* non-fatal */ }
 
-    await delay(500);
-    setLaunchPhase("done");
-    await delay(2000);
-    router.push("/company");
+    router.push("/launch");
   };
 
   // ── Phase: Welcome ─────────────────────────────────────────────────────────
@@ -408,10 +366,10 @@ export default function SetupPage() {
         <StepIndicator current={currentStep} total={4} />
 
         <div className="text-center mb-10">
-          <h1 className="text-2xl font-bold text-zinc-900 tracking-tight">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
             Your AI team is ready to be hired
           </h1>
-          <p className="mt-3 text-sm text-zinc-500 max-w-sm mx-auto leading-relaxed">
+          <p className="mt-3 text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
             1P OS builds a team of AI agents that run your business — finance, ops, sales, support. You stay in control, they do the work.
           </p>
         </div>
@@ -422,13 +380,13 @@ export default function SetupPage() {
             { step: "2", label: "Connect your tools", desc: "Email, calendar, Slack, Stripe — optional" },
             { step: "3", label: "AI reads your business", desc: "And assembles the right team" },
           ].map((item) => (
-            <div key={item.step} className="flex items-start gap-3 px-4 py-3 border border-zinc-200">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center bg-zinc-900 text-white text-xs font-bold">
+            <div key={item.step} className="flex items-start gap-3 px-4 py-3 border border-slate-200">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center bg-slate-900 text-white text-xs font-bold">
                 {item.step}
               </span>
               <div>
-                <p className="text-sm font-medium text-zinc-900">{item.label}</p>
-                <p className="text-xs text-zinc-500">{item.desc}</p>
+                <p className="text-sm font-medium text-slate-900">{item.label}</p>
+                <p className="text-xs text-slate-500">{item.desc}</p>
               </div>
             </div>
           ))}
@@ -438,7 +396,7 @@ export default function SetupPage() {
           <Button onClick={() => setPhase("api-keys")} className="w-full max-w-xs justify-center py-3 text-sm font-semibold">
             Get started
           </Button>
-          <p className="text-[10px] text-zinc-400">Takes about 2 minutes</p>
+          <p className="text-[10px] text-slate-400">Takes about 2 minutes</p>
         </div>
       </div>
     );
@@ -452,8 +410,8 @@ export default function SetupPage() {
         <StepIndicator current={currentStep} total={4} />
 
         <div className="text-center mb-8">
-          <h1 className="text-xl font-bold text-zinc-900">Add your AI key</h1>
-          <p className="mt-2 text-sm text-zinc-500 max-w-sm mx-auto">
+          <h1 className="text-xl font-bold text-slate-900">Add your AI key</h1>
+          <p className="mt-2 text-sm text-slate-500 max-w-sm mx-auto">
             Your agents need an LLM to think. Anthropic Claude is the primary model.
           </p>
         </div>
@@ -462,8 +420,8 @@ export default function SetupPage() {
           <CardContent className="p-5">
             <div className="flex flex-col gap-4">
               <div>
-                <label className="text-xs font-medium text-zinc-700 mb-1.5 block">
-                  Anthropic API Key <span className="text-zinc-400">*</span>
+                <label className="text-xs font-medium text-slate-700 mb-1.5 block">
+                  Anthropic API Key <span className="text-slate-400">*</span>
                 </label>
                 <Input
                   type="password"
@@ -473,20 +431,20 @@ export default function SetupPage() {
                   className="font-mono text-xs"
                 />
                 {keyError && (
-                  <p className="mt-1.5 text-xs text-zinc-600">{keyError}</p>
+                  <p className="mt-1.5 text-xs text-slate-600">{keyError}</p>
                 )}
                 {keySaved && !keyError && (
                   <div className="mt-1.5 flex items-center gap-1.5">
-                    <svg className="h-3.5 w-3.5 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <svg className="h-3.5 w-3.5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-xs text-zinc-700">Key saved</span>
+                    <span className="text-xs text-slate-700">Key saved</span>
                   </div>
                 )}
               </div>
 
-              <div className="border-t border-zinc-100 pt-3">
-                <p className="text-[10px] text-zinc-400 leading-relaxed">
+              <div className="border-t border-slate-100 pt-3">
+                <p className="text-[10px] text-slate-400 leading-relaxed">
                   Your key is encrypted with AES-256-GCM and never leaves your server. You can add more LLM providers later in Settings.
                 </p>
               </div>
@@ -514,7 +472,7 @@ export default function SetupPage() {
           )}
           <button
             onClick={() => setPhase("connect")}
-            className="text-xs text-zinc-400 hover:text-zinc-700 transition-colors"
+            className="text-xs text-slate-400 hover:text-slate-700 transition-colors"
           >
             Skip — I&apos;ll add it later
           </button>
@@ -531,19 +489,19 @@ export default function SetupPage() {
         <StepIndicator current={currentStep} total={4} />
 
         <div className="text-center mb-8">
-          <h1 className="text-xl font-bold text-zinc-900">Connect your accounts</h1>
-          <p className="mt-2 text-sm text-zinc-500 max-w-md mx-auto">
+          <h1 className="text-xl font-bold text-slate-900">Connect your accounts</h1>
+          <p className="mt-2 text-sm text-slate-500 max-w-md mx-auto">
             The more you connect, the better AI understands your business. Everything is optional.
           </p>
         </div>
 
         {connectError && (
-          <div className="mb-4 border border-zinc-200 bg-zinc-50 px-4 py-3">
-            <p className="text-sm font-medium text-zinc-800">{connectError}</p>
-            <p className="mt-1 text-xs text-zinc-600">
-              Add the required env vars to <code className="bg-zinc-200 px-1 text-[11px]">.env.local</code> and restart. Or skip this.
+          <div className="mb-4 border border-slate-200 bg-slate-50 px-4 py-3">
+            <p className="text-sm font-medium text-slate-800">{connectError}</p>
+            <p className="mt-1 text-xs text-slate-600">
+              Add the required env vars to <code className="bg-slate-200 px-1 text-[11px]">.env.local</code> and restart. Or skip this.
             </p>
-            <button onClick={() => setConnectError(null)} className="mt-1 text-xs text-zinc-500 underline">Dismiss</button>
+            <button onClick={() => setConnectError(null)} className="mt-1 text-xs text-slate-500 underline">Dismiss</button>
           </div>
         )}
 
@@ -562,7 +520,7 @@ export default function SetupPage() {
               : "Continue with default setup"
             }
           </Button>
-          <p className="text-[10px] text-zinc-400">
+          <p className="text-[10px] text-slate-400">
             {connectedAccounts.length > 0
               ? "AI auto-configures from your accounts"
               : "You can connect accounts anytime in Settings"
@@ -581,14 +539,14 @@ export default function SetupPage() {
         <StepIndicator current={currentStep} total={4} />
 
         <div className="text-center mb-8">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center bg-zinc-100">
-            <svg className="h-7 w-7 animate-spin text-zinc-600" viewBox="0 0 24 24" fill="none">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center bg-slate-100">
+            <svg className="h-7 w-7 animate-spin text-slate-600" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-zinc-900">Analyzing your business</h2>
-          <p className="mt-1 text-sm text-zinc-500">Reading your connected accounts</p>
+          <h2 className="text-lg font-semibold text-slate-900">Analyzing your business</h2>
+          <p className="mt-1 text-sm text-slate-500">Reading your connected accounts</p>
         </div>
 
         <div className="flex flex-col gap-1.5">
@@ -596,18 +554,18 @@ export default function SetupPage() {
             const isLatest = i === analysisProgress.length - 1;
             const isDone = i < analysisProgress.length - 1;
             return (
-              <div key={i} className={`flex items-center gap-2.5 px-3 py-2 transition-all ${isLatest ? "bg-zinc-100" : ""}`}>
+              <div key={i} className={`flex items-center gap-2.5 px-3 py-2 transition-all ${isLatest ? "bg-slate-100" : ""}`}>
                 {isDone ? (
-                  <svg className="h-4 w-4 shrink-0 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="h-4 w-4 shrink-0 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 ) : (
-                  <svg className="h-4 w-4 shrink-0 animate-spin text-zinc-400" viewBox="0 0 24 24" fill="none">
+                  <svg className="h-4 w-4 shrink-0 animate-spin text-slate-400" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                   </svg>
                 )}
-                <span className={`text-xs ${isDone ? "text-zinc-500" : "text-zinc-900 font-medium"}`}>
+                <span className={`text-xs ${isDone ? "text-slate-500" : "text-slate-900 font-medium"}`}>
                   {step}
                 </span>
               </div>
@@ -626,30 +584,30 @@ export default function SetupPage() {
         <StepIndicator current={currentStep} total={4} />
 
         <div className="text-center mb-6">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center bg-zinc-100">
-            <svg className="h-6 w-6 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center bg-slate-100">
+            <svg className="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-zinc-900">Here&apos;s your team</h2>
-          <p className="mt-1 text-sm text-zinc-500">
+          <h2 className="text-lg font-semibold text-slate-900">Here&apos;s your team</h2>
+          <p className="mt-1 text-sm text-slate-500">
             Review what AI assembled. You can change everything later.
           </p>
         </div>
 
         {/* Confidence */}
-        <div className="mb-4 border border-zinc-200 bg-zinc-50 px-4 py-2.5">
+        <div className="mb-4 border border-slate-200 bg-slate-50 px-4 py-2.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-zinc-700">
+            <span className="text-xs font-medium text-slate-700">
               AI Confidence: {Math.round(analysis.confidence * 100)}%
             </span>
-            <span className="text-[10px] text-zinc-500">
+            <span className="text-[10px] text-slate-500">
               Based on {connectedAccounts.length} connected account{connectedAccounts.length !== 1 ? "s" : ""}
             </span>
           </div>
           <div className="mt-1.5 flex flex-wrap gap-1">
             {analysis.signals.map((s, i) => (
-              <span key={i} className="bg-white px-1.5 py-0.5 text-[9px] text-zinc-600 border border-zinc-200">{s}</span>
+              <span key={i} className="bg-white px-1.5 py-0.5 text-[9px] text-slate-600 border border-slate-200">{s}</span>
             ))}
           </div>
         </div>
@@ -658,35 +616,35 @@ export default function SetupPage() {
         <div className="flex flex-col gap-3">
           <Card>
             <CardContent className="p-4">
-              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">Your Business</h3>
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Your Business</h3>
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-zinc-500">Name</span>
-                  <span className="text-sm font-semibold text-zinc-900">{analysis.businessName}</span>
+                  <span className="text-xs text-slate-500">Name</span>
+                  <span className="text-sm font-semibold text-slate-900">{analysis.businessName}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-zinc-500">Industry</span>
-                  <span className="text-sm text-zinc-900">{analysis.industry}</span>
+                  <span className="text-xs text-slate-500">Industry</span>
+                  <span className="text-sm text-slate-900">{analysis.industry}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-zinc-500">Strategy</span>
-                  <span className="text-sm text-zinc-900 capitalize">{analysis.suggestedStrategy}</span>
+                  <span className="text-xs text-slate-500">Strategy</span>
+                  <span className="text-sm text-slate-900 capitalize">{analysis.suggestedStrategy}</span>
                 </div>
               </div>
-              <p className="mt-2 text-[10px] text-zinc-400">{analysis.strategyReason}</p>
+              <p className="mt-2 text-[10px] text-slate-400">{analysis.strategyReason}</p>
             </CardContent>
           </Card>
 
           {/* Team AI will hire */}
           <Card>
             <CardContent className="p-4">
-              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
                 Your AI Team ({agents.length} agents)
               </h3>
               <div className="flex flex-col gap-2">
                 {agents.map((agent, i) => {
                   const suggestion = analysis.suggestedAgents[i];
-                  const roleColor = ROLE_COLORS[agent.role] ?? "bg-zinc-500";
+                  const roleColor = ROLE_COLORS[agent.role] ?? "bg-slate-500";
                   return (
                     <div key={agent.name} className="flex items-center gap-2.5">
                       <div className={`flex h-7 w-7 shrink-0 items-center justify-center ${roleColor} text-white text-[10px] font-bold`}>
@@ -694,15 +652,15 @@ export default function SetupPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-medium text-zinc-900">{agent.name}</span>
-                          <span className="text-[10px] text-zinc-400 capitalize">{agent.role.replace("-", " ")}</span>
+                          <span className="text-xs font-medium text-slate-900">{agent.name}</span>
+                          <span className="text-[10px] text-slate-400 capitalize">{agent.role.replace("-", " ")}</span>
                         </div>
-                        <p className="text-[10px] text-zinc-500">
+                        <p className="text-[10px] text-slate-500">
                           {suggestion?.reason ?? agent.skills.join(", ")}
                         </p>
                         <div className="flex flex-wrap gap-1 mt-0.5">
                           {agent.skills.map((skill) => (
-                            <span key={skill} className="text-[8px] text-zinc-400 bg-zinc-100 px-1 py-0.5">{skill}</span>
+                            <span key={skill} className="text-[8px] text-slate-400 bg-slate-100 px-1 py-0.5">{skill}</span>
                           ))}
                         </div>
                       </div>
@@ -717,13 +675,13 @@ export default function SetupPage() {
           {connectedAccounts.length > 0 && (
             <Card>
               <CardContent className="p-4">
-                <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
+                <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
                   Connected ({connectedAccounts.length})
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {connectedAccounts.map((a) => (
-                    <span key={a.id} className="inline-flex items-center gap-1 bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-700">
-                      <span className="h-1.5 w-1.5 bg-zinc-900" />
+                    <span key={a.id} className="inline-flex items-center gap-1 bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-700">
+                      <span className="h-1.5 w-1.5 bg-slate-900" />
                       {a.label || a.provider}
                     </span>
                   ))}
@@ -735,164 +693,25 @@ export default function SetupPage() {
 
         {/* Actions */}
         <div className="mt-6 flex flex-col items-center gap-3">
-          <Button onClick={handleLaunch} className="w-full max-w-sm justify-center py-3 text-base font-semibold">
+          <Button onClick={handleLaunch} loading={saving} className="w-full max-w-sm justify-center py-3 text-base font-semibold">
             Launch My Team
           </Button>
           <div className="flex items-center gap-4">
             <button
               onClick={() => setPhase("connect")}
-              className="text-xs text-zinc-500 hover:text-zinc-900 transition-colors"
+              className="text-xs text-slate-500 hover:text-slate-900 transition-colors"
             >
               Connect more accounts
             </button>
             <button
               onClick={startAnalysis}
-              className="text-xs text-zinc-500 hover:text-zinc-900 transition-colors"
+              className="text-xs text-slate-500 hover:text-slate-900 transition-colors"
             >
               Re-analyze
             </button>
           </div>
-          <p className="text-[10px] text-zinc-400">Everything is editable in Settings</p>
+          <p className="text-[10px] text-slate-400">Everything is editable in Settings</p>
         </div>
-      </div>
-    );
-  }
-
-  // ── Phase: Launching (animated) ───────────────────────────────────────────
-
-  if (phase === "launching") {
-    const WIRING_LABELS = [
-      "Safety pipeline",
-      "Budget limits",
-      "Circuit breakers",
-      "Model routing",
-      "Agent runtime",
-    ];
-
-    const totalSkills = agents.reduce((sum, a) => sum + a.skills.length, 0);
-    const installedCount = Array.from(installedSkills.values()).reduce((sum, s) => sum + s.size, 0);
-    const progress =
-      launchPhase === "hiring" ? (hiredAgents.size / agents.length) * 33
-      : launchPhase === "skills" ? 33 + (installedCount / totalSkills) * 33
-      : launchPhase === "wiring" ? 66 + (wiringStep / 5) * 34
-      : 100;
-
-    return (
-      <div className="mx-auto max-w-xl py-12">
-        <div className="mb-8 text-center">
-          {launchPhase === "done" ? (
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center bg-zinc-100">
-              <svg className="h-8 w-8 text-zinc-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-          ) : (
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center bg-zinc-100">
-              <svg className="h-8 w-8 animate-spin text-zinc-600" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-              </svg>
-            </div>
-          )}
-          <h2 className="text-lg font-semibold text-zinc-900">
-            {launchPhase === "hiring" && "Hiring agents..."}
-            {launchPhase === "skills" && "Installing skills..."}
-            {launchPhase === "wiring" && "Wiring systems..."}
-            {launchPhase === "done" && `${analysis?.businessName ?? "Your business"} is live.`}
-          </h2>
-        </div>
-
-        {/* Progress bar */}
-        <div className="mb-8 h-1.5 w-full overflow-hidden bg-zinc-100">
-          <div
-            className={`h-full transition-all duration-500 ${launchPhase === "done" ? "bg-zinc-900" : "bg-zinc-700"}`}
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-
-        {/* Agent cards */}
-        <div className="flex flex-col gap-2">
-          {agents.map((agent, i) => {
-            const isHired = hiredAgents.has(i);
-            const agentSkills = installedSkills.get(i) ?? new Set<number>();
-            const allDone = agentSkills.size === agent.skills.length;
-            const roleColor = ROLE_COLORS[agent.role] ?? "bg-zinc-500";
-
-            return (
-              <div
-                key={agent.name}
-                className={`border px-3 py-2.5 transition-all duration-500 ${
-                  isHired ? allDone ? "border-zinc-200 bg-zinc-50" : "border-zinc-200" : "border-zinc-100 bg-zinc-50 opacity-40"
-                }`}
-                style={{ transform: isHired ? "translateX(0)" : "translateX(-8px)" }}
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`flex h-8 w-8 shrink-0 items-center justify-center ${isHired ? roleColor : "bg-zinc-200"} text-white text-xs font-bold transition-colors`}>
-                    {isHired ? agent.name.charAt(0) : "?"}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-zinc-900">{agent.name}</span>
-                      <span className="text-[10px] text-zinc-400 capitalize">{agent.role.replace("-", " ")}</span>
-                    </div>
-                    {isHired && (
-                      <div className="mt-1 flex flex-wrap gap-1">
-                        {agent.skills.map((skill, s) => (
-                          <span key={skill} className={`inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] transition-all ${
-                            agentSkills.has(s) ? "bg-zinc-100 text-zinc-700 border border-zinc-200" : "bg-zinc-100 text-zinc-400"
-                          }`}>
-                            {agentSkills.has(s) ? (
-                              <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                            ) : (
-                              <svg className="h-2.5 w-2.5 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" /></svg>
-                            )}
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="shrink-0">
-                    {!isHired ? <div className="h-5 w-5 border-2 border-zinc-200" />
-                    : allDone ? (
-                      <div className="flex h-5 w-5 items-center justify-center bg-zinc-900">
-                        <svg className="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                      </div>
-                    ) : (
-                      <svg className="h-5 w-5 animate-spin text-zinc-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" /></svg>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Wiring */}
-        {(launchPhase === "wiring" || launchPhase === "done") && (
-          <div className="mt-6 border border-zinc-200 bg-zinc-50 p-3">
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">System configuration</p>
-            <div className="flex flex-col gap-1.5">
-              {WIRING_LABELS.map((label, i) => (
-                <div key={label} className="flex items-center gap-2 text-xs">
-                  {i < wiringStep ? (
-                    <svg className="h-3.5 w-3.5 shrink-0 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                  ) : <div className="h-3.5 w-3.5 shrink-0 border border-zinc-300" />}
-                  <span className={i < wiringStep ? "text-zinc-700" : "text-zinc-400"}>{label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {launchPhase === "done" && (
-          <div className="mt-6 text-center">
-            <p className="text-sm font-medium text-zinc-900">Opening HQ...</p>
-            <p className="mt-1 text-[10px] text-zinc-400">
-              Tip: Press Cmd+K anytime to talk to your AI team
-            </p>
-          </div>
-        )}
       </div>
     );
   }

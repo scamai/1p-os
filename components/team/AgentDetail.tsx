@@ -37,19 +37,19 @@ function AgentDetail({
   const isPaused = agent.status === "paused";
 
   return (
-    <div className="fixed inset-y-0 right-0 z-40 flex w-full max-w-sm flex-col border-l border-zinc-200 bg-white shadow-xl">
-      <div className="flex items-center justify-between border-b border-zinc-200 p-4">
+    <div className="fixed inset-y-0 right-0 z-40 flex w-full max-w-sm flex-col border-l border-slate-200 bg-white shadow-xl">
+      <div className="flex items-center justify-between border-b border-slate-200 p-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-zinc-100 text-sm font-medium text-zinc-900">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-sm font-medium text-slate-900">
             {agent.initial}
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-zinc-900">
+            <h3 className="text-sm font-semibold text-slate-900">
               {agent.name}
             </h3>
             <div className="flex items-center gap-1.5">
               <AgentStatusDot status={agent.status} />
-              <span className="text-xs text-zinc-500">
+              <span className="text-xs text-slate-500">
                 {agent.role} &middot; {agent.level}
               </span>
             </div>
@@ -57,7 +57,7 @@ function AgentDetail({
         </div>
         <button
           onClick={onClose}
-          className="rounded-sm p-1 text-zinc-500 hover:text-zinc-900"
+          className="rounded-sm p-1 text-slate-500 hover:text-slate-900"
         >
           <svg
             width="14"
@@ -83,17 +83,17 @@ function AgentDetail({
         />
 
         <div className="mt-6">
-          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-zinc-500">
+          <h4 className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-500">
             Recent Activity
           </h4>
           {agent.activityLog.length === 0 ? (
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-slate-500">
               No recent activity.
             </p>
           ) : (
             <div className="flex flex-col gap-2">
               {agent.activityLog.map((entry, i) => (
-                <p key={i} className="text-xs text-zinc-500">
+                <p key={i} className="text-xs text-slate-500">
                   {entry}
                 </p>
               ))}
@@ -102,7 +102,7 @@ function AgentDetail({
         </div>
       </div>
 
-      <div className="border-t border-zinc-200 p-4">
+      <div className="border-t border-slate-200 p-4">
         <div className="flex gap-2">
           <Button
             variant="outline"
@@ -122,18 +122,18 @@ function AgentDetail({
           </Button>
         </div>
         {confirmDelete ? (
-          <div className="mt-3 flex items-center justify-between rounded-md border border-zinc-200 px-3 py-2">
-            <span className="text-xs text-zinc-500">Delete {agent.name}?</span>
+          <div className="mt-3 flex items-center justify-between rounded-md border border-slate-200 px-3 py-2">
+            <span className="text-xs text-slate-500">Delete {agent.name}?</span>
             <div className="flex gap-2">
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="text-xs text-zinc-500 hover:text-zinc-700"
+                className="text-xs text-slate-500 hover:text-slate-700"
               >
                 Cancel
               </button>
               <button
                 onClick={() => onDelete?.(agent.id)}
-                className="text-xs text-zinc-900 hover:underline"
+                className="text-xs text-slate-900 hover:underline"
               >
                 Confirm
               </button>
@@ -142,7 +142,7 @@ function AgentDetail({
         ) : (
           <button
             onClick={() => setConfirmDelete(true)}
-            className="mt-3 text-xs text-zinc-600 transition-colors hover:text-zinc-500"
+            className="mt-3 text-xs text-slate-600 transition-colors hover:text-slate-500"
           >
             Delete Agent
           </button>

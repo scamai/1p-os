@@ -83,7 +83,7 @@ function AgentHireForm({ onClose, prefill }: AgentHireFormProps) {
         required
       />
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="agent-description" className="text-sm font-medium text-zinc-600">
+        <label htmlFor="agent-description" className="text-sm font-medium text-slate-600">
           Description of what you need
         </label>
         <textarea
@@ -93,28 +93,28 @@ function AgentHireForm({ onClose, prefill }: AgentHireFormProps) {
           placeholder="Describe the tasks and responsibilities for this agent..."
           rows={4}
           required
-          className="w-full rounded-md border border-zinc-200 bg-transparent px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-300"
+          className="w-full rounded-md border border-slate-200 bg-transparent px-3 py-2 text-sm text-slate-900 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
         />
       </div>
 
       {suggestionLoading && (
-        <div className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2">
-          <div className="h-3 w-3 animate-spin rounded-full border-2 border-zinc-400 border-t-transparent" />
-          <span className="text-xs text-zinc-500">
+        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+          <div className="h-3 w-3 animate-spin rounded-full border-2 border-slate-400 border-t-transparent" />
+          <span className="text-xs text-slate-500">
             Finding matching agents...
           </span>
         </div>
       )}
 
       {suggestion && !suggestionLoading && (
-        <div className="rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2">
-          <p className="text-xs font-medium text-zinc-500">AI Suggestion</p>
-          <p className="mt-1 text-sm text-zinc-600">{suggestion}</p>
+        <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+          <p className="text-xs font-medium text-slate-500">AI Suggestion</p>
+          <p className="mt-1 text-sm text-slate-600">{suggestion}</p>
         </div>
       )}
 
       {error && (
-        <p className="text-sm text-zinc-500">{error}</p>
+        <p className="text-sm text-slate-500">{error}</p>
       )}
       <div className="flex items-center justify-end gap-3 pt-2">
         <Button type="button" variant="ghost" onClick={onClose}>

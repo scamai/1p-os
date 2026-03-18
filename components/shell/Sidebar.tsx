@@ -132,6 +132,19 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
           { id: "ip", icon: <LightbulbIcon />, label: "IP & Trademarks", href: "/legal/ip" },
         ],
       },
+      {
+        id: "launch",
+        label: "Launch",
+        icon: <RocketIcon />,
+        defaultOpen: false,
+        items: [
+          { id: "launch-dashboard", icon: <HomeIcon />, label: "Dashboard", href: "/launch" },
+          { id: "launch-templates", icon: <FileIcon />, label: "Templates", href: "/launch/templates" },
+          { id: "launch-investors", icon: <UsersIcon />, label: "Investors", href: "/launch/investors" },
+          { id: "launch-accelerators", icon: <TargetIcon />, label: "Accelerators", href: "/launch/accelerators" },
+          { id: "launch-reminders", icon: <ShieldIcon />, label: "Reminders", href: "/launch/reminders" },
+        ],
+      },
     ],
     bottom: [
       { id: "settings", icon: <SettingsIcon />, label: "Company settings", href: "/settings" },
@@ -189,12 +202,12 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
         onClick={() => navigateTo(item.href)}
         className={`group flex w-full items-center gap-3 px-3 py-[7px] text-left transition-colors duration-100 ${
           active
-            ? "text-zinc-900 font-medium"
-            : "text-zinc-700 hover:text-zinc-900"
+            ? "text-indigo-600 font-medium"
+            : "text-slate-700 hover:text-slate-900"
         }`}
       >
         <span className={`flex h-4 w-4 shrink-0 items-center justify-center ${
-          active ? "text-zinc-900" : "text-zinc-400 group-hover:text-zinc-600"
+          active ? "text-indigo-600" : "text-slate-400 group-hover:text-slate-600"
         }`}>
           {item.icon}
         </span>
@@ -213,20 +226,20 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
         onClick={disabled ? undefined : () => navigateTo(item.href)}
         className={`flex w-full items-center pl-9 pr-3 py-[5px] text-left transition-colors duration-100 ${
           disabled
-            ? "text-zinc-300 cursor-default"
+            ? "text-slate-300 cursor-default"
             : active
-              ? "text-zinc-900 font-medium"
-              : "text-zinc-600 hover:text-zinc-900"
+              ? "text-indigo-600 font-medium"
+              : "text-slate-600 hover:text-slate-900"
         }`}
       >
         <span className="flex-1 truncate text-[14px]">{item.label}</span>
         {disabled && (
-          <span className="shrink-0 bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-400">
+          <span className="shrink-0 bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-400">
             Soon
           </span>
         )}
         {!disabled && item.count !== undefined && item.count > 0 && (
-          <span className="shrink-0 bg-zinc-100 px-1.5 py-0.5 text-[10px] font-medium text-zinc-600">
+          <span className="shrink-0 bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
             {item.count}
           </span>
         )}
@@ -245,12 +258,12 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
           onClick={() => toggleGroup(group.id)}
           className={`flex w-full items-center gap-3 px-3 py-[7px] text-left transition-colors duration-100 ${
             hasActive
-              ? "text-zinc-900 font-medium"
-              : "text-zinc-700 hover:text-zinc-900"
+              ? "text-slate-900 font-medium"
+              : "text-slate-700 hover:text-slate-900"
           }`}
         >
           <span className={`flex h-4 w-4 shrink-0 items-center justify-center ${
-            hasActive ? "text-zinc-900" : "text-zinc-400"
+            hasActive ? "text-slate-900" : "text-slate-400"
           }`}>
             {group.icon}
           </span>
@@ -270,13 +283,13 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
   const sidebarContent = (
     <>
       {/* Header */}
-      <div className="flex h-14 items-center justify-between px-4 border-b border-zinc-200">
-        <span className="text-[14px] font-bold tracking-tight text-zinc-900">
+      <div className="flex h-14 items-center justify-between px-4 border-b border-slate-200">
+        <span className="text-[14px] font-bold tracking-tight text-slate-900">
           1P OS
         </span>
         <button
           onClick={onOpenCommandBar}
-          className="flex h-7 w-7 items-center justify-center text-zinc-400 hover:text-zinc-600 transition-colors"
+          className="flex h-7 w-7 items-center justify-center text-slate-400 hover:text-slate-600 transition-colors"
           aria-label="Search"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -295,7 +308,7 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
       </nav>
 
       {/* Bottom section */}
-      <div className="border-t border-zinc-200 px-1 py-2">
+      <div className="border-t border-slate-200 px-1 py-2">
         {nav.bottom.map(renderTopItem)}
       </div>
     </>
@@ -304,14 +317,14 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
   return (
     <>
       {/* Desktop */}
-      <aside className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 z-30 w-[220px] border-r border-zinc-200 bg-white">
+      <aside className="hidden md:flex flex-col fixed left-0 top-0 bottom-0 z-30 w-[220px] border-r border-slate-200 bg-white">
         {sidebarContent}
       </aside>
 
       {/* Mobile hamburger */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="fixed left-3 top-3 z-40 flex h-10 w-10 items-center justify-center text-zinc-500 hover:text-zinc-600 md:hidden"
+        className="fixed left-3 top-3 z-40 flex h-10 w-10 items-center justify-center text-slate-500 hover:text-slate-600 md:hidden"
         aria-label="Open menu"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -323,7 +336,7 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
       {mobileOpen && (
         <div className="fixed inset-0 z-40 bg-black/20 md:hidden" onClick={() => setMobileOpen(false)} />
       )}
-      <aside className={`fixed left-0 top-0 bottom-0 z-50 flex w-[220px] flex-col border-r border-zinc-200 bg-white transition-transform duration-200 md:hidden ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside className={`fixed left-0 top-0 bottom-0 z-50 flex w-[220px] flex-col border-r border-slate-200 bg-white transition-transform duration-200 md:hidden ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}>
         {sidebarContent}
       </aside>
     </>

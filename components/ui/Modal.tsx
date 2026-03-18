@@ -56,18 +56,18 @@ function Modal({
   return (
     <dialog
       ref={dialogRef}
-      className={`fixed inset-0 z-50 m-auto max-h-[85vh] w-full max-w-md border border-zinc-200 bg-white p-0 text-zinc-900 shadow-xl backdrop:bg-black/20 ${className}`}
+      className={`fixed inset-0 z-50 m-auto max-h-[85vh] w-full max-w-md rounded-lg border border-slate-200 bg-white p-0 text-slate-900 shadow-lg backdrop:bg-slate-900/20 ${className}`}
     >
       <div className="flex flex-col">
         <div className="flex items-start justify-between p-5">
           <div className="flex flex-col gap-1">
             {title && (
-              <h2 className="text-base font-semibold text-zinc-900">
+              <h2 className="text-base font-semibold text-slate-900">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="text-sm text-zinc-500">
+              <p className="text-sm text-slate-500">
                 {description}
               </p>
             )}
@@ -75,7 +75,7 @@ function Modal({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="ml-4 flex h-8 w-8 items-center justify-center text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900"
+            className="ml-4 flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition-colors duration-150 hover:bg-slate-100 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
           >
             <svg
               width="14"

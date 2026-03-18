@@ -217,20 +217,20 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-[640px]">
       <Education {...EDUCATION.auditing} />
-      <h1 className="text-lg font-semibold text-zinc-900">Auditing</h1>
-      <p className="mt-1 text-sm text-zinc-500">
+      <h1 className="text-lg font-semibold text-slate-900">Auditing</h1>
+      <p className="mt-1 text-sm text-slate-500">
         Financial controls, compliance, and documentation checklist for your startup.
       </p>
 
       {/* Progress */}
-      <div className="mt-6 border border-zinc-200 rounded-lg p-4 bg-white">
+      <div className="mt-6 border border-slate-200 rounded-lg p-4 bg-white">
         <div className="flex items-center justify-between text-sm mb-2">
-          <span className="text-zinc-600">
+          <span className="text-slate-600">
             {checked} of {total} items complete
           </span>
-          <span className="font-medium text-zinc-900">{pct}%</span>
+          <span className="font-medium text-slate-900">{pct}%</span>
         </div>
-        <div className="w-full h-3 bg-zinc-100 rounded-full overflow-hidden">
+        <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
           <div
             className="h-full bg-black rounded-full transition-all duration-500"
             style={{ width: `${pct}%` }}
@@ -245,8 +245,8 @@ export default function Page() {
         return (
           <div key={cat} className="mt-6">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-medium text-zinc-900">{cat}</h2>
-              <span className="text-xs text-zinc-500">
+              <h2 className="text-sm font-medium text-slate-900">{cat}</h2>
+              <span className="text-xs text-slate-500">
                 {catDone}/{catItems.length}
               </span>
             </div>
@@ -255,7 +255,7 @@ export default function Page() {
                 <div
                   key={item.id}
                   className={`border rounded-lg p-3 bg-white transition-colors ${
-                    item.checked ? "border-zinc-100" : "border-zinc-200"
+                    item.checked ? "border-slate-100" : "border-slate-200"
                   }`}
                 >
                   <div className="flex items-start gap-3">
@@ -264,7 +264,7 @@ export default function Page() {
                       className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
                         item.checked
                           ? "bg-black border-black"
-                          : "border-zinc-300 hover:border-zinc-500"
+                          : "border-slate-300 hover:border-slate-500"
                       }`}
                     >
                       {item.checked && (
@@ -286,21 +286,21 @@ export default function Page() {
                     <div className="flex-1 min-w-0">
                       <p
                         className={`text-sm font-medium ${
-                          item.checked ? "text-zinc-400 line-through" : "text-zinc-900"
+                          item.checked ? "text-slate-400 line-through" : "text-slate-900"
                         }`}
                       >
                         {item.title}
                       </p>
-                      <p className="text-xs text-zinc-500 mt-0.5">{item.description}</p>
+                      <p className="text-xs text-slate-500 mt-0.5">{item.description}</p>
                       <div className="flex items-center gap-3 mt-2">
                         {item.lastReviewed && (
-                          <span className="text-[10px] text-zinc-400">
+                          <span className="text-[10px] text-slate-400">
                             Last reviewed: {item.lastReviewed}
                           </span>
                         )}
                         <button
                           onClick={() => markReviewed(item.id)}
-                          className="text-[10px] text-zinc-400 hover:text-zinc-700"
+                          className="text-[10px] text-slate-400 hover:text-slate-700"
                         >
                           Mark reviewed
                         </button>

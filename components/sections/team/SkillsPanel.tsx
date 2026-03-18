@@ -48,39 +48,39 @@ function SkillCard({
 
   return (
     <div
-      className={`rounded-lg border border-zinc-200 bg-white px-4 py-3 transition-all cursor-pointer hover:shadow-sm ${!skill.active ? "opacity-50" : ""}`}
+      className={`rounded-lg border border-slate-200 bg-white px-4 py-3 transition-all cursor-pointer hover:shadow-sm ${!skill.active ? "opacity-50" : ""}`}
       onClick={() => setExpanded((v) => !v)}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <p className="text-sm font-medium text-zinc-900">{skill.name}</p>
+            <p className="text-sm font-medium text-slate-900">{skill.name}</p>
             {!skill.active && (
-              <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] text-zinc-500">Off</span>
+              <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">Off</span>
             )}
           </div>
-          <p className="mt-0.5 text-xs text-zinc-500">{skill.description}</p>
-          <p className="mt-1.5 font-mono text-[11px] text-zinc-400">
+          <p className="mt-0.5 text-xs text-slate-500">{skill.description}</p>
+          <p className="mt-1.5 font-mono text-[11px] text-slate-400">
             {skill.agents}
           </p>
         </div>
       </div>
 
       {expanded && (
-        <div className="mt-3 border-t border-zinc-100 pt-3">
+        <div className="mt-3 border-t border-slate-100 pt-3">
           {confirmDelete ? (
             <div className="flex items-center justify-between">
-              <span className="text-xs text-zinc-500">Remove {skill.name}?</span>
+              <span className="text-xs text-slate-500">Remove {skill.name}?</span>
               <div className="flex gap-2">
                 <button
                   onClick={(e) => { e.stopPropagation(); setConfirmDelete(false); }}
-                  className="text-xs text-zinc-500 hover:text-zinc-700"
+                  className="text-xs text-slate-500 hover:text-slate-700"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); onDelete(skill.id); }}
-                  className="text-xs font-medium text-zinc-900 hover:underline"
+                  className="text-xs font-medium text-slate-900 hover:underline"
                 >
                   Remove
                 </button>
@@ -90,13 +90,13 @@ function SkillCard({
             <div className="flex items-center gap-3">
               <button
                 onClick={(e) => { e.stopPropagation(); onToggle(skill.id); }}
-                className="text-xs text-zinc-500 hover:text-zinc-900 transition-colors"
+                className="text-xs text-slate-500 hover:text-slate-900 transition-colors"
               >
                 {skill.active ? "Deactivate" : "Activate"}
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); setConfirmDelete(true); }}
-                className="text-xs text-zinc-400 hover:text-zinc-700 transition-colors"
+                className="text-xs text-slate-400 hover:text-slate-700 transition-colors"
               >
                 Remove
               </button>
@@ -135,16 +135,16 @@ function SkillsPanel() {
   return (
     <section className="mt-10">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-zinc-900">Skills</h2>
-        <span className="text-xs text-zinc-400">{skills.length} installed</span>
+        <h2 className="text-sm font-semibold text-slate-900">Skills</h2>
+        <span className="text-xs text-slate-400">{skills.length} installed</span>
       </div>
 
       {skills.length === 0 ? (
         <div className="py-8 text-center">
-          <p className="text-sm text-zinc-500">No skills installed.</p>
+          <p className="text-sm text-slate-500">No skills installed.</p>
           <button
             onClick={() => setSkills(SKILLS)}
-            className="mt-2 text-xs text-zinc-500 hover:text-zinc-900 transition-colors"
+            className="mt-2 text-xs text-slate-500 hover:text-slate-900 transition-colors"
           >
             Restore defaults
           </button>
@@ -157,8 +157,8 @@ function SkillsPanel() {
             return (
               <div key={cat}>
                 <div className="mb-2 flex items-center gap-2">
-                  <span className="text-xs font-medium text-zinc-900">{CATEGORY_LABELS[cat]}</span>
-                  <span className="text-[10px] text-zinc-400">{catSkills.length}</span>
+                  <span className="text-xs font-medium text-slate-900">{CATEGORY_LABELS[cat]}</span>
+                  <span className="text-[10px] text-slate-400">{catSkills.length}</span>
                 </div>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {catSkills.map((skill) => (
@@ -178,7 +178,7 @@ function SkillsPanel() {
 
       <button
         onClick={() => window.dispatchEvent(new CustomEvent("app-action", { detail: { action: "install_skill" } }))}
-        className="mt-4 text-xs text-zinc-400 hover:text-zinc-700 transition-colors"
+        className="mt-4 text-xs text-slate-400 hover:text-slate-700 transition-colors"
       >
         + Install Skill
       </button>

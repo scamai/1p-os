@@ -10,7 +10,7 @@ interface SparklineChartProps {
 
 function SparklineChart({
   data,
-  color = "#18181b",
+  color = "#4F46E5",
   width = 80,
   height = 24,
   className = "",

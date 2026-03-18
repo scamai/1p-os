@@ -7,7 +7,7 @@ function Card({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`border border-zinc-200 bg-white text-zinc-900 transition-colors duration-150 hover:border-zinc-300 ${className}`}
+      className={`rounded-md border border-slate-200 bg-white shadow-sm ${className}`}
       {...props}
     >
       {children}
@@ -34,7 +34,7 @@ function CardTitle({
 }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h3
-      className={`text-sm font-semibold leading-none tracking-tight text-zinc-900 ${className}`}
+      className={`text-sm font-semibold leading-none tracking-tight text-slate-900 ${className}`}
       {...props}
     >
       {children}
@@ -49,7 +49,7 @@ function CardDescription({
 }: React.HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-      className={`text-sm text-zinc-500 ${className}`}
+      className={`text-sm text-slate-500 ${className}`}
       {...props}
     >
       {children}

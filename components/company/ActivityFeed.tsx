@@ -6,13 +6,13 @@ import type { ActivityEvent, ActivityEventType } from "@/lib/activity/feed";
 // ── Color mapping by event type ──
 
 const DOT_COLOR: Record<ActivityEventType, string> = {
-  task_completed: "bg-zinc-900",
-  decision_created: "bg-zinc-500",
-  goal_decomposed: "bg-zinc-900",
-  email_sent: "bg-zinc-700",
-  error: "bg-zinc-900",
-  heartbeat_start: "bg-zinc-400",
-  heartbeat_end: "bg-zinc-400",
+  task_completed: "bg-slate-900",
+  decision_created: "bg-slate-500",
+  goal_decomposed: "bg-slate-900",
+  email_sent: "bg-slate-700",
+  error: "bg-slate-900",
+  heartbeat_start: "bg-slate-400",
+  heartbeat_end: "bg-slate-400",
 };
 
 const MAX_VISIBLE = 50;
@@ -35,7 +35,7 @@ function FeedEntry({
   event: ActivityEvent;
   isNew: boolean;
 }) {
-  const dotColor = DOT_COLOR[event.type] ?? "bg-zinc-400";
+  const dotColor = DOT_COLOR[event.type] ?? "bg-slate-400";
 
   return (
     <div
@@ -44,7 +44,7 @@ function FeedEntry({
       }`}
     >
       {/* Timestamp */}
-      <span className="shrink-0 font-mono text-[11px] tabular-nums text-zinc-400">
+      <span className="shrink-0 font-mono text-[11px] tabular-nums text-slate-400">
         {formatTime(event.timestamp)}
       </span>
 
@@ -56,11 +56,11 @@ function FeedEntry({
       {/* Content */}
       <div className="min-w-0 flex-1">
         <span className="text-[13px]">
-          <span className="font-semibold text-zinc-800">{event.agentName}</span>
-          <span className="ml-1.5 text-zinc-600">{event.action}</span>
+          <span className="font-semibold text-slate-800">{event.agentName}</span>
+          <span className="ml-1.5 text-slate-600">{event.action}</span>
         </span>
         {event.detail && (
-          <p className="mt-0.5 truncate text-[12px] text-zinc-400">
+          <p className="mt-0.5 truncate text-[12px] text-slate-400">
             {event.detail}
           </p>
         )}
@@ -68,7 +68,7 @@ function FeedEntry({
 
       {/* Cost */}
       {event.costUsd != null && event.costUsd > 0 && (
-        <span className="shrink-0 font-mono text-[11px] tabular-nums text-zinc-400">
+        <span className="shrink-0 font-mono text-[11px] tabular-nums text-slate-400">
           {formatCost(event.costUsd)}
         </span>
       )}
@@ -82,10 +82,10 @@ function LiveDot() {
   return (
     <span className="inline-flex items-center gap-1.5">
       <span className="relative flex h-2 w-2">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-zinc-400 opacity-75" />
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-zinc-900" />
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-slate-400 opacity-75" />
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-slate-900" />
       </span>
-      <span className="text-[11px] font-medium uppercase tracking-wider text-zinc-700">
+      <span className="text-[11px] font-medium uppercase tracking-wider text-slate-700">
         Live
       </span>
     </span>
@@ -158,7 +158,7 @@ function ActivityFeed() {
     <div>
       {/* Header */}
       <div className="flex items-center justify-between">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">
+        <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
           Activity
         </p>
         {connected && <LiveDot />}
@@ -167,11 +167,11 @@ function ActivityFeed() {
       {/* Feed container */}
       <div
         ref={containerRef}
-        className="mt-3 max-h-[400px] overflow-y-auto rounded-lg border border-zinc-100"
+        className="mt-3 max-h-[400px] overflow-y-auto rounded-lg border border-slate-100"
       >
         {events.length === 0 && (
           <div className="flex items-center justify-center py-8">
-            <p className="text-[13px] text-zinc-400">
+            <p className="text-[13px] text-slate-400">
               Waiting for agent activity...
             </p>
           </div>

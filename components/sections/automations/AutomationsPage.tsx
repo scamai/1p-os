@@ -145,8 +145,8 @@ function AutomationsPage() {
     <div className="mx-auto max-w-3xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-zinc-900">Automations</h1>
-          <p className="text-sm text-zinc-500">
+          <h1 className="text-lg font-semibold text-slate-900">Automations</h1>
+          <p className="text-sm text-slate-500">
             {activeJobCount} schedule{activeJobCount !== 1 ? "s" : ""}, {activeTriggerCount} trigger{activeTriggerCount !== 1 ? "s" : ""} active
           </p>
         </div>
@@ -168,7 +168,7 @@ function AutomationsPage() {
         {loading ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-14 animate-pulse rounded-lg bg-zinc-100" />
+              <div key={i} className="h-14 animate-pulse rounded-lg bg-slate-100" />
             ))}
           </div>
         ) : (
@@ -224,13 +224,13 @@ function AutomationsPage() {
         <div className="flex items-center justify-end gap-2 mt-2">
           <button
             onClick={() => setDeleteConfirm(null)}
-            className="rounded-md px-3 py-1.5 text-xs text-zinc-600 hover:text-zinc-900"
+            className="rounded-md px-3 py-1.5 text-xs text-slate-600 hover:text-slate-900"
           >
             Cancel
           </button>
           <button
             onClick={handleDelete}
-            className="rounded-md bg-zinc-900 px-3 py-1.5 text-xs text-white hover:bg-zinc-800"
+            className="rounded-md bg-slate-900 px-3 py-1.5 text-xs text-white hover:bg-slate-800"
           >
             Delete
           </button>
@@ -261,8 +261,8 @@ function SchedulesTab({
   return (
     <div>
       {jobs.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
-          <p className="text-sm text-zinc-600">No schedules yet</p>
+        <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+          <p className="text-sm text-slate-600">No schedules yet</p>
           <Button onClick={onCreate} className="mt-4 text-xs">
             + New Schedule
           </Button>
@@ -273,11 +273,11 @@ function SchedulesTab({
             {jobs.map((job) => (
               <div
                 key={job.id}
-                className="flex items-center justify-between border-b border-zinc-100 py-3 last:border-0"
+                className="flex items-center justify-between border-b border-slate-100 py-3 last:border-0"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm text-zinc-900 truncate">{job.name}</p>
+                    <p className="text-sm text-slate-900 truncate">{job.name}</p>
                     <Badge
                       variant={
                         job.status === "active"
@@ -290,7 +290,7 @@ function SchedulesTab({
                       {job.status}
                     </Badge>
                   </div>
-                  <p className="mt-0.5 text-[11px] text-zinc-500">
+                  <p className="mt-0.5 text-[11px] text-slate-500">
                     <span className="font-mono">{formatSchedule(job)}</span>
                     <span className="mx-1">&middot;</span>
                     <span>{getAgentName(job.agent_id)}</span>
@@ -299,14 +299,14 @@ function SchedulesTab({
                         <span className="mx-1">&middot;</span>
                         <span>Last: {timeAgo(job.last_run_at)}</span>
                         {job.last_status && (
-                          <span className={job.last_status === "error" ? "text-zinc-900 ml-1" : "text-zinc-900 ml-1"}>
+                          <span className={job.last_status === "error" ? "text-slate-900 ml-1" : "text-slate-900 ml-1"}>
                             ({job.last_status})
                           </span>
                         )}
                       </>
                     )}
                     {job.consecutive_errors > 0 && (
-                      <span className="text-zinc-900 ml-1">
+                      <span className="text-slate-900 ml-1">
                         {job.consecutive_errors} error{job.consecutive_errors !== 1 ? "s" : ""}
                       </span>
                     )}
@@ -315,13 +315,13 @@ function SchedulesTab({
                 <div className="flex items-center gap-2 ml-3">
                   <button
                     onClick={() => onToggle(job.id, job.status)}
-                    className="text-[11px] text-zinc-400 hover:text-zinc-700 transition-colors"
+                    className="text-[11px] text-slate-400 hover:text-slate-700 transition-colors"
                   >
                     {job.status === "active" ? "Pause" : "Resume"}
                   </button>
                   <button
                     onClick={() => onDelete(job.id, job.name)}
-                    className="text-[11px] text-zinc-400 hover:text-zinc-900 transition-colors"
+                    className="text-[11px] text-slate-400 hover:text-slate-900 transition-colors"
                   >
                     Delete
                   </button>
@@ -330,7 +330,7 @@ function SchedulesTab({
             ))}
           </div>
           <button
-            className="mt-4 text-[13px] text-zinc-500 hover:text-zinc-700 transition-colors"
+            className="mt-4 text-[13px] text-slate-500 hover:text-slate-700 transition-colors"
             onClick={onCreate}
           >
             + New Schedule
@@ -362,8 +362,8 @@ function TriggersTab({
   return (
     <div>
       {triggers.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
-          <p className="text-sm text-zinc-600">No triggers yet</p>
+        <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+          <p className="text-sm text-slate-600">No triggers yet</p>
           <Button onClick={onCreate} className="mt-4 text-xs">
             + New Trigger
           </Button>
@@ -374,25 +374,25 @@ function TriggersTab({
             {triggers.map((trigger) => (
               <div
                 key={trigger.id}
-                className="flex items-center justify-between border-b border-zinc-100 py-3 last:border-0"
+                className="flex items-center justify-between border-b border-slate-100 py-3 last:border-0"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm text-zinc-900 truncate">{trigger.name}</p>
+                    <p className="text-sm text-slate-900 truncate">{trigger.name}</p>
                     <Badge variant={trigger.status === "active" ? "success" : "default"}>
                       {trigger.status}
                     </Badge>
                   </div>
-                  <p className="mt-0.5 text-[11px] text-zinc-500">
+                  <p className="mt-0.5 text-[11px] text-slate-500">
                     <span className="font-mono">{trigger.event}</span>
                     {trigger.condition && (
-                      <span className="text-zinc-400"> when {trigger.condition}</span>
+                      <span className="text-slate-400"> when {trigger.condition}</span>
                     )}
                     <span className="mx-1">&rarr;</span>
                     <span>{getAgentName(trigger.action_agent_id)}: {trigger.action_message}</span>
                   </p>
                   {trigger.fire_count > 0 && (
-                    <p className="text-[10px] text-zinc-400">
+                    <p className="text-[10px] text-slate-400">
                       Fired {trigger.fire_count}x
                       {trigger.last_fired_at && <> &middot; last {timeAgo(trigger.last_fired_at)}</>}
                     </p>
@@ -401,13 +401,13 @@ function TriggersTab({
                 <div className="flex items-center gap-2 ml-3">
                   <button
                     onClick={() => onToggle(trigger.id, trigger.status)}
-                    className="text-[11px] text-zinc-400 hover:text-zinc-700 transition-colors"
+                    className="text-[11px] text-slate-400 hover:text-slate-700 transition-colors"
                   >
                     {trigger.status === "active" ? "Pause" : "Resume"}
                   </button>
                   <button
                     onClick={() => onDelete(trigger.id, trigger.name)}
-                    className="text-[11px] text-zinc-400 hover:text-zinc-900 transition-colors"
+                    className="text-[11px] text-slate-400 hover:text-slate-900 transition-colors"
                   >
                     Delete
                   </button>
@@ -416,7 +416,7 @@ function TriggersTab({
             ))}
           </div>
           <button
-            className="mt-4 text-[13px] text-zinc-500 hover:text-zinc-700 transition-colors"
+            className="mt-4 text-[13px] text-slate-500 hover:text-slate-700 transition-colors"
             onClick={onCreate}
           >
             + New Trigger
@@ -451,30 +451,30 @@ function HistoryTab({
 
   if (runs.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
-        <p className="text-sm text-zinc-600">No runs yet</p>
+      <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+        <p className="text-sm text-slate-600">No runs yet</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border border-zinc-200 overflow-hidden">
+    <div className="rounded-lg border border-slate-200 overflow-hidden">
       <table className="w-full text-xs">
         <thead>
-          <tr className="border-b border-zinc-200 bg-zinc-50">
-            <th className="px-3 py-2 text-left font-medium text-zinc-500">Name</th>
-            <th className="px-3 py-2 text-left font-medium text-zinc-500">Type</th>
-            <th className="px-3 py-2 text-left font-medium text-zinc-500">Agent</th>
-            <th className="px-3 py-2 text-left font-medium text-zinc-500">Status</th>
-            <th className="px-3 py-2 text-right font-medium text-zinc-500">When</th>
+          <tr className="border-b border-slate-200 bg-slate-50">
+            <th className="px-3 py-2 text-left font-medium text-slate-500">Name</th>
+            <th className="px-3 py-2 text-left font-medium text-slate-500">Type</th>
+            <th className="px-3 py-2 text-left font-medium text-slate-500">Agent</th>
+            <th className="px-3 py-2 text-left font-medium text-slate-500">Status</th>
+            <th className="px-3 py-2 text-right font-medium text-slate-500">When</th>
           </tr>
         </thead>
         <tbody>
           {runs.map((run) => (
-            <tr key={run.id} className="border-b border-zinc-100 last:border-0">
-              <td className="px-3 py-2 text-zinc-900">{getName(run)}</td>
-              <td className="px-3 py-2 text-zinc-500">{run.run_type}</td>
-              <td className="px-3 py-2 text-zinc-500">{getAgentName(run.agent_id)}</td>
+            <tr key={run.id} className="border-b border-slate-100 last:border-0">
+              <td className="px-3 py-2 text-slate-900">{getName(run)}</td>
+              <td className="px-3 py-2 text-slate-500">{run.run_type}</td>
+              <td className="px-3 py-2 text-slate-500">{getAgentName(run.agent_id)}</td>
               <td className="px-3 py-2">
                 <Badge
                   variant={
@@ -488,12 +488,12 @@ function HistoryTab({
                   {run.status}
                 </Badge>
                 {run.error_message && (
-                  <p className="mt-0.5 text-[10px] text-zinc-900 truncate max-w-[200px]">
+                  <p className="mt-0.5 text-[10px] text-slate-900 truncate max-w-[200px]">
                     {run.error_message}
                   </p>
                 )}
               </td>
-              <td className="px-3 py-2 text-right text-zinc-500">
+              <td className="px-3 py-2 text-right text-slate-500">
                 {timeAgo(run.started_at)}
               </td>
             </tr>
@@ -598,7 +598,7 @@ function CreateJobModal({
         />
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-900">Schedule</label>
+          <label className="text-sm font-medium text-slate-900">Schedule</label>
           <div className="flex gap-1">
             {(["cron", "interval", "once"] as const).map((kind) => (
               <button
@@ -606,8 +606,8 @@ function CreateJobModal({
                 onClick={() => setScheduleKind(kind)}
                 className={`rounded-md px-3 py-1.5 text-xs transition-colors ${
                   scheduleKind === kind
-                    ? "bg-zinc-900 text-white"
-                    : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+                    ? "bg-slate-900 text-white"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
                 }`}
               >
                 {kind === "cron" ? "Cron" : kind === "interval" ? "Interval" : "One-time"}
@@ -624,7 +624,7 @@ function CreateJobModal({
               value={cronExpr}
               onChange={(e) => setCronExpr(e.target.value)}
             />
-            <p className="mt-1 text-[10px] text-zinc-400">
+            <p className="mt-1 text-[10px] text-slate-400">
               Format: minute hour day-of-month month day-of-week
             </p>
             <div className="mt-1 flex flex-wrap gap-1">
@@ -633,7 +633,7 @@ function CreateJobModal({
                   key={p.expr}
                   onClick={() => setCronExpr(p.expr)}
                   className={`rounded px-2 py-0.5 text-[10px] transition-colors ${
-                    cronExpr === p.expr ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
+                    cronExpr === p.expr ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-500 hover:bg-slate-200"
                   }`}
                 >
                   {p.label}
@@ -664,11 +664,11 @@ function CreateJobModal({
         )}
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-900">Agent</label>
+          <label className="text-sm font-medium text-slate-900">Agent</label>
           <select
             value={agentId}
             onChange={(e) => setAgentId(e.target.value)}
-            className="h-9 w-full rounded-md border border-zinc-200 bg-transparent px-3 text-sm text-zinc-900"
+            className="h-9 w-full rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900"
           >
             <option value="">Any available agent</option>
             {agents.map((a) => (
@@ -686,12 +686,12 @@ function CreateJobModal({
           onChange={(e) => setMessage(e.target.value)}
         />
 
-        {error && <p className="text-xs text-zinc-800">{error}</p>}
+        {error && <p className="text-xs text-slate-800">{error}</p>}
 
         <div className="mt-2 flex items-center justify-end gap-2">
           <button
             onClick={() => { reset(); onClose(); }}
-            className="rounded-md px-3 py-1.5 text-xs text-zinc-600 hover:text-zinc-900"
+            className="rounded-md px-3 py-1.5 text-xs text-slate-600 hover:text-slate-900"
           >
             Cancel
           </button>
@@ -792,11 +792,11 @@ function CreateTriggerModal({
         />
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-900">When this event fires</label>
+          <label className="text-sm font-medium text-slate-900">When this event fires</label>
           <select
             value={event}
             onChange={(e) => setEvent(e.target.value)}
-            className="h-9 w-full rounded-md border border-zinc-200 bg-transparent px-3 text-sm text-zinc-900"
+            className="h-9 w-full rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900"
           >
             {EVENT_OPTIONS.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -823,11 +823,11 @@ function CreateTriggerModal({
         />
 
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-zinc-900">Agent to handle</label>
+          <label className="text-sm font-medium text-slate-900">Agent to handle</label>
           <select
             value={agentId}
             onChange={(e) => setAgentId(e.target.value)}
-            className="h-9 w-full rounded-md border border-zinc-200 bg-transparent px-3 text-sm text-zinc-900"
+            className="h-9 w-full rounded-md border border-slate-200 bg-transparent px-3 text-sm text-slate-900"
           >
             <option value="">Any available agent</option>
             {agents.map((a) => (
@@ -845,12 +845,12 @@ function CreateTriggerModal({
           onChange={(e) => setActionMessage(e.target.value)}
         />
 
-        {error && <p className="text-xs text-zinc-800">{error}</p>}
+        {error && <p className="text-xs text-slate-800">{error}</p>}
 
         <div className="mt-2 flex items-center justify-end gap-2">
           <button
             onClick={() => { reset(); onClose(); }}
-            className="rounded-md px-3 py-1.5 text-xs text-zinc-600 hover:text-zinc-900"
+            className="rounded-md px-3 py-1.5 text-xs text-slate-600 hover:text-slate-900"
           >
             Cancel
           </button>

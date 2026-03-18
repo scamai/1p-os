@@ -96,8 +96,8 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-[640px]">
       <Education {...EDUCATION.bookkeeping} />
-      <h1 className="text-lg font-semibold text-zinc-900">Bookkeeping</h1>
-      <p className="mt-1 text-sm text-zinc-500">
+      <h1 className="text-lg font-semibold text-slate-900">Bookkeeping</h1>
+      <p className="mt-1 text-sm text-slate-500">
         Log transactions, track balances, and view monthly summaries.
       </p>
 
@@ -105,64 +105,64 @@ export default function Page() {
       <div className="mt-6 flex items-center justify-between">
         <button
           onClick={() => setShowForm(!showForm)}
-          className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-zinc-800"
+          className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-slate-800"
         >
           + Add Transaction
         </button>
-        <span className="text-sm text-zinc-500">
+        <span className="text-sm text-slate-500">
           {transactions.length} transaction{transactions.length !== 1 ? "s" : ""}
         </span>
       </div>
 
       {/* Add form */}
       {showForm && (
-        <div className="mt-4 border border-zinc-200 rounded-lg p-4 bg-white">
+        <div className="mt-4 border border-slate-200 rounded-lg p-4 bg-white">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-zinc-500 mb-1">Date</label>
+              <label className="block text-xs text-slate-500 mb-1">Date</label>
               <input
                 type="date"
                 value={fDate}
                 onChange={(e) => setFDate(e.target.value)}
-                className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
             <div>
-              <label className="block text-xs text-zinc-500 mb-1">Category</label>
+              <label className="block text-xs text-slate-500 mb-1">Category</label>
               <select
                 value={fCat}
                 onChange={(e) => setFCat(e.target.value as "revenue" | "expense")}
-                className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black bg-white"
+                className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black bg-white"
               >
                 <option value="revenue">Revenue</option>
                 <option value="expense">Expense</option>
               </select>
             </div>
             <div className="col-span-2">
-              <label className="block text-xs text-zinc-500 mb-1">Description</label>
+              <label className="block text-xs text-slate-500 mb-1">Description</label>
               <input
                 value={fDesc}
                 onChange={(e) => setFDesc(e.target.value)}
                 placeholder="What was this for?"
-                className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
             <div>
-              <label className="block text-xs text-zinc-500 mb-1">Amount ($)</label>
+              <label className="block text-xs text-slate-500 mb-1">Amount ($)</label>
               <input
                 type="number"
                 value={fAmount}
                 onChange={(e) => setFAmount(e.target.value)}
                 placeholder="0.00"
-                className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
               />
             </div>
             <div>
-              <label className="block text-xs text-zinc-500 mb-1">Account</label>
+              <label className="block text-xs text-slate-500 mb-1">Account</label>
               <select
                 value={fAccount}
                 onChange={(e) => setFAccount(e.target.value)}
-                className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black bg-white"
+                className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black bg-white"
               >
                 {ACCOUNTS.map((a) => (
                   <option key={a} value={a}>{a}</option>
@@ -173,13 +173,13 @@ export default function Page() {
           <div className="flex gap-2 mt-4">
             <button
               onClick={addTransaction}
-              className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-zinc-800"
+              className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-slate-800"
             >
               Save
             </button>
             <button
               onClick={() => setShowForm(false)}
-              className="px-4 py-2 text-sm text-zinc-600 hover:text-zinc-900"
+              className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900"
             >
               Cancel
             </button>
@@ -192,7 +192,7 @@ export default function Page() {
         <select
           value={filterCat}
           onChange={(e) => setFilterCat(e.target.value as "all" | "revenue" | "expense")}
-          className="border border-zinc-200 rounded-md px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-black"
+          className="border border-slate-200 rounded-md px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-black"
         >
           <option value="all">All Categories</option>
           <option value="revenue">Revenue</option>
@@ -203,14 +203,14 @@ export default function Page() {
           value={filterStart}
           onChange={(e) => setFilterStart(e.target.value)}
           placeholder="From"
-          className="border border-zinc-200 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+          className="border border-slate-200 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-black"
         />
         <input
           type="date"
           value={filterEnd}
           onChange={(e) => setFilterEnd(e.target.value)}
           placeholder="To"
-          className="border border-zinc-200 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+          className="border border-slate-200 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-black"
         />
         {(filterCat !== "all" || filterStart || filterEnd) && (
           <button
@@ -219,7 +219,7 @@ export default function Page() {
               setFilterStart("");
               setFilterEnd("");
             }}
-            className="text-xs text-zinc-500 hover:text-zinc-700"
+            className="text-xs text-slate-500 hover:text-slate-700"
           >
             Clear filters
           </button>
@@ -229,25 +229,25 @@ export default function Page() {
       {/* Monthly Summary */}
       {monthlySummary.length > 0 && (
         <div className="mt-6">
-          <h2 className="text-sm font-medium text-zinc-900 mb-3">Monthly Summary</h2>
+          <h2 className="text-sm font-medium text-slate-900 mb-3">Monthly Summary</h2>
           <div className="space-y-2">
             {monthlySummary.map((s) => (
               <div
                 key={s.month}
-                className="border border-zinc-200 rounded-lg p-3 bg-white flex items-center justify-between"
+                className="border border-slate-200 rounded-lg p-3 bg-white flex items-center justify-between"
               >
-                <span className="text-sm text-zinc-700">
+                <span className="text-sm text-slate-700">
                   {new Date(s.month + "-01").toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                   })}
                 </span>
                 <div className="flex items-center gap-4">
-                  <span className="text-sm text-zinc-900">+${s.revenue.toLocaleString()}</span>
-                  <span className="text-sm text-zinc-500">-${s.expenses.toLocaleString()}</span>
+                  <span className="text-sm text-slate-900">+${s.revenue.toLocaleString()}</span>
+                  <span className="text-sm text-slate-500">-${s.expenses.toLocaleString()}</span>
                   <span
                     className={`text-sm font-medium ${
-                      s.revenue - s.expenses >= 0 ? "text-zinc-900" : "text-zinc-500"
+                      s.revenue - s.expenses >= 0 ? "text-slate-900" : "text-slate-500"
                     }`}
                   >
                     ${(s.revenue - s.expenses).toLocaleString()}
@@ -261,9 +261,9 @@ export default function Page() {
 
       {/* Transaction list */}
       <div className="mt-6">
-        <h2 className="text-sm font-medium text-zinc-900 mb-3">Transactions</h2>
+        <h2 className="text-sm font-medium text-slate-900 mb-3">Transactions</h2>
         {balancedRows.length === 0 && (
-          <p className="text-sm text-zinc-400 py-8 text-center">
+          <p className="text-sm text-slate-400 py-8 text-center">
             No transactions yet. Add your first one above.
           </p>
         )}
@@ -271,43 +271,43 @@ export default function Page() {
           {balancedRows.map((t) => (
             <div
               key={t.id}
-              className="border border-zinc-200 rounded-lg p-3 bg-white flex items-center justify-between gap-3"
+              className="border border-slate-200 rounded-lg p-3 bg-white flex items-center justify-between gap-3"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-zinc-900 truncate">
+                  <span className="text-sm font-medium text-slate-900 truncate">
                     {t.description}
                   </span>
                   <span
                     className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                       t.category === "revenue"
-                        ? "bg-zinc-900 text-white"
-                        : "bg-zinc-100 text-zinc-600"
+                        ? "bg-slate-900 text-white"
+                        : "bg-slate-100 text-slate-600"
                     }`}
                   >
                     {t.category}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-xs text-zinc-400">{t.date}</span>
-                  <span className="text-xs text-zinc-400">{t.account}</span>
+                  <span className="text-xs text-slate-400">{t.date}</span>
+                  <span className="text-xs text-slate-400">{t.account}</span>
                 </div>
               </div>
               <div className="text-right shrink-0">
                 <p
                   className={`text-sm font-medium ${
-                    t.category === "revenue" ? "text-zinc-900" : "text-zinc-500"
+                    t.category === "revenue" ? "text-slate-900" : "text-slate-500"
                   }`}
                 >
                   {t.category === "revenue" ? "+" : "-"}${t.amount.toLocaleString()}
                 </p>
-                <p className="text-[10px] text-zinc-400">
+                <p className="text-[10px] text-slate-400">
                   Bal: ${t.balance.toLocaleString()}
                 </p>
               </div>
               <button
                 onClick={() => deleteTransaction(t.id)}
-                className="text-xs text-zinc-300 hover:text-zinc-900 shrink-0"
+                className="text-xs text-slate-300 hover:text-slate-900 shrink-0"
               >
                 ×
               </button>

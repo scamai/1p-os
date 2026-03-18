@@ -101,31 +101,31 @@ function ContactRow({ contact, expanded, onToggle }: { contact: Contact; expande
   return (
     <>
       <div
-        className="flex items-center justify-between border-b border-zinc-100 py-3 cursor-pointer transition-colors hover:bg-zinc-50 last:border-0"
+        className="flex items-center justify-between border-b border-slate-100 py-3 cursor-pointer transition-colors hover:bg-slate-50 last:border-0"
         onClick={onToggle}
       >
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-900 text-xs font-medium text-white">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-xs font-medium text-white">
             {contact.name.charAt(0)}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <p className="text-[13px] font-medium text-zinc-900">{contact.name}</p>
-              <span className="rounded bg-zinc-100 px-1.5 py-0.5 text-[10px] text-zinc-500">
+              <p className="text-[13px] font-medium text-slate-900">{contact.name}</p>
+              <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500">
                 {contact.type}
               </span>
               {contact.status !== "Active" && (
-                <span className="text-[10px] text-zinc-400">{contact.status}</span>
+                <span className="text-[10px] text-slate-400">{contact.status}</span>
               )}
             </div>
-            <p className="text-[11px] text-zinc-400">
+            <p className="text-[11px] text-slate-400">
               Last: {contact.lastAgent} · {contact.lastInteraction}
             </p>
           </div>
         </div>
         <div className="text-right">
           {contact.totalRevenue > 0 && (
-            <p className="font-mono text-[13px] text-zinc-900">
+            <p className="font-mono text-[13px] text-slate-900">
               ${contact.totalRevenue.toLocaleString()}
             </p>
           )}
@@ -133,20 +133,20 @@ function ContactRow({ contact, expanded, onToggle }: { contact: Contact; expande
       </div>
 
       {expanded && (
-        <div className="border-b border-zinc-100 bg-zinc-50 px-4 py-3">
+        <div className="border-b border-slate-100 bg-slate-50 px-4 py-3">
           <div className="grid grid-cols-2 gap-4 text-[12px]">
             <div>
-              <p className="text-[11px] text-zinc-400">Email</p>
-              <p className="mt-0.5 text-zinc-600">{contact.email}</p>
+              <p className="text-[11px] text-slate-400">Email</p>
+              <p className="mt-0.5 text-slate-600">{contact.email}</p>
             </div>
             <div>
-              <p className="text-[11px] text-zinc-400">Last Agent</p>
-              <p className="mt-0.5 text-zinc-600">{contact.lastAgent}</p>
+              <p className="text-[11px] text-slate-400">Last Agent</p>
+              <p className="mt-0.5 text-slate-600">{contact.lastAgent}</p>
             </div>
           </div>
           <div className="mt-3">
-            <p className="text-[11px] text-zinc-400">Notes</p>
-            <p className="mt-0.5 text-[12px] text-zinc-600">{contact.notes}</p>
+            <p className="text-[11px] text-slate-400">Notes</p>
+            <p className="mt-0.5 text-[12px] text-slate-600">{contact.notes}</p>
           </div>
         </div>
       )}
@@ -186,9 +186,9 @@ function CRMPage({ onAction }: CRMPageProps) {
   return (
     <div className="mx-auto max-w-3xl">
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold text-zinc-900">CRM</h1>
+        <h1 className="text-lg font-semibold text-slate-900">CRM</h1>
         <button
-          className="text-[13px] text-zinc-500 transition-colors hover:text-zinc-900"
+          className="text-[13px] text-slate-500 transition-colors hover:text-slate-900"
           onClick={() => handleAction("add_contact")}
         >
           + Add Contact
@@ -198,20 +198,20 @@ function CRMPage({ onAction }: CRMPageProps) {
       {/* Summary */}
       <div className="mt-4 grid grid-cols-3 gap-6">
         <div>
-          <p className="text-[11px] text-zinc-500">Clients</p>
-          <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">
+          <p className="text-[11px] text-slate-500">Clients</p>
+          <p className="mt-1 font-mono text-lg font-semibold text-slate-900">
             {loading ? "—" : contacts.filter(c => c.type === "Client").length}
           </p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Active Leads</p>
-          <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">
+          <p className="text-[11px] text-slate-500">Active Leads</p>
+          <p className="mt-1 font-mono text-lg font-semibold text-slate-900">
             {loading ? "—" : contacts.filter(c => c.type === "Lead").length}
           </p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Total Revenue</p>
-          <p className="mt-1 font-mono text-lg font-semibold text-zinc-900">
+          <p className="text-[11px] text-slate-500">Total Revenue</p>
+          <p className="mt-1 font-mono text-lg font-semibold text-slate-900">
             {loading ? "—" : `$${contacts.reduce((s, c) => s + c.totalRevenue, 0).toLocaleString()}`}
           </p>
         </div>
@@ -228,7 +228,7 @@ function CRMPage({ onAction }: CRMPageProps) {
         {loading ? (
           <div className="space-y-3">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-14 animate-pulse rounded bg-zinc-100" />
+              <div key={i} className="h-14 animate-pulse rounded bg-slate-100" />
             ))}
           </div>
         ) : (
@@ -242,7 +242,7 @@ function CRMPage({ onAction }: CRMPageProps) {
               />
             ))}
             {filtered.length === 0 && (
-              <div className="py-8 text-center text-[13px] text-zinc-500">
+              <div className="py-8 text-center text-[13px] text-slate-500">
                 No contacts found.
               </div>
             )}

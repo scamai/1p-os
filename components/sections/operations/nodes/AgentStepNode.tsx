@@ -1,8 +1,8 @@
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 
 const STATUS_COLORS: Record<string, string> = {
-  working: "#18181b",
-  idle: "#a1a1aa",
+  working: "#0F172A",
+  idle: "#94A3B8",
   paused: "#71717a",
   needs_input: "#52525b",
   error: "#3f3f46",
@@ -22,7 +22,7 @@ interface AgentStepData {
 
 export function AgentStepNode({ data, selected }: NodeProps) {
   const d = data as AgentStepData;
-  const statusColor = STATUS_COLORS[d.status] ?? "#a1a1aa";
+  const statusColor = STATUS_COLORS[d.status] ?? "#94A3B8";
 
   return (
     <div
@@ -58,7 +58,7 @@ export function AgentStepNode({ data, selected }: NodeProps) {
               className="inline-block h-2 w-2 rounded-full shrink-0"
               style={{ backgroundColor: statusColor }}
             />
-            <p className="text-[12px] font-semibold text-zinc-900 truncate">{d.agentName}</p>
+            <p className="text-[12px] font-semibold text-slate-900 truncate">{d.agentName}</p>
           </div>
           <p
             className="text-[10px] font-medium"
@@ -71,10 +71,10 @@ export function AgentStepNode({ data, selected }: NodeProps) {
 
       {/* Body */}
       <div className="px-3 py-2">
-        <p className="text-[11px] text-zinc-600">{d.action}</p>
-        <div className="mt-1.5 flex items-center gap-3 border-t border-zinc-100 pt-1.5">
-          <span className="text-[10px] text-zinc-400">{d.tasksToday} tasks</span>
-          <span className="text-[10px] text-zinc-400">${(d.costToday ?? 0).toFixed(2)}</span>
+        <p className="text-[11px] text-slate-600">{d.action}</p>
+        <div className="mt-1.5 flex items-center gap-3 border-t border-slate-100 pt-1.5">
+          <span className="text-[10px] text-slate-400">{d.tasksToday} tasks</span>
+          <span className="text-[10px] text-slate-400">${(d.costToday ?? 0).toFixed(2)}</span>
         </div>
       </div>
 

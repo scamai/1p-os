@@ -12,7 +12,7 @@ interface LoadingSpinnerProps {
 function LoadingSpinner({ size = "md", className = "" }: LoadingSpinnerProps) {
   return (
     <svg
-      className={`animate-spin text-zinc-500 ${sizes[size]} ${className}`}
+      className={`animate-spin text-slate-400 ${sizes[size]} ${className}`}
       viewBox="0 0 24 24"
       fill="none"
     >

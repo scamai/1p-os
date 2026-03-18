@@ -22,8 +22,8 @@ function StarRating({ rating }: { rating: number }) {
           key={star}
           className={`h-3 w-3 ${
             star <= rating
-              ? "fill-zinc-700 text-zinc-700"
-              : "fill-none text-zinc-500"
+              ? "fill-slate-700 text-slate-700"
+              : "fill-none text-slate-500"
           }`}
           viewBox="0 0 20 20"
           stroke="currentColor"
@@ -53,18 +53,18 @@ function AgentListing({
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-zinc-900">
+              <h3 className="text-sm font-semibold text-slate-900">
                 {name}
               </h3>
               <Badge variant="outline">{category}</Badge>
             </div>
-            <p className="mt-1 text-xs text-zinc-500">
+            <p className="mt-1 text-xs text-slate-500">
               {description}
             </p>
           </div>
         </div>
 
-        <div className="mt-3 flex items-center gap-3 text-xs text-zinc-500">
+        <div className="mt-3 flex items-center gap-3 text-xs text-slate-500">
           <span>by {author}</span>
           <StarRating rating={rating} />
           <span>{installCount.toLocaleString()} installs</span>

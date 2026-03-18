@@ -156,16 +156,16 @@ function AIWizard({ intent, onClose, onComplete }: AIWizardProps) {
   return (
     <div className="flex h-full flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-zinc-200 px-5 py-3">
+      <div className="flex items-center justify-between border-b border-slate-200 px-5 py-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900 text-xs font-semibold text-white">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-xs font-semibold text-white">
             AI
           </div>
-          <span className="text-sm font-medium text-zinc-900">{config.title}</span>
+          <span className="text-sm font-medium text-slate-900">{config.title}</span>
         </div>
         <button
           onClick={onClose}
-          className="flex h-8 w-8 items-center justify-center rounded-md text-zinc-400 transition-colors hover:text-zinc-700"
+          className="flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition-colors hover:text-slate-700"
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
             <path d="M3 3l8 8M11 3l-8 8" />
@@ -180,18 +180,18 @@ function AIWizard({ intent, onClose, onComplete }: AIWizardProps) {
             <div className={`max-w-[85%] ${msg.role === "user" ? "" : ""}`}>
               {msg.role === "ai" && (
                 <div className="flex items-start gap-2.5">
-                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-[10px] font-semibold text-zinc-600">
+                  <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-100 text-[10px] font-semibold text-slate-600">
                     AI
                   </div>
                   <div>
-                    <p className="text-sm text-zinc-700 leading-relaxed">{msg.content}</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">{msg.content}</p>
                     {msg.options && (
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {msg.options.map((opt) => (
                           <button
                             key={opt}
                             onClick={() => handleOptionClick(opt)}
-                            className="rounded-full border border-zinc-200 bg-white px-3 py-1 text-xs text-zinc-700 transition-all hover:border-zinc-400 hover:bg-zinc-50"
+                            className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700 transition-all hover:border-slate-400 hover:bg-slate-50"
                           >
                             {opt}
                           </button>
@@ -202,7 +202,7 @@ function AIWizard({ intent, onClose, onComplete }: AIWizardProps) {
                 </div>
               )}
               {msg.role === "user" && (
-                <div className="rounded-2xl rounded-br-sm bg-zinc-900 px-3.5 py-2">
+                <div className="rounded-2xl rounded-br-sm bg-slate-900 px-3.5 py-2">
                   <p className="text-sm text-white">{msg.content}</p>
                 </div>
               )}
@@ -217,7 +217,7 @@ function AIWizard({ intent, onClose, onComplete }: AIWizardProps) {
               <div
                 key={i}
                 className={`h-1 rounded-full transition-all ${
-                  i <= stepIndex ? "w-6 bg-zinc-900" : "w-3 bg-zinc-200"
+                  i <= stepIndex ? "w-6 bg-slate-900" : "w-3 bg-slate-200"
                 }`}
               />
             ))}
@@ -227,7 +227,7 @@ function AIWizard({ intent, onClose, onComplete }: AIWizardProps) {
 
       {/* Input */}
       {!completing && (
-        <form onSubmit={handleSubmit} className="border-t border-zinc-200 px-5 py-3">
+        <form onSubmit={handleSubmit} className="border-t border-slate-200 px-5 py-3">
           <div className="flex items-center gap-2">
             <input
               ref={inputRef}
@@ -235,12 +235,12 @@ function AIWizard({ intent, onClose, onComplete }: AIWizardProps) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={config.steps[stepIndex]?.placeholder ?? "Type your answer..."}
-              className="flex-1 bg-transparent text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none"
+              className="flex-1 bg-transparent text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
             />
             <button
               type="submit"
               disabled={!input.trim()}
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900 text-white transition-opacity disabled:opacity-30"
+              className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-white transition-opacity disabled:opacity-30"
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M2 6h8M7 3l3 3-3 3" />

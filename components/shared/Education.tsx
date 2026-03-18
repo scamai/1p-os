@@ -70,7 +70,7 @@ export function Education({ id, title, why, steps }: EducationProps) {
     return (
       <button
         onClick={undismiss}
-        className="mb-4 text-[11px] text-zinc-400 hover:text-zinc-600 transition-colors"
+        className="mb-4 text-[11px] text-slate-400 hover:text-slate-600 transition-colors"
       >
         Show guide
       </button>
@@ -78,16 +78,16 @@ export function Education({ id, title, why, steps }: EducationProps) {
   }
 
   return (
-    <div className="mb-6 rounded-xl border border-zinc-200 bg-zinc-50 overflow-hidden">
+    <div className="mb-6 rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
       {/* Header */}
       <div className="flex items-start justify-between px-5 pt-4 pb-2">
         <div>
-          <p className="text-[13px] font-semibold text-zinc-900">{title}</p>
-          <p className="text-[12px] text-zinc-500 mt-0.5">{why}</p>
+          <p className="text-[13px] font-semibold text-slate-900">{title}</p>
+          <p className="text-[12px] text-slate-500 mt-0.5">{why}</p>
         </div>
         <button
           onClick={dismiss}
-          className="shrink-0 text-[11px] text-zinc-400 hover:text-zinc-600 transition-colors mt-0.5"
+          className="shrink-0 text-[11px] text-slate-400 hover:text-slate-600 transition-colors mt-0.5"
         >
           Dismiss
         </button>
@@ -101,13 +101,13 @@ export function Education({ id, title, why, steps }: EducationProps) {
               key={i}
               className="flex items-start gap-2 min-w-[140px] shrink-0"
             >
-              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-200 text-[10px] font-semibold text-zinc-600 mt-0.5">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-slate-200 text-[10px] font-semibold text-slate-600 mt-0.5">
                 {i + 1}
               </span>
               <div>
-                <p className="text-[12px] font-medium text-zinc-700">{step.label}</p>
+                <p className="text-[12px] font-medium text-slate-700">{step.label}</p>
                 {step.detail && (
-                  <p className="text-[11px] text-zinc-400 mt-0.5">{step.detail}</p>
+                  <p className="text-[11px] text-slate-400 mt-0.5">{step.detail}</p>
                 )}
               </div>
             </div>

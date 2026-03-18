@@ -218,12 +218,12 @@ function PaletteItem({ type, label, icon, desc }: typeof PALETTE_ITEMS[0]) {
     <div
       draggable
       onDragStart={onDragStart}
-      className="flex items-center gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 cursor-grab active:cursor-grabbing hover:border-zinc-300 hover:shadow-sm transition-all"
+      className="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white px-3 py-2 cursor-grab active:cursor-grabbing hover:border-slate-300 hover:shadow-sm transition-all"
     >
       <span className="text-base">{icon}</span>
       <div>
-        <p className="text-[12px] font-medium text-zinc-800">{label}</p>
-        <p className="text-[10px] text-zinc-400">{desc}</p>
+        <p className="text-[12px] font-medium text-slate-800">{label}</p>
+        <p className="text-[10px] text-slate-400">{desc}</p>
       </div>
     </div>
   );
@@ -318,20 +318,20 @@ export function WorkflowCanvas({ departments, workflows }: WorkflowCanvasProps) 
     <div className="flex gap-4 h-[calc(100vh-220px)] min-h-[500px]">
       {/* Sidebar palette */}
       <div className="w-[180px] shrink-0 space-y-2">
-        <p className="text-[11px] font-medium text-zinc-500 uppercase tracking-wide px-1">
+        <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wide px-1">
           Drag to canvas
         </p>
         {PALETTE_ITEMS.map((item) => (
           <PaletteItem key={item.type} {...item} />
         ))}
 
-        <div className="pt-4 border-t border-zinc-200 mt-4">
-          <p className="text-[11px] font-medium text-zinc-500 uppercase tracking-wide px-1 mb-2">
+        <div className="pt-4 border-t border-slate-200 mt-4">
+          <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wide px-1 mb-2">
             Quick actions
           </p>
           <button
             onClick={autoLayout}
-            className="flex w-full items-center gap-2 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-[12px] font-medium text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 transition-colors"
+            className="flex w-full items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-[12px] font-medium text-slate-700 hover:border-slate-300 hover:bg-slate-50 transition-colors"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
@@ -342,18 +342,18 @@ export function WorkflowCanvas({ departments, workflows }: WorkflowCanvasProps) 
         </div>
 
         {/* Stats */}
-        <div className="pt-4 border-t border-zinc-200 mt-4 space-y-2">
+        <div className="pt-4 border-t border-slate-200 mt-4 space-y-2">
           <div className="flex items-center justify-between px-1">
-            <span className="text-[10px] text-zinc-500">Nodes</span>
-            <span className="text-[11px] font-mono font-medium text-zinc-700">{nodes.length}</span>
+            <span className="text-[10px] text-slate-500">Nodes</span>
+            <span className="text-[11px] font-mono font-medium text-slate-700">{nodes.length}</span>
           </div>
           <div className="flex items-center justify-between px-1">
-            <span className="text-[10px] text-zinc-500">Connections</span>
-            <span className="text-[11px] font-mono font-medium text-zinc-700">{edges.length}</span>
+            <span className="text-[10px] text-slate-500">Connections</span>
+            <span className="text-[11px] font-mono font-medium text-slate-700">{edges.length}</span>
           </div>
           <div className="flex items-center justify-between px-1">
-            <span className="text-[10px] text-zinc-500">Workflows</span>
-            <span className="text-[11px] font-mono font-medium text-zinc-700">{workflows.length}</span>
+            <span className="text-[10px] text-slate-500">Workflows</span>
+            <span className="text-[11px] font-mono font-medium text-slate-700">{workflows.length}</span>
           </div>
         </div>
       </div>
@@ -361,7 +361,7 @@ export function WorkflowCanvas({ departments, workflows }: WorkflowCanvasProps) 
       {/* Canvas */}
       <div
         ref={reactFlowWrapper}
-        className="flex-1 rounded-xl border border-zinc-200 overflow-hidden bg-white"
+        className="flex-1 rounded-xl border border-slate-200 overflow-hidden bg-white"
       >
         <ReactFlow
           nodes={nodes}
@@ -387,20 +387,20 @@ export function WorkflowCanvas({ departments, workflows }: WorkflowCanvasProps) 
           <Background variant={BackgroundVariant.Dots} gap={16} size={1} color="#e4e4e7" />
           <Controls
             showInteractive={false}
-            className="!bg-white !border-zinc-200 !shadow-md [&>button]:!border-zinc-200 [&>button]:!bg-white [&>button:hover]:!bg-zinc-50"
+            className="!bg-white !border-slate-200 !shadow-md [&>button]:!border-slate-200 [&>button]:!bg-white [&>button:hover]:!bg-slate-50"
           />
           <MiniMap
             nodeColor={(n) => {
-              if (n.type === "trigger") return "#18181b";
+              if (n.type === "trigger") return "#0F172A";
               if (n.type === "output") return "#52525b";
               if (n.type === "condition") return "#71717a";
               return (n.data as Record<string, unknown>)?.deptColor as string ?? "#71717a";
             }}
             maskColor="rgba(0,0,0,0.08)"
-            className="!bg-zinc-50 !border-zinc-200"
+            className="!bg-slate-50 !border-slate-200"
           />
           <Panel position="top-right" className="flex gap-2">
-            <span className="rounded-md bg-zinc-900/80 px-2.5 py-1 text-[10px] font-medium text-zinc-300">
+            <span className="rounded-md bg-slate-900/80 px-2.5 py-1 text-[10px] font-medium text-slate-300">
               Drag nodes from palette · Connect handles · Delete with Backspace
             </span>
           </Panel>

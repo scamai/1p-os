@@ -45,8 +45,8 @@ function AISummary({ section, className = "" }: AISummaryProps) {
   if (loading) {
     return (
       <div className={`flex items-center gap-2 ${className}`}>
-        <div className="h-[2px] w-full max-w-[200px] overflow-hidden rounded-full bg-zinc-100">
-          <div className="h-full w-1/2 animate-pulse rounded-full bg-zinc-900/60" style={{
+        <div className="h-[2px] w-full max-w-[200px] overflow-hidden rounded-full bg-slate-100">
+          <div className="h-full w-1/2 animate-pulse rounded-full bg-slate-900/60" style={{
             animation: "pulse-slide 1.5s ease-in-out infinite",
           }} />
         </div>
@@ -66,8 +66,8 @@ function AISummary({ section, className = "" }: AISummaryProps) {
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      <SparkleIcon className="h-3 w-3 flex-shrink-0 text-zinc-900" />
-      <p className="text-[13px] italic text-zinc-500">{summary}</p>
+      <SparkleIcon className="h-3 w-3 flex-shrink-0 text-slate-900" />
+      <p className="text-[13px] italic text-slate-500">{summary}</p>
     </div>
   );
 }

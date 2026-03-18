@@ -23,14 +23,14 @@ function TabBar({ tabs, active, onChange, className = "" }: TabBarProps) {
             onClick={() => onChange(tab)}
             className={`relative pb-2.5 text-[13px] font-medium transition-colors duration-150 ${
               isActive
-                ? "text-zinc-900"
-                : "text-zinc-500 hover:text-zinc-700"
+                ? "text-slate-900"
+                : "text-slate-500 hover:text-slate-700"
             }`}
           >
             {tab}
             {isActive && (
               <span
-                className="absolute inset-x-0 -bottom-2 h-[1.5px] bg-zinc-900"
+                className="absolute inset-x-0 -bottom-2 h-[1.5px] bg-indigo-600"
               />
             )}
           </button>

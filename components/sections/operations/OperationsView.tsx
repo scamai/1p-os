@@ -46,7 +46,7 @@ const DEPARTMENTS: Department[] = [
     id: "sales",
     name: "Sales",
     icon: "S",
-    color: "#18181b",
+    color: "#0F172A",
     agents: [
       { id: "a1", name: "Lead Qualifier", role: "Scores and qualifies inbound leads", status: "working", tasksToday: 12, costToday: 0.34 },
       { id: "a2", name: "Proposal Writer", role: "Drafts proposals and quotes", status: "idle", tasksToday: 3, costToday: 0.18 },
@@ -84,7 +84,7 @@ const DEPARTMENTS: Department[] = [
     id: "ops",
     name: "Operations",
     icon: "O",
-    color: "#a1a1aa",
+    color: "#94A3B8",
     agents: [
       { id: "a7", name: "Ops Coordinator", role: "Orchestrates cross-team workflows", status: "working", tasksToday: 24, costToday: 0.15 },
     ],
@@ -135,8 +135,8 @@ const WORKFLOWS: Workflow[] = [
 // --- Status helpers ---
 
 const STATUS_COLORS: Record<AgentStatus, string> = {
-  working: "#18181b",
-  idle: "#a1a1aa",
+  working: "#0F172A",
+  idle: "#94A3B8",
   paused: "#71717a",
   needs_input: "#52525b",
   error: "#3f3f46",
@@ -164,14 +164,14 @@ function StatusDot({ status }: { status: AgentStatus }) {
 
 function AgentNodeCard({ agent }: { agent: Agent }) {
   return (
-    <div className="flex items-start gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2.5 hover:border-zinc-300 transition-colors">
+    <div className="flex items-start gap-2.5 rounded-lg border border-slate-200 bg-white px-3 py-2.5 hover:border-slate-300 transition-colors">
       <StatusDot status={agent.status} />
       <div className="min-w-0 flex-1">
-        <p className="text-[13px] font-medium text-zinc-900 truncate">{agent.name}</p>
-        <p className="text-[11px] text-zinc-500 truncate">{agent.role}</p>
+        <p className="text-[13px] font-medium text-slate-900 truncate">{agent.name}</p>
+        <p className="text-[11px] text-slate-500 truncate">{agent.role}</p>
         <div className="mt-1.5 flex items-center gap-3">
-          <span className="text-[10px] text-zinc-400">{agent.tasksToday} tasks</span>
-          <span className="text-[10px] text-zinc-400">${agent.costToday.toFixed(2)}</span>
+          <span className="text-[10px] text-slate-400">{agent.tasksToday} tasks</span>
+          <span className="text-[10px] text-slate-400">${agent.costToday.toFixed(2)}</span>
         </div>
       </div>
     </div>
@@ -183,8 +183,8 @@ function DepartmentCard({ department }: { department: Department }) {
   const totalTasks = department.agents.reduce((sum, a) => sum + a.tasksToday, 0);
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-zinc-50/50">
-      <div className="flex items-center gap-2.5 px-4 py-3 border-b border-zinc-200">
+    <div className="rounded-xl border border-slate-200 bg-slate-50/50">
+      <div className="flex items-center gap-2.5 px-4 py-3 border-b border-slate-200">
         <div
           className="flex h-7 w-7 items-center justify-center rounded-lg text-[11px] font-semibold text-white"
           style={{ backgroundColor: department.color }}
@@ -192,8 +192,8 @@ function DepartmentCard({ department }: { department: Department }) {
           {department.icon}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-semibold text-zinc-900">{department.name}</p>
-          <p className="text-[10px] text-zinc-500">
+          <p className="text-[13px] font-semibold text-slate-900">{department.name}</p>
+          <p className="text-[10px] text-slate-500">
             {activeCount}/{department.agents.length} active · {totalTasks} tasks today
           </p>
         </div>
@@ -222,37 +222,37 @@ function OrgStructureView({ departments }: { departments: Department[] }) {
     <div>
       <div className="grid grid-cols-4 gap-6 mb-8">
         <div>
-          <p className="text-[11px] text-zinc-500">Departments</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-zinc-900">{departments.length}</p>
+          <p className="text-[11px] text-slate-500">Departments</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">{departments.length}</p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Total Agents</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-zinc-900">{totalAgents}</p>
+          <p className="text-[11px] text-slate-500">Total Agents</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">{totalAgents}</p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Active Now</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-zinc-900">{activeAgents}/{totalAgents}</p>
+          <p className="text-[11px] text-slate-500">Active Now</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">{activeAgents}/{totalAgents}</p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Today&apos;s Cost</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-zinc-900">${totalCost.toFixed(2)}</p>
+          <p className="text-[11px] text-slate-500">Today&apos;s Cost</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">${totalCost.toFixed(2)}</p>
         </div>
       </div>
 
       <div className="flex justify-center mb-4">
-        <div className="inline-flex items-center gap-2 rounded-lg border-2 border-zinc-900 bg-zinc-900 px-4 py-2">
-          <div className="h-2 w-2 rounded-full bg-zinc-400" />
+        <div className="inline-flex items-center gap-2 rounded-lg border-2 border-slate-900 bg-slate-900 px-4 py-2">
+          <div className="h-2 w-2 rounded-full bg-slate-400" />
           <span className="text-[13px] font-semibold text-white">You — Founder</span>
         </div>
       </div>
       <div className="flex justify-center mb-4">
-        <div className="w-px h-8 bg-zinc-300" />
+        <div className="w-px h-8 bg-slate-300" />
       </div>
       <div className="relative mb-4">
-        <div className="absolute left-[10%] right-[10%] top-0 h-px bg-zinc-300" />
+        <div className="absolute left-[10%] right-[10%] top-0 h-px bg-slate-300" />
         <div className="flex justify-between px-[10%]">
           {departments.map((_, i) => (
-            <div key={i} className="w-px h-4 bg-zinc-300" />
+            <div key={i} className="w-px h-4 bg-slate-300" />
           ))}
         </div>
       </div>
@@ -263,8 +263,8 @@ function OrgStructureView({ departments }: { departments: Department[] }) {
         ))}
       </div>
 
-      <div className="mt-8 flex items-center gap-4 text-[11px] text-zinc-500">
-        <span className="font-medium text-zinc-700">Status:</span>
+      <div className="mt-8 flex items-center gap-4 text-[11px] text-slate-500">
+        <span className="font-medium text-slate-700">Status:</span>
         {Object.entries(STATUS_LABELS).map(([status, label]) => (
           <span key={status} className="flex items-center gap-1.5">
             <StatusDot status={status as AgentStatus} />
@@ -283,8 +283,8 @@ const WorkflowCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex items-center justify-center h-[600px] rounded-xl border border-zinc-200 bg-zinc-50">
-        <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-900" />
+      <div className="flex items-center justify-center h-[600px] rounded-xl border border-slate-200 bg-slate-50">
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900" />
       </div>
     ),
   }
@@ -324,40 +324,40 @@ export function OperationsView() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-zinc-900">Operations</h1>
-          <p className="mt-1 text-sm text-zinc-500">
+          <h1 className="text-lg font-semibold text-slate-900">Operations</h1>
+          <p className="mt-1 text-sm text-slate-500">
             Drag-and-drop workflow builder. Connect agents into automated pipelines.
           </p>
         </div>
         {!data && !loading && (
-          <span className="text-[10px] text-zinc-400 border border-zinc-200 rounded px-2 py-1">
+          <span className="text-[10px] text-slate-400 border border-slate-200 rounded px-2 py-1">
             Demo data
           </span>
         )}
       </div>
 
       {/* Tabs */}
-      <div className="mt-6 flex items-center gap-1 border-b border-zinc-200">
+      <div className="mt-6 flex items-center gap-1 border-b border-slate-200">
         <button
           onClick={() => setTab("workflows")}
           className={`px-3 py-2 text-[13px] font-medium transition-colors relative ${
-            tab === "workflows" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-700"
+            tab === "workflows" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
           }`}
         >
           Workflow Builder
           {tab === "workflows" && (
-            <span className="absolute bottom-0 left-0 right-0 h-px bg-zinc-900" />
+            <span className="absolute bottom-0 left-0 right-0 h-px bg-slate-900" />
           )}
         </button>
         <button
           onClick={() => setTab("structure")}
           className={`px-3 py-2 text-[13px] font-medium transition-colors relative ${
-            tab === "structure" ? "text-zinc-900" : "text-zinc-500 hover:text-zinc-700"
+            tab === "structure" ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
           }`}
         >
           Org Structure
           {tab === "structure" && (
-            <span className="absolute bottom-0 left-0 right-0 h-px bg-zinc-900" />
+            <span className="absolute bottom-0 left-0 right-0 h-px bg-slate-900" />
           )}
         </button>
       </div>
@@ -366,7 +366,7 @@ export function OperationsView() {
       <div className="mt-6">
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-900" />
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900" />
           </div>
         ) : (
           <>

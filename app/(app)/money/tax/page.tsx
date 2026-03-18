@@ -233,8 +233,8 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-[640px]">
       <Education {...EDUCATION.tax} />
-      <h1 className="text-lg font-semibold text-zinc-900">Tax</h1>
-      <p className="mt-1 text-sm text-zinc-500">
+      <h1 className="text-lg font-semibold text-slate-900">Tax</h1>
+      <p className="mt-1 text-sm text-slate-500">
         Key dates, deduction tracking, and estimated tax calculations.
       </p>
 
@@ -247,7 +247,7 @@ export default function Page() {
             className={`px-4 py-1.5 text-sm rounded-md border transition-colors capitalize ${
               tab === t
                 ? "bg-black text-white border-black"
-                : "bg-white text-zinc-700 border-zinc-200 hover:border-zinc-400"
+                : "bg-white text-slate-700 border-slate-200 hover:border-slate-400"
             }`}
           >
             {t}
@@ -259,7 +259,7 @@ export default function Page() {
       {tab === "calendar" && (
         <div className="mt-4">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-xs text-zinc-500">Entity type:</span>
+            <span className="text-xs text-slate-500">Entity type:</span>
             {(["Both", "C-Corp", "LLC"] as const).map((e) => (
               <button
                 key={e}
@@ -267,7 +267,7 @@ export default function Page() {
                 className={`px-3 py-1 text-xs rounded-md border ${
                   entityFilter === e
                     ? "bg-black text-white border-black"
-                    : "border-zinc-200 text-zinc-600 hover:border-zinc-400"
+                    : "border-slate-200 text-slate-600 hover:border-slate-400"
                 }`}
               >
                 {e === "Both" ? "All" : e}
@@ -280,7 +280,7 @@ export default function Page() {
               <div
                 key={item.id}
                 className={`border rounded-lg p-3 bg-white transition-colors ${
-                  item.done ? "border-zinc-100" : "border-zinc-200"
+                  item.done ? "border-slate-100" : "border-slate-200"
                 }`}
               >
                 <div className="flex items-start gap-3">
@@ -289,7 +289,7 @@ export default function Page() {
                     className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
                       item.done
                         ? "bg-black border-black"
-                        : "border-zinc-300 hover:border-zinc-500"
+                        : "border-slate-300 hover:border-slate-500"
                     }`}
                   >
                     {item.done && (
@@ -310,16 +310,16 @@ export default function Page() {
                   </button>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-mono text-zinc-500 bg-zinc-100 px-1.5 py-0.5 rounded">
+                      <span className="text-xs font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">
                         {item.date}
                       </span>
                       <span
                         className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                           item.entity === "C-Corp"
-                            ? "bg-zinc-900 text-white"
+                            ? "bg-slate-900 text-white"
                             : item.entity === "LLC"
-                            ? "bg-zinc-200 text-zinc-700"
-                            : "bg-zinc-100 text-zinc-500"
+                            ? "bg-slate-200 text-slate-700"
+                            : "bg-slate-100 text-slate-500"
                         }`}
                       >
                         {item.entity}
@@ -327,12 +327,12 @@ export default function Page() {
                     </div>
                     <p
                       className={`text-sm font-medium mt-1 ${
-                        item.done ? "text-zinc-400 line-through" : "text-zinc-900"
+                        item.done ? "text-slate-400 line-through" : "text-slate-900"
                       }`}
                     >
                       {item.title}
                     </p>
-                    <p className="text-xs text-zinc-500 mt-0.5">{item.description}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{item.description}</p>
                   </div>
                 </div>
               </div>
@@ -346,27 +346,27 @@ export default function Page() {
         <div className="mt-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-sm text-zinc-600">
-                Total deductions: <span className="font-medium text-zinc-900">{fmt(totalDeductions)}</span>
+              <p className="text-sm text-slate-600">
+                Total deductions: <span className="font-medium text-slate-900">{fmt(totalDeductions)}</span>
               </p>
             </div>
             <button
               onClick={() => setShowDeductionForm(!showDeductionForm)}
-              className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-zinc-800"
+              className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-slate-800"
             >
               + Add
             </button>
           </div>
 
           {showDeductionForm && (
-            <div className="border border-zinc-200 rounded-lg p-4 bg-white mb-4">
+            <div className="border border-slate-200 rounded-lg p-4 bg-white mb-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-zinc-500 mb-1">Category</label>
+                  <label className="block text-xs text-slate-500 mb-1">Category</label>
                   <select
                     value={dCat}
                     onChange={(e) => setDCat(e.target.value)}
-                    className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-black"
+                    className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-black"
                   >
                     {DEDUCTION_CATEGORIES.map((c) => (
                       <option key={c} value={c}>{c}</option>
@@ -374,13 +374,13 @@ export default function Page() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-zinc-500 mb-1">Amount ($)</label>
+                  <label className="block text-xs text-slate-500 mb-1">Amount ($)</label>
                   <input
                     type="number"
                     value={dAmount}
                     onChange={(e) => setDAmount(e.target.value)}
                     placeholder="0"
-                    className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                    className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                   />
                 </div>
               </div>
@@ -391,18 +391,18 @@ export default function Page() {
                   onChange={(e) => setDReceipt(e.target.checked)}
                   className="accent-black"
                 />
-                <span className="text-sm text-zinc-600">Receipt on file</span>
+                <span className="text-sm text-slate-600">Receipt on file</span>
               </label>
               <div className="flex gap-2 mt-3">
                 <button
                   onClick={addDeduction}
-                  className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-zinc-800"
+                  className="px-4 py-2 text-sm bg-black text-white rounded-md hover:bg-slate-800"
                 >
                   Add Deduction
                 </button>
                 <button
                   onClick={() => setShowDeductionForm(false)}
-                  className="px-4 py-2 text-sm text-zinc-600 hover:text-zinc-900"
+                  className="px-4 py-2 text-sm text-slate-600 hover:text-slate-900"
                 >
                   Cancel
                 </button>
@@ -412,15 +412,15 @@ export default function Page() {
 
           {/* Summary by category */}
           {deductionsByCategory.length > 0 && (
-            <div className="mb-4 border border-zinc-200 rounded-lg p-3 bg-white">
-              <h3 className="text-xs font-medium text-zinc-500 uppercase tracking-wide mb-2">
+            <div className="mb-4 border border-slate-200 rounded-lg p-3 bg-white">
+              <h3 className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">
                 By Category
               </h3>
               <div className="space-y-1">
                 {deductionsByCategory.map(([cat, amount]) => (
                   <div key={cat} className="flex items-center justify-between">
-                    <span className="text-sm text-zinc-700">{cat}</span>
-                    <span className="text-sm font-medium text-zinc-900">{fmt(amount)}</span>
+                    <span className="text-sm text-slate-700">{cat}</span>
+                    <span className="text-sm font-medium text-slate-900">{fmt(amount)}</span>
                   </div>
                 ))}
               </div>
@@ -430,25 +430,25 @@ export default function Page() {
           {/* Deduction list */}
           <div className="space-y-1">
             {deductions.length === 0 && (
-              <p className="text-sm text-zinc-400 py-8 text-center">
+              <p className="text-sm text-slate-400 py-8 text-center">
                 No deductions tracked yet.
               </p>
             )}
             {deductions.map((d) => (
               <div
                 key={d.id}
-                className="border border-zinc-200 rounded-lg p-3 bg-white flex items-center justify-between"
+                className="border border-slate-200 rounded-lg p-3 bg-white flex items-center justify-between"
               >
                 <div>
-                  <p className="text-sm text-zinc-900">{d.category}</p>
+                  <p className="text-sm text-slate-900">{d.category}</p>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className="text-xs text-zinc-500">{fmt(d.amount)}</span>
+                    <span className="text-xs text-slate-500">{fmt(d.amount)}</span>
                     {d.hasReceipt ? (
-                      <span className="text-[10px] bg-zinc-900 text-white px-1.5 py-0.5 rounded-full">
+                      <span className="text-[10px] bg-slate-900 text-white px-1.5 py-0.5 rounded-full">
                         Receipt
                       </span>
                     ) : (
-                      <span className="text-[10px] bg-zinc-100 text-zinc-500 px-1.5 py-0.5 rounded-full">
+                      <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded-full">
                         No receipt
                       </span>
                     )}
@@ -456,7 +456,7 @@ export default function Page() {
                 </div>
                 <button
                   onClick={() => deleteDeduction(d.id)}
-                  className="text-xs text-zinc-300 hover:text-zinc-900"
+                  className="text-xs text-slate-300 hover:text-slate-900"
                 >
                   ×
                 </button>
@@ -469,27 +469,27 @@ export default function Page() {
       {/* ===== Calculator Tab ===== */}
       {tab === "calculator" && (
         <div className="mt-4">
-          <div className="border border-zinc-200 rounded-lg p-4 bg-white">
-            <h3 className="text-sm font-medium text-zinc-900 mb-4">Estimated Tax Calculator</h3>
+          <div className="border border-slate-200 rounded-lg p-4 bg-white">
+            <h3 className="text-sm font-medium text-slate-900 mb-4">Estimated Tax Calculator</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-xs text-zinc-500 mb-1">Annual Revenue ($)</label>
+                <label className="block text-xs text-slate-500 mb-1">Annual Revenue ($)</label>
                 <input
                   type="number"
                   value={revenue || ""}
                   onChange={(e) => setRevenue(parseFloat(e.target.value) || 0)}
                   placeholder="100000"
-                  className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                  className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                 />
               </div>
               <div>
-                <label className="block text-xs text-zinc-500 mb-1">Tax Rate (%)</label>
+                <label className="block text-xs text-slate-500 mb-1">Tax Rate (%)</label>
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
                     value={taxRate}
                     onChange={(e) => setTaxRate(parseFloat(e.target.value) || 0)}
-                    className="w-24 border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                    className="w-24 border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                   />
                   <div className="flex gap-1">
                     {[
@@ -504,7 +504,7 @@ export default function Page() {
                         className={`px-2 py-1 text-[10px] rounded border ${
                           taxRate === preset.rate
                             ? "bg-black text-white border-black"
-                            : "border-zinc-200 text-zinc-500 hover:border-zinc-400"
+                            : "border-slate-200 text-slate-500 hover:border-slate-400"
                         }`}
                       >
                         {preset.label}
@@ -514,40 +514,40 @@ export default function Page() {
                 </div>
               </div>
 
-              <div className="border-t border-zinc-200 pt-4 space-y-3">
+              <div className="border-t border-slate-200 pt-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-zinc-600">Revenue</span>
-                  <span className="text-sm text-zinc-900">{fmt(revenue)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-zinc-600">Total Deductions</span>
-                  <span className="text-sm text-zinc-900">- {fmt(totalDeductions)}</span>
-                </div>
-                <div className="flex items-center justify-between border-t border-zinc-100 pt-2">
-                  <span className="text-sm font-medium text-zinc-900">Taxable Income</span>
-                  <span className="text-sm font-medium text-zinc-900">{fmt(taxableIncome)}</span>
+                  <span className="text-sm text-slate-600">Revenue</span>
+                  <span className="text-sm text-slate-900">{fmt(revenue)}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-zinc-600">Tax Rate</span>
-                  <span className="text-sm text-zinc-900">{taxRate}%</span>
+                  <span className="text-sm text-slate-600">Total Deductions</span>
+                  <span className="text-sm text-slate-900">- {fmt(totalDeductions)}</span>
                 </div>
-                <div className="flex items-center justify-between border-t-2 border-zinc-900 pt-3">
-                  <span className="text-base font-semibold text-zinc-900">Estimated Tax</span>
-                  <span className="text-base font-semibold text-zinc-900">{fmt(estimatedTax)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-zinc-500">Effective rate</span>
-                  <span className="text-xs text-zinc-500">{effectiveRate}%</span>
+                <div className="flex items-center justify-between border-t border-slate-100 pt-2">
+                  <span className="text-sm font-medium text-slate-900">Taxable Income</span>
+                  <span className="text-sm font-medium text-slate-900">{fmt(taxableIncome)}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-zinc-500">Quarterly estimate</span>
-                  <span className="text-xs text-zinc-500">{fmt(estimatedTax / 4)}/quarter</span>
+                  <span className="text-sm text-slate-600">Tax Rate</span>
+                  <span className="text-sm text-slate-900">{taxRate}%</span>
+                </div>
+                <div className="flex items-center justify-between border-t-2 border-slate-900 pt-3">
+                  <span className="text-base font-semibold text-slate-900">Estimated Tax</span>
+                  <span className="text-base font-semibold text-slate-900">{fmt(estimatedTax)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-slate-500">Effective rate</span>
+                  <span className="text-xs text-slate-500">{effectiveRate}%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-slate-500">Quarterly estimate</span>
+                  <span className="text-xs text-slate-500">{fmt(estimatedTax / 4)}/quarter</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <p className="mt-4 text-xs text-zinc-400 text-center">
+          <p className="mt-4 text-xs text-slate-400 text-center">
             This is a simplified estimate. Consult a tax professional for accurate calculations.
           </p>
         </div>

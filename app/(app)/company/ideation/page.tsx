@@ -72,16 +72,16 @@ function Section({
   rows?: number;
 }) {
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-5">
-      <label className="block text-[13px] font-semibold text-zinc-700">
+    <div className="rounded-xl border border-slate-200 bg-white p-5">
+      <label className="block text-[13px] font-semibold text-slate-700">
         {label}
       </label>
-      <p className="mt-0.5 text-[12px] text-zinc-400 mb-3">{hint}</p>
+      <p className="mt-0.5 text-[12px] text-slate-400 mb-3">{hint}</p>
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={rows}
-        className="w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900 resize-y leading-relaxed"
+        className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900 resize-y leading-relaxed"
         placeholder={`Write your ${label.toLowerCase()} here...`}
       />
     </div>
@@ -188,8 +188,8 @@ export default function IdeationPage() {
     <div className="mx-auto max-w-[800px]">
       <Education {...EDUCATION.ideation} />
       <div>
-        <h1 className="text-lg font-semibold text-zinc-900">Ideation</h1>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h1 className="text-lg font-semibold text-slate-900">Ideation</h1>
+        <p className="mt-1 text-sm text-slate-500">
           Define the core of your business: the problem, customer, solution, and
           what makes you different.
         </p>
@@ -202,12 +202,12 @@ export default function IdeationPage() {
             <div
               key={i}
               className={`h-1.5 w-8 rounded-full transition-colors ${
-                s.filled ? "bg-zinc-900" : "bg-zinc-200"
+                s.filled ? "bg-slate-900" : "bg-slate-200"
               }`}
             />
           ))}
         </div>
-        <span className="text-[12px] text-zinc-400">
+        <span className="text-[12px] text-slate-400">
           {filledCount} of {sections.length} sections filled
         </span>
       </div>
@@ -239,9 +239,9 @@ export default function IdeationPage() {
         />
 
         {/* Competitive Landscape */}
-        <div className="rounded-xl border border-zinc-200 bg-white p-5">
+        <div className="rounded-xl border border-slate-200 bg-white p-5">
           <div className="flex items-center justify-between mb-1">
-            <h2 className="text-[13px] font-semibold text-zinc-700">
+            <h2 className="text-[13px] font-semibold text-slate-700">
               Competitive Landscape
             </h2>
             <button
@@ -249,12 +249,12 @@ export default function IdeationPage() {
                 resetCompForm();
                 setShowCompForm(!showCompForm);
               }}
-              className="h-7 rounded-md bg-zinc-900 px-2.5 text-[12px] font-medium text-white transition-opacity hover:opacity-90"
+              className="h-7 rounded-md bg-slate-900 px-2.5 text-[12px] font-medium text-white transition-opacity hover:opacity-90"
             >
               {showCompForm ? "Cancel" : "+ Add"}
             </button>
           </div>
-          <p className="text-[12px] text-zinc-400 mb-4">
+          <p className="text-[12px] text-slate-400 mb-4">
             Who else is solving this problem? What are their strengths and
             weaknesses?
           </p>
@@ -263,53 +263,53 @@ export default function IdeationPage() {
           {showCompForm && (
             <form
               onSubmit={handleCompSubmit}
-              className="mb-4 rounded-lg border border-zinc-200 bg-zinc-50 p-4 space-y-3"
+              className="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-4 space-y-3"
             >
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+                  <label className="block text-[12px] font-medium text-slate-500 mb-1">
                     Competitor Name
                   </label>
                   <input
                     required
                     value={compName}
                     onChange={(e) => setCompName(e.target.value)}
-                    className="h-8 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                    className="h-8 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
                     placeholder="Acme Inc."
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+                  <label className="block text-[12px] font-medium text-slate-500 mb-1">
                     Website
                   </label>
                   <input
                     value={compUrl}
                     onChange={(e) => setCompUrl(e.target.value)}
-                    className="h-8 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                    className="h-8 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
                     placeholder="https://acme.com"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+                  <label className="block text-[12px] font-medium text-slate-500 mb-1">
                     Their Strength
                   </label>
                   <input
                     value={compStrength}
                     onChange={(e) => setCompStrength(e.target.value)}
-                    className="h-8 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                    className="h-8 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
                     placeholder="Large user base, brand recognition"
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-medium text-zinc-500 mb-1">
+                  <label className="block text-[12px] font-medium text-slate-500 mb-1">
                     Their Weakness
                   </label>
                   <input
                     value={compWeakness}
                     onChange={(e) => setCompWeakness(e.target.value)}
-                    className="h-8 w-full rounded-md border border-zinc-200 bg-white px-3 text-[13px] text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-900"
+                    className="h-8 w-full rounded-md border border-slate-200 bg-white px-3 text-[13px] text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900"
                     placeholder="Slow to innovate, expensive"
                   />
                 </div>
@@ -317,7 +317,7 @@ export default function IdeationPage() {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="h-7 rounded-md bg-zinc-900 px-3 text-[12px] font-medium text-white transition-opacity hover:opacity-90"
+                  className="h-7 rounded-md bg-slate-900 px-3 text-[12px] font-medium text-white transition-opacity hover:opacity-90"
                 >
                   {editingComp ? "Save" : "Add Competitor"}
                 </button>
@@ -331,12 +331,12 @@ export default function IdeationPage() {
               {data.competitors.map((c) => (
                 <div
                   key={c.id}
-                  className="group rounded-lg border border-zinc-100 bg-zinc-50 px-4 py-3 hover:bg-white transition-colors"
+                  className="group rounded-lg border border-slate-100 bg-slate-50 px-4 py-3 hover:bg-white transition-colors"
                 >
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-2">
-                        <p className="text-[13px] font-medium text-zinc-900">
+                        <p className="text-[13px] font-medium text-slate-900">
                           {c.name}
                         </p>
                         {c.url && (
@@ -346,7 +346,7 @@ export default function IdeationPage() {
                             }
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[11px] text-zinc-400 hover:text-zinc-600 transition-colors"
+                            className="text-[11px] text-slate-400 hover:text-slate-600 transition-colors"
                           >
                             {c.url.replace(/^https?:\/\//, "")}
                           </a>
@@ -355,20 +355,20 @@ export default function IdeationPage() {
                       <div className="mt-1.5 grid grid-cols-2 gap-4">
                         {c.strength && (
                           <div>
-                            <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-400">
+                            <p className="text-[10px] font-medium uppercase tracking-wider text-slate-400">
                               Strength
                             </p>
-                            <p className="text-[12px] text-zinc-600">
+                            <p className="text-[12px] text-slate-600">
                               {c.strength}
                             </p>
                           </div>
                         )}
                         {c.weakness && (
                           <div>
-                            <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-400">
+                            <p className="text-[10px] font-medium uppercase tracking-wider text-slate-400">
                               Weakness
                             </p>
-                            <p className="text-[12px] text-zinc-600">
+                            <p className="text-[12px] text-slate-600">
                               {c.weakness}
                             </p>
                           </div>
@@ -378,13 +378,13 @@ export default function IdeationPage() {
                     <div className="hidden group-hover:flex items-center gap-1 shrink-0 ml-2">
                       <button
                         onClick={() => openEditComp(c)}
-                        className="rounded px-2 py-1 text-[11px] text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+                        className="rounded px-2 py-1 text-[11px] text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => deleteComp(c.id)}
-                        className="rounded px-2 py-1 text-[11px] text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+                        className="rounded px-2 py-1 text-[11px] text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                       >
                         Delete
                       </button>
@@ -395,7 +395,7 @@ export default function IdeationPage() {
             </div>
           ) : (
             !showCompForm && (
-              <p className="text-[12px] text-zinc-400">
+              <p className="text-[12px] text-slate-400">
                 No competitors added yet.
               </p>
             )

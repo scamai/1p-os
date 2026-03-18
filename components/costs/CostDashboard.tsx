@@ -117,8 +117,8 @@ function CostDashboard() {
             onClick={() => setPeriod(p)}
             className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
               period === p
-                ? "bg-zinc-100 text-[#09090b]"
-                : "text-zinc-500 hover:bg-zinc-100"
+                ? "bg-slate-100 text-[#09090b]"
+                : "text-slate-500 hover:bg-slate-100"
             }`}
           >
             {PERIOD_LABELS[p]}
@@ -128,13 +128,13 @@ function CostDashboard() {
 
       {/* Efficiency Savings Banner */}
       {costSaved > 0 && (
-        <div className="rounded-lg border border-zinc-200 bg-zinc-100 px-4 py-3">
-          <p className="text-sm font-medium text-zinc-900">
+        <div className="rounded-lg border border-slate-200 bg-slate-100 px-4 py-3">
+          <p className="text-sm font-medium text-slate-900">
             Your efficiency engine saved ${costSaved.toFixed(2)}{" "}
             {PERIOD_LABELS[period].toLowerCase()} ({savingsPercent}% reduction)
           </p>
           {summary?.efficiency && (
-            <p className="mt-0.5 text-xs text-zinc-500">
+            <p className="mt-0.5 text-xs text-slate-500">
               {summary.efficiency.tokensSavedByCache.toLocaleString()} tokens
               cached &middot;{" "}
               {summary.efficiency.tokensSavedByOptimization.toLocaleString()}{" "}
@@ -150,49 +150,49 @@ function CostDashboard() {
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardContent className="p-4">
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-slate-500">
               Total Spent
             </p>
-            <p className="mt-1 text-xl font-semibold text-zinc-900">
+            <p className="mt-1 text-xl font-semibold text-slate-900">
               {loading ? "..." : `$${totalCost.toFixed(2)}`}
             </p>
-            <p className="mt-0.5 text-[10px] text-zinc-500">
+            <p className="mt-0.5 text-[10px] text-slate-500">
               {summary?.requestCount ?? 0} requests
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-slate-500">
               Budget Remaining
             </p>
-            <p className="mt-1 text-xl font-semibold text-zinc-900">
+            <p className="mt-1 text-xl font-semibold text-slate-900">
               {loading ? "..." : `$${budgetRemaining.toFixed(2)}`}
             </p>
-            <p className="mt-0.5 text-[10px] text-zinc-500">
+            <p className="mt-0.5 text-[10px] text-slate-500">
               of ${monthlyBudget.toFixed(2)} monthly
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-slate-500">
               Projected Monthly
             </p>
-            <p className="mt-1 text-xl font-semibold text-zinc-900">
+            <p className="mt-1 text-xl font-semibold text-slate-900">
               {loading ? "..." : `$${projectedMonthly.toFixed(2)}`}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-slate-500">
               Tokens Saved
             </p>
-            <p className="mt-1 text-xl font-semibold text-zinc-900">
+            <p className="mt-1 text-xl font-semibold text-slate-900">
               {loading ? "..." : tokensSaved.toLocaleString()}
             </p>
-            <p className="mt-0.5 text-[10px] text-zinc-500">
+            <p className="mt-0.5 text-[10px] text-slate-500">
               ${costSaved.toFixed(2)} saved
             </p>
           </CardContent>

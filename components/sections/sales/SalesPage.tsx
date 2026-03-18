@@ -41,24 +41,24 @@ function PipelineTab() {
     <div>
       <div className="grid grid-cols-2 gap-x-12 gap-y-8 sm:grid-cols-4">
         <div>
-          <p className="text-[11px] text-zinc-500">Pipeline Value</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-zinc-900">
+          <p className="text-[11px] text-slate-500">Pipeline Value</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">
             ${totalPipeline.toLocaleString()}
           </p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Active Leads</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-zinc-900">{LEADS.length}</p>
+          <p className="text-[11px] text-slate-500">Active Leads</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">{LEADS.length}</p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Proposals Out</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-zinc-900">
+          <p className="text-[11px] text-slate-500">Proposals Out</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">
             {PROPOSALS.filter((p) => p.status === "Sent").length}
           </p>
         </div>
         <div>
-          <p className="text-[11px] text-zinc-500">Won (MTD)</p>
-          <p className="mt-1 font-mono text-xl font-semibold text-zinc-900">
+          <p className="text-[11px] text-slate-500">Won (MTD)</p>
+          <p className="mt-1 font-mono text-xl font-semibold text-slate-900">
             ${PROPOSALS.filter((p) => p.status === "Accepted")
               .reduce((s, p) => s + p.amount, 0)
               .toLocaleString()}
@@ -70,10 +70,10 @@ function PipelineTab() {
         {stageLeads
           .filter((s) => s.leads.length > 0)
           .map((s) => (
-            <div key={s.stage} className="rounded-lg border border-zinc-100 px-4 py-3">
+            <div key={s.stage} className="rounded-lg border border-slate-100 px-4 py-3">
               <div className="flex items-center justify-between">
-                <p className="text-[13px] font-medium text-zinc-900">{s.stage}</p>
-                <p className="font-mono text-[11px] text-zinc-500">
+                <p className="text-[13px] font-medium text-slate-900">{s.stage}</p>
+                <p className="font-mono text-[11px] text-slate-500">
                   {s.leads.length} lead{s.leads.length > 1 ? "s" : ""} · ${s.value.toLocaleString()}
                 </p>
               </div>
@@ -81,10 +81,10 @@ function PipelineTab() {
                 {s.leads.map((l) => (
                   <div
                     key={l.id}
-                    className="flex items-center justify-between border-t border-zinc-50 py-2 first:border-0"
+                    className="flex items-center justify-between border-t border-slate-50 py-2 first:border-0"
                   >
-                    <span className="text-[12px] text-zinc-600">{l.name}</span>
-                    <span className="font-mono text-[12px] text-zinc-500">
+                    <span className="text-[12px] text-slate-600">{l.name}</span>
+                    <span className="font-mono text-[12px] text-slate-500">
                       ${l.value.toLocaleString()}
                     </span>
                   </div>
@@ -103,28 +103,28 @@ function LeadsTab() {
       {LEADS.map((lead) => (
         <div
           key={lead.id}
-          className="flex items-center justify-between border-b border-zinc-100 py-3 last:border-0"
+          className="flex items-center justify-between border-b border-slate-100 py-3 last:border-0"
         >
           <div>
             <div className="flex items-center gap-2">
-              <p className="text-[13px] font-medium text-zinc-900">{lead.name}</p>
+              <p className="text-[13px] font-medium text-slate-900">{lead.name}</p>
               <span
                 className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${
                   lead.stage === "Negotiation"
-                    ? "bg-zinc-200 text-zinc-700"
+                    ? "bg-slate-200 text-slate-700"
                     : lead.stage === "Proposal Sent"
-                      ? "bg-zinc-100 text-zinc-600"
-                      : "bg-zinc-100 text-zinc-500"
+                      ? "bg-slate-100 text-slate-600"
+                      : "bg-slate-100 text-slate-500"
                 }`}
               >
                 {lead.stage}
               </span>
             </div>
-            <p className="mt-0.5 text-[11px] text-zinc-400">
+            <p className="mt-0.5 text-[11px] text-slate-400">
               {lead.contact} · {lead.source} · {lead.date}
             </p>
           </div>
-          <p className="font-mono text-[13px] text-zinc-900">${lead.value.toLocaleString()}</p>
+          <p className="font-mono text-[13px] text-slate-900">${lead.value.toLocaleString()}</p>
         </div>
       ))}
     </div>
@@ -137,28 +137,28 @@ function ProposalsTab() {
       {PROPOSALS.map((p) => (
         <div
           key={p.id}
-          className="flex items-center justify-between border-b border-zinc-100 py-3 last:border-0"
+          className="flex items-center justify-between border-b border-slate-100 py-3 last:border-0"
         >
           <div>
             <div className="flex items-center gap-2">
-              <p className="text-[13px] font-medium text-zinc-900">{p.title}</p>
+              <p className="text-[13px] font-medium text-slate-900">{p.title}</p>
               <span
                 className={`rounded px-1.5 py-0.5 text-[10px] font-medium ${
                   p.status === "Accepted"
-                    ? "bg-zinc-100 text-zinc-600"
+                    ? "bg-slate-100 text-slate-600"
                     : p.status === "Draft"
-                      ? "bg-zinc-50 text-zinc-400"
-                      : "bg-zinc-100 text-zinc-500"
+                      ? "bg-slate-50 text-slate-400"
+                      : "bg-slate-100 text-slate-500"
                 }`}
               >
                 {p.status}
               </span>
             </div>
-            <p className="mt-0.5 text-[11px] text-zinc-400">
+            <p className="mt-0.5 text-[11px] text-slate-400">
               {p.client} · {p.date}
             </p>
           </div>
-          <p className="font-mono text-[13px] text-zinc-900">${p.amount.toLocaleString()}</p>
+          <p className="font-mono text-[13px] text-slate-900">${p.amount.toLocaleString()}</p>
         </div>
       ))}
     </div>
@@ -171,11 +171,11 @@ function ActivityTab() {
       {ACTIVITY.map((a) => (
         <div
           key={a.id}
-          className="flex items-center justify-between border-b border-zinc-100 py-3 last:border-0"
+          className="flex items-center justify-between border-b border-slate-100 py-3 last:border-0"
         >
           <div>
-            <p className="text-[13px] text-zinc-900">{a.action}</p>
-            <p className="mt-0.5 text-[11px] text-zinc-400">
+            <p className="text-[13px] text-slate-900">{a.action}</p>
+            <p className="mt-0.5 text-[11px] text-slate-400">
               {a.agent} · {a.time}
             </p>
           </div>
@@ -190,7 +190,7 @@ function SalesPage() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h1 className="text-lg font-semibold text-zinc-900">Sales</h1>
+      <h1 className="text-lg font-semibold text-slate-900">Sales</h1>
       <div className="mt-6">
         <TabBar
           tabs={TABS as unknown as string[]}

@@ -71,8 +71,8 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-[640px]">
       <Education {...EDUCATION.runrate} />
-      <h1 className="text-lg font-semibold text-zinc-900">Runrate</h1>
-      <p className="mt-1 text-sm text-zinc-500">
+      <h1 className="text-lg font-semibold text-slate-900">Runrate</h1>
+      <p className="mt-1 text-sm text-slate-500">
         Track revenue, expenses, and understand your runway.
       </p>
 
@@ -84,46 +84,46 @@ export default function Page() {
           { label: "Burn Rate", value: fmt(burnRate) + "/mo" },
           { label: "Runway", value: runway >= 999 ? "Infinite" : `${runway} mo` },
         ].map((m) => (
-          <div key={m.label} className="border border-zinc-200 rounded-lg p-3 bg-white">
-            <p className="text-xs text-zinc-500">{m.label}</p>
-            <p className="text-lg font-semibold text-zinc-900 mt-1">{m.value}</p>
+          <div key={m.label} className="border border-slate-200 rounded-lg p-3 bg-white">
+            <p className="text-xs text-slate-500">{m.label}</p>
+            <p className="text-lg font-semibold text-slate-900 mt-1">{m.value}</p>
           </div>
         ))}
       </div>
 
       {/* Cash in bank */}
       <div className="mt-6">
-        <label className="block text-sm font-medium text-zinc-900 mb-2">Cash in Bank</label>
+        <label className="block text-sm font-medium text-slate-900 mb-2">Cash in Bank</label>
         <input
           type="number"
           value={cashInBank || ""}
           onChange={(e) => setCashInBank(parseFloat(e.target.value) || 0)}
           placeholder="100000"
-          className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+          className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
         />
       </div>
 
       {/* Bar visualization */}
       <div className="mt-8">
-        <h2 className="text-sm font-medium text-zinc-900 mb-4">Revenue vs Expenses</h2>
+        <h2 className="text-sm font-medium text-slate-900 mb-4">Revenue vs Expenses</h2>
         <div className="flex items-end gap-2 h-40">
           {months.map((m, i) => (
             <div key={i} className="flex-1 flex flex-col items-center gap-1">
               <div className="w-full flex gap-0.5 items-end" style={{ height: "120px" }}>
                 {/* Revenue bar */}
                 <div
-                  className="flex-1 bg-zinc-900 rounded-t transition-all duration-300"
+                  className="flex-1 bg-slate-900 rounded-t transition-all duration-300"
                   style={{ height: `${Math.max(2, (m.revenue / maxVal) * 120)}px` }}
                   title={`Revenue: ${fmt(m.revenue)}`}
                 />
                 {/* Expense bar */}
                 <div
-                  className="flex-1 bg-zinc-300 rounded-t transition-all duration-300"
+                  className="flex-1 bg-slate-300 rounded-t transition-all duration-300"
                   style={{ height: `${Math.max(2, (m.expenses / maxVal) * 120)}px` }}
                   title={`Expenses: ${fmt(m.expenses)}`}
                 />
               </div>
-              <span className="text-[10px] text-zinc-500 truncate w-full text-center">
+              <span className="text-[10px] text-slate-500 truncate w-full text-center">
                 {m.label.split(" ")[0]}
               </span>
             </div>
@@ -131,42 +131,42 @@ export default function Page() {
         </div>
         <div className="flex items-center gap-4 mt-2 justify-center">
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 bg-zinc-900 rounded-sm" />
-            <span className="text-xs text-zinc-500">Revenue</span>
+            <div className="w-3 h-3 bg-slate-900 rounded-sm" />
+            <span className="text-xs text-slate-500">Revenue</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 bg-zinc-300 rounded-sm" />
-            <span className="text-xs text-zinc-500">Expenses</span>
+            <div className="w-3 h-3 bg-slate-300 rounded-sm" />
+            <span className="text-xs text-slate-500">Expenses</span>
           </div>
         </div>
       </div>
 
       {/* Monthly inputs */}
       <div className="mt-8">
-        <h2 className="text-sm font-medium text-zinc-900 mb-3">Monthly Data</h2>
+        <h2 className="text-sm font-medium text-slate-900 mb-3">Monthly Data</h2>
         <div className="space-y-3">
           {months.map((m, i) => (
-            <div key={i} className="border border-zinc-200 rounded-lg p-3 bg-white">
-              <p className="text-sm font-medium text-zinc-700 mb-2">{m.label}</p>
+            <div key={i} className="border border-slate-200 rounded-lg p-3 bg-white">
+              <p className="text-sm font-medium text-slate-700 mb-2">{m.label}</p>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-zinc-500 mb-1">Revenue ($)</label>
+                  <label className="block text-xs text-slate-500 mb-1">Revenue ($)</label>
                   <input
                     type="number"
                     value={m.revenue || ""}
                     onChange={(e) => updateMonth(i, "revenue", e.target.value)}
                     placeholder="0"
-                    className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                    className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-zinc-500 mb-1">Expenses ($)</label>
+                  <label className="block text-xs text-slate-500 mb-1">Expenses ($)</label>
                   <input
                     type="number"
                     value={m.expenses || ""}
                     onChange={(e) => updateMonth(i, "expenses", e.target.value)}
                     placeholder="0"
-                    className="w-full border border-zinc-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                    className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
                   />
                 </div>
               </div>

@@ -33,20 +33,20 @@ function ActivityTimeline({ events }: { events: ActivityEvent[] }) {
       {visible.map((event) => (
         <div
           key={event.id}
-          className="flex items-start gap-3 border-b border-zinc-100 py-2.5 last:border-0"
+          className="flex items-start gap-3 border-b border-slate-100 py-2.5 last:border-0"
         >
           {/* Dot */}
-          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-zinc-300" />
+          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-slate-300" />
 
           {/* Content */}
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] text-zinc-700">
-              <span className="font-medium text-zinc-900">{event.actor}</span>
+            <p className="text-[13px] text-slate-700">
+              <span className="font-medium text-slate-900">{event.actor}</span>
               {" "}
               {event.action}
             </p>
             {event.detail && (
-              <p className="mt-0.5 truncate text-[11px] text-zinc-400">
+              <p className="mt-0.5 truncate text-[11px] text-slate-400">
                 {event.detail}
               </p>
             )}
@@ -55,11 +55,11 @@ function ActivityTimeline({ events }: { events: ActivityEvent[] }) {
           {/* Meta */}
           <div className="flex shrink-0 items-center gap-3">
             {event.cost != null && event.cost > 0 && (
-              <span className="font-mono text-[11px] text-zinc-400">
+              <span className="font-mono text-[11px] text-slate-400">
                 ${event.cost.toFixed(3)}
               </span>
             )}
-            <span className="text-[11px] text-zinc-300">
+            <span className="text-[11px] text-slate-300">
               {timeAgo(event.createdAt)}
             </span>
           </div>
@@ -69,7 +69,7 @@ function ActivityTimeline({ events }: { events: ActivityEvent[] }) {
       {events.length > 8 && (
         <button
           onClick={() => setExpanded((prev) => !prev)}
-          className="mt-2 text-[12px] text-zinc-400 transition-colors hover:text-zinc-600"
+          className="mt-2 text-[12px] text-slate-400 transition-colors hover:text-slate-600"
         >
           {expanded ? "Show less" : `Show all ${events.length} events`}
         </button>

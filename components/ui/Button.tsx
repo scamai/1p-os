@@ -2,19 +2,23 @@ import * as React from "react";
 
 const variants = {
   default:
-    "bg-zinc-900 text-white hover:bg-zinc-800 active:bg-zinc-950",
+    "bg-slate-900 text-white hover:bg-slate-800 active:bg-slate-950",
+  primary:
+    "bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800",
   destructive:
-    "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 active:bg-zinc-300",
+    "bg-red-50 text-red-700 hover:bg-red-100 active:bg-red-200",
   outline:
-    "border border-zinc-200 bg-transparent text-zinc-900 hover:bg-zinc-100 active:bg-zinc-200",
+    "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 active:bg-slate-100",
   ghost:
-    "bg-transparent text-zinc-900 hover:bg-zinc-100 active:bg-zinc-200",
+    "bg-transparent text-slate-600 hover:bg-slate-100 active:bg-slate-200",
+  link:
+    "bg-transparent text-indigo-600 underline-offset-4 hover:underline",
 } as const;
 
 const sizes = {
-  sm: "h-8 px-3 text-xs",
-  md: "h-9 px-4 text-sm",
-  lg: "h-11 px-6 text-base",
+  sm: "h-8 px-3 text-xs gap-1.5",
+  md: "h-9 px-4 text-sm gap-2",
+  lg: "h-11 px-6 text-base gap-2",
 } as const;
 
 export interface ButtonProps
@@ -40,7 +44,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={`inline-flex items-center justify-center font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900 focus-visible:ring-offset-1 disabled:pointer-events-none disabled:opacity-50 ${variants[variant]} ${sizes[size]} ${className}`}
+        className={`inline-flex items-center justify-center rounded-md font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ${variants[variant]} ${sizes[size]} ${className}`}
         disabled={disabled || loading}
         {...props}
       >

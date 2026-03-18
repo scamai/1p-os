@@ -62,23 +62,23 @@ function SessionRow({
 
   return (
     <div>
-      <div className="flex items-center gap-4 rounded-md px-3 py-2.5 hover:bg-zinc-50 transition-colors">
-        <span className="w-28 shrink-0 text-sm text-zinc-600 truncate">
+      <div className="flex items-center gap-4 rounded-md px-3 py-2.5 hover:bg-slate-50 transition-colors">
+        <span className="w-28 shrink-0 text-sm text-slate-600 truncate">
           {session.agent}
         </span>
-        <span className="min-w-0 flex-1 truncate font-mono text-xs text-zinc-600">
+        <span className="min-w-0 flex-1 truncate font-mono text-xs text-slate-600">
           {session.url}
         </span>
-        <span className="hidden w-40 shrink-0 truncate text-xs text-zinc-500 sm:block">
+        <span className="hidden w-40 shrink-0 truncate text-xs text-slate-500 sm:block">
           {session.action}
         </span>
-        <span className="w-20 shrink-0 text-right font-mono text-[11px] text-zinc-700">
+        <span className="w-20 shrink-0 text-right font-mono text-[11px] text-slate-700">
           {session.timestamp}
         </span>
         {showView && (
           <button
             onClick={() => setViewing((v) => !v)}
-            className="shrink-0 text-xs text-zinc-600 hover:text-zinc-600 transition-colors"
+            className="shrink-0 text-xs text-slate-600 hover:text-slate-600 transition-colors"
           >
             {viewing ? "Hide" : "View"}
           </button>
@@ -86,8 +86,8 @@ function SessionRow({
       </div>
 
       {viewing && (
-        <div className="mx-3 mb-2 flex h-40 items-center justify-center rounded border border-zinc-200 bg-white">
-          <span className="text-xs text-zinc-700">
+        <div className="mx-3 mb-2 flex h-40 items-center justify-center rounded border border-slate-200 bg-white">
+          <span className="text-xs text-slate-700">
             Screenshot placeholder
           </span>
         </div>
@@ -99,12 +99,12 @@ function SessionRow({
 function BrowserPanel() {
   return (
     <section className="mt-10">
-      <h2 className="mb-4 font-mono text-[13px] uppercase tracking-widest text-zinc-500">
+      <h2 className="mb-4 font-mono text-[13px] uppercase tracking-widest text-slate-500">
         Browser Sessions
       </h2>
 
       <div className="space-y-px">
-        <p className="mb-2 text-[11px] font-mono uppercase tracking-wider text-zinc-700">
+        <p className="mb-2 text-[11px] font-mono uppercase tracking-wider text-slate-700">
           Active
         </p>
         {ACTIVE_SESSIONS.map((s) => (
@@ -113,7 +113,7 @@ function BrowserPanel() {
       </div>
 
       <div className="mt-6 space-y-px">
-        <p className="mb-2 text-[11px] font-mono uppercase tracking-wider text-zinc-700">
+        <p className="mb-2 text-[11px] font-mono uppercase tracking-wider text-slate-700">
           History
         </p>
         {HISTORY_SESSIONS.map((s) => (

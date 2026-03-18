@@ -8,14 +8,14 @@ import type { MorningBrief } from "@/lib/orchestration/morning-brief";
 function BriefSkeleton() {
   return (
     <div className="animate-pulse space-y-4">
-      <div className="h-5 w-40 rounded bg-zinc-100" />
-      <div className="h-4 w-full rounded bg-zinc-100" />
-      <div className="h-4 w-3/4 rounded bg-zinc-100" />
+      <div className="h-5 w-40 rounded bg-slate-100" />
+      <div className="h-4 w-full rounded bg-slate-100" />
+      <div className="h-4 w-3/4 rounded bg-slate-100" />
       <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-6">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="space-y-1.5">
-            <div className="h-3 w-12 rounded bg-zinc-100" />
-            <div className="h-6 w-8 rounded bg-zinc-100" />
+            <div className="h-3 w-12 rounded bg-slate-100" />
+            <div className="h-6 w-8 rounded bg-slate-100" />
           </div>
         ))}
       </div>
@@ -28,8 +28,8 @@ function BriefSkeleton() {
 function StatCell({ label, value }: { label: string; value: string | number }) {
   return (
     <div>
-      <p className="text-[11px] text-zinc-400">{label}</p>
-      <p className="mt-0.5 font-mono text-lg font-semibold text-zinc-900">
+      <p className="text-[11px] text-slate-400">{label}</p>
+      <p className="mt-0.5 font-mono text-lg font-semibold text-slate-900">
         {value}
       </p>
     </div>
@@ -43,21 +43,21 @@ const ALERT_STYLES: Record<
   { border: string; bg: string; text: string; label: string }
 > = {
   overdue: {
-    border: "border-zinc-200",
-    bg: "bg-zinc-100",
-    text: "text-zinc-600",
+    border: "border-slate-200",
+    bg: "bg-slate-100",
+    text: "text-slate-600",
     label: "Overdue",
   },
   budget: {
-    border: "border-zinc-200",
-    bg: "bg-zinc-100",
-    text: "text-zinc-600",
+    border: "border-slate-200",
+    bg: "bg-slate-100",
+    text: "text-slate-600",
     label: "Budget",
   },
   error: {
-    border: "border-zinc-200",
-    bg: "bg-zinc-200",
-    text: "text-zinc-800",
+    border: "border-slate-200",
+    bg: "bg-slate-200",
+    text: "text-slate-800",
     label: "Error",
   },
 };
@@ -107,15 +107,15 @@ function MorningBriefCard() {
   if (dismissed) return null;
 
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white p-5">
+    <div className="rounded-lg border border-slate-200 bg-white p-5">
       {/* Header with dismiss */}
       <div className="flex items-start justify-between">
-        <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-400">
+        <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
           Morning Brief
         </p>
         <button
           onClick={() => setDismissed(true)}
-          className="shrink-0 rounded-sm p-1 text-zinc-400 transition-colors hover:text-zinc-700"
+          className="shrink-0 rounded-sm p-1 text-slate-400 transition-colors hover:text-slate-700"
         >
           <svg
             width="12"
@@ -134,7 +134,7 @@ function MorningBriefCard() {
       {loading && <BriefSkeleton />}
 
       {error && (
-        <p className="mt-3 text-[13px] text-zinc-500">
+        <p className="mt-3 text-[13px] text-slate-500">
           Failed to load. Try refreshing.
         </p>
       )}
@@ -143,10 +143,10 @@ function MorningBriefCard() {
         <div className="mt-3 space-y-5">
           {/* Greeting & Summary */}
           <div>
-            <h2 className="text-[15px] font-semibold text-zinc-900">
+            <h2 className="text-[15px] font-semibold text-slate-900">
               {brief.greeting}
             </h2>
-            <p className="mt-1 text-[13px] leading-relaxed text-zinc-600">
+            <p className="mt-1 text-[13px] leading-relaxed text-slate-600">
               {brief.summary}
             </p>
           </div>
@@ -176,17 +176,17 @@ function MorningBriefCard() {
           {/* Highlights: What happened */}
           {brief.highlights.length > 0 && (
             <div>
-              <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-zinc-400">
+              <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-slate-400">
                 What happened
               </p>
               <ul className="space-y-1.5">
                 {brief.highlights.map((h, i) => (
                   <li key={i} className="flex items-start gap-2 text-[13px]">
-                    <span className="shrink-0 font-medium text-zinc-700">
+                    <span className="shrink-0 font-medium text-slate-700">
                       {h.agent}
                     </span>
-                    <span className="text-zinc-500">{h.action}</span>
-                    <span className="ml-auto shrink-0 text-[11px] font-medium text-zinc-400">
+                    <span className="text-slate-500">{h.action}</span>
+                    <span className="ml-auto shrink-0 text-[11px] font-medium text-slate-400">
                       {h.impact}
                     </span>
                   </li>
@@ -198,14 +198,14 @@ function MorningBriefCard() {
           {/* Suggested Actions */}
           {brief.suggestedActions.length > 0 && (
             <div>
-              <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-zinc-400">
+              <p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-slate-400">
                 Suggested next
               </p>
               <div className="flex flex-wrap gap-2">
                 {brief.suggestedActions.map((action, i) => (
                   <button
                     key={i}
-                    className="rounded-md border border-zinc-200 px-3 py-1.5 text-[12px] font-medium text-zinc-700 transition-colors hover:border-zinc-400 hover:text-zinc-900"
+                    className="rounded-md border border-slate-200 px-3 py-1.5 text-[12px] font-medium text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-900"
                   >
                     {action}
                   </button>
