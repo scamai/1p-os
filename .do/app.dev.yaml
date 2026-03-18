@@ -1,0 +1,39 @@
+name: onep-os-dev
+region: sfo
+services:
+  - name: web
+    github:
+      repo: scamai/1p-os
+      branch: mvp
+      deploy_on_push: true
+    dockerfile_path: Dockerfile
+    http_port: 3000
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+    envs:
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        value: "https://xzyxsdjqecepkpbaawfc.supabase.co"
+        type: GENERAL
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        value: "REPLACE_ME"
+        type: GENERAL
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        value: "REPLACE_ME"
+        type: SECRET
+      - key: ENCRYPTION_KEY
+        value: "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+        type: SECRET
+      - key: NEXT_PUBLIC_APP_URL
+        value: "${APP_URL}"
+        type: GENERAL
+      - key: DEPLOYMENT_MODE
+        value: "cloud"
+        type: GENERAL
+      - key: DEV_BYPASS
+        value: "true"
+        type: GENERAL
+      - key: NODE_ENV
+        value: "development"
+        type: GENERAL

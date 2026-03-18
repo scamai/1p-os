@@ -1,10 +1,10 @@
-name: sea-turtle-app
+name: onep-os-staging
 region: sfo
 services:
   - name: web
     github:
       repo: scamai/1p-os
-      branch: mvp
+      branch: staging
       deploy_on_push: true
     dockerfile_path: Dockerfile
     http_port: 3000
@@ -33,4 +33,7 @@ services:
         type: GENERAL
       - key: DEV_BYPASS
         value: "true"
+        type: GENERAL
+      - key: NODE_ENV
+        value: "production"
         type: GENERAL
