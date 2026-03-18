@@ -58,18 +58,18 @@ export async function GET() {
 
     // Calculate summaries
     const totalRevenue = invoices
-      .filter((i) => i.status === "paid")
-      .reduce((sum, i) => sum + (Number(i.amount) || 0), 0);
+      .filter((i: any) => i.status === "paid")
+      .reduce((sum: number, i: any) => sum + (Number(i.amount) || 0), 0);
     const totalExpenses = expenses.reduce(
-      (sum, e) => sum + (Number(e.amount) || 0),
+      (sum: number, e: any) => sum + (Number(e.amount) || 0),
       0
     );
     const outstandingInvoices = invoices
-      .filter((i) => ["sent", "overdue"].includes(i.status))
-      .reduce((sum, i) => sum + (Number(i.amount) || 0), 0);
+      .filter((i: any) => ["sent", "overdue"].includes(i.status))
+      .reduce((sum: number, i: any) => sum + (Number(i.amount) || 0), 0);
 
     // Monthly trend from monthly_finances
-    const monthlyTrend = monthly.map((m) => ({
+    const monthlyTrend = monthly.map((m: any) => ({
       month: m.month,
       revenue: Number(m.revenue) || 0,
       expenses: Number(m.expenses) || 0,

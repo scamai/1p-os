@@ -169,7 +169,7 @@ export default function FoundersPage() {
       equity_pct: parseFloat(formEquity) || 0,
       vesting_months: parseInt(formVesting) || 48,
       cliff_months: parseInt(formCliff) || 12,
-      start_date: formStart || null,
+      start_date: formStart || undefined,
     };
 
     if (editing) {
