@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
-const PUBLIC_PATHS = ['/auth/', '/api/webhooks/'];
+const PUBLIC_PATHS = ['/auth/', '/api/webhooks/', '/sitemap.xml', '/robots.txt'];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((path) => pathname.startsWith(path));
@@ -52,8 +52,13 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse;
   }
 
+  // Landing page is public
+  if (pathname === '/') {
+    return supabaseResponse;
+  }
+
   // Protect app routes - redirect unauthenticated users to login
-  if (!user && (isAppRoute(pathname) || pathname === '/')) {
+  if (!user && !isPublicPath(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = '/auth/login';
     return NextResponse.redirect(url);
