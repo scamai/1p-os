@@ -7,14 +7,17 @@ export async function GET(request: Request) {
   const next = searchParams.get("next") ?? "/launch";
 
   if (code) {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    try {
+      const supabase = await createClient();
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-    if (!error) {
-      return NextResponse.redirect(`${origin}${next}`);
+      if (!error) {
+        return NextResponse.redirect(`${origin}${next}`);
+      }
+    } catch {
+      // Exchange failed — fall through to error redirect
     }
   }
 
-  // Auth failed — redirect to login with error
   return NextResponse.redirect(`${origin}/auth/login?error=auth_failed`);
 }
