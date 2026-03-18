@@ -10,41 +10,37 @@ export default async function LaunchPage() {
   if (!user) redirect("/auth/login");
 
   // Check if user has a founder profile
-  const { data: profile } = await supabase
-    .from("founder_profiles")
-    .select("*")
-    .eq("user_id", user.id)
-    .single();
+  let profile = null;
+  try {
+    const { data } = await supabase
+      .from("founder_profiles")
+      .select("*")
+      .eq("user_id", user.id)
+      .single();
+    profile = data;
+  } catch { /* table may not exist */ }
 
   // If no profile, redirect to onboarding
   if (!profile) redirect("/launch/onboarding");
 
-  // Fetch phases
-  const { data: phases } = await supabase
-    .from("launch_phases")
-    .select("*")
-    .order("sort_order");
+  // Fetch phases, steps, progress, reminders — all optional
+  let phases: any[] = [];
+  let steps: any[] = [];
+  let progress: any[] = [];
+  let reminders: any[] = [];
 
-  // Fetch steps
-  const { data: steps } = await supabase
-    .from("launch_steps")
-    .select("*")
-    .order("sort_order");
-
-  // Fetch user progress
-  const { data: progress } = await supabase
-    .from("user_launch_progress")
-    .select("*")
-    .eq("user_id", user.id);
-
-  // Fetch upcoming reminders
-  const { data: reminders } = await supabase
-    .from("launch_reminders")
-    .select("*")
-    .eq("user_id", user.id)
-    .eq("is_completed", false)
-    .order("due_date")
-    .limit(5);
+  try {
+    const [phasesRes, stepsRes, progressRes, remindersRes] = await Promise.all([
+      supabase.from("launch_phases").select("*").order("sort_order"),
+      supabase.from("launch_steps").select("*").order("sort_order"),
+      supabase.from("user_launch_progress").select("*").eq("user_id", user.id),
+      supabase.from("launch_reminders").select("*").eq("user_id", user.id).eq("is_completed", false).order("due_date").limit(5),
+    ]);
+    phases = phasesRes.data ?? [];
+    steps = stepsRes.data ?? [];
+    progress = progressRes.data ?? [];
+    reminders = remindersRes.data ?? [];
+  } catch { /* tables may not exist yet */ }
 
   return (
     <LaunchDashboard

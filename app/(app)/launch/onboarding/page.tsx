@@ -10,13 +10,14 @@ export default async function OnboardingPage() {
   if (!user) redirect("/auth/login");
 
   // Check if already has profile
-  const { data: profile } = await supabase
-    .from("founder_profiles")
-    .select("id")
-    .eq("user_id", user.id)
-    .single();
-
-  if (profile) redirect("/launch");
+  try {
+    const { data: profile } = await supabase
+      .from("founder_profiles")
+      .select("id")
+      .eq("user_id", user.id)
+      .single();
+    if (profile) redirect("/launch");
+  } catch { /* table may not exist, show onboarding */ }
 
   return <OnboardingQuiz />;
 }
