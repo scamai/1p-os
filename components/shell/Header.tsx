@@ -49,7 +49,7 @@ function Header({
       {/* Left: business name */}
       <div className="flex items-center gap-2">
         <span className="text-[14px] font-semibold text-slate-900">
-          {businessName || "1P OS"}
+          {businessName || "1 Person Company"}
         </span>
       </div>
 

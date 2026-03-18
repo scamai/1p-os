@@ -25,13 +25,31 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-dm-sans)', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
-        mono: ['var(--font-mono)', 'JetBrains Mono', 'SF Mono', 'Fira Code', 'monospace'],
+        sans: ['var(--font-body)', 'Instrument Sans', 'system-ui', 'sans-serif'],
+        heading: ['var(--font-display)', 'Cormorant Garamond', 'Georgia', 'serif'],
+        mono: ['var(--font-mono)', 'Space Grotesk', 'monospace'],
       },
       fontSize: {
         'micro': ['0.625rem', { lineHeight: '0.875rem' }],
         'caption': ['0.6875rem', { lineHeight: '1rem' }],
         'label': ['0.8125rem', { lineHeight: '1.25rem' }],
+      },
+      spacing: {
+        'xs': '8px',
+        'sm-space': '16px',
+        'md-space': '24px',
+        'lg-space': '32px',
+        'xl-space': '48px',
+        '2xl-space': '80px',
+        '3xl-space': '120px',
+      },
+      maxWidth: {
+        'content': '900px',
+        'page': '1400px',
+      },
+      transitionTimingFunction: {
+        'out-expo': 'cubic-bezier(.16, 1, .3, 1)',
+        'in-out-smooth': 'cubic-bezier(.65, 0, .35, 1)',
       },
       animation: {
         'feed-in': 'feedIn 0.4s cubic-bezier(0.16, 1, 0.3, 1)',

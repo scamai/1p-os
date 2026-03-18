@@ -85,13 +85,13 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
         icon: <BriefcaseIcon />,
         defaultOpen: true,
         items: [
+          { id: "launch-dashboard", icon: <RocketIcon />, label: "Launch", href: "/launch" },
           { id: "founders", icon: <UsersIcon />, label: "Founders", href: "/company/founders" },
           { id: "equity", icon: <PieChartIcon />, label: "Equity", href: "/company/equity" },
           { id: "ideation", icon: <LightbulbIcon />, label: "Ideation", href: "/company/ideation" },
           { id: "incorporation", icon: <FileIcon />, label: "Incorporation", href: "/company/incorporation" },
           { id: "solution-deck", icon: <LayersIcon />, label: "Solution Deck", href: "/company/solution-deck" },
           { id: "accelerator", icon: <TargetIcon />, label: "Apply to Accelerator", href: "/company/accelerator" },
-          { id: "company-fundraising", icon: <RocketIcon />, label: "Fundraising", href: "/company/fundraising" },
         ],
       },
       {
@@ -130,19 +130,6 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
           { id: "contracts", icon: <FileIcon />, label: "Contracts", href: "/legal/contracts" },
           { id: "legal-safes", icon: <TagIcon />, label: "SAFEs", href: "/legal/safes" },
           { id: "ip", icon: <LightbulbIcon />, label: "IP & Trademarks", href: "/legal/ip" },
-        ],
-      },
-      {
-        id: "launch",
-        label: "Launch",
-        icon: <RocketIcon />,
-        defaultOpen: false,
-        items: [
-          { id: "launch-dashboard", icon: <HomeIcon />, label: "Dashboard", href: "/launch" },
-          { id: "launch-templates", icon: <FileIcon />, label: "Templates", href: "/launch/templates" },
-          { id: "launch-investors", icon: <UsersIcon />, label: "Investors", href: "/launch/investors" },
-          { id: "launch-accelerators", icon: <TargetIcon />, label: "Accelerators", href: "/launch/accelerators" },
-          { id: "launch-reminders", icon: <ShieldIcon />, label: "Reminders", href: "/launch/reminders" },
         ],
       },
     ],
@@ -285,7 +272,7 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
       {/* Header */}
       <div className="flex h-14 items-center justify-between px-4 border-b border-slate-200">
         <span className="text-[14px] font-bold tracking-tight text-slate-900">
-          1P OS
+          1 Person Co.
         </span>
         <button
           onClick={onOpenCommandBar}

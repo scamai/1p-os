@@ -38,7 +38,7 @@ const ROLES = [
 // ---------------------------------------------------------------------------
 
 function EquityPie({ founders }: { founders: Founder[] }) {
-  const total = founders.reduce((s, f) => s + f.equity_pct, 0);
+  const total = founders.reduce((s, f) => s + (f.equity_pct ?? 0), 0);
   const unallocated = Math.max(0, 100 - total);
 
   const segments: { label: string; percent: number; shade: string }[] = [];
@@ -54,7 +54,7 @@ function EquityPie({ founders }: { founders: Founder[] }) {
   founders.forEach((f, i) => {
     segments.push({
       label: f.name || "Unnamed",
-      percent: f.equity_pct,
+      percent: f.equity_pct ?? 0,
       shade: shades[i % shades.length],
     });
   });
@@ -185,7 +185,7 @@ export default function FoundersPage() {
     await remove(id);
   };
 
-  const totalEquity = founders.reduce((s, f) => s + f.equity_pct, 0);
+  const totalEquity = founders.reduce((s, f) => s + (f.equity_pct ?? 0), 0);
 
   if (loading) return null;
 
@@ -413,12 +413,12 @@ export default function FoundersPage() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <span className="text-[13px] font-mono font-semibold text-slate-900">
-                      {f.equity_pct.toFixed(1)}%
+                      {(f.equity_pct ?? 0).toFixed(1)}%
                     </span>
                   </td>
                   <td className="px-4 py-3">
                     <span className="text-[12px] text-slate-600">
-                      {Math.round(f.vesting_months / 12)}yr / {f.cliff_months}mo cliff
+                      {Math.round((f.vesting_months ?? 48) / 12)}yr / {f.cliff_months ?? 12}mo cliff
                     </span>
                     {f.start_date && (
                       <p className="text-[11px] text-slate-400">
