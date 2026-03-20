@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import {
@@ -152,7 +152,10 @@ export function TemplateBrowser({ initialData }: TemplateBrowserProps) {
   const [customerName, setCustomerName] = useState("");
   const [preview, setPreview] = useState<LegalTemplate | null>(null);
 
-  const data: FillData = { companyName, founderName, state, customerName };
+  const data = useMemo<FillData>(
+    () => ({ companyName, founderName, state, customerName }),
+    [companyName, founderName, state, customerName]
+  );
 
   const handleDownloadPDF = useCallback(
     async (template: LegalTemplate) => {

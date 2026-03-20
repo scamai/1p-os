@@ -179,7 +179,7 @@ export default function Page() {
     win.document.write(parts.join("\n"));
     win.document.close();
     setTimeout(function () { win.print(); }, 300);
-  }, [blocks, filledBlocks, totalItems, getBlock]);
+  }, [filledBlocks, totalItems, getBlock]);
 
   if (loading) return null;
 

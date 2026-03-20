@@ -7,9 +7,6 @@ function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((path) => pathname.startsWith(path));
 }
 
-function isAppRoute(pathname: string): boolean {
-  return pathname.startsWith('/(app)') || pathname.startsWith('/dashboard') || pathname.startsWith('/agents') || pathname.startsWith('/settings');
-}
 
 export async function updateSession(request: NextRequest) {
   // Dev bypass: skip auth checks entirely

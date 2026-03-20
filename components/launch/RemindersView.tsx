@@ -54,18 +54,15 @@ export function RemindersView({ reminders: initialReminders }: RemindersViewProp
   const [formDueDate, setFormDueDate] = useState("");
   const [formSeverity, setFormSeverity] = useState("info");
 
-  const now = new Date();
-  const thirtyDaysFromNow = new Date(
-    now.getTime() + 30 * 24 * 60 * 60 * 1000
-  );
-
   const upcoming = useMemo(() => {
+    const now = new Date();
+    const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
     return reminders.filter((r) => {
       if (r.is_completed) return false;
       const due = new Date(r.due_date);
       return due <= thirtyDaysFromNow;
     });
-  }, [reminders, thirtyDaysFromNow]);
+  }, [reminders]);
 
   const completed = useMemo(() => {
     return reminders.filter((r) => r.is_completed);

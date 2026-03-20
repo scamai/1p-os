@@ -3,6 +3,7 @@ const nextConfig = {
   output: 'standalone',
   compress: true,
   productionBrowserSourceMaps: false,
+  allowedDevOrigins: ['1p-os.internal.scam.ai'],
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',

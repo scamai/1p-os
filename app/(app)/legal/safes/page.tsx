@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useTableData } from "@/lib/hooks/useTableData";
 import { Education, EDUCATION } from "@/components/shared/Education";
 import { Button } from "@/components/ui/Button";
@@ -29,12 +29,10 @@ export default function Page() {
   const [isNew, setIsNew] = useState(false);
   const [totalShares, setTotalShares] = useState(10000000);
 
-  const fillData: FillData = {
-    companyName: "",
-    founderName: "",
-    state: "",
-    customerName: "",
-  };
+  const fillData = useMemo<FillData>(
+    () => ({ companyName: "", founderName: "", state: "", customerName: "" }),
+    []
+  );
 
   const handleDownloadPDF = useCallback(
     async (template: LegalTemplate) => {

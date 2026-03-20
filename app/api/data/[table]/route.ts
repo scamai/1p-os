@@ -103,7 +103,7 @@ export async function GET(
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 404 });
+      return NextResponse.json({ error: 'Not found' }, { status: 404 });
     }
     return NextResponse.json({ data });
   }
@@ -116,7 +116,7 @@ export async function GET(
       .maybeSingle();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
     return NextResponse.json({ data: data ?? null });
   }
@@ -141,7 +141,7 @@ export async function GET(
   const { data, error } = await query;
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
   return NextResponse.json({ data: data ?? [] });
 }
@@ -174,7 +174,7 @@ export async function POST(
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
     return NextResponse.json({ data }, { status: 200 });
   }
@@ -186,7 +186,7 @@ export async function POST(
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
   return NextResponse.json({ data }, { status: 201 });
 }
@@ -221,7 +221,7 @@ export async function PATCH(
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
   return NextResponse.json({ data });
 }
@@ -251,7 +251,7 @@ export async function DELETE(
     .eq("business_id", business.id);
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
   return NextResponse.json({ deleted: id });
 }

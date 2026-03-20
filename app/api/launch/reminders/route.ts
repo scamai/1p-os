@@ -14,7 +14,7 @@ export async function GET() {
     .eq("user_id", user.id)
     .order("due_date");
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
 
   return NextResponse.json({ reminders: data ?? [] });
 }
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     .select()
     .single();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
 
   return NextResponse.json({ data });
 }
@@ -74,7 +74,7 @@ export async function PATCH(request: Request) {
     .select()
     .single();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
 
   return NextResponse.json({ data });
 }
