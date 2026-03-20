@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { createClient } from "@/lib/supabase/client";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -21,11 +20,15 @@ function LoginContent() {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
 
-  // Show callback error only once
   React.useEffect(() => {
-    if (searchParams.get("error") === "auth_failed") {
+    const err = searchParams.get("error");
+    const errCode = searchParams.get("error_code");
+    const errDesc = searchParams.get("error_description");
+    if (err === "auth_failed") {
       setError("Login failed. Please try again.");
-      // Clean URL
+      window.history.replaceState({}, "", "/auth/login");
+    } else if (err) {
+      setError(`Auth error: ${errCode || err} — ${errDesc || ""}`);
       window.history.replaceState({}, "", "/auth/login");
     }
   }, [searchParams]);
@@ -34,22 +37,16 @@ function LoginContent() {
     setLoading(true);
     setError("");
     try {
-      const supabase = createClient();
-      const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-      if (oauthError) {
-        setError(oauthError.message);
+      const res = await fetch("/api/auth/google", { method: "POST" });
+      const { url, error: apiError } = await res.json();
+      if (apiError || !url) {
+        setError("Login failed. Please try again.");
         setLoading(false);
-      } else if (!data?.url) {
-        setError("No redirect URL returned. Check Supabase Google provider config.");
-        setLoading(false);
+        return;
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Connection failed. Check your internet.");
+      window.location.assign(url);
+    } catch {
+      setError("Connection failed. Check your internet.");
       setLoading(false);
     }
   };
