@@ -93,24 +93,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url, authType: "oauth2" });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-
-    // If the error is about missing env vars, return a helpful message
-    if (message.includes("is not set")) {
-      const envVar = message.split(" ")[0]; // e.g. "GOOGLE_CLIENT_ID"
-      return NextResponse.json(
-        {
-          error: "not_configured",
-          provider: providerId,
-          message: `${provider.name} OAuth is not configured yet. Set ${envVar} in your .env.local file.`,
-          envVar,
-        },
-        { status: 422 }
-      );
-    }
-
+    console.error('[integrations/connect] OAuth error:', err);
     return NextResponse.json(
-      { error: "oauth_error", message },
+      { error: "oauth_error", message: "Internal server error" },
       { status: 500 }
     );
   }

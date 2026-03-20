@@ -309,10 +309,8 @@ async function handleChannelsSend(
     );
     return { ok: true, data: result };
   } catch (err) {
-    return {
-      ok: false,
-      error: err instanceof Error ? err.message : 'Send failed',
-    };
+    console.error('[gateway] Channel send error:', err);
+    return { ok: false, error: 'Send failed' };
   }
 }
 
@@ -349,10 +347,8 @@ async function handleAutomationsAdd(
     automationEngine.addJob(job);
     return { ok: true, data: { jobId: job.id } };
   } catch (err) {
-    return {
-      ok: false,
-      error: err instanceof Error ? err.message : 'Failed to add job',
-    };
+    console.error('[gateway] Automation add error:', err);
+    return { ok: false, error: 'Failed to add job' };
   }
 }
 

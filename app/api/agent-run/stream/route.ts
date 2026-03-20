@@ -170,9 +170,9 @@ export async function POST(request: NextRequest) {
           controller.close();
         })
         .catch((err) => {
+          console.error('[agent-run/stream] Runner error:', err);
           const errorPayload = `event: error\ndata: ${JSON.stringify({
-            message:
-              err instanceof Error ? err.message : "Internal server error",
+            message: "Internal server error",
           })}\n\n`;
           try {
             controller.enqueue(encoder.encode(errorPayload));

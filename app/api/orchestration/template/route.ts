@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     const result = await applyTemplate(templateId, business.id, supabase);
     return NextResponse.json(result);
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Failed to apply template";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error('[orchestration/template] error:', err);
+    return NextResponse.json({ error: 'Failed to apply template' }, { status: 500 });
   }
 }
