@@ -49,9 +49,8 @@ function LoginContent() {
         setError("Login failed. Please try again.");
         setLoading(false);
       }
-    } catch (e) {
-      console.error("[login] signInWithOAuth exception:", e);
-      setError(`Connection failed: ${e instanceof Error ? e.message : String(e)}`);
+    } catch {
+      setError("Connection failed. Check your internet.");
       setLoading(false);
     }
   };
