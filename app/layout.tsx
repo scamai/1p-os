@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Instrument_Sans, Cormorant_Garamond, Space_Grotesk } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -84,19 +85,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${instrumentSans.variable} ${cormorant.variable} ${spaceGrotesk.variable}`}>
       <head>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-X3861HH575" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-X3861HH575');
-            `,
-          }}
-        />
         <link rel="apple-touch-icon" href="/icon-192.png" />
       </head>
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-X3861HH575" strategy="afterInteractive" />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-X3861HH575');
+        `}
+      </Script>
       <body className="min-h-screen bg-white text-black antialiased">
         {children}
       </body>
