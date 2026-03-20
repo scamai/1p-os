@@ -50,7 +50,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   }
 
   const { error } = await supabase.from("goals").update(updates).eq("id", params.id);
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
 
   return NextResponse.json({ success: true });
 }
