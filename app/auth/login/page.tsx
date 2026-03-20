@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 
 function GoogleIcon() {
   return (
@@ -37,14 +38,17 @@ function LoginContent() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/auth/google", { method: "POST" });
-      const { url, error: apiError } = await res.json();
-      if (apiError || !url) {
+      const supabase = createClient();
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+      if (oauthError) {
         setError("Login failed. Please try again.");
         setLoading(false);
-        return;
       }
-      window.location.assign(url);
     } catch {
       setError("Connection failed. Check your internet.");
       setLoading(false);
