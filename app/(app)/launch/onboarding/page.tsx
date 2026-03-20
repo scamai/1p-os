@@ -4,7 +4,9 @@ import { OnboardingQuiz } from "@/components/launch/OnboardingQuiz";
 
 export default async function OnboardingPage() {
   const supabase = await createClient();
-  const userId = "00000000-0000-0000-0000-000000000000";
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/auth/login");
+  const userId = user.id;
 
   // Check if already has profile
   try {

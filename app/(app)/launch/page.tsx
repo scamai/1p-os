@@ -4,7 +4,9 @@ import { LaunchDashboard } from "@/components/launch/LaunchDashboard";
 
 export default async function LaunchPage() {
   const supabase = await createClient();
-  const userId = "00000000-0000-0000-0000-000000000000";
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/auth/login");
+  const userId = user.id;
 
   // Check if user has a founder profile
   let profile = null;

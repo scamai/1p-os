@@ -1,9 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 import { AcceleratorBrowser } from "@/components/launch/AcceleratorBrowser";
 
 export default async function AcceleratorsPage() {
   const supabase = await createClient();
-  const userId = "00000000-0000-0000-0000-000000000000";
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/auth/login");
+  const userId = user.id;
 
   const { data: programs } = await supabase
     .from("accelerator_programs")

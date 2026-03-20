@@ -1,9 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 import { InvestorBrowser } from "@/components/launch/InvestorBrowser";
 
 export default async function InvestorsPage() {
   const supabase = await createClient();
-  const userId = "00000000-0000-0000-0000-000000000000";
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/auth/login");
+  const userId = user.id;
 
   const { data: investors } = await supabase
     .from("investor_database")
