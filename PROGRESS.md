@@ -1,5 +1,19 @@
 # PROGRESS
 
+## 2026-03-19 — Review Round 3
+
+### What was fixed
+- **Auth (6 pages)**: Replaced hardcoded `userId = "00000000-..."` with real `supabase.auth.getUser()` in all launch pages: page, onboarding, reminders, templates, investors, accelerators
+- **Security**: Removed `bizError.message` leak in `app/api/ai/setup/route.ts`
+- **Auth callback**: Fixed `0.0.0.0:3000` redirect by using `x-forwarded-host` header
+- **NEXT_PUBLIC vars**: Added `.env.production` committed to git to fix DO build-time env var injection
+- **OAuth**: Reverted to browser-side `signInWithOAuth` — DO Encrypted vars are runtime-only, can't be used for NEXT_PUBLIC_ baking
+
+### Lessons learned
+- All Server Component pages that query user-specific data must call `supabase.auth.getUser()` — never hardcode user IDs
+- DO App Platform "Encrypted" env vars are runtime-only; NEXT_PUBLIC_ vars need to be in committed `.env.production` for build-time baking
+- After OAuth callback, `request.url` origin reflects internal binding (`0.0.0.0:3000`), not the public domain — always use `x-forwarded-host`
+
 ## 2026-03-19 — Review Round 2
 
 ### What was fixed
