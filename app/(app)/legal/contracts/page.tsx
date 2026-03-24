@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
 import { RelatedPages } from "@/components/shared/RelatedPages";
 import {
   LEGAL_TEMPLATES,
@@ -169,7 +169,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <Education {...EDUCATION.contracts} />
+
 
       <div className="mb-10">
         <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Contract Templates</h1>

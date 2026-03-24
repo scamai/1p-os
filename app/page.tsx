@@ -138,7 +138,7 @@ export default function RootPage() {
     if (first) {
       router.push(first.href);
     } else {
-      router.push("/launch");
+      router.push("/company/founders");
     }
   }
 

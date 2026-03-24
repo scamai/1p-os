@@ -7,31 +7,26 @@ const SLIDES = [
     tag: "Welcome",
     headline: "We made the mistakes\nso you don\u2019t have to.",
     body: "This isn\u2019t another project management tool. It\u2019s a step-by-step guide built by founders who\u2019ve been through incorporation, fundraising, legal, taxes, and every trap in between.",
-    detail: null,
   },
   {
     tag: "The problem",
     headline: "90% of startups fail.\nMost from avoidable mistakes.",
     body: "Wrong cofounder. Wrong entity type. Wrong legal partner. Missed 83(b) elections. Bad cap tables. These aren\u2019t hard problems \u2014 they\u2019re just invisible until it\u2019s too late.",
-    detail: null,
   },
   {
     tag: "How it works",
     headline: "A guided path\nfrom idea to real company.",
     body: "We break the entire process into clear phases \u2014 incorporation, legal setup, banking, equity, compliance, fundraising \u2014 and walk you through each one in order.",
-    detail: null,
   },
   {
     tag: "What makes this different",
     headline: "Built for first-time founders.\nNot operators.",
     body: "We don\u2019t assume you know what a registered agent is, or why Delaware matters, or what vesting means. Every step explains the why \u2014 not just the what.",
-    detail: null,
   },
   {
     tag: "Free & open source",
     headline: "No fees. No upsells.\nJust the playbook.",
     body: "This is AGPLv3 open source. We built it because we wished it existed when we started. Let\u2019s get your company set up the right way.",
-    detail: null,
   },
 ];
 
@@ -78,21 +73,6 @@ export function Walkthrough({ onComplete }: { onComplete: () => void }) {
             {slide.body}
           </p>
 
-          {slide.detail && (
-            <div className="mt-8 space-y-3">
-              {slide.detail.map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3"
-                >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center border border-black/10 text-[10px] text-black/40">
-                    {i + 1}
-                  </span>
-                  <span className="text-[14px] text-black/60">{item}</span>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
 

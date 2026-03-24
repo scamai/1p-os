@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { useTableData } from "@/lib/hooks/useTableData";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
 import { RelatedPages } from "@/components/shared/RelatedPages";
 import { Button } from "@/components/ui/Button";
 import {
@@ -109,7 +109,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto max-w-4xl">
-      <Education {...EDUCATION.safes} />
+
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">SAFEs</h1>

@@ -45,6 +45,18 @@ const KEYWORDS: { term: string; explanation: string }[] = [
     term: "Net Revenue Retention (NRR)",
     explanation: "How much revenue you keep and expand from existing customers, excluding new sales. Above 100% means existing customers are spending more over time \u2014 through upgrades, expansion, or usage growth. The best SaaS companies are above 120%. Below 100% means you\u2019re leaking.",
   },
+  {
+    term: "Bill of Materials (BOM)",
+    explanation: "The total cost of every component in your physical product \u2014 materials, chips, packaging, labels, screws. This is the floor your price can never go below. If you don\u2019t know your BOM to the cent, you don\u2019t know if you\u2019re making money or losing it.",
+  },
+  {
+    term: "Gross Margin",
+    explanation: "Revenue minus the direct cost of delivering the product. For software, this is 80\u201390%. For hardware, it\u2019s 30\u201360%. For services, it\u2019s whatever\u2019s left after you pay the people doing the work. Investors care about this number because it determines how much money is available to fund growth.",
+  },
+  {
+    term: "Take Rate",
+    explanation: "The percentage a marketplace or platform keeps from each transaction. Uber\u2019s take rate is ~25%. Airbnb\u2019s is ~14%. App stores take 30%. Your take rate needs to be low enough that both sides of the market feel it\u2019s fair, and high enough to build a real business.",
+  },
 ];
 
 const MISTAKES = [
@@ -231,6 +243,139 @@ export default function PricingPage() {
                 of this wrong.
               </p>
             </div>
+          </div>
+        </section>
+
+        {/* Hardware / physical products */}
+        <section>
+          <h2 className="text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-black">
+            Hardware and physical products
+          </h2>
+          <p className="mt-4 text-[18px] leading-[2] text-black/55">
+            Everything above assumes software, where the marginal cost of
+            serving one more customer is close to zero.{" "}
+            <span className="underline decoration-black/20 underline-offset-4 text-black">
+              Hardware is a completely different game.
+            </span>{" "}
+            Every unit you sell has a real cost &mdash; materials, manufacturing,
+            shipping, returns, warranty. You can&apos;t give away free samples
+            at scale, and you can&apos;t iterate as fast.
+          </p>
+          <p className="mt-5 text-[18px] leading-[2] text-black/55">
+            The first rule of hardware pricing:{" "}
+            <span className="underline decoration-black/20 underline-offset-4 text-black">
+              know your Bill of Materials (BOM) cold.
+            </span>{" "}
+            Every component, every screw, every cent of packaging. Then add
+            manufacturing overhead, shipping, returns, warranty reserves,
+            and your margin. If you can&apos;t sell for at least 3&ndash;4x
+            your BOM cost at retail, the math probably doesn&apos;t work.
+          </p>
+
+          <div className="mt-8 space-y-8">
+            <div>
+              <p className="text-[20px] font-medium leading-[1.4] text-black">
+                Cost-plus (hardware default)
+              </p>
+              <p className="mt-2 text-[17px] leading-[1.9] text-black/50">
+                Unlike software, cost-plus actually makes sense for hardware.
+                You need to cover real costs. The standard retail formula is
+                BOM &times; 2 for wholesale, &times; 2 again for retail.
+                A $25 BOM becomes a $50 wholesale product and a $99 retail
+                product. If your margins are thinner than that, you&apos;ll
+                bleed cash on returns and warranty claims.
+              </p>
+            </div>
+
+            <div>
+              <p className="text-[20px] font-medium leading-[1.4] text-black">
+                Razor and blade
+              </p>
+              <p className="mt-2 text-[17px] leading-[1.9] text-black/50">
+                Sell the hardware cheap (or at cost), make money on
+                consumables or subscriptions. Printers and ink. Keurig and
+                pods. Peloton and monthly membership. This works when you
+                have a recurring consumable, but it&apos;s dangerous &mdash;
+                if customers find third-party alternatives to your
+                consumable, your entire model collapses.
+              </p>
+            </div>
+
+            <div>
+              <p className="text-[20px] font-medium leading-[1.4] text-black">
+                Hardware + software
+              </p>
+              <p className="mt-2 text-[17px] leading-[1.9] text-black/50">
+                The most powerful model: sell the device, charge a recurring
+                fee for the software that runs it. Ring sells a doorbell,
+                then charges for cloud storage. Tesla sells a car, then
+                charges for Full Self-Driving. The hardware gets you in the
+                door; the software creates recurring revenue. Investors love
+                this because it combines hardware stickiness with software
+                margins.
+              </p>
+            </div>
+
+            <div>
+              <p className="text-[20px] font-medium leading-[1.4] text-black">
+                Pre-orders and crowdfunding
+              </p>
+              <p className="mt-2 text-[17px] leading-[1.9] text-black/50">
+                Hardware has massive upfront costs &mdash; tooling, molds,
+                minimum order quantities. Pre-orders validate demand and
+                fund production simultaneously. But{" "}
+                <span className="underline decoration-black/20 underline-offset-4 text-black">
+                  a Kickstarter campaign is a supply chain promise, not a
+                  marketing stunt.
+                </span>{" "}
+                The graveyard of hardware startups is full of companies that
+                raised $1M on Kickstarter and couldn&apos;t deliver.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Services and marketplaces */}
+        <section>
+          <h2 className="text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-black">
+            Services, marketplaces, and everything else
+          </h2>
+          <p className="mt-4 text-[18px] leading-[2] text-black/55">
+            Not everything is software or hardware. If you&apos;re building
+            a services business, a marketplace, or something in between,
+            the pricing principles change again.
+          </p>
+          <div className="mt-6 space-y-4">
+            <p className="text-[18px] leading-[2] text-black/55 pl-7 border-l-[3px] border-black/[0.08]">
+              <strong className="text-black/70">Services.</strong>{" "}
+              Charge for outcomes, not hours. Hourly billing punishes
+              efficiency &mdash; the better you get, the less you earn.
+              Value-based pricing or fixed-project pricing lets you capture
+              the value you create, not just the time you spend.
+            </p>
+            <p className="text-[18px] leading-[2] text-black/55 pl-7 border-l-[3px] border-black/[0.08]">
+              <strong className="text-black/70">Marketplaces.</strong>{" "}
+              Take a percentage of each transaction. The standard is
+              10&ndash;20% for digital goods, 15&ndash;30% for physical.
+              Uber takes 25%. Airbnb takes 14%. Etsy takes 6.5% + fees.
+              The challenge: both sides of the market have to feel the
+              pricing is fair, or one side leaves.
+            </p>
+            <p className="text-[18px] leading-[2] text-black/55 pl-7 border-l-[3px] border-black/[0.08]">
+              <strong className="text-black/70">Fintech.</strong>{" "}
+              Take a cut of the money flowing through the platform.
+              Stripe takes 2.9% + $0.30. Square takes 2.6% + $0.10. The
+              margins are thin, but the volume is enormous. You need scale
+              to make this work.
+            </p>
+            <p className="text-[18px] leading-[2] text-black/55 pl-7 border-l-[3px] border-black/[0.08]">
+              <strong className="text-black/70">API / infrastructure.</strong>{" "}
+              Charge per call, per GB, per event. Twilio, Sendgrid,
+              Cloudflare. Usage-based pricing is the norm because the
+              customer&apos;s cost should scale with their success. Start
+              with a generous free tier to reduce friction, then charge
+              once they&apos;re hooked.
+            </p>
           </div>
         </section>
 
@@ -556,16 +701,22 @@ export default function PricingPage() {
       </div>
 
       {/* CTA */}
-      <div className="mt-16 pb-8">
+      <div className="mt-16 pb-8 flex flex-col sm:flex-row gap-3">
         <Link
-          href="/business/gtm"
+          href="/company/solution-deck"
           className="inline-flex items-center gap-2.5 border border-black bg-black px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-black/90"
         >
-          Plan your go-to-market
+          Start building
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="5" y1="12" x2="19" y2="12" />
             <polyline points="12 5 19 12 12 19" />
           </svg>
+        </Link>
+        <Link
+          href="/business/model"
+          className="inline-flex items-center gap-2.5 border border-black/[0.15] px-6 py-3.5 text-[15px] font-medium text-black transition-colors hover:bg-black/[0.03]"
+        >
+          Open Business Model Canvas
         </Link>
       </div>
     </article>

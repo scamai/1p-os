@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
 import { RelatedPages } from "@/components/shared/RelatedPages";
 
 interface Accelerator {
@@ -88,7 +88,7 @@ export default function AcceleratorPage() {
 
   return (
     <div className="mx-auto max-w-[800px]">
-      <Education {...EDUCATION.accelerator} />
+
       <div className="mb-6">
         <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Apply to Accelerator</h1>
         <p className="mt-2 text-[14px] leading-[1.6] text-black/40">

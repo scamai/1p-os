@@ -37,7 +37,8 @@ function LightbulbIcon() { return <Icon d="M12 2a7 7 0 017 7c0 2.38-1.19 4.47-3 
 function PieChartIcon() { return <Icon d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2v10z" />; }
 function MapIcon() { return <Icon d="M1 6v16l7-4 8 4 7-4V2l-7 4-8-4-7 4zM8 2v16M16 6v16" />; }
 function MegaphoneIcon() { return <Icon d="M22 2L11 13M22 2l-7 20-4-9-9-4z" />; }
-function ShieldIcon() { return <Icon d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />; }
+function ScaleIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v18" /><path d="M2 7h20" /><path d="M5 7l-3 9a5 5 0 006 0L5 7z" /><path d="M19 7l-3 9a5 5 0 006 0L19 7z" /></svg>; }
+function HeartIcon() { return <Icon d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />; }
 function TagIcon() { return <Icon d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82zM7 7h.01" />; }
 function LayersIcon() { return <Icon d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />; }
 function SearchIcon() { return <Icon d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35" />; }
@@ -77,50 +78,36 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
   return {
     top: [
       { id: "before-you-started", icon: <RocketIcon />, label: "Before you started", href: "/launch" },
+      { id: "founders", icon: <UsersIcon />, label: "Founders", href: "/company/founders" },
+      { id: "founder-wellness", icon: <HeartIcon />, label: "Founder Wellness", href: "/company/founder-wellness" },
+      { id: "ideation", icon: <LightbulbIcon />, label: "Ideation", href: "/company/ideation" },
+      { id: "equity", icon: <PieChartIcon />, label: "Equity", href: "/company/equity" },
+      { id: "incorporation", icon: <FileIcon />, label: "Incorporation", href: "/company/incorporation" },
+      { id: "traction", icon: <TargetIcon />, label: "Traction", href: "/business/traction" },
+      { id: "fundraising", icon: <DollarIcon />, label: "Fundraising", href: "/money/fundraising" },
+      { id: "pricing", icon: <TagIcon />, label: "Pricing", href: "/business/pricing" },
     ],
     groups: [
       {
-        id: "company",
-        label: "Company",
+        id: "tools",
+        label: "Tools",
         icon: <BriefcaseIcon />,
-        defaultOpen: true,
+        defaultOpen: false,
         items: [
-          { id: "founders", icon: <UsersIcon />, label: "Founders", href: "/company/founders" },
-          { id: "founder-wellness", icon: <ShieldIcon />, label: "Founder Wellness", href: "/company/founder-wellness" },
-          { id: "ideation", icon: <LightbulbIcon />, label: "Ideation", href: "/company/ideation" },
-          { id: "equity", icon: <PieChartIcon />, label: "Equity", href: "/company/equity" },
-          { id: "incorporation", icon: <FileIcon />, label: "Incorporation", href: "/company/incorporation" },
+          { id: "equity-split", icon: <PieChartIcon />, label: "Equity Splitter", href: "/tools/equity-split" },
           { id: "solution-deck", icon: <LayersIcon />, label: "Solution Deck", href: "/company/solution-deck" },
-          { id: "accelerator", icon: <TargetIcon />, label: "Apply to Accelerator", href: "/company/accelerator" },
-        ],
-      },
-      {
-        id: "money",
-        label: "Money",
-        icon: <DollarIcon />,
-        defaultOpen: false,
-        items: [
-          { id: "fundraising", icon: <RocketIcon />, label: "Fundraising", href: "/money/fundraising" },
-          { id: "runrate", icon: <TrendIcon />, label: "Runrate", href: "/money/runrate" },
-        ],
-      },
-      {
-        id: "business",
-        label: "Business",
-        icon: <MapIcon />,
-        defaultOpen: false,
-        items: [
-          { id: "biz-model", icon: <LayersIcon />, label: "Business Model", href: "/business/model" },
-          { id: "pricing", icon: <TagIcon />, label: "Pricing Strategy", href: "/business/pricing" },
+          { id: "accelerator", icon: <TargetIcon />, label: "Accelerator Tracker", href: "/company/accelerator" },
+          { id: "runrate", icon: <TrendIcon />, label: "Runrate Calculator", href: "/money/runrate" },
+          { id: "biz-model", icon: <MapIcon />, label: "Business Model Canvas", href: "/business/model" },
           { id: "market-research", icon: <SearchIcon />, label: "Market Research", href: "/business/market-research" },
-          { id: "gtm", icon: <RocketIcon />, label: "Go-to-Market", href: "/business/gtm" },
-          { id: "marketing", icon: <MegaphoneIcon />, label: "Marketing", href: "/business/marketing" },
+          { id: "gtm", icon: <RocketIcon />, label: "Go-to-Market Planner", href: "/business/gtm", comingSoon: true },
+          { id: "marketing", icon: <MegaphoneIcon />, label: "Marketing Tracker", href: "/business/marketing", comingSoon: true },
         ],
       },
       {
         id: "legal",
         label: "Legal",
-        icon: <ShieldIcon />,
+        icon: <ScaleIcon />,
         defaultOpen: false,
         items: [
           { id: "contracts", icon: <FileIcon />, label: "Templates", href: "/legal/contracts" },
@@ -130,7 +117,7 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
       },
     ],
     bottom: [
-      { id: "settings", icon: <SettingsIcon />, label: "Company settings", href: "/settings" },
+      { id: "settings", icon: <SettingsIcon />, label: "Settings", href: "/settings" },
     ],
   };
 }
@@ -142,6 +129,29 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const nav = buildNav(counts);
+
+  // Track which Learn articles have been read
+  const LEARN_IDS = ["founders", "founder-wellness", "ideation", "equity", "incorporation", "traction", "fundraising", "pricing"];
+  const [readArticles, setReadArticles] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const saved = localStorage.getItem("1p-read-articles");
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  });
+
+  // Mark current article as read
+  useEffect(() => {
+    const match = nav.top.find((item) => pathname === item.href || pathname.startsWith(item.href + "/"));
+    if (match && LEARN_IDS.includes(match.id)) {
+      setReadArticles((prev) => {
+        const next = new Set(prev);
+        next.add(match.id);
+        localStorage.setItem("1p-read-articles", JSON.stringify([...next]));
+        return next;
+      });
+    }
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     const defaults: Record<string, boolean> = {};
@@ -176,9 +186,10 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
     setOpenGroups((prev) => ({ ...prev, [id]: !prev[id] }));
   }
 
-  // Top-level flat item (with icon) — like Carta's "Dashboard", "Manage employees"
+  // Top-level flat item with icon and optional read indicator
   function renderTopItem(item: NavItem) {
     const active = isActive(item.href);
+    const isRead = LEARN_IDS.includes(item.id) && readArticles.has(item.id);
     return (
       <button
         key={item.id}
@@ -195,14 +206,20 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
           {item.icon}
         </span>
         <span className="flex-1 truncate text-[14px]">{item.label}</span>
+        {isRead && !active && (
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-black/20">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        )}
       </button>
     );
   }
 
-  // Child item inside a group (plain text, indented, no icon) — like Carta's "View cap table", "Issue equity"
-  function renderChildItem(item: NavItem) {
+  // Child item inside a group (plain text, indented, no icon)
+  function renderChildItem(item: NavItem, groupId?: string) {
     const active = isActive(item.href);
     const disabled = item.comingSoon;
+    const isRead = groupId === "learn" && readArticles.has(item.id);
     return (
       <button
         key={item.id}
@@ -216,6 +233,13 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
         }`}
       >
         <span className="flex-1 truncate text-[14px]">{item.label}</span>
+        {isRead && !active && (
+          <span className="shrink-0 ml-2">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-black/25">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </span>
+        )}
         {disabled && (
           <span className="shrink-0 bg-black/[0.04] px-1.5 py-0.5 text-[10px] font-medium text-black/40">
             Soon
@@ -256,7 +280,7 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
 
         {isOpen && (
           <div className="space-y-px">
-            {group.items.map(renderChildItem)}
+            {group.items.map((item) => renderChildItem(item, group.id))}
           </div>
         )}
       </div>
@@ -283,10 +307,13 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
 
       {/* Main nav */}
       <nav className="flex-1 overflow-y-auto px-1 space-y-0.5">
-        {/* Top flat items */}
+        {/* Learn items — always visible, no collapsing */}
         {nav.top.map(renderTopItem)}
 
-        {/* Groups */}
+        {/* Divider */}
+        <div className="!my-3 mx-3 border-t border-black/[0.06]" />
+
+        {/* Groups (Tools, Legal) */}
         {nav.groups.map(renderGroup)}
       </nav>
 

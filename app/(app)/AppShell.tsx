@@ -11,6 +11,7 @@ import { AIWizard, type WizardIntent } from "@/components/shell/AIWizard";
 import { CoreBanner } from "@/components/shell/CoreBanner";
 import { AlwaysOnVoice } from "@/components/shell/AlwaysOnVoice";
 import { FounderEducation } from "@/components/shared/FounderEducation";
+import { ArticleNav } from "@/components/shared/ArticleNav";
 
 const ContactForm = React.lazy(() =>
   import("@/components/forms/PersonForm").then((m) => ({ default: m.ContactForm }))
@@ -53,6 +54,54 @@ interface AppShellProps {
     documentCount?: number;
   };
   children: React.ReactNode;
+}
+
+function ArticleLayout({ onBack, children }: { onBack: () => void; children: React.ReactNode }) {
+  const [progress, setProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    function handleScroll() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) { setProgress(100); return; }
+      setProgress(Math.min(100, Math.round((scrollTop / docHeight) * 100)));
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Horizontal progress bar — fixed at top */}
+      <div className="fixed left-0 right-0 top-0 z-50 h-[2px] bg-black/[0.04]">
+        <div
+          className="h-full bg-black/30 transition-[width] duration-150 ease-out"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <nav className="mx-auto max-w-[680px] px-6 pt-6 flex items-center justify-between">
+        <button
+          onClick={onBack}
+          className="flex items-center gap-1.5 text-[13px] text-black/40 hover:text-black/70 transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+          Back
+        </button>
+        <span className="font-heading text-[15px] italic font-extralight tracking-[-0.02em] text-black/30">
+          1P
+        </span>
+      </nav>
+      <main className="flex-1 overflow-y-auto pb-16">
+        {children}
+      </main>
+      <ArticleNav />
+    </div>
+  );
 }
 
 function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProps) {
@@ -254,31 +303,10 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
     );
   };
 
-  const isArticlePage = pathname === "/launch" || pathname === "/company/founders" || pathname === "/company/ideation" || pathname === "/company/equity" || pathname === "/company/incorporation" || pathname === "/company/founder-wellness" || pathname === "/money/fundraising" || pathname === "/business/pricing";
+  const isArticlePage = pathname === "/launch" || pathname === "/company/founders" || pathname === "/company/ideation" || pathname === "/company/equity" || pathname === "/company/incorporation" || pathname === "/company/founder-wellness" || pathname === "/business/traction" || pathname === "/money/fundraising" || pathname === "/business/pricing";
 
   if (isArticlePage) {
-    return (
-      <div className="min-h-screen bg-white">
-        <nav className="mx-auto max-w-[680px] px-6 pt-6 flex items-center justify-between">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-1.5 text-[13px] text-black/40 hover:text-black/70 transition-colors"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="19" y1="12" x2="5" y2="12" />
-              <polyline points="12 19 5 12 12 5" />
-            </svg>
-            Back
-          </button>
-          <span className="font-heading text-[15px] italic font-extralight tracking-[-0.02em] text-black/30">
-            1P
-          </span>
-        </nav>
-        <main className="flex-1 overflow-y-auto">
-          {children}
-        </main>
-      </div>
-    );
+    return <ArticleLayout onBack={() => router.back()}>{children}</ArticleLayout>;
   }
 
   return (

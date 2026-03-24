@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
 import { RelatedPages } from "@/components/shared/RelatedPages";
 
 // ---------------------------------------------------------------------------
@@ -50,6 +50,12 @@ const DEFAULT_SLIDES: Slide[] = [
     title: "Traction",
     content:
       "What have you achieved so far? Users, revenue, growth rate, LOIs, waitlist, key milestones. Show momentum.",
+  },
+  {
+    id: "s5b",
+    title: "Competitive Landscape",
+    content:
+      "Who else is solving this problem? What are their strengths and weaknesses? Where do you win? Use a 2x2 matrix or feature comparison. Show investors you know the space — and why you'll win despite the competition.",
   },
   {
     id: "s6",
@@ -182,7 +188,7 @@ export default function SolutionDeckPage() {
 
   return (
     <div className="mx-auto max-w-[900px]">
-      <Education {...EDUCATION.solutionDeck} />
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">

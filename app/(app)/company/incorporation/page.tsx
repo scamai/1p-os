@@ -88,25 +88,31 @@ export default function IncorporationPage() {
             Why you need to incorporate
           </h2>
           <p className="mt-4 text-[18px] leading-[2] text-black/55">
-            Without a legal entity, you and your business are the same thing.{" "}
+            Incorporation isn&apos;t about avoiding responsibility &mdash;{" "}
             <span className="underline decoration-black/20 underline-offset-4 text-black">
-              If your business gets sued, you get sued.
+              it&apos;s about taking it seriously enough to formalize it.
             </span>{" "}
-            If your business owes money, you owe money. Your personal savings,
-            your car, your house &mdash; all fair game.
+            Without a legal entity, there&apos;s no structure for accountability.
+            No clear ownership. No separation between your personal finances
+            and your business obligations. No way for partners, customers, or
+            investors to hold the company to its commitments.
           </p>
           <p className="mt-5 text-[18px] leading-[2] text-black/55">
-            Incorporation creates a legal wall between you and your business.
-            The company becomes its own entity &mdash; it can own property, sign
-            contracts, and take on debt independently.{" "}
+            A corporation creates a framework of accountability that doesn&apos;t
+            exist otherwise. It requires you to track finances separately, file
+            taxes, maintain records, and operate transparently. You&apos;re not
+            hiding behind a legal entity &mdash;{" "}
             <span className="underline decoration-black/20 underline-offset-4 text-black">
-              If the business fails, you walk away broke but not bankrupt.
+              you&apos;re building one that can be held accountable in ways
+              an individual operating informally never could.
             </span>
           </p>
           <p className="mt-5 text-[18px] leading-[2] text-black/55">
             It also makes everything else possible: opening a business bank
-            account, hiring employees, raising money, issuing equity. You
-            can&apos;t do any of that as &ldquo;just a person with an idea.&rdquo;
+            account, hiring employees, raising money, issuing equity, signing
+            contracts that bind the company rather than you personally. These
+            aren&apos;t protections from consequence &mdash; they&apos;re the
+            foundations of a real business that can outlast its founders.
           </p>
         </section>
 
@@ -418,16 +424,22 @@ export default function IncorporationPage() {
       </div>
 
       {/* CTA */}
-      <div className="mt-16 pb-8">
+      <div className="mt-16 pb-8 flex flex-col sm:flex-row gap-3">
         <Link
-          href="/company/solution-deck"
+          href="/business/traction"
           className="inline-flex items-center gap-2.5 border border-black bg-black px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-black/90"
         >
-          Build your solution deck
+          Next: Traction
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="5" y1="12" x2="19" y2="12" />
             <polyline points="12 5 19 12 12 19" />
           </svg>
+        </Link>
+        <Link
+          href="/legal/contracts"
+          className="inline-flex items-center gap-2.5 border border-black/[0.15] px-6 py-3.5 text-[15px] font-medium text-black transition-colors hover:bg-black/[0.03]"
+        >
+          Open Legal Templates
         </Link>
       </div>
     </article>

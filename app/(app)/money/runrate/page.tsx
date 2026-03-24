@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
 import { RelatedPages } from "@/components/shared/RelatedPages";
 
 interface MonthData {
@@ -71,7 +71,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto max-w-[640px]">
-      <Education {...EDUCATION.runrate} />
+
       <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Runrate</h1>
       <p className="mt-2 text-[14px] leading-[1.6] text-black/40">
         Track revenue, expenses, and understand your runway.

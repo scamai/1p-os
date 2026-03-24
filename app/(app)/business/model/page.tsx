@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
 import { RelatedPages } from "@/components/shared/RelatedPages";
 import { useSingletonData } from "@/lib/hooks/useSingletonData";
 
@@ -186,7 +186,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <Education {...EDUCATION.businessModel} />
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Business Model Canvas</h1>
