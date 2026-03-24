@@ -40,8 +40,6 @@ function MegaphoneIcon() { return <Icon d="M22 2L11 13M22 2l-7 20-4-9-9-4z" />; 
 function ShieldIcon() { return <Icon d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />; }
 function TagIcon() { return <Icon d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82zM7 7h.01" />; }
 function LayersIcon() { return <Icon d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />; }
-function BookIcon() { return <Icon d="M4 19.5A2.5 2.5 0 016.5 17H20M4 19.5V5a2.5 2.5 0 012.5-2.5H20v17H6.5A2.5 2.5 0 014 19.5z" />; }
-function CalculatorIcon() { return <Icon d="M4 2h16a2 2 0 012 2v16a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2zM8 10h8M8 14h8M8 18h3" />; }
 function SearchIcon() { return <Icon d="M11 19a8 8 0 100-16 8 8 0 000 16zM21 21l-4.35-4.35" />; }
 function BotIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="10" rx="2" /><circle cx="9" cy="16" r="1" /><circle cx="15" cy="16" r="1" /><path d="M8 11V7a4 4 0 018 0v4" /><line x1="12" y1="3" x2="12" y2="1" /></svg>; }
 function TerminalIcon() { return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 17 10 11 4 5" /><line x1="12" y1="19" x2="20" y2="19" /></svg>; }
@@ -77,7 +75,9 @@ interface NavGroup {
 
 function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups: NavGroup[]; bottom: NavItem[] } {
   return {
-    top: [],
+    top: [
+      { id: "before-you-started", icon: <RocketIcon />, label: "Before you started", href: "/launch" },
+    ],
     groups: [
       {
         id: "company",
@@ -85,10 +85,10 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
         icon: <BriefcaseIcon />,
         defaultOpen: true,
         items: [
-          { id: "launch-dashboard", icon: <RocketIcon />, label: "Launch", href: "/launch" },
           { id: "founders", icon: <UsersIcon />, label: "Founders", href: "/company/founders" },
-          { id: "equity", icon: <PieChartIcon />, label: "Equity", href: "/company/equity" },
+          { id: "founder-wellness", icon: <ShieldIcon />, label: "Founder Wellness", href: "/company/founder-wellness" },
           { id: "ideation", icon: <LightbulbIcon />, label: "Ideation", href: "/company/ideation" },
+          { id: "equity", icon: <PieChartIcon />, label: "Equity", href: "/company/equity" },
           { id: "incorporation", icon: <FileIcon />, label: "Incorporation", href: "/company/incorporation" },
           { id: "solution-deck", icon: <LayersIcon />, label: "Solution Deck", href: "/company/solution-deck" },
           { id: "accelerator", icon: <TargetIcon />, label: "Apply to Accelerator", href: "/company/accelerator" },
@@ -102,10 +102,6 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
         items: [
           { id: "fundraising", icon: <RocketIcon />, label: "Fundraising", href: "/money/fundraising" },
           { id: "runrate", icon: <TrendIcon />, label: "Runrate", href: "/money/runrate" },
-          { id: "bookkeeping", icon: <BookIcon />, label: "Bookkeeping", href: "/money/bookkeeping" },
-          { id: "accounting", icon: <CalculatorIcon />, label: "Accounting", href: "/money/accounting" },
-          { id: "auditing", icon: <ShieldIcon />, label: "Auditing", href: "/money/auditing" },
-          { id: "tax", icon: <FileIcon />, label: "Tax", href: "/money/tax" },
         ],
       },
       {

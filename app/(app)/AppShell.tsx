@@ -31,16 +31,12 @@ const DocumentUploadForm = React.lazy(() =>
 );
 
 type ActiveForm =
-  | "invoice"
-  | "expense"
   | "contact"
   | "project"
   | "document"
   | null;
 
 const formTitles: Record<Exclude<ActiveForm, null>, string> = {
-  invoice: "New Invoice",
-  expense: "Log Expense",
   contact: "Add Contact",
   project: "New Project",
   document: "Upload Document",
@@ -119,12 +115,6 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
           if (params?.page) router.push(params.page as string);
           break;
         // AI Core actions
-        case "create_invoice":
-          setActiveForm("invoice");
-          break;
-        case "create_expense":
-          setActiveForm("expense");
-          break;
         case "create_agent":
           setWizardIntent("hire_agent");
           break;
@@ -147,12 +137,6 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
           setWizardIntent("configure_model");
           break;
         // Traditional forms
-        case "new_invoice":
-          setActiveForm("invoice");
-          break;
-        case "new_expense":
-          setActiveForm("expense");
-          break;
         case "add_contact":
           setActiveForm("contact");
           break;
@@ -269,14 +253,39 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
           </div>
         }
       >
-        {activeForm === "invoice" && <InvoiceForm onClose={() => setActiveForm(null)} />}
-        {activeForm === "expense" && <ExpenseForm onClose={() => setActiveForm(null)} />}
         {activeForm === "contact" && <ContactForm onClose={() => setActiveForm(null)} />}
         {activeForm === "project" && <ProjectForm onClose={() => setActiveForm(null)} />}
         {activeForm === "document" && <DocumentUploadForm onClose={() => setActiveForm(null)} />}
       </React.Suspense>
     );
   };
+
+  const isArticlePage = pathname === "/launch" || pathname === "/company/founders" || pathname === "/company/ideation" || pathname === "/company/equity" || pathname === "/company/incorporation" || pathname === "/company/founder-wellness" || pathname === "/money/fundraising" || pathname === "/business/pricing";
+
+  if (isArticlePage) {
+    return (
+      <div className="min-h-screen bg-white">
+        <nav className="mx-auto max-w-[680px] px-6 pt-6 flex items-center justify-between">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center gap-1.5 text-[13px] text-black/40 hover:text-black/70 transition-colors"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Back
+          </button>
+          <span className="font-heading text-[15px] italic font-extralight tracking-[-0.02em] text-black/30">
+            1P
+          </span>
+        </nav>
+        <main className="flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -342,8 +351,8 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
             className="fixed inset-0 z-40 bg-black/20"
             onClick={() => setWizardIntent(null)}
           />
-          <div className="fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-lg">
-            <div className="mx-4 mt-4 h-[70vh] overflow-hidden rounded-xl border border-black/[0.06] bg-white shadow-2xl">
+          <div className="fixed inset-x-0 top-0 z-50 mx-auto w-full sm:max-w-lg">
+            <div className="mx-2 sm:mx-4 mt-2 sm:mt-4 h-[85vh] sm:h-[70vh] overflow-hidden border border-black/[0.06] bg-white shadow-2xl">
               <AIWizard
                 intent={wizardIntent}
                 onClose={() => setWizardIntent(null)}

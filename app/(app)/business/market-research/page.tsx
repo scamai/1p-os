@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { RelatedPages } from "@/components/shared/RelatedPages";
 
 type Competitor = { id: string; name: string; url: string; pricing: string; strengths: string; weaknesses: string };
 
@@ -57,8 +58,8 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-4xl">
       <Education {...EDUCATION.marketResearch} />
-      <h1 className="text-lg font-semibold text-black">Market Research</h1>
-      <p className="mt-1 text-sm text-black/50 mb-6">Size your market, understand your customer, and map the competition.</p>
+      <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Market Research</h1>
+      <p className="mt-2 text-[14px] leading-[1.6] text-black/40 mb-6">Size your market, understand your customer, and map the competition.</p>
 
       {/* ICP */}
       <div className="border border-black/[0.08] bg-white p-5 mb-4">
@@ -75,7 +76,7 @@ export default function Page() {
       {/* Market Sizing */}
       <div className="border border-black/[0.08] bg-white p-5 mb-4">
         <h2 className="text-[13px] font-semibold text-black mb-4">Market Sizing</h2>
-        <div className="grid grid-cols-3 gap-0 border border-black/[0.08]">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-0 border border-black/[0.08]">
           {(["tam", "sam", "som"] as const).map((key, i) => {
             const labels = { tam: "TAM (Total)", sam: "SAM (Serviceable)", som: "SOM (Obtainable)" };
             const descriptions = {
@@ -126,7 +127,7 @@ export default function Page() {
 
         {editingComp && (
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white p-6 w-full max-w-md shadow-xl border border-black/[0.08]">
+            <div className="bg-white p-4 sm:p-6 w-full mx-2 sm:mx-0 sm:max-w-md shadow-xl border border-black/[0.08]">
               <h3 className="text-[13px] font-semibold text-black mb-3">Competitor</h3>
               <div className="space-y-3">
                 {([["name", "Name"], ["url", "Website"], ["pricing", "Pricing"]] as const).map(([f, l]) => (
@@ -165,12 +166,12 @@ export default function Page() {
                       {c.url && <span className="text-[11px] text-black/40">{c.url}</span>}
                       {c.pricing && <span className="text-[11px] text-black/50 border border-black/[0.08] px-1.5 py-0.5">{c.pricing}</span>}
                     </div>
-                    <div className="mt-1 grid grid-cols-2 gap-4">
+                    <div className="mt-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {c.strengths && <p className="text-[12px] text-black/50"><span className="font-medium text-black/60">Strengths:</span> {c.strengths}</p>}
                       {c.weaknesses && <p className="text-[12px] text-black/50"><span className="font-medium text-black/60">Weaknesses:</span> {c.weaknesses}</p>}
                     </div>
                   </div>
-                  <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     <button onClick={() => setEditingComp(c)} className="text-[11px] text-black/40 hover:text-black/70">Edit</button>
                     <button onClick={() => setData((prev) => ({ ...prev, competitors: prev.competitors.filter((x) => x.id !== c.id) }))}
                       className="text-[11px] text-black/40 hover:text-black/70">Del</button>
@@ -190,6 +191,12 @@ export default function Page() {
           placeholder="What's changing in your industry? New regulations, emerging tech, shifting consumer behavior, macro trends..."
           className="w-full text-[13px] border border-black/[0.08] px-3 py-2 text-black/70 placeholder:text-black/30 focus:outline-none focus:border-black/40 resize-none" />
       </div>
+
+      <RelatedPages links={[
+        { label: "Ideation", href: "/company/ideation", context: "Validate your problem statement with research findings" },
+        { label: "Business Model", href: "/business/model", context: "Use market insights to refine your canvas" },
+        { label: "Go-to-Market", href: "/business/gtm", context: "Turn research into a launch strategy" },
+      ]} />
     </div>
   );
 }

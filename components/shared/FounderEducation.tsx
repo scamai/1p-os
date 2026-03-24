@@ -99,24 +99,6 @@ const EDUCATION: Record<string, PageEducation> = {
       { term: "Default Alive vs Default Dead", explanation: "Paul Graham's framework. If your revenue is growing and your expenses are flat, will you become profitable before running out of money? If yes, you're 'default alive.' If not, you need to either cut costs or raise money." },
     ],
   },
-  "/money/bookkeeping": {
-    title: "Bookkeeping basics for founders",
-    items: [
-      { term: "Why Bother?", explanation: "You need clean books to raise money, file taxes, and understand if you're actually making money. Start from day one — catching up later is painful and expensive." },
-      { term: "Revenue vs Profit", explanation: "Revenue is what customers pay you. Profit is what's left after all expenses. You can have $100K in revenue and still be losing money if you spend $120K." },
-      { term: "Accounts Receivable (AR)", explanation: "Money owed to you by customers. If you sent an invoice for $5K and haven't been paid yet, that's AR. Track it carefully — revenue means nothing if you can't collect." },
-      { term: "Accounts Payable (AP)", explanation: "Money you owe to others — bills, vendor invoices, subscriptions. Pay on time to maintain good relationships and credit." },
-    ],
-  },
-  "/money/tax": {
-    title: "Taxes for startups — the basics",
-    items: [
-      { term: "Quarterly Estimated Taxes", explanation: "If you expect to owe more than $1K in taxes, you must pay estimated taxes quarterly (not just annually). Missing these deadlines means penalties." },
-      { term: "C-Corp Taxes", explanation: "C-Corps pay corporate tax on profits (21% federal). Then if you pay yourself dividends, you're taxed again personally. This 'double taxation' is why early-stage startups rarely pay dividends." },
-      { term: "R&D Tax Credit", explanation: "If you're building software, you likely qualify. The R&D credit can offset $250K+ of payroll taxes for startups. Ask your accountant about this — it's free money most founders miss." },
-      { term: "State Nexus", explanation: "You owe state taxes wherever you have 'nexus' — employees, offices, or significant revenue. If you're a Delaware corp with employees in California, you file in both states." },
-    ],
-  },
   "/business/model": {
     title: "Choosing a business model",
     items: [

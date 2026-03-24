@@ -10,7 +10,7 @@ interface TabBarProps {
 function TabBar({ tabs, active, onChange, className = "" }: TabBarProps) {
   return (
     <div
-      className={`flex gap-8 ${className}`}
+      className={`flex gap-4 sm:gap-8 overflow-x-auto ${className}`}
       role="tablist"
     >
       {tabs.map((tab) => {
@@ -21,7 +21,7 @@ function TabBar({ tabs, active, onChange, className = "" }: TabBarProps) {
             role="tab"
             aria-selected={isActive}
             onClick={() => onChange(tab)}
-            className={`relative pb-2.5 text-[13px] font-medium transition-colors duration-150 ${
+            className={`relative pb-2.5 text-[13px] font-medium transition-colors duration-150 whitespace-nowrap ${
               isActive
                 ? "text-black"
                 : "text-black/50 hover:text-black/70"

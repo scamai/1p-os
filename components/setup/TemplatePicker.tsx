@@ -56,7 +56,7 @@ const templates: Template[] = [
   {
     id: "general",
     name: "General",
-    description: "Email, calendar, bookkeeping, and basic admin tasks.",
+    description: "Email, calendar, and basic admin tasks.",
     agentCount: 3,
     estimatedCost: "$1-2/day",
   },

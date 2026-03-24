@@ -1,462 +1,208 @@
 "use client";
 
-import { useState } from "react";
-import { Education, EDUCATION } from "@/components/shared/Education";
-import { useTableData } from "@/lib/hooks/useTableData";
+import Link from "next/link";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
+// ── Keywords ──
 
-interface Founder {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  equity_pct: number;
-  vesting_months: number;
-  cliff_months: number;
-  start_date: string;
-  notes: string;
-}
-
-const ROLES = [
-  "CEO",
-  "CTO",
-  "COO",
-  "CFO",
-  "CPO",
-  "CMO",
-  "VP Engineering",
-  "VP Product",
-  "VP Sales",
-  "Other",
+const KEYWORDS: { term: string; explanation: string }[] = [
+  {
+    term: "Equity Split",
+    explanation: "How you divide ownership. There\u2019s no perfect formula \u2014 but equal isn\u2019t always fair. Consider who had the idea, who\u2019s full-time, who\u2019s putting in capital, and who has the skills you can\u2019t hire for.",
+  },
+  {
+    term: "Vesting",
+    explanation: "You don\u2019t get all your equity at once. It \u2018vests\u2019 over time \u2014 typically 4 years. If a co-founder leaves after 6 months, they don\u2019t walk away with half the company. This protects everyone.",
+  },
+  {
+    term: "Cliff",
+    explanation: "A waiting period \u2014 usually 12 months \u2014 before any equity vests. If someone leaves before the cliff, they get nothing. Think of it as a trial period for the partnership.",
+  },
+  {
+    term: "Cap Table",
+    explanation: "A spreadsheet showing who owns what. Every founder, investor, and employee with equity appears here. Keep it clean from day one \u2014 messy cap tables scare investors away.",
+  },
+  {
+    term: "ESOP",
+    explanation: "Employee Stock Option Pool. A reserve of shares \u2014 usually 10\u201315% \u2014 set aside for future hires. VCs will often require this before they invest, and it comes out of the founders\u2019 share.",
+  },
 ];
 
-// ---------------------------------------------------------------------------
-// Equity Pie (div-based)
-// ---------------------------------------------------------------------------
+const MISTAKES = [
+  "Splitting equity 50/50 to avoid an awkward conversation.",
+  "No vesting. Someone leaves after 3 months with half the company.",
+  "Co-founding with a friend because they\u2019re your friend, not because they\u2019re the right person.",
+  "Choosing someone who agrees with everything you say. You need friction, not a mirror.",
+  "Skipping the hard conversations about money, commitment, and what happens if it doesn\u2019t work out.",
+  "Nothing in writing. \u201CWe trust each other\u201D is not a legal document.",
+];
 
-function EquityPie({ founders }: { founders: Founder[] }) {
-  const total = founders.reduce((s, f) => s + (f.equity_pct ?? 0), 0);
-  const unallocated = Math.max(0, 100 - total);
+// ── Page ──
 
-  const segments: { label: string; percent: number; shade: string }[] = [];
-  const shades = [
-    "bg-black",
-    "bg-black/70",
-    "bg-black/50",
-    "bg-black/40",
-    "bg-black/30",
-    "bg-black/[0.08]",
-  ];
-
-  founders.forEach((f, i) => {
-    segments.push({
-      label: f.name || "Unnamed",
-      percent: f.equity_pct ?? 0,
-      shade: shades[i % shades.length],
-    });
-  });
-
-  if (unallocated > 0) {
-    segments.push({
-      label: "Unallocated",
-      percent: unallocated,
-      shade: "bg-black/[0.04]",
-    });
-  }
-
-  // Conic gradient via stacked segments
-  let cumulative = 0;
-  const gradientParts: string[] = [];
-  const colorMap: Record<string, string> = {
-    "bg-black": "#0F172A",
-    "bg-black/70": "#3f3f46",
-    "bg-black/50": "#71717a",
-    "bg-black/40": "#94A3B8",
-    "bg-black/30": "#d4d4d8",
-    "bg-black/[0.08]": "#e4e4e7",
-    "bg-black/[0.04]": "#f4f4f5",
-  };
-
-  segments.forEach((seg) => {
-    const start = cumulative;
-    const end = cumulative + seg.percent;
-    const color = colorMap[seg.shade] || "#e4e4e7";
-    gradientParts.push(`${color} ${start}% ${end}%`);
-    cumulative = end;
-  });
-
-  if (cumulative < 100) {
-    gradientParts.push(`#f4f4f5 ${cumulative}% 100%`);
-  }
-
+export default function FoundersPage() {
   return (
-    <div className="flex items-center gap-6">
-      <div
-        className="h-32 w-32 shrink-0 rounded-full border border-black/[0.08]"
-        style={{
-          background: segments.length > 0
-            ? `conic-gradient(${gradientParts.join(", ")})`
-            : "#f4f4f5",
-        }}
-      />
-      <div className="space-y-1.5">
-        {segments.map((seg, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <div className={`h-3 w-3 rounded-sm ${seg.shade} border border-black/30`} />
-            <span className="text-[12px] text-black/70">
-              {seg.label}
+    <article className="mx-auto max-w-[680px] px-6 py-16 md:py-24">
+      {/* Title */}
+      <header>
+        <h1 className="font-heading text-[clamp(2.5rem,6vw,3.5rem)] italic font-extralight leading-[1.1] tracking-[-0.03em] text-black">
+          Founders
+        </h1>
+        <div className="mt-8 flex items-center gap-3 text-[13px] text-black/40">
+          <span>4 min read</span>
+        </div>
+      </header>
+
+      {/* Opening — large lede */}
+      <p className="mt-14 text-[22px] leading-[1.75] text-black/70 font-light">
+        The most important decision you&apos;ll make isn&apos;t your idea,
+        your market, or your product. It&apos;s who you build with &mdash;
+        or whether you build alone.
+      </p>
+
+      {/* Finding a co-founder */}
+      <div className="mt-16 space-y-12">
+        <section>
+          <h2 className="text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-black">
+            Finding a co-founder
+          </h2>
+          <p className="mt-4 text-[18px] leading-[2] text-black/55">
+            A great co-founder doubles your capacity and halves the loneliness.
+            A bad one is worse than none at all.{" "}
+            <span className="underline decoration-black/20 underline-offset-4 text-black">
+              More startups die from co-founder conflict than from running out of money.
             </span>
-            <span className="text-[12px] font-mono text-black/50">
-              {seg.percent.toFixed(1)}%
+          </p>
+          <p className="mt-5 text-[18px] leading-[2] text-black/55">
+            <span className="underline decoration-black/20 underline-offset-4 text-black">
+              Look for someone who complements you, not mirrors you.
+            </span>{" "}
+            If you&apos;re the visionary, find the operator. If you&apos;re the
+            builder, find the seller. The best partnerships are two people
+            who are strong where the other is weak.
+          </p>
+          <p className="mt-5 text-[18px] leading-[2] text-black/55">
+            Test the relationship before you commit. Work on a small
+            project together first. See how they handle disagreement, stress,
+            and ambiguity.{" "}
+            <span className="underline decoration-black/20 underline-offset-4 text-black">
+              A co-founder is harder to divorce than a spouse.
             </span>
+          </p>
+          <p className="mt-5 text-[18px] leading-[2] text-black/55">
+            One of the most common mistakes: meeting someone at a startup event,
+            vibing for two hours, and deciding to build a company together.{" "}
+            <span className="underline decoration-black/20 underline-offset-4 text-black">
+              This is not a one-night stand.
+            </span>{" "}
+            You&apos;re signing up for years of shared bank accounts, hard
+            conversations, and 2am Slack messages. You wouldn&apos;t marry someone
+            you met at a bar last Tuesday. Don&apos;t co-found with them either.
+          </p>
+        </section>
+
+        {/* Pull quote */}
+        <blockquote className="border-l-[3px] border-black pl-8">
+          <p className="text-[24px] font-light leading-[1.6] tracking-[-0.01em] text-black/80 italic">
+            A co-founder relationship is a marriage
+            without the romance. Choose accordingly.
+          </p>
+        </blockquote>
+
+        {/* Mistakes */}
+        <section>
+          <h2 className="text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-black">
+            Mistakes that kill co-founder relationships
+          </h2>
+          <div className="mt-6 space-y-4">
+            {MISTAKES.map((m, i) => (
+              <p key={i} className="text-[18px] leading-[2] text-black/55 pl-7 border-l-[3px] border-black/[0.08]">
+                {m}
+              </p>
+            ))}
+          </div>
+        </section>
+
+        {/* Going solo */}
+        <section>
+          <h2 className="text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-black">
+            Going solo
+          </h2>
+          <p className="mt-4 text-[18px] leading-[2] text-black/55">
+            Solo is fine. Plenty of billion-dollar companies were built by one
+            person with conviction. You move faster, decide faster, and answer
+            to no one.
+          </p>
+          <p className="mt-5 text-[18px] leading-[2] text-black/55">
+            The trade-off is you carry everything &mdash; every high, every low,
+            every 3am doubt &mdash; alone. Build a network of other founders
+            early. You&apos;ll need people who understand what you&apos;re going through.
+          </p>
+        </section>
+
+        {/* Equity & vesting */}
+        <section>
+          <h2 className="text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-black">
+            Why equity and vesting matter
+          </h2>
+          <p className="mt-4 text-[18px] leading-[2] text-black/55">
+            Equity is the most valuable thing your company has and the easiest
+            thing to get wrong. A 50/50 split feels fair on day one. It stops
+            feeling fair when one person is working 80-hour weeks and the other
+            has moved on.
+          </p>
+          <p className="mt-5 text-[18px] leading-[2] text-black/55">
+            <span className="underline decoration-black/20 underline-offset-4 text-black">
+              Vesting exists to protect you from this.
+            </span>{" "}
+            It means equity is earned over time, not given upfront. If someone
+            leaves early, the unvested shares come back to the company. Every
+            serious investor will ask if you have vesting in place. If you
+            don&apos;t, that&apos;s a red flag.
+          </p>
+          <p className="mt-5 text-[18px] leading-[2] text-black/55">
+            <span className="underline decoration-black/20 underline-offset-4 text-black">
+              Get it in writing. Get it signed.
+            </span>{" "}
+            A handshake today becomes a lawsuit tomorrow.
+          </p>
+        </section>
+      </div>
+
+      {/* Separator — three dots */}
+      <div className="my-20 flex justify-center gap-1.5">
+        <span className="h-[3px] w-[3px] bg-black/25" />
+        <span className="h-[3px] w-[3px] bg-black/25" />
+        <span className="h-[3px] w-[3px] bg-black/25" />
+      </div>
+
+      {/* Keywords */}
+      <h2 className="text-[13px] font-medium uppercase tracking-[0.15em] text-black/30">
+        Words you need to know
+      </h2>
+
+      <div className="mt-8 space-y-8">
+        {KEYWORDS.map((k, i) => (
+          <div key={i}>
+            <p className="text-[20px] font-medium leading-[1.4] text-black">{k.term}</p>
+            <p className="mt-2 text-[17px] leading-[1.9] text-black/50">
+              {k.explanation}
+            </p>
           </div>
         ))}
       </div>
-    </div>
-  );
-}
 
-// ---------------------------------------------------------------------------
-// Main Page
-// ---------------------------------------------------------------------------
-
-export default function FoundersPage() {
-  const { data: founders, loading, create, update, remove } = useTableData<Founder>('founders');
-  const [editing, setEditing] = useState<string | null>(null);
-  const [showForm, setShowForm] = useState(false);
-
-  // Form state
-  const [formName, setFormName] = useState("");
-  const [formEmail, setFormEmail] = useState("");
-  const [formRole, setFormRole] = useState("CEO");
-  const [formEquity, setFormEquity] = useState("25");
-  const [formVesting, setFormVesting] = useState("48");
-  const [formCliff, setFormCliff] = useState("12");
-  const [formStart, setFormStart] = useState("");
-
-  const resetForm = () => {
-    setFormName("");
-    setFormEmail("");
-    setFormRole("CEO");
-    setFormEquity("25");
-    setFormVesting("48");
-    setFormCliff("12");
-    setFormStart("");
-    setEditing(null);
-  };
-
-  const openEdit = (f: Founder) => {
-    setFormName(f.name);
-    setFormEmail(f.email);
-    setFormRole(f.role);
-    setFormEquity(String(f.equity_pct));
-    setFormVesting(String(f.vesting_months));
-    setFormCliff(String(f.cliff_months));
-    setFormStart(f.start_date || "");
-    setEditing(f.id);
-    setShowForm(true);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const fields = {
-      name: formName.trim(),
-      email: formEmail.trim(),
-      role: formRole,
-      equity_pct: parseFloat(formEquity) || 0,
-      vesting_months: parseInt(formVesting) || 48,
-      cliff_months: parseInt(formCliff) || 12,
-      start_date: formStart || undefined,
-    };
-
-    if (editing) {
-      await update(editing, fields);
-    } else {
-      await create(fields);
-    }
-    resetForm();
-    setShowForm(false);
-  };
-
-  const handleDelete = async (id: string) => {
-    await remove(id);
-  };
-
-  const totalEquity = founders.reduce((s, f) => s + (f.equity_pct ?? 0), 0);
-
-  if (loading) return null;
-
-  return (
-    <div className="mx-auto max-w-[800px]">
-      <Education {...EDUCATION.founders} />
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-lg font-semibold text-black">Founders</h1>
-          <p className="mt-1 text-sm text-black/50">
-            Manage your founding team, equity splits, and vesting schedules.
-          </p>
-        </div>
-        <button
-          onClick={() => {
-            resetForm();
-            setShowForm(!showForm);
-          }}
-          className="h-8 rounded-md bg-black px-3 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
+      {/* CTA */}
+      <div className="mt-16 pb-8">
+        <Link
+          href="/company/equity"
+          className="inline-flex items-center gap-2.5 border border-black bg-black px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-black/90"
         >
-          {showForm ? "Cancel" : "+ Add Founder"}
-        </button>
+          Set up your equity
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </Link>
       </div>
-
-      {/* Add / Edit Form */}
-      {showForm && (
-        <form
-          onSubmit={handleSubmit}
-          className="mt-6 rounded-xl border border-black/[0.08] bg-white p-5 space-y-4"
-        >
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-[12px] font-medium text-black/50 mb-1">
-                Full Name
-              </label>
-              <input
-                required
-                value={formName}
-                onChange={(e) => setFormName(e.target.value)}
-                className="h-9 w-full rounded-md border border-black/[0.08] bg-white px-3 text-[13px] text-black placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-black"
-                placeholder="Jane Smith"
-              />
-            </div>
-            <div>
-              <label className="block text-[12px] font-medium text-black/50 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                value={formEmail}
-                onChange={(e) => setFormEmail(e.target.value)}
-                className="h-9 w-full rounded-md border border-black/[0.08] bg-white px-3 text-[13px] text-black placeholder:text-black/40 focus:outline-none focus:ring-2 focus:ring-black"
-                placeholder="jane@company.com"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-[12px] font-medium text-black/50 mb-1">
-                Role
-              </label>
-              <select
-                value={formRole}
-                onChange={(e) => setFormRole(e.target.value)}
-                className="h-9 w-full rounded-md border border-black/[0.08] bg-white px-2 text-[13px] text-black/70 focus:outline-none focus:ring-2 focus:ring-black"
-              >
-                {ROLES.map((r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-[12px] font-medium text-black/50 mb-1">
-                Equity %
-              </label>
-              <input
-                type="number"
-                min="0"
-                max="100"
-                step="0.1"
-                required
-                value={formEquity}
-                onChange={(e) => setFormEquity(e.target.value)}
-                className="h-9 w-full rounded-md border border-black/[0.08] bg-white px-3 text-[13px] font-mono text-black focus:outline-none focus:ring-2 focus:ring-black"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <label className="block text-[12px] font-medium text-black/50 mb-1">
-                Vesting (months)
-              </label>
-              <select
-                value={formVesting}
-                onChange={(e) => setFormVesting(e.target.value)}
-                className="h-9 w-full rounded-md border border-black/[0.08] bg-white px-2 text-[13px] text-black/70 focus:outline-none focus:ring-2 focus:ring-black"
-              >
-                <option value="36">36 months</option>
-                <option value="48">48 months</option>
-                <option value="60">60 months</option>
-                <option value="72">72 months</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-[12px] font-medium text-black/50 mb-1">
-                Cliff (months)
-              </label>
-              <select
-                value={formCliff}
-                onChange={(e) => setFormCliff(e.target.value)}
-                className="h-9 w-full rounded-md border border-black/[0.08] bg-white px-2 text-[13px] text-black/70 focus:outline-none focus:ring-2 focus:ring-black"
-              >
-                <option value="0">No cliff</option>
-                <option value="6">6 months</option>
-                <option value="12">12 months (standard)</option>
-                <option value="18">18 months</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-[12px] font-medium text-black/50 mb-1">
-                Start Date
-              </label>
-              <input
-                type="date"
-                value={formStart}
-                onChange={(e) => setFormStart(e.target.value)}
-                className="h-9 w-full rounded-md border border-black/[0.08] bg-white px-3 text-[13px] text-black/70 focus:outline-none focus:ring-2 focus:ring-black"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-2 pt-1">
-            <button
-              type="button"
-              onClick={() => {
-                setShowForm(false);
-                resetForm();
-              }}
-              className="h-8 rounded-md border border-black/[0.08] px-3 text-[13px] font-medium text-black/60 hover:bg-black/[0.02] transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="h-8 rounded-md bg-black px-4 text-[13px] font-medium text-white transition-opacity hover:opacity-90"
-            >
-              {editing ? "Save Changes" : "Add Founder"}
-            </button>
-          </div>
-        </form>
-      )}
-
-      {/* Equity Pie */}
-      {founders.length > 0 && (
-        <div className="mt-8 rounded-xl border border-black/[0.08] bg-white p-5">
-          <h2 className="text-[13px] font-semibold text-black/70 mb-4">
-            Equity Split
-          </h2>
-          <EquityPie founders={founders} />
-          <div className="mt-4 flex items-center gap-3">
-            <span className="text-[12px] text-black/50">
-              Total allocated:
-            </span>
-            <span
-              className={`text-[13px] font-mono font-semibold ${
-                totalEquity > 100 ? "text-black/80" : "text-black"
-              }`}
-            >
-              {totalEquity.toFixed(1)}%
-            </span>
-            {totalEquity > 100 && (
-              <span className="text-[11px] text-black/80">
-                Over-allocated by {(totalEquity - 100).toFixed(1)}%
-              </span>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Founders Table */}
-      {founders.length > 0 && (
-        <div className="mt-6 rounded-xl border border-black/[0.08] bg-white overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-black/[0.04] bg-black/[0.02]">
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-black/50">
-                  Name
-                </th>
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-black/50">
-                  Role
-                </th>
-                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-black/50">
-                  Equity
-                </th>
-                <th className="px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-wider text-black/50">
-                  Vesting
-                </th>
-                <th className="px-4 py-2.5 text-right text-[11px] font-medium uppercase tracking-wider text-black/50">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-black/[0.04]">
-              {founders.map((f) => (
-                <tr
-                  key={f.id}
-                  className="hover:bg-black/[0.02] transition-colors"
-                >
-                  <td className="px-4 py-3">
-                    <p className="text-[13px] font-medium text-black">
-                      {f.name}
-                    </p>
-                    {f.email && (
-                      <p className="text-[11px] text-black/40">{f.email}</p>
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="rounded-full border border-black/[0.08] bg-black/[0.02] px-2 py-0.5 text-[11px] font-medium text-black/60">
-                      {f.role}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <span className="text-[13px] font-mono font-semibold text-black">
-                      {(f.equity_pct ?? 0).toFixed(1)}%
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="text-[12px] text-black/60">
-                      {Math.round((f.vesting_months ?? 48) / 12)}yr / {f.cliff_months ?? 12}mo cliff
-                    </span>
-                    {f.start_date && (
-                      <p className="text-[11px] text-black/40">
-                        from {f.start_date}
-                      </p>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <button
-                        onClick={() => openEdit(f)}
-                        className="rounded px-2 py-1 text-[12px] text-black/50 hover:text-black hover:bg-black/[0.04] transition-colors"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(f.id)}
-                        className="rounded px-2 py-1 text-[12px] text-black/40 hover:text-black hover:bg-black/[0.04] transition-colors"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* Empty state */}
-      {founders.length === 0 && !showForm && (
-        <div className="mt-12 text-center">
-          <p className="text-sm text-black/50">
-            No founders added yet. Click &quot;+ Add Founder&quot; to get started.
-          </p>
-        </div>
-      )}
-    </div>
+    </article>
   );
 }

@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { useTableData } from "@/lib/hooks/useTableData";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { RelatedPages } from "@/components/shared/RelatedPages";
 import { Button } from "@/components/ui/Button";
 import {
   SAFE_TEMPLATES,
@@ -111,8 +112,8 @@ export default function Page() {
       <Education {...EDUCATION.safes} />
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-lg font-semibold text-black">SAFEs</h1>
-          <p className="mt-1 text-sm text-black/50">Track SAFE agreements and estimate dilution.</p>
+          <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">SAFEs</h1>
+          <p className="mt-2 text-[14px] leading-[1.6] text-black/40">Track SAFE agreements and estimate dilution.</p>
         </div>
         <button
           onClick={startNew}
@@ -123,7 +124,7 @@ export default function Page() {
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
         <div className="border border-black/[0.08] rounded-lg p-3 bg-white text-center">
           <p className="text-xs text-black/50 mb-1">Total SAFEs</p>
           <p className="text-xl font-bold text-black">{safes.length}</p>
@@ -155,7 +156,7 @@ export default function Page() {
                   className="w-full text-sm border border-black/[0.08] rounded px-2 py-1.5 text-black focus:outline-none focus:ring-1 focus:ring-black/40"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs text-black/50 mb-1">Amount ($)</label>
                   <input
@@ -177,7 +178,7 @@ export default function Page() {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="block text-xs text-black/50 mb-1">Discount %</label>
                   <input
@@ -225,8 +226,8 @@ export default function Page() {
           <p className="text-sm text-black/40">No SAFEs yet. Add your first one.</p>
         </div>
       ) : (
-        <div className="border border-black/[0.08] rounded-lg overflow-hidden mb-6">
-          <table className="w-full text-sm">
+        <div className="border border-black/[0.08] overflow-x-auto mb-6">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="bg-black/[0.02] border-b border-black/[0.08]">
                 {["Investor", "Amount", "Val. Cap", "Discount", "Date", "Status", ""].map((h) => (
@@ -274,7 +275,8 @@ export default function Page() {
           />
         </div>
 
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+        <table className="w-full text-sm min-w-[400px]">
           <thead>
             <tr className="border-b border-black/[0.08]">
               <th className="text-left px-2 py-1.5 text-xs font-semibold text-black/50 uppercase tracking-wide">Holder</th>
@@ -302,6 +304,7 @@ export default function Page() {
             </tr>
           </tbody>
         </table>
+        </div>
         <p className="text-[11px] text-black/40 mt-2">
           This is a simplified estimate. Actual conversion depends on priced round terms. Does not account for discount conversion or option pool.
         </p>
@@ -352,6 +355,12 @@ export default function Page() {
           Based on the YC SAFE standard. Not legal advice — have a lawyer review before signing.
         </p>
       </div>
+
+      <RelatedPages links={[
+        { label: "Fundraising", href: "/money/fundraising", context: "Track the rounds these SAFEs belong to" },
+        { label: "Equity & Cap Table", href: "/company/equity", context: "See how SAFE conversions affect ownership" },
+        { label: "Legal Templates", href: "/legal/contracts", context: "Generate other legal documents you need" },
+      ]} />
     </div>
   );
 }

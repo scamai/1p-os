@@ -376,7 +376,7 @@ export default function MemoryPage() {
       {tab === "overview" && stats && (
         <div className="space-y-6">
           {/* Stat cards */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Card>
               <CardContent className="p-4">
                 <p className="text-[11px] font-medium uppercase tracking-wider text-black/50">
@@ -711,7 +711,7 @@ function MemoryRow({
           {onDelete && (
             <button
               onClick={() => onDelete(memory.id)}
-              className="hidden group-hover:flex h-6 w-6 items-center justify-center rounded text-black/40 hover:text-black hover:bg-black/[0.04] transition-colors"
+              className="flex sm:hidden sm:group-hover:flex h-6 w-6 items-center justify-center text-black/40 hover:text-black hover:bg-black/[0.04] transition-colors"
               aria-label="Delete memory"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

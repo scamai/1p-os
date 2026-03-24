@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { RelatedPages } from "@/components/shared/RelatedPages";
 
 type IPType = "trademark" | "patent" | "copyright" | "domain";
 type IPStatus = "filed" | "pending" | "granted" | "expired";
@@ -99,8 +100,8 @@ export default function Page() {
       <Education {...EDUCATION.ip} />
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-lg font-semibold text-black">IP &amp; Trademarks</h1>
-          <p className="mt-1 text-sm text-black/50">
+          <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">IP &amp; Trademarks</h1>
+          <p className="mt-2 text-[14px] leading-[1.6] text-black/40">
             Track intellectual property, trademarks, patents, and domains.
           </p>
         </div>
@@ -113,7 +114,7 @@ export default function Page() {
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {(["trademark", "patent", "copyright", "domain"] as IPType[]).map((t) => {
           const count = items.filter((i) => i.type === t).length;
           return (
@@ -181,7 +182,7 @@ export default function Page() {
                   className="w-full text-sm border border-black/[0.08] rounded px-2 py-1.5 text-black focus:outline-none focus:ring-1 focus:ring-black/40"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs text-black/50 mb-1">Type</label>
                   <select
@@ -209,7 +210,7 @@ export default function Page() {
                   </select>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs text-black/50 mb-1">Filing Date</label>
                   <input
@@ -264,8 +265,8 @@ export default function Page() {
           </p>
         </div>
       ) : (
-        <div className="border border-black/[0.08] rounded-lg overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="border border-black/[0.08] overflow-x-auto">
+          <table className="w-full text-sm min-w-[600px]">
             <thead>
               <tr className="bg-black/[0.02] border-b border-black/[0.08]">
                 {["Type", "Name", "Filed", "Status", "Reg #", "Renewal", ""].map((h) => (
@@ -302,6 +303,12 @@ export default function Page() {
           </table>
         </div>
       )}
+
+      <RelatedPages links={[
+        { label: "Incorporation", href: "/company/incorporation", context: "Register IP alongside your company formation" },
+        { label: "Legal Templates", href: "/legal/contracts", context: "Generate IP assignment and NDA agreements" },
+        { label: "SAFEs", href: "/legal/safes", context: "Include IP provisions in investor agreements" },
+      ]} />
     </div>
   );
 }

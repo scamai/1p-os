@@ -17,7 +17,7 @@ function EmptyState({
 }: EmptyStateProps) {
   return (
     <div
-      className={`flex flex-col items-center justify-center px-4 py-16 text-center ${className}`}
+      className={`flex flex-col items-center justify-center px-4 py-8 sm:py-16 text-center ${className}`}
     >
       {icon && (
         <div className="mb-4 text-black/60">{icon}</div>

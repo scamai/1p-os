@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { RelatedPages } from "@/components/shared/RelatedPages";
 
 interface MonthData {
   label: string;
@@ -71,8 +72,8 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-[640px]">
       <Education {...EDUCATION.runrate} />
-      <h1 className="text-lg font-semibold text-black">Runrate</h1>
-      <p className="mt-1 text-sm text-black/50">
+      <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Runrate</h1>
+      <p className="mt-2 text-[14px] leading-[1.6] text-black/40">
         Track revenue, expenses, and understand your runway.
       </p>
 
@@ -86,7 +87,7 @@ export default function Page() {
         ].map((m) => (
           <div key={m.label} className="border border-black/[0.08] rounded-lg p-3 bg-white">
             <p className="text-xs text-black/50">{m.label}</p>
-            <p className="text-lg font-semibold text-black mt-1">{m.value}</p>
+            <p className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black mt-1">{m.value}</p>
           </div>
         ))}
       </div>
@@ -106,7 +107,7 @@ export default function Page() {
       {/* Bar visualization */}
       <div className="mt-8">
         <h2 className="text-sm font-medium text-black mb-4">Revenue vs Expenses</h2>
-        <div className="flex items-end gap-2 h-40">
+        <div className="flex items-end gap-1 sm:gap-2 h-32 sm:h-40 overflow-x-auto">
           {months.map((m, i) => (
             <div key={i} className="flex-1 flex flex-col items-center gap-1">
               <div className="w-full flex gap-0.5 items-end" style={{ height: "120px" }}>
@@ -148,7 +149,7 @@ export default function Page() {
           {months.map((m, i) => (
             <div key={i} className="border border-black/[0.08] rounded-lg p-3 bg-white">
               <p className="text-sm font-medium text-black/70 mb-2">{m.label}</p>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs text-black/50 mb-1">Revenue ($)</label>
                   <input
@@ -174,6 +175,12 @@ export default function Page() {
           ))}
         </div>
       </div>
+
+      <RelatedPages links={[
+        { label: "Fundraising", href: "/money/fundraising", context: "Plan your next raise based on runway" },
+        { label: "Pricing Strategy", href: "/business/pricing", context: "Optimize pricing to improve your burn rate" },
+        { label: "Business Model", href: "/business/model", context: "Revisit your cost structure and revenue streams" },
+      ]} />
     </div>
   );
 }

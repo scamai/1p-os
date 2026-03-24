@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Education, EDUCATION } from "@/components/shared/Education";
+import { RelatedPages } from "@/components/shared/RelatedPages";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -184,10 +185,10 @@ export default function SolutionDeckPage() {
       <Education {...EDUCATION.solutionDeck} />
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-black">
+          <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">
             Solution Deck
           </h1>
-          <p className="mt-1 text-sm text-black/50">
+          <p className="mt-2 text-[14px] leading-[1.6] text-black/40">
             Build your pitch deck slide by slide. Pre-filled with a standard
             investor template.
           </p>
@@ -231,9 +232,9 @@ export default function SolutionDeckPage() {
         </form>
       )}
 
-      <div className="mt-6 flex gap-6">
+      <div className="mt-6 flex flex-col sm:flex-row gap-4 sm:gap-6">
         {/* Slide list (sidebar) */}
-        <div className="w-48 shrink-0 space-y-1">
+        <div className="flex sm:flex-col sm:w-48 sm:shrink-0 gap-1 overflow-x-auto sm:overflow-x-visible pb-2 sm:pb-0">
           {slides.map((slide, idx) => (
             <button
               key={slide.id}
@@ -459,6 +460,12 @@ export default function SolutionDeckPage() {
           </div>
         </div>
       )}
+
+      <RelatedPages links={[
+        { label: "Ideation", href: "/company/ideation", context: "Refine the problem, customer, and solution behind your deck" },
+        { label: "Apply to Accelerator", href: "/company/accelerator", context: "Use your deck to apply to top accelerators" },
+        { label: "Fundraising", href: "/money/fundraising", context: "Track investor conversations after you pitch" },
+      ]} />
     </div>
   );
 }
