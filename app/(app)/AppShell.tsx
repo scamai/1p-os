@@ -12,12 +12,6 @@ import { CoreBanner } from "@/components/shell/CoreBanner";
 import { AlwaysOnVoice } from "@/components/shell/AlwaysOnVoice";
 import { FounderEducation } from "@/components/shared/FounderEducation";
 
-const InvoiceForm = React.lazy(() =>
-  import("@/components/forms/InvoiceForm").then((m) => ({ default: m.InvoiceForm }))
-);
-const ExpenseForm = React.lazy(() =>
-  import("@/components/forms/ExpenseForm").then((m) => ({ default: m.ExpenseForm }))
-);
 const ContactForm = React.lazy(() =>
   import("@/components/forms/PersonForm").then((m) => ({ default: m.ContactForm }))
 );
