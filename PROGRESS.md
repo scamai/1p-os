@@ -1,5 +1,20 @@
 # PROGRESS
 
+## 2026-03-25 — Review Round 4
+
+### What was fixed
+- **Build-blocking type error**: Fixed explicit type annotation in `app/api/memory/stats/route.ts:155` — `.map()` callback had narrower type than Supabase JSON column inference. Used `String()` coercion instead.
+- **SQL injection (2 routes)**: Sanitized search params in `.or()` queries — `app/api/launch/investors/route.ts:30`, `app/api/marketplace/route.ts:47`. Stripped `%_.,()` chars that PostgREST interprets as operators.
+- **Missing auth (3 routes)**: Added `supabase.auth.getUser()` checks to `app/api/launch/investors/route.ts`, `app/api/launch/accelerators/route.ts`, `app/api/activity/stream/route.ts`
+- **Error message leaks (2 spots)**: Removed `${error.message}` from audit-engine findings at `lib/security/audit-engine.ts:380,468`
+- **Dead code**: Removed orphaned `components/launch/LaunchDashboard.tsx` (224 lines, replaced by HQPage)
+- **Missing devDependency**: Installed `@playwright/test` — fixed 17 tsc errors in `e2e/navigation.spec.ts` and `playwright.config.ts`
+
+### Lessons learned
+- Supabase `.or()` filter strings accept raw PostgREST syntax — user input with `.` or `,` can break filter logic. Always strip operator chars.
+- Supabase JSON columns infer as `{}` in TS — explicit type annotations on `.map()` callbacks will conflict. Let TS infer or use `String()`.
+- SSE stream endpoints need auth too — `activity/stream` was fully open.
+
 ## 2026-03-19 — Review Round 3
 
 ### What was fixed
