@@ -5,14 +5,15 @@ import { AgentDetailView } from "./AgentDetailView";
 export default async function AgentDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   const supabase = await createClient();
 
   const { data: agent } = await supabase
     .from("marketplace_agents")
     .select("*")
-    .eq("slug", params.slug)
+    .eq("slug", slug)
     .single();
 
   if (!agent) {

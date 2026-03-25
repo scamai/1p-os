@@ -5,23 +5,25 @@ import { decomposeGoal } from "@/lib/orchestration/ceo";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(_: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { data: goal } = await supabase
-    .from("goals").select("*").eq("id", params.id).single();
+    .from("goals").select("*").eq("id", id).single();
   if (!goal) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   // Load children
   const { data: children } = await supabase
-    .from("goals").select("*").eq("parent_goal_id", params.id).order("priority", { ascending: false });
+    .from("goals").select("*").eq("parent_goal_id", id).order("priority", { ascending: false });
 
   return NextResponse.json({ goal, children: children ?? [] });
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -29,7 +31,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   const body = await request.json();
 
   if (body.status) {
-    const result = await updateGoalStatus(params.id, body.status, supabase);
+    const result = await updateGoalStatus(id, body.status, supabase);
     if (!result.success) return NextResponse.json({ error: result.error }, { status: 422 });
   }
 
@@ -38,7 +40,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
       .from("businesses").select("id").eq("user_id", user.id).single();
     if (!business) return NextResponse.json({ error: "No business" }, { status: 404 });
 
-    const result = await decomposeGoal(business.id, params.id, supabase);
+    const result = await decomposeGoal(business.id, id, supabase);
     return NextResponse.json(result);
   }
 
@@ -49,7 +51,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     if (body[key] !== undefined) updates[key] = body[key];
   }
 
-  const { error } = await supabase.from("goals").update(updates).eq("id", params.id);
+  const { error } = await supabase.from("goals").update(updates).eq("id", id);
   if (error) return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
 
   return NextResponse.json({ success: true });
