@@ -8,14 +8,32 @@
  * Strategy-level decisions always go through the founder (human gate).
  */
 
-import { createGoal, getGoalTree, getGoalsByLevel, type GoalLevel } from "./goals";
+import { createGoal, getGoalTree, getGoalsByLevel, type GoalLevel, type GoalTreeNode } from "./goals";
 import { DEV_BYPASS } from "@/lib/supabase/dev-bypass";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+interface AgentRecord {
+  id: string;
+  name: string;
+  role: string;
+  department?: string;
+  title?: string;
+  status: string;
+}
+
+interface GoalRecord {
+  id: string;
+  title: string;
+  description: string | null;
+  level: GoalLevel;
+  status: string;
+}
 
 // ── Ensure CEO Agent Exists ──
 
 export async function ensureCEOAgent(
   businessId: string,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<{ id: string; name: string }> {
   // Check if CEO already exists
   const { data: existing } = await supabase
@@ -81,7 +99,7 @@ interface DecomposedGoal {
 export async function decomposeGoal(
   businessId: string,
   goalId: string,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<{ subgoals: DecomposedGoal[]; error?: string }> {
   // Load goal
   const { data: goal } = await supabase
@@ -107,7 +125,7 @@ export async function decomposeGoal(
     // Create the goals in DB
     for (const sg of mockSubgoals) {
       const agent = agentList.find(
-        (a: any) => a.role.toLowerCase().includes(sg.assignedAgentRole.toLowerCase()) ||
+        (a: AgentRecord) => a.role.toLowerCase().includes(sg.assignedAgentRole.toLowerCase()) ||
                    a.department?.toLowerCase().includes(sg.assignedAgentRole.toLowerCase())
       );
       const childLevel = getChildLevel(goal.level);
@@ -140,8 +158,8 @@ export async function decomposeGoal(
     });
 
     const text = response.content
-      .filter((b: any) => b.type === "text")
-      .map((b: any) => b.text)
+      .filter((b) => b.type === "text")
+      .map((b) => ("text" in b ? b.text : ""))
       .join("");
 
     // Parse JSON from response
@@ -154,7 +172,7 @@ export async function decomposeGoal(
     // Create goals in DB
     for (const sg of parsed) {
       const agent = agentList.find(
-        (a: any) => a.role.toLowerCase().includes(sg.assignedAgentRole.toLowerCase()) ||
+        (a: AgentRecord) => a.role.toLowerCase().includes(sg.assignedAgentRole.toLowerCase()) ||
                    a.name.toLowerCase().includes(sg.assignedAgentRole.toLowerCase()) ||
                    a.department?.toLowerCase().includes(sg.assignedAgentRole.toLowerCase())
       );
@@ -196,7 +214,7 @@ export async function decomposeGoal(
 
 export async function runCEOHeartbeat(
   businessId: string,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<{ summary: string; actionsCount: number }> {
   const ceo = await ensureCEOAgent(businessId, supabase);
   const tree = await getGoalTree(businessId, supabase);
@@ -263,7 +281,7 @@ function getChildLevel(parentLevel: GoalLevel): GoalLevel | null {
   return map[parentLevel];
 }
 
-function findInTree(nodes: any[], id: string): any | null {
+function findInTree(nodes: GoalTreeNode[], id: string): GoalTreeNode | null {
   for (const n of nodes) {
     if (n.id === id) return n;
     const found = findInTree(n.children ?? [], id);
@@ -272,9 +290,9 @@ function findInTree(nodes: any[], id: string): any | null {
   return null;
 }
 
-function buildDecompositionPrompt(goal: any, agents: any[]): string {
+function buildDecompositionPrompt(goal: GoalRecord, agents: AgentRecord[]): string {
   const agentLines = agents
-    .map((a: any) => `- ${a.name} (${a.role}${a.department ? `, ${a.department}` : ""})`)
+    .map((a) => `- ${a.name} (${a.role}${a.department ? `, ${a.department}` : ""})`)
     .join("\n");
 
   return `You are the CEO of a company. Break down this goal into sub-goals and assign each to the most appropriate team member.
@@ -298,7 +316,7 @@ Respond with a JSON array only. Each item:
 Create 3-5 sub-goals. Be specific and actionable.`;
 }
 
-function getMockDecomposition(goal: any, agents: any[]): DecomposedGoal[] {
+function getMockDecomposition(goal: GoalRecord, _agents: AgentRecord[]): DecomposedGoal[] {
   return [
     {
       title: `Research market for: ${goal.title}`,

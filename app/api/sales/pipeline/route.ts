@@ -46,16 +46,16 @@ export async function GET() {
     // Group leads by stage
     const pipeline: Record<string, typeof leads> = {};
     for (const stage of STAGES) {
-      pipeline[stage] = leads.filter((l: any) => l.stage === stage);
+      pipeline[stage] = leads.filter((l) => l.stage === stage);
     }
 
     // Calculate totals
     const totalValue = leads
-      .filter((l: any) => l.stage !== "closed_lost")
-      .reduce((sum: number, l: any) => sum + (Number(l.value) || 0), 0);
+      .filter((l) => l.stage !== "closed_lost")
+      .reduce((sum, l) => sum + (Number(l.value) || 0), 0);
     const wonValue = leads
-      .filter((l: any) => l.stage === "closed_won")
-      .reduce((sum: number, l: any) => sum + (Number(l.value) || 0), 0);
+      .filter((l) => l.stage === "closed_won")
+      .reduce((sum, l) => sum + (Number(l.value) || 0), 0);
 
     return NextResponse.json({
       pipeline,
@@ -65,7 +65,7 @@ export async function GET() {
         totalValue,
         wonValue,
         openDeals: leads.filter(
-          (l: any) => !["closed_won", "closed_lost"].includes(l.stage)
+          (l) => !["closed_won", "closed_lost"].includes(l.stage)
         ).length,
       },
     });

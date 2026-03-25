@@ -8,6 +8,7 @@
  */
 
 import { DEV_BYPASS } from "@/lib/supabase/dev-bypass";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 type GoalLevel = "mission" | "strategic" | "tactical" | "task";
 type GoalStatus = "active" | "completed" | "cancelled" | "blocked";
@@ -46,7 +47,7 @@ interface Goal {
   created_at: string;
 }
 
-interface GoalTreeNode extends Goal {
+export interface GoalTreeNode extends Goal {
   children: GoalTreeNode[];
 }
 
@@ -55,7 +56,7 @@ interface GoalTreeNode extends Goal {
 export async function createGoal(
   businessId: string,
   input: CreateGoalInput,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<{ data: Goal | null; error: string | null }> {
   // Validate level hierarchy
   const requiredParentLevel = LEVEL_HIERARCHY[input.level];
@@ -106,7 +107,7 @@ export async function createGoal(
 
 export async function getGoalTree(
   businessId: string,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<GoalTreeNode[]> {
   const { data: goals } = await supabase
     .from("goals")
@@ -142,7 +143,7 @@ export async function getGoalTree(
 export async function getGoalsByLevel(
   businessId: string,
   level: GoalLevel,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<Goal[]> {
   const { data } = await supabase
     .from("goals")
@@ -159,7 +160,7 @@ export async function getGoalsByLevel(
 
 export async function getGoalsByAgent(
   agentId: string,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<Goal[]> {
   const { data } = await supabase
     .from("goals")
@@ -176,7 +177,7 @@ export async function getGoalsByAgent(
 export async function updateGoalStatus(
   goalId: string,
   status: GoalStatus,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<{ success: boolean; error?: string }> {
   const updates: Record<string, unknown> = {
     status,
@@ -204,7 +205,7 @@ export async function updateGoalStatus(
   return { success: true };
 }
 
-async function cascadeCompletion(goalId: string, supabase: any) {
+async function cascadeCompletion(goalId: string, supabase: SupabaseClient) {
   const { data: goal } = await supabase
     .from("goals")
     .select("parent_goal_id")
@@ -242,7 +243,7 @@ async function cascadeCompletion(goalId: string, supabase: any) {
 export async function checkoutTask(
   goalId: string,
   agentId: string,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<{ success: boolean; alreadyCheckedOut?: string }> {
   if (DEV_BYPASS) return { success: true };
 
@@ -283,7 +284,7 @@ export async function checkoutTask(
 export async function releaseTask(
   goalId: string,
   agentId: string,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<{ success: boolean }> {
   if (DEV_BYPASS) return { success: true };
 
@@ -300,4 +301,4 @@ export async function releaseTask(
   return { success: !error };
 }
 
-export type { Goal, GoalLevel, GoalStatus, GoalTreeNode, CreateGoalInput };
+export type { Goal, GoalLevel, GoalStatus, CreateGoalInput };
