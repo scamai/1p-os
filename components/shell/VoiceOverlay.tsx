@@ -23,6 +23,7 @@ export function useHandyVoice(opts: HandyVoiceOptions = {}) {
   );
 
   const optsRef = React.useRef(opts);
+  // eslint-disable-next-line react-hooks/refs -- intentional ref sync during render for useCallback access
   optsRef.current = opts;
 
   // Web Speech API needs no preloading — ready instantly

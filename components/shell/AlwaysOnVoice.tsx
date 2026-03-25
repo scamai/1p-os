@@ -119,8 +119,8 @@ function AlwaysOnVoice({ onAction, onOpenCommandBar }: AlwaysOnVoiceProps) {
   const restartTimeoutRef = React.useRef<ReturnType<typeof setTimeout>>(null);
   const activeRef = React.useRef(false);
 
-  // Keep ref in sync
-  activeRef.current = active;
+  // Keep ref in sync with state (must be in effect, not render)
+  React.useEffect(() => { activeRef.current = active; }, [active]);
 
   // Persist preference
   React.useEffect(() => {

@@ -139,6 +139,7 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
   useEffect(() => {
     try {
       const saved = localStorage.getItem("1p-read-articles");
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
       if (saved) setReadArticles(new Set(JSON.parse(saved)));
     } catch { /* ignore */ }
   }, []);
@@ -147,6 +148,7 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
   useEffect(() => {
     const match = nav.top.find((item) => pathname === item.href || pathname.startsWith(item.href + "/"));
     if (match && LEARN_IDS.includes(match.id)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing read state from navigation
       setReadArticles((prev) => {
         const next = new Set(prev);
         next.add(match.id);
@@ -168,12 +170,16 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
   useEffect(() => {
     for (const group of nav.groups) {
       if (group.items.some((item) => pathname.startsWith(item.href))) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing sidebar state from navigation
         setOpenGroups((prev) => ({ ...prev, [group.id]: true }));
       }
     }
   }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => { setMobileOpen(false); }, [pathname]);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- close mobile menu on navigation
+    setMobileOpen(false);
+  }, [pathname]);
 
   function isActive(href: string): boolean {
     if (href === "/company") return pathname === "/" || pathname === "/company";

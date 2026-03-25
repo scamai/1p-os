@@ -97,10 +97,13 @@ export default function EquitySplitPage() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
         if (parsed.founders) setFounders(parsed.founders);
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
         if (parsed.optionPool !== undefined) setOptionPool(parsed.optionPool);
       } catch { /* ignore */ }
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
     setLoaded(true);
   }, []);
 

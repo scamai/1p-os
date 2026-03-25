@@ -35,7 +35,9 @@ export default function Page() {
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
     if (saved) { try { setData({ ...INITIAL, ...JSON.parse(saved) }); } catch { /* ignore */ } }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
     setLoaded(true);
   }, []);
 

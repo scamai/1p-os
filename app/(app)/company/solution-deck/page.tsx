@@ -100,8 +100,11 @@ export default function SolutionDeckPage() {
 
   useEffect(() => {
     const loaded = loadSlides();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
     setSlides(loaded);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
     if (loaded.length > 0) setActiveSlide(loaded[0].id);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
     setLoaded(true);
   }, []);
 

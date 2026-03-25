@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import { RelatedPages } from "@/components/shared/RelatedPages";
 
@@ -58,11 +58,13 @@ export default function Page() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
         setItems(JSON.parse(saved));
       } catch {
         /* ignore */
       }
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
     setLoaded(true);
   }, []);
 
@@ -87,8 +89,13 @@ export default function Page() {
   const filtered = filterType === "all" ? items : items.filter((i) => i.type === filterType);
 
   // Items with renewal dates coming up in the next 90 days
-  const today = new Date().toISOString().split("T")[0];
-  const in90Days = new Date(Date.now() + 90 * 86400000).toISOString().split("T")[0];
+  const { today, in90Days } = useMemo(() => {
+    const now = new Date();
+    return {
+      today: now.toISOString().split("T")[0],
+      in90Days: new Date(now.getTime() + 90 * 86400000).toISOString().split("T")[0],
+    };
+  }, []);
   const upcomingRenewals = items.filter(
     (i) => i.renewalDate && i.renewalDate >= today && i.renewalDate <= in90Days
   );

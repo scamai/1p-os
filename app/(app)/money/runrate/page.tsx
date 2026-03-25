@@ -86,9 +86,12 @@ export default function Page() {
     const saved = localStorage.getItem("1pos_runrate");
     if (saved) {
       const parsed = JSON.parse(saved);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
       setMonths(parsed.months ?? monthLabels.map((label: string) => ({ label, revenue: 0, expenses: 0 })));
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
       setCashInBank(parsed.cashInBank ?? 0);
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- mount-time localStorage hydration
     setLoaded(true);
   }, [monthLabels]);
 
