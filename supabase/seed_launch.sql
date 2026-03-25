@@ -583,4 +583,24 @@ INSERT INTO accelerator_programs (name, slug, description, website_url, applicat
     ARRAY['Figma (early)','Notion (early)']
   );
 
+-- ============================================================
+-- 5. investor_database (15 investors)
+-- ============================================================
+INSERT INTO investor_database (name, firm, check_size_min, check_size_max, stage, sectors, location, is_active, website_url, notes) VALUES
+  ('Garry Tan',         'Y Combinator',           125000, 500000,   ARRAY['pre_seed','seed'],    ARRAY['saas','marketplace','hardware'], 'San Francisco, CA', true, 'https://www.ycombinator.com', 'YC standard deal: $125K for 7% via SAFE + $375K MFN SAFE'),
+  ('Jason Calacanis',   'LAUNCH Fund',            25000,  100000,   ARRAY['pre_seed','seed'],    ARRAY['saas','marketplace'],            'San Francisco, CA', true, 'https://www.launch.co',      'Angel investor, hosts This Week in Startups'),
+  ('Naval Ravikant',    'AngelList',               50000,  250000,   ARRAY['pre_seed','seed'],    ARRAY['saas','marketplace','services'], 'San Francisco, CA', true, 'https://angel.co',           'Prolific angel, focuses on platform plays'),
+  ('Sahil Lavingia',    'Individual',              100000, 500000,   ARRAY['pre_seed','seed'],    ARRAY['saas','services'],               'San Francisco, CA', true, 'https://sahillavingia.com',  'Gumroad founder, writes small checks quickly'),
+  ('Elad Gil',          'Individual',              250000, 2000000,  ARRAY['seed','series_a'],    ARRAY['saas','marketplace','services'], 'San Francisco, CA', true, 'https://eladgil.com',        'Author of High Growth Handbook, operator-angel'),
+  ('Josh Buckley',      'Individual',              25000,  100000,   ARRAY['pre_seed','seed'],    ARRAY['saas','marketplace'],            'San Francisco, CA', true, null,                         'Product Hunt CEO, active angel in consumer + dev tools'),
+  ('Cindy Bi',          'Capital Factory',         50000,  250000,   ARRAY['pre_seed','seed'],    ARRAY['saas','services'],               'Austin, TX',        true, 'https://www.capitalfactory.com', 'Texas-focused accelerator fund'),
+  ('Hunter Walk',       'Homebrew',                500000, 2000000,  ARRAY['seed'],               ARRAY['saas','marketplace'],            'San Francisco, CA', true, 'https://homebrew.co',        'Seed-stage focus, former YouTube PM'),
+  ('Pejman Nozad',      'Pear VC',                500000, 2000000,  ARRAY['pre_seed','seed'],    ARRAY['saas','hardware'],               'Palo Alto, CA',     true, 'https://www.pear.vc',        'Dorm room fund model, Stanford-adjacent'),
+  ('Charles Hudson',    'Precursor Ventures',      250000, 1000000,  ARRAY['pre_seed'],           ARRAY['saas','marketplace','services'], 'San Francisco, CA', true, 'https://precursorvc.com',    'Pre-seed specialist, underrepresented founders focus'),
+  ('Immad Akhund',      'Mercury Fund',            100000, 500000,   ARRAY['pre_seed','seed'],    ARRAY['saas','services'],               'San Francisco, CA', true, 'https://mercury.com',        'Mercury CEO, fintech + dev tools focus'),
+  ('Alexis Ohanian',    'Seven Seven Six',         500000, 5000000,  ARRAY['seed','series_a'],    ARRAY['saas','marketplace','services'], 'New York, NY',      true, 'https://776.org',            'Reddit co-founder, thesis-driven seed fund'),
+  ('Anu Duggal',        'Female Founders Fund',    250000, 1000000,  ARRAY['pre_seed','seed'],    ARRAY['saas','marketplace','services'], 'New York, NY',      true, 'https://femalefoundersfund.com', 'Invests in female-founded companies'),
+  ('Mac Conwell',       'RareBreed Ventures',      100000, 500000,   ARRAY['pre_seed','seed'],    ARRAY['saas','services'],               'Baltimore, MD',     true, 'https://rarebreed.vc',       'Overlooked founders, outside traditional hubs'),
+  ('Cyan Banister',     'Long Journey Ventures',   100000, 1000000,  ARRAY['pre_seed','seed'],    ARRAY['saas','marketplace'],            'San Francisco, CA', true, null,                         'Former SpaceX board, broad thesis');
+
 COMMIT;
