@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { OnboardingQuiz } from "@/components/launch/OnboardingQuiz";
+import { OnboardingFlow } from "@/components/launch/OnboardingFlow";
 
 export default async function OnboardingPage() {
   const supabase = await createClient();
@@ -18,5 +18,5 @@ export default async function OnboardingPage() {
     if (profile) redirect("/launch");
   } catch { /* table may not exist, show onboarding */ }
 
-  return <OnboardingQuiz />;
+  return <OnboardingFlow />;
 }

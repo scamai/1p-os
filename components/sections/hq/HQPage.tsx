@@ -1,137 +1,131 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-// ── Data ──
+// ── Content ──
 
-const CHECKLIST: {
-  id: string;
-  label: string;
-  why: string;
-  href: string;
-  category: "company" | "money" | "business" | "legal";
-}[] = [
-  // Company
-  { id: "founders", label: "Add founders & equity split", why: "Equity fights kill 62% of startups with co-founders.", href: "/company/founders", category: "company" },
-  { id: "ideation", label: "Validate your idea", why: "Make sure you're solving a real problem before building.", href: "/company/ideation", category: "company" },
-  { id: "incorporation", label: "Incorporate your company", why: "You need a legal entity for bank accounts, fundraising, contracts.", href: "/company/incorporation", category: "company" },
-  { id: "deck", label: "Build your pitch deck", why: "Can't articulate your business = investors pass.", href: "/company/solution-deck", category: "company" },
-  // Money
-  { id: "fundraising", label: "Set up fundraising pipeline", why: "Track every investor conversation. Know where your round stands.", href: "/money/fundraising", category: "money" },
-  { id: "runrate", label: "Track your runway", why: "How long until you run out of money. Know this number always.", href: "/money/runrate", category: "money" },
-  { id: "bookkeeping", label: "Start bookkeeping", why: "Messy books = tax panic + investors walk during due diligence.", href: "/money/bookkeeping", category: "money" },
-  { id: "tax", label: "Track tax deadlines", why: "Late filings = penalties. Preventable.", href: "/money/tax", category: "money" },
-  // Business
-  { id: "model", label: "Define your business model", why: "Think through every part of your business on one page.", href: "/business/model", category: "business" },
-  { id: "pricing", label: "Set your pricing", why: "#1 revenue lever. Too low = lost money. Too high = no customers.", href: "/business/pricing", category: "business" },
-  { id: "gtm", label: "Plan your go-to-market", why: "Turn your product into a business. Plan where and how to launch.", href: "/business/gtm", category: "business" },
-  // Legal
-  { id: "contracts", label: "Track your contracts", why: "Handshake deals go wrong. No legal protection.", href: "/legal/contracts", category: "legal" },
-  { id: "compliance", label: "Check compliance requirements", why: "Missed filings, penalties, legal exposure. All preventable.", href: "/legal/compliance", category: "legal" },
-  { id: "ip", label: "Protect your IP", why: "Trademarks, patents, domains. Don't let them expire.", href: "/legal/ip", category: "legal" },
+const TRUTHS: { heading: string; body: string }[] = [
+  {
+    heading: "It will take longer than you think",
+    body: "The overnight successes you read about took 7\u201310 years. Airbnb sold cereal boxes to survive. Slack was a failed video game. You are not behind.",
+  },
+  {
+    heading: "Nobody is coming to save you",
+    body: "No investor, co-founder, or mentor will care about your company as much as you do. That is the job. The sooner you accept it, the faster you move.",
+  },
+  {
+    heading: "You will be wrong constantly",
+    body: "Your first idea is probably wrong. Your first product is probably wrong. Your first pricing is definitely wrong. Speed of learning is the only advantage that matters.",
+  },
+  {
+    heading: "You will hear No more than you hear anything else",
+    body: "Investors will pass. Customers will ghost. Partners will say \u201Clet\u2019s circle back\u201D and never do. You\u2019ll pitch 50 people and get 3 replies. That\u2019s not failure \u2014 that\u2019s the game. Every founder you admire has a rejection folder 10x the size of their wins.",
+  },
+  {
+    heading: "Money is oxygen, not the point",
+    body: "You need it to survive. But the founders who last are the ones building something they would build even if they were already rich.",
+  },
+  {
+    heading: "Lonely is normal",
+    body: "Your friends won\u2019t fully get it. Your family will worry. Other founders are the only people who understand. Find them.",
+  },
 ];
 
-const CATEGORY_LABELS: Record<string, string> = {
-  company: "Company",
-  money: "Money",
-  business: "Business",
-  legal: "Legal",
-};
+const REASONS = [
+  "You saw a problem nobody else is fixing.",
+  "You want to build something that outlives you.",
+  "You want freedom over your time, your work, your life.",
+  "You want to get rich. That\u2019s valid. Be honest about it.",
+  "You can\u2019t work for someone else. You tried. It didn\u2019t take.",
+  "You want to prove \u2014 to yourself or to someone else \u2014 that you can.",
+  "You have no idea why. You just know you have to.",
+];
 
 // ── Page ──
 
 function HQPage() {
-  const router = useRouter();
-  const [openSections, setOpenSections] = React.useState<Record<string, boolean>>({
-    company: true,
-  });
-
-  const toggle = (category: string) => {
-    setOpenSections((prev) => ({ ...prev, [category]: !prev[category] }));
-  };
-
-  // Group by category
-  const grouped = React.useMemo(() => {
-    const map = new Map<string, typeof CHECKLIST>();
-    for (const item of CHECKLIST) {
-      if (!map.has(item.category)) map.set(item.category, []);
-      map.get(item.category)!.push(item);
-    }
-    return map;
-  }, []);
-
   return (
-    <div className="mx-auto max-w-[640px] pb-16">
-      {/* Hero */}
-      <div>
-        <h1 className="text-[22px] font-bold text-black leading-tight">
-          Don&apos;t make the mistakes every first-time founder makes.
+    <article className="mx-auto max-w-[680px] px-6 py-16 md:py-24">
+      {/* Title */}
+      <header>
+        <h1 className="font-heading text-[clamp(2.5rem,6vw,3.5rem)] italic font-extralight leading-[1.1] tracking-[-0.03em] text-black">
+          Before you started
         </h1>
+        <div className="mt-8 flex items-center gap-3 text-[13px] text-black/40">
+          <span>5 min read</span>
+        </div>
+      </header>
+
+      {/* Opening — large lede */}
+      <p className="mt-14 text-[22px] leading-[1.75] text-black/70 font-light">
+        90% of startups fail. The ones that don&apos;t aren&apos;t
+        smarter or luckier. They&apos;re the ones who bent instead of
+        broke &mdash; who adapted when the plan fell apart, found a new
+        angle when the door closed, and kept moving like water
+        through every crack the world gave them.
+      </p>
+
+      {/* Hard truths */}
+      <div className="mt-16 space-y-12">
+        {TRUTHS.map((t, i) => (
+          <section key={i}>
+            <h2 className="text-[24px] font-medium leading-[1.35] tracking-[-0.015em] text-black">
+              {t.heading}
+            </h2>
+            <p className="mt-4 text-[18px] leading-[2] text-black/55">
+              {t.body}
+            </p>
+          </section>
+        ))}
       </div>
 
-      {/* Checklist by category */}
-      <div className="mt-10 flex flex-col gap-2">
-        {Array.from(grouped.entries()).map(([category, items]) => {
-          const isOpen = openSections[category] ?? false;
-          return (
-            <div key={category}>
-              <button
-                onClick={() => toggle(category)}
-                className="flex w-full items-center gap-2 py-2 text-left"
-              >
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  className={`text-black/40 transition-transform duration-150 ${isOpen ? "rotate-90" : ""}`}
-                >
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-black/40">
-                  {CATEGORY_LABELS[category]}
-                </span>
-                {!isOpen && (
-                  <span className="text-[11px] text-black/40 ml-1">
-                    {items.length}
-                  </span>
-                )}
-              </button>
-              {isOpen && (
-                <div className="flex flex-col">
-                  {items.map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => router.push(item.href)}
-                      className="flex items-start gap-3 border-b border-black/[0.04] py-3 last:border-0 text-left transition-colors hover:bg-black/[0.02] -mx-3 px-3"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[14px] font-medium text-black">
-                          {item.label}
-                        </p>
-                        <p className="mt-0.5 text-[13px] text-black/40">
-                          {item.why}
-                        </p>
-                      </div>
-                      <span className="mt-0.5 shrink-0 text-black/30">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                          <line x1="5" y1="12" x2="19" y2="12" />
-                          <polyline points="12 5 19 12 12 19" />
-                        </svg>
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
+      {/* Pull quote */}
+      <blockquote className="my-20 border-l-[3px] border-black pl-8">
+        <p className="text-[24px] font-light leading-[1.6] tracking-[-0.01em] text-black/80 italic">
+          The graveyard of startups is full of people
+          who built the wrong thing, not people who quit too early.
+        </p>
+      </blockquote>
+
+      {/* Why */}
+      <p className="text-[22px] leading-[1.75] text-black/70 font-light">
+        People start companies for different reasons. Most of them are good.
+      </p>
+
+      <div className="mt-10 space-y-5">
+        {REASONS.map((r, i) => (
+          <p key={i} className="text-[18px] leading-[2] text-black/55 pl-7 border-l-[3px] border-black/[0.08]">
+            {r}
+          </p>
+        ))}
       </div>
-    </div>
+
+      <p className="mt-14 text-[22px] leading-[1.75] text-black/70 font-light">
+        It doesn&apos;t matter which one. It matters that you know.
+        On the bad days &mdash; and there will be many &mdash; that reason is
+        the only thing that keeps you going.
+      </p>
+
+      {/* Closing */}
+      <p className="mt-20 text-[32px] font-medium leading-[1.35] tracking-[-0.02em] text-black">
+        Now go build something.
+      </p>
+
+      {/* CTA */}
+      <div className="mt-14 pb-8">
+        <Link
+          href="/company/founders"
+          className="inline-flex items-center gap-2.5 border border-black bg-black px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-black/90"
+        >
+          Start with Founders
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg>
+        </Link>
+      </div>
+    </article>
   );
 }
 

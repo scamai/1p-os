@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
+import { RelatedPages } from "@/components/shared/RelatedPages";
 import { useTableData } from "@/lib/hooks/useTableData";
 
 type TaskStatus = "todo" | "in-progress" | "done";
@@ -94,9 +95,9 @@ export default function Page() {
 
   return (
     <div className="mx-auto max-w-4xl">
-      <Education {...EDUCATION.gtm} />
-      <h1 className="text-lg font-semibold text-black">Go-to-Market</h1>
-      <p className="mt-1 text-sm text-black/50 mb-6">
+
+      <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Go-to-Market</h1>
+      <p className="mt-2 text-[14px] leading-[1.6] text-black/40 mb-6">
         Plan your launch checklist, channels, and timeline.
       </p>
 
@@ -145,7 +146,7 @@ export default function Page() {
                     </span>
                     <button
                       onClick={() => removeTask(task.id)}
-                      className="text-xs text-black/30 hover:text-black/60 opacity-0 group-hover:opacity-100"
+                      className="text-xs text-black/30 hover:text-black/60 sm:opacity-0 sm:group-hover:opacity-100"
                     >
                       ✕
                     </button>
@@ -174,6 +175,12 @@ export default function Page() {
           );
         })}
       </div>
+
+      <RelatedPages links={[
+        { label: "Marketing", href: "/business/marketing", context: "Execute campaigns from your GTM plan" },
+        { label: "Pricing Strategy", href: "/business/pricing", context: "Finalize pricing before you launch" },
+        { label: "Solution Deck", href: "/company/solution-deck", context: "Prepare launch assets and pitch materials" },
+      ]} />
     </div>
   );
 }

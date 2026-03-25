@@ -1,13 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
-import { DEV_BYPASS, createMockSupabaseClient } from './dev-bypass';
 
 export async function createClient() {
-  // In dev bypass mode, return a mock client that works without Supabase
-  if (DEV_BYPASS) {
-    return createMockSupabaseClient() as ReturnType<typeof createServerClient>;
-  }
-
   const cookieStore = await cookies();
 
   return createServerClient(

@@ -9,7 +9,9 @@
     "pty": "python3 scripts/pty-server.py",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:e2e": "npx playwright test",
+    "test:e2e:ui": "npx playwright test --ui"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",
@@ -53,6 +55,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
+    "@playwright/test": "^1.58.2",
     "@types/file-saver": "^2.0.7",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",

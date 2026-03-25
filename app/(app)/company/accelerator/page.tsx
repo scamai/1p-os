@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
+import { RelatedPages } from "@/components/shared/RelatedPages";
 
 interface Accelerator {
   id: string;
@@ -87,10 +88,10 @@ export default function AcceleratorPage() {
 
   return (
     <div className="mx-auto max-w-[800px]">
-      <Education {...EDUCATION.accelerator} />
+
       <div className="mb-6">
-        <h1 className="text-lg font-semibold text-black">Apply to Accelerator</h1>
-        <p className="mt-1 text-sm text-black/50">
+        <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Apply to Accelerator</h1>
+        <p className="mt-2 text-[14px] leading-[1.6] text-black/40">
           Track your applications to top-tier accelerator programs.
         </p>
       </div>
@@ -137,7 +138,7 @@ export default function AcceleratorPage() {
             {/* Expanded detail */}
             {selected === acc.id && (
               <div className="border-t border-black/[0.08] px-4 py-3 space-y-3">
-                <div className="grid grid-cols-3 gap-4 text-[12px]">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-[12px]">
                   <div>
                     <p className="text-black/50">Batch</p>
                     <p className="text-black/80">{acc.batch}</p>
@@ -153,7 +154,7 @@ export default function AcceleratorPage() {
                 </div>
 
                 {/* Status buttons */}
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="text-[11px] text-black/50 mr-1">Status:</span>
                   {(Object.keys(STATUS_LABELS) as Accelerator["status"][]).map((s) => (
                     <button
@@ -200,6 +201,12 @@ export default function AcceleratorPage() {
           </div>
         ))}
       </div>
+
+      <RelatedPages links={[
+        { label: "Solution Deck", href: "/company/solution-deck", context: "Polish your pitch deck before applying" },
+        { label: "Fundraising", href: "/money/fundraising", context: "Track funding rounds and investor pipeline" },
+        { label: "Business Model", href: "/business/model", context: "Clarify your business model for applications" },
+      ]} />
     </div>
   );
 }

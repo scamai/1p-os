@@ -3,7 +3,8 @@
 import { useState, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
+import { RelatedPages } from "@/components/shared/RelatedPages";
 import {
   LEGAL_TEMPLATES,
   FillData,
@@ -26,7 +27,7 @@ function TemplateCard({
 }) {
   return (
     <div className="group border border-black/[0.08] rounded-md bg-white p-5 transition-colors duration-150 hover:border-black/30">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
         <div className="min-w-0">
           <h3 className="text-sm font-semibold text-black">
             {template.title}
@@ -35,7 +36,7 @@ function TemplateCard({
             {fillText(template.description, data)}
           </p>
         </div>
-        <div className="flex items-center gap-2 shrink-0 pt-0.5">
+        <div className="flex items-center gap-2 shrink-0">
           <Button size="sm" variant="ghost" onClick={() => onPreview(template)}>
             Preview
           </Button>
@@ -74,7 +75,7 @@ function PreviewModal({
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 p-4 pt-12 pb-12">
-      <div className="w-full max-w-2xl rounded-md bg-white shadow-xl">
+      <div className="w-full sm:max-w-2xl bg-white shadow-xl">
         <div className="flex items-center justify-between border-b border-black/[0.08] px-6 py-4">
           <h2 className="text-sm font-semibold text-black">
             {template.title}
@@ -114,7 +115,7 @@ function PreviewModal({
             </button>
           </div>
         </div>
-        <div className="max-h-[70vh] overflow-y-auto px-8 py-6">
+        <div className="max-h-[80vh] sm:max-h-[70vh] overflow-y-auto px-4 sm:px-8 py-4 sm:py-6">
           {template.sections.map((section, i) => (
             <div key={i} className={i > 0 ? "mt-6" : ""}>
               {section.heading && (
@@ -168,11 +169,11 @@ export default function Page() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <Education {...EDUCATION.contracts} />
+
 
       <div className="mb-10">
-        <h1 className="text-lg font-semibold text-black">Contract Templates</h1>
-        <p className="mt-1 text-sm text-black/50">
+        <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Contract Templates</h1>
+        <p className="mt-2 text-[14px] leading-[1.6] text-black/40">
           Download sample contract templates as PDF or DOCX. Auto-filled with your company details.
         </p>
       </div>
@@ -182,7 +183,7 @@ export default function Page() {
         <p className="text-xs font-medium text-black/50 uppercase tracking-widest mb-4">
           Auto-fill details
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Input
             label="Company name"
             value={companyName}
@@ -242,6 +243,12 @@ export default function Page() {
           onDownloadDOCX={handleDownloadDOCX}
         />
       )}
+
+      <RelatedPages links={[
+        { label: "Incorporation", href: "/company/incorporation", context: "Complete formation docs alongside your templates" },
+        { label: "SAFEs", href: "/legal/safes", context: "Issue SAFE agreements for early investors" },
+        { label: "IP & Trademarks", href: "/legal/ip", context: "Protect your intellectual property and brand" },
+      ]} />
     </div>
   );
 }

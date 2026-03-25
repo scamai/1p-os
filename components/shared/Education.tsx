@@ -203,46 +203,6 @@ export const EDUCATION = {
       { label: "Set cash balance", detail: "What's in the bank" },
     ],
   },
-  bookkeeping: {
-    id: "edu_bookkeeping",
-    title: "Track every dollar",
-    why: "Saves thousands in accounting fees. Required for due diligence.",
-    steps: [
-      { label: "Log transactions", detail: "As they happen" },
-      { label: "Categorize", detail: "Revenue vs expense" },
-      { label: "Review monthly", detail: "Check the summary" },
-    ],
-  },
-  accounting: {
-    id: "edu_accounting",
-    title: "Financial statements",
-    why: "P&L and Balance Sheet. Every investor and bank asks for these.",
-    steps: [
-      { label: "Fill in revenue", detail: "All income sources" },
-      { label: "Add expenses", detail: "By category" },
-      { label: "Check the math", detail: "Assets = Liabilities + Equity" },
-    ],
-  },
-  auditing: {
-    id: "edu_auditing",
-    title: "Stay audit-ready",
-    why: "Basic financial controls. Stay ready for investors and tax season.",
-    steps: [
-      { label: "Review checklist", detail: "18 items across 4 categories" },
-      { label: "Check off items", detail: "As you complete them" },
-      { label: "Review quarterly", detail: "Keep it current" },
-    ],
-  },
-  tax: {
-    id: "edu_tax",
-    title: "Don't miss a deadline",
-    why: "Late filings = penalties. Track deadlines, deductions, payments.",
-    steps: [
-      { label: "Check calendar", detail: "Key dates for your entity type" },
-      { label: "Track deductions", detail: "Every receipt matters" },
-      { label: "Estimate taxes", detail: "Know what you'll owe" },
-    ],
-  },
   businessModel: {
     id: "edu_business_model",
     title: "How will you make money?",

@@ -101,15 +101,6 @@ function parseIntent(input: string): ParsedIntent | null {
   }
 
   // Create actions
-  if (lower.match(/invoice|bill\s/)) {
-    const amount = input.match(/\$?([\d,]+(?:\.\d{2})?)/)?.[1]?.replace(",", "");
-    const client = input.replace(/(?:create|new|send|make)?\s*(?:an?\s+)?invoice\s*(?:for|to)?\s*/i, "").replace(/\$[\d,.]+/, "").trim();
-    return { action: "new_invoice", params: { ...(amount ? { amount } : {}), ...(client ? { client } : {}) }, confidence: 0.9, display_text: `Create invoice${client ? ` for ${client}` : ""}${amount ? ` — $${amount}` : ""}` };
-  }
-  if (lower.match(/expense|spent|paid for/)) {
-    const amount = input.match(/\$?([\d,]+(?:\.\d{2})?)/)?.[1]?.replace(",", "");
-    return { action: "new_expense", params: { ...(amount ? { amount } : {}) }, confidence: 0.9, display_text: `Log expense${amount ? ` — $${amount}` : ""}` };
-  }
   if (lower.match(/add\s+(contact|person|client|lead)|new\s+(contact|person|client|lead)/)) {
     const nameAfter = input.replace(/(?:add|new)\s+(?:contact|person|client|lead)\s*/i, "").trim();
     return { action: "add_contact", params: { ...(nameAfter ? { name: nameAfter } : {}) }, confidence: 0.9, display_text: `Add contact${nameAfter ? `: ${nameAfter}` : ""}` };
@@ -530,7 +521,7 @@ function CommandBar({ open, onClose, onAction, agents = [] }: CommandBarProps) {
               <div className="flex flex-wrap gap-1.5">
                 {[
                   "Go to finance",
-                  "Create invoice for Acme",
+                  "Add a contact",
                   "Approve all",
                   "Pause Sales Agent",
                   "Scroll down",
@@ -576,13 +567,6 @@ function ActionIcon({ action }: { action: string }) {
       return (
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={cls} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-        </svg>
-      );
-    case "new_invoice":
-    case "new_expense":
-      return (
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className={cls}>
-          <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
         </svg>
       );
     case "kill_switch":

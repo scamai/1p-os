@@ -71,16 +71,6 @@ const DEPARTMENTS: Department[] = [
     ],
   },
   {
-    id: "finance",
-    name: "Finance",
-    icon: "F",
-    color: "#71717a",
-    agents: [
-      { id: "a5", name: "Bookkeeper", role: "Reconciles transactions, tracks expenses", status: "idle", tasksToday: 8, costToday: 0.12 },
-      { id: "a6", name: "Invoice Agent", role: "Sends and follows up on invoices", status: "paused", tasksToday: 0, costToday: 0 },
-    ],
-  },
-  {
     id: "ops",
     name: "Operations",
     icon: "O",
@@ -109,16 +99,6 @@ const WORKFLOWS: Workflow[] = [
     steps: [
       { agentId: "a3", agentName: "Ticket Resolver", action: "Summarize top issues", department: "Support", outputTo: "a4" },
       { agentId: "a4", agentName: "Content Writer", action: "Write FAQ / help article", department: "Content" },
-    ],
-  },
-  {
-    id: "w3",
-    name: "Revenue Reconciliation",
-    trigger: "Daily at 6 AM",
-    steps: [
-      { agentId: "a5", agentName: "Bookkeeper", action: "Pull Stripe payouts", department: "Finance", outputTo: "a6" },
-      { agentId: "a6", agentName: "Invoice Agent", action: "Match to invoices", department: "Finance", outputTo: "a7" },
-      { agentId: "a7", agentName: "Ops Coordinator", action: "Flag discrepancies", department: "Operations" },
     ],
   },
   {

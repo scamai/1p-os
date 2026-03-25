@@ -72,7 +72,7 @@ const TEMPLATE_PLACEHOLDERS: Record<string, string> = {
   agency:
     "I run a small digital marketing agency with 8 active clients across social, SEO, and paid ads...",
   general:
-    "I run a small business and need help with day-to-day admin, scheduling, and bookkeeping...",
+    "I run a small business and need help with day-to-day admin and scheduling...",
 };
 
 const TEMPLATE_AGENTS: Record<string, { name: string; role: string }[]> = {

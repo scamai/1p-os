@@ -45,12 +45,12 @@ function InlineFormSheet({
       <div
         ref={panelRef}
         className={`
-          fixed left-0 right-0 top-0 z-50 mx-auto w-full max-w-2xl
+          fixed left-0 right-0 top-0 z-50 mx-auto w-full sm:max-w-2xl
           transition-all duration-200 ease-out
           ${open ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0 pointer-events-none"}
         `}
       >
-        <div className="mx-4 mt-4 max-h-[80vh] overflow-y-auto rounded-xl border border-black/[0.08] bg-white shadow-2xl">
+        <div className="mx-2 sm:mx-4 mt-2 sm:mt-4 max-h-[85vh] sm:max-h-[80vh] overflow-y-auto border border-black/[0.08] bg-white shadow-2xl">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-black/[0.08] px-6 py-4">
             <h2 className="text-sm font-medium text-black/60">{title}</h2>

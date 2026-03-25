@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
+import { RelatedPages } from "@/components/shared/RelatedPages";
 import { useTableData } from "@/lib/hooks/useTableData";
 
 type ContentType = "blog" | "social" | "email" | "ad";
@@ -76,9 +77,9 @@ export default function Page() {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <Education {...EDUCATION.marketing} />
-      <h1 className="text-lg font-semibold text-black">Marketing</h1>
-      <p className="mt-1 text-sm text-black/50 mb-6">
+
+      <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Marketing</h1>
+      <p className="mt-2 text-[14px] leading-[1.6] text-black/40 mb-6">
         Plan content, track channels, and manage campaigns.
       </p>
 
@@ -113,11 +114,11 @@ export default function Page() {
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
           {DAYS.map((day, dayIdx) => {
             const items = weekContent.filter((c) => c.day === dayIdx);
             return (
-              <div key={day} className="min-h-[100px]">
+              <div key={day} className="min-h-[60px] sm:min-h-[100px]">
                 <div className="text-xs font-semibold text-black/50 uppercase mb-1.5">{day}</div>
                 <div className="space-y-1">
                   {items.map((item) => (
@@ -128,7 +129,7 @@ export default function Page() {
                       <span className="flex-1">{item.title}</span>
                       <button
                         onClick={() => removeContent(item.id)}
-                        className="ml-1 opacity-0 group-hover:opacity-100 text-[10px] shrink-0"
+                        className="ml-1 sm:opacity-0 sm:group-hover:opacity-100 text-[12px] sm:text-[10px] shrink-0"
                       >
                         ✕
                       </button>
@@ -151,7 +152,7 @@ export default function Page() {
 
         {addingContent !== null && (
           <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-5 w-full max-w-sm shadow-xl">
+            <div className="bg-white p-4 sm:p-5 w-full mx-2 sm:mx-0 sm:max-w-sm shadow-xl">
               <h3 className="text-sm font-semibold text-black mb-3">
                 Add Content - {DAYS[addingContent.day]}
               </h3>
@@ -209,7 +210,7 @@ export default function Page() {
 
         {showChannelForm && (
           <div className="border border-black/[0.08] rounded p-3 mb-3 bg-black/[0.02]">
-            <div className="grid grid-cols-3 gap-2 mb-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
               <div>
                 <label className="block text-xs text-black/50 mb-1">Channel</label>
                 <input
@@ -250,7 +251,8 @@ export default function Page() {
         {channels.length === 0 ? (
           <p className="text-sm text-black/40 text-center py-3">No channels tracked yet.</p>
         ) : (
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[480px]">
             <thead>
               <tr className="border-b border-black/[0.08]">
                 <th className="text-left px-2 py-1.5 text-xs font-semibold text-black/50 uppercase tracking-wide">Channel</th>
@@ -276,8 +278,15 @@ export default function Page() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
+
+      <RelatedPages links={[
+        { label: "Go-to-Market", href: "/business/gtm", context: "Align campaigns with your GTM strategy" },
+        { label: "Market Research", href: "/business/market-research", context: "Use audience insights to target campaigns" },
+        { label: "Business Model", href: "/business/model", context: "Ensure marketing supports your value proposition" },
+      ]} />
     </div>
   );
 }

@@ -11,13 +11,8 @@ import { AIWizard, type WizardIntent } from "@/components/shell/AIWizard";
 import { CoreBanner } from "@/components/shell/CoreBanner";
 import { AlwaysOnVoice } from "@/components/shell/AlwaysOnVoice";
 import { FounderEducation } from "@/components/shared/FounderEducation";
+import { ArticleNav } from "@/components/shared/ArticleNav";
 
-const InvoiceForm = React.lazy(() =>
-  import("@/components/forms/InvoiceForm").then((m) => ({ default: m.InvoiceForm }))
-);
-const ExpenseForm = React.lazy(() =>
-  import("@/components/forms/ExpenseForm").then((m) => ({ default: m.ExpenseForm }))
-);
 const ContactForm = React.lazy(() =>
   import("@/components/forms/PersonForm").then((m) => ({ default: m.ContactForm }))
 );
@@ -31,16 +26,12 @@ const DocumentUploadForm = React.lazy(() =>
 );
 
 type ActiveForm =
-  | "invoice"
-  | "expense"
   | "contact"
   | "project"
   | "document"
   | null;
 
 const formTitles: Record<Exclude<ActiveForm, null>, string> = {
-  invoice: "New Invoice",
-  expense: "Log Expense",
   contact: "Add Contact",
   project: "New Project",
   document: "Upload Document",
@@ -63,6 +54,59 @@ interface AppShellProps {
     documentCount?: number;
   };
   children: React.ReactNode;
+}
+
+function ArticleLayout({ onBack, children }: { onBack: () => void; children: React.ReactNode; }) {
+  const [progress, setProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    function handleScroll() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight <= 0) { setProgress(100); return; }
+      setProgress(Math.min(100, Math.round((scrollTop / docHeight) * 100)));
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Horizontal progress bar — fixed at top */}
+      <div className="fixed left-0 right-0 top-0 z-50 h-[2px] bg-black/[0.04]">
+        <div
+          className="h-full bg-black/30 transition-[width] duration-150 ease-out"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <nav className="sticky top-[2px] z-40 bg-white/90 backdrop-blur-sm">
+        <div className="mx-auto max-w-[680px] px-6 py-4 flex items-center justify-between">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-1.5 text-[13px] text-black/40 hover:text-black/70 transition-colors"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Dashboard
+          </button>
+          <button
+            onClick={onBack}
+            className="font-heading text-[15px] italic font-extralight tracking-[-0.02em] text-black/30 hover:text-black/60 transition-colors"
+          >
+            1P
+          </button>
+        </div>
+      </nav>
+      <main className="flex-1 overflow-y-auto pb-16">
+        {children}
+      </main>
+      <ArticleNav />
+    </div>
+  );
 }
 
 function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProps) {
@@ -119,12 +163,6 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
           if (params?.page) router.push(params.page as string);
           break;
         // AI Core actions
-        case "create_invoice":
-          setActiveForm("invoice");
-          break;
-        case "create_expense":
-          setActiveForm("expense");
-          break;
         case "create_agent":
           setWizardIntent("hire_agent");
           break;
@@ -147,12 +185,6 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
           setWizardIntent("configure_model");
           break;
         // Traditional forms
-        case "new_invoice":
-          setActiveForm("invoice");
-          break;
-        case "new_expense":
-          setActiveForm("expense");
-          break;
         case "add_contact":
           setActiveForm("contact");
           break;
@@ -269,14 +301,18 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
           </div>
         }
       >
-        {activeForm === "invoice" && <InvoiceForm onClose={() => setActiveForm(null)} />}
-        {activeForm === "expense" && <ExpenseForm onClose={() => setActiveForm(null)} />}
         {activeForm === "contact" && <ContactForm onClose={() => setActiveForm(null)} />}
         {activeForm === "project" && <ProjectForm onClose={() => setActiveForm(null)} />}
         {activeForm === "document" && <DocumentUploadForm onClose={() => setActiveForm(null)} />}
       </React.Suspense>
     );
   };
+
+  const isArticlePage = pathname === "/company/founders" || pathname === "/company/ideation" || pathname === "/company/equity" || pathname === "/company/incorporation" || pathname === "/company/founder-wellness" || pathname === "/business/traction" || pathname === "/money/fundraising" || pathname === "/business/pricing" || pathname === "/legal";
+
+  if (isArticlePage) {
+    return <ArticleLayout onBack={() => router.push("/launch")}>{children}</ArticleLayout>;
+  }
 
   return (
     <div className="flex min-h-screen">
@@ -342,8 +378,8 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
             className="fixed inset-0 z-40 bg-black/20"
             onClick={() => setWizardIntent(null)}
           />
-          <div className="fixed inset-x-0 top-0 z-50 mx-auto w-full max-w-lg">
-            <div className="mx-4 mt-4 h-[70vh] overflow-hidden rounded-xl border border-black/[0.06] bg-white shadow-2xl">
+          <div className="fixed inset-x-0 top-0 z-50 mx-auto w-full sm:max-w-lg">
+            <div className="mx-2 sm:mx-4 mt-2 sm:mt-4 h-[85vh] sm:h-[70vh] overflow-hidden border border-black/[0.06] bg-white shadow-2xl">
               <AIWizard
                 intent={wizardIntent}
                 onClose={() => setWizardIntent(null)}

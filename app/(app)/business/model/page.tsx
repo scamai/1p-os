@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { Education, EDUCATION } from "@/components/shared/Education";
+
+import { RelatedPages } from "@/components/shared/RelatedPages";
 import { useSingletonData } from "@/lib/hooks/useSingletonData";
 
 type Block = {
@@ -71,7 +72,7 @@ function CanvasBlock({
             <span className="flex-1">{item}</span>
             <button
               onClick={() => onUpdate({ ...block, items: block.items.filter((_, i) => i !== idx) })}
-              className="text-black/[0.08] hover:text-black/50 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+              className="text-black/30 sm:text-black/[0.08] hover:text-black/50 text-[12px] sm:text-[10px] sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0"
             >
               x
             </button>
@@ -185,15 +186,15 @@ export default function Page() {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <Education {...EDUCATION.businessModel} />
-      <div className="flex items-center justify-between mb-6">
+
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-lg font-semibold text-black">Business Model Canvas</h1>
-          <p className="mt-1 text-sm text-black/50">
+          <h1 className="font-heading text-[clamp(1.5rem,3vw,1.75rem)] italic font-light tracking-[-0.01em] text-black">Business Model Canvas</h1>
+          <p className="mt-2 text-[14px] leading-[1.6] text-black/40">
             Map out the 9 building blocks of your business.
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
           <span className="text-[11px] text-black/40">{filledBlocks}/9 blocks filled</span>
           <span className="text-[11px] text-black/40">{totalItems} items</span>
           <button
@@ -212,42 +213,43 @@ export default function Page() {
       </div>
 
       {/* BMC Grid — Osterwalder standard layout */}
-      <div className="border border-black">
-        {/* Top section: 5 columns */}
+      {/* Mobile: stacked blocks */}
+      <div className="flex flex-col gap-0 border border-black md:hidden">
+        <div className="border-b border-black"><CanvasBlock block={getBlock("key-partners")} onUpdate={updateBlock} /></div>
+        <div className="border-b border-black"><CanvasBlock block={getBlock("key-activities")} onUpdate={updateBlock} /></div>
+        <div className="border-b border-black"><CanvasBlock block={getBlock("value-props")} onUpdate={updateBlock} /></div>
+        <div className="border-b border-black"><CanvasBlock block={getBlock("key-resources")} onUpdate={updateBlock} /></div>
+        <div className="border-b border-black"><CanvasBlock block={getBlock("customer-relationships")} onUpdate={updateBlock} /></div>
+        <div className="border-b border-black"><CanvasBlock block={getBlock("channels")} onUpdate={updateBlock} /></div>
+        <div className="border-b border-black"><CanvasBlock block={getBlock("customer-segments")} onUpdate={updateBlock} /></div>
+        <div className="border-b border-black"><CanvasBlock block={getBlock("cost-structure")} onUpdate={updateBlock} /></div>
+        <div><CanvasBlock block={getBlock("revenue-streams")} onUpdate={updateBlock} /></div>
+      </div>
+      {/* Desktop: standard Osterwalder grid */}
+      <div className="hidden md:block border border-black">
         <div className="grid grid-cols-10">
-          {/* Key Partners — 2 rows */}
           <div className="col-span-2 border-r border-black">
             <CanvasBlock block={getBlock("key-partners")} onUpdate={updateBlock} tall />
           </div>
-
-          {/* Key Activities + Key Resources — stacked */}
           <div className="col-span-2 border-r border-black">
             <div className="border-b border-black">
               <CanvasBlock block={getBlock("key-activities")} onUpdate={updateBlock} />
             </div>
             <CanvasBlock block={getBlock("key-resources")} onUpdate={updateBlock} />
           </div>
-
-          {/* Value Propositions — 2 rows */}
           <div className="col-span-2 border-r border-black">
             <CanvasBlock block={getBlock("value-props")} onUpdate={updateBlock} tall />
           </div>
-
-          {/* Customer Relationships + Channels — stacked */}
           <div className="col-span-2 border-r border-black">
             <div className="border-b border-black">
               <CanvasBlock block={getBlock("customer-relationships")} onUpdate={updateBlock} />
             </div>
             <CanvasBlock block={getBlock("channels")} onUpdate={updateBlock} />
           </div>
-
-          {/* Customer Segments — 2 rows */}
           <div className="col-span-2">
             <CanvasBlock block={getBlock("customer-segments")} onUpdate={updateBlock} tall />
           </div>
         </div>
-
-        {/* Bottom section: 2 columns */}
         <div className="grid grid-cols-2 border-t border-black">
           <div className="border-r border-black">
             <CanvasBlock block={getBlock("cost-structure")} onUpdate={updateBlock} />
@@ -255,6 +257,13 @@ export default function Page() {
           <CanvasBlock block={getBlock("revenue-streams")} onUpdate={updateBlock} />
         </div>
       </div>
+
+      <RelatedPages links={[
+        { label: "Ideation", href: "/company/ideation", context: "Revisit the problem and solution your model is built on" },
+        { label: "Pricing Strategy", href: "/business/pricing", context: "Define pricing tiers for your revenue streams" },
+        { label: "Market Research", href: "/business/market-research", context: "Validate customer segments and market size" },
+        { label: "Go-to-Market", href: "/business/gtm", context: "Plan how to reach your customer segments" },
+      ]} />
     </div>
   );
 }
