@@ -3,7 +3,8 @@ import { CostsView } from "./CostsView";
 
 export default async function CostsPage() {
   const supabase = await createClient();
-  const userId = "00000000-0000-0000-0000-000000000000";
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id ?? "";
 
   const { data: business } = await supabase
     .from("businesses")

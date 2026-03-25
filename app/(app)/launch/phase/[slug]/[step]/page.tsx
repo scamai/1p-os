@@ -9,7 +9,8 @@ interface StepPageProps {
 export default async function StepPage({ params }: StepPageProps) {
   const { slug, step: stepSlug } = await params;
   const supabase = await createClient();
-  const userId = "00000000-0000-0000-0000-000000000000";
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id ?? "";
 
   // Fetch founder profile
   const { data: profile } = await supabase

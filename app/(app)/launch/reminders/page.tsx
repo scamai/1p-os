@@ -3,7 +3,8 @@ import { RemindersView } from "@/components/launch/RemindersView";
 
 export default async function RemindersPage() {
   const supabase = await createClient();
-  const userId = "00000000-0000-0000-0000-000000000000";
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id ?? "";
 
   const { data: reminders } = await supabase
     .from("launch_reminders")

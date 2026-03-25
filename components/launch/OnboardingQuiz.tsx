@@ -119,7 +119,8 @@ export function OnboardingQuiz() {
     setLoading(true);
 
     const supabase = createClient();
-    const userId = "00000000-0000-0000-0000-000000000000";
+    const { data: { user } } = await supabase.auth.getUser();
+    const userId = user?.id ?? "";
 
     const { error } = await supabase.from("founder_profiles").insert({
       user_id: userId,

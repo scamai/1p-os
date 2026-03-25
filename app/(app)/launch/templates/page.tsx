@@ -3,7 +3,8 @@ import { TemplateBrowser } from "@/components/launch/TemplateBrowser";
 
 export default async function TemplatesPage() {
   const supabase = await createClient();
-  const userId = "00000000-0000-0000-0000-000000000000";
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id ?? "";
 
   // Load founder profile for auto-fill
   let companyName = "";
