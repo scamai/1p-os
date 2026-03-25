@@ -93,14 +93,14 @@ export async function GET() {
     .order("created_at", { ascending: false })
     .limit(50);
 
-  const recentMemories = (recentRaw ?? []).map((m: { id: string; metadata: Record<string, unknown> | null; created_at: string; updated_at: string }) => ({
-    id: m.id,
-    content: m.metadata?.data ?? m.metadata?.memory ?? "",
-    category: m.metadata?.category ?? "uncategorized",
-    agentId: m.metadata?.agentId ?? "unknown",
-    importance: m.metadata?.importance ?? 0.5,
-    createdAt: m.created_at,
-    updatedAt: m.updated_at,
+  const recentMemories = (recentRaw ?? []).map((m) => ({
+    id: String(m.id),
+    content: String((m.metadata as Record<string, unknown> | null)?.data ?? (m.metadata as Record<string, unknown> | null)?.memory ?? ""),
+    category: String((m.metadata as Record<string, unknown> | null)?.category ?? "uncategorized"),
+    agentId: String((m.metadata as Record<string, unknown> | null)?.agentId ?? "unknown"),
+    importance: Number((m.metadata as Record<string, unknown> | null)?.importance ?? 0.5),
+    createdAt: String(m.created_at),
+    updatedAt: String(m.updated_at),
   }));
 
   // Also pull from business_memory table for legacy memories
@@ -126,7 +126,7 @@ export async function GET() {
 
   // Sort combined by date
   recentMemories.sort(
-    (a: { createdAt: string }, b: { createdAt: string }) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
 
   // Load agent names for display
@@ -152,7 +152,7 @@ export async function GET() {
       count,
     })),
     timeline,
-    recentMemories: recentMemories.slice(0, 50).map((m: { agentId: string; id: string; content: string; category: string; importance: number; createdAt: string; updatedAt: string }) => ({
+    recentMemories: recentMemories.slice(0, 50).map((m) => ({
       ...m,
       agentName: agentNameMap.get(m.agentId) ?? m.agentId,
     })),
