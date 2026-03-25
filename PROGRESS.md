@@ -1,5 +1,18 @@
 # PROGRESS
 
+## 2026-03-25 — Review Round 5
+
+### What was fixed
+- **Error message leaks (2 more)**: Removed `createError.message` from `app/api/agents/route.ts:116` and `publishError.message` from `app/api/marketplace/publish/route.ts:92`
+- **Dead code (418 lines)**: Removed 3 orphaned components: `Education.tsx` (296 lines), `FounderTip.tsx` (52 lines), `PWAInstall.tsx` (70 lines)
+- Full re-audit of all 57 API routes — zero remaining `.message` leaks, all routes authed
+
+### Status after Round 5
+- tsc: 0 errors
+- eslint: 0 errors/warnings
+- build: passes clean
+- All API routes: authed + no error leaks
+
 ## 2026-03-25 — Review Round 4
 
 ### What was fixed
