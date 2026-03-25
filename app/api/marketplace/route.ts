@@ -44,8 +44,9 @@ export async function GET(request: NextRequest) {
     }
 
     if (search) {
+      const s = search.replace(/[%_.,()]/g, '');
       query = query.or(
-        `name.ilike.%${search}%,description.ilike.%${search}%`
+        `name.ilike.%${s}%,description.ilike.%${s}%`
       );
     }
 

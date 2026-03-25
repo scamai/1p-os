@@ -3,6 +3,10 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   const url = new URL(request.url);
 
   const stage = url.searchParams.get("stage");
@@ -26,8 +30,11 @@ export async function GET(request: Request) {
   if (sector) query = query.contains("sectors", [sector]);
   if (checkMin) query = query.gte("check_size_max", parseInt(checkMin));
   if (checkMax) query = query.lte("check_size_min", parseInt(checkMax));
-  if (location) query = query.ilike("location", `%${location}%`);
-  if (search) query = query.or(`name.ilike.%${search}%,firm.ilike.%${search}%`);
+  if (location) query = query.ilike("location", `%${location.replace(/[%_]/g, '')}%`);
+  if (search) {
+    const s = search.replace(/[%_.,()]/g, '');
+    query = query.or(`name.ilike.%${s}%,firm.ilike.%${s}%`);
+  }
 
   const { data, error } = await query;
 
