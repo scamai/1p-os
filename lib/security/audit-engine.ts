@@ -377,7 +377,7 @@ export class SecurityAuditor {
           'warn',
           'data',
           'Unable to verify RLS policies',
-          `Database query failed during RLS check: ${error.message}`,
+          `Database query failed during RLS check`,
           'Verify that RLS policies are correctly configured in Supabase.'
         )
       );
@@ -465,7 +465,7 @@ export class SecurityAuditor {
           'warn',
           'data',
           'Unable to verify audit logging',
-          `Could not query audit_log: ${error.message}`,
+          `Could not query audit_log`,
           'Verify audit_log table exists and has correct RLS policies.'
         )
       );
