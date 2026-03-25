@@ -154,7 +154,7 @@ export async function GET() {
     timeline,
     recentMemories: recentMemories.slice(0, 50).map((m) => ({
       ...m,
-      agentName: agentNameMap.get(m.agentId) ?? m.agentId,
+      agentName: agentNameMap.get(String(m.agentId)) ?? String(m.agentId),
     })),
     semantic: true,
   });
