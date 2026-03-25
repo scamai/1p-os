@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
     if (publishError) {
       console.error('[marketplace/publish] Failed to publish agent:', publishError);
       return NextResponse.json(
-        { error: 'Failed to publish agent', details: publishError.message },
+        { error: 'Failed to publish agent' },
         { status: 500 }
       );
     }

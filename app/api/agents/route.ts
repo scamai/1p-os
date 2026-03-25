@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
     if (createError) {
       console.error('[agents] Failed to create agent:', createError);
       return NextResponse.json(
-        { error: 'Failed to create agent', details: createError.message },
+        { error: 'Failed to create agent' },
         { status: 500 }
       );
     }
