@@ -1,5 +1,17 @@
 # PROGRESS
 
+## 2026-03-25 — TODO Cleanup
+
+### What was done
+- **Next.js 14 → 15**: Upgraded `next`, `react`, `react-dom`, `eslint-config-next`. Fixed async `params` in 3 files: `talent/[slug]/page.tsx`, `data/[table]/route.ts` (4 handlers), `orchestration/goals/[id]/route.ts` (2 handlers). npm audit: 0 vulnerabilities.
+- **Type safety**: Replaced 25+ `any` annotations with proper types (`SupabaseClient`, `AgentRecord`, `GoalRecord`, `GoalTreeNode`) across `ceo.ts`, `goals.ts`, `pipeline/route.ts`.
+- **Seed data**: `investor_database` now has 15 realistic investor records. `launch_phases` (7), `launch_steps` (46), `launch_templates` (14), `accelerator_programs` (5) were already seeded in `seed_launch.sql`.
+
+### Lessons learned
+- Next.js 15 makes ALL route `params` async (`Promise<{...}>`) — not just page components, but API route handlers too. The build error only shows the first failing file, so must grep for ALL occurrences before building.
+- `eslint-config-next` had a transitive `glob` CVE — upgrading it separately was necessary to reach 0 vulnerabilities.
+- Anthropic SDK's `ContentBlock` type union requires `"text" in b` narrowing, not a type predicate cast, because `TextBlock` has required fields beyond `type` and `text`.
+
 ## 2026-03-25 — Review Round 5
 
 ### What was fixed
