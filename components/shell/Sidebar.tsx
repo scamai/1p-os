@@ -86,6 +86,7 @@ function buildNav(counts: SidebarProps["counts"] = {}): { top: NavItem[]; groups
       { id: "traction", icon: <TargetIcon />, label: "Traction", href: "/business/traction" },
       { id: "fundraising", icon: <DollarIcon />, label: "Fundraising", href: "/money/fundraising" },
       { id: "pricing", icon: <TagIcon />, label: "Pricing", href: "/business/pricing" },
+      { id: "legal-guide", icon: <ScaleIcon />, label: "Legal", href: "/legal" },
     ],
     groups: [
       {
@@ -131,14 +132,16 @@ function Sidebar({ counts = {}, onOpenCommandBar }: SidebarProps) {
   const nav = buildNav(counts);
 
   // Track which Learn articles have been read
-  const LEARN_IDS = ["founders", "founder-wellness", "ideation", "equity", "incorporation", "traction", "fundraising", "pricing"];
-  const [readArticles, setReadArticles] = useState<Set<string>>(() => {
-    if (typeof window === "undefined") return new Set();
+  const LEARN_IDS = ["founders", "founder-wellness", "ideation", "equity", "incorporation", "traction", "fundraising", "pricing", "legal-guide"];
+  const [readArticles, setReadArticles] = useState<Set<string>>(new Set());
+
+  // Load read articles from localStorage after mount (avoids hydration mismatch)
+  useEffect(() => {
     try {
       const saved = localStorage.getItem("1p-read-articles");
-      return saved ? new Set(JSON.parse(saved)) : new Set();
-    } catch { return new Set(); }
-  });
+      if (saved) setReadArticles(new Set(JSON.parse(saved)));
+    } catch { /* ignore */ }
+  }, []);
 
   // Mark current article as read
   useEffect(() => {

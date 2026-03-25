@@ -368,12 +368,6 @@ export default function EquityPage() {
             <polyline points="12 5 19 12 12 19" />
           </svg>
         </Link>
-        <Link
-          href="/tools/equity-split"
-          className="inline-flex items-center gap-2.5 border border-black/[0.15] px-6 py-3.5 text-[15px] font-medium text-black transition-colors hover:bg-black/[0.03]"
-        >
-          Open Equity Splitter
-        </Link>
       </div>
     </article>
   );

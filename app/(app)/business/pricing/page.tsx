@@ -703,10 +703,10 @@ export default function PricingPage() {
       {/* CTA */}
       <div className="mt-16 pb-8 flex flex-col sm:flex-row gap-3">
         <Link
-          href="/company/solution-deck"
+          href="/legal"
           className="inline-flex items-center gap-2.5 border border-black bg-black px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-black/90"
         >
-          Start building
+          Next: Legal
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="5" y1="12" x2="19" y2="12" />
             <polyline points="12 5 19 12 12 19" />

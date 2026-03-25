@@ -13,6 +13,7 @@ const READING_ORDER = [
   { href: "/business/traction", label: "Traction" },
   { href: "/money/fundraising", label: "Fundraising" },
   { href: "/business/pricing", label: "Pricing" },
+  { href: "/legal", label: "Legal" },
 ];
 
 export function ArticleNav() {
@@ -23,23 +24,22 @@ export function ArticleNav() {
     (a) => pathname === a.href || pathname.startsWith(a.href + "/")
   );
 
-  // Not on an article page
-  if (idx === -1) return null;
-
   const prev = idx > 0 ? READING_ORDER[idx - 1] : null;
   const next = idx < READING_ORDER.length - 1 ? READING_ORDER[idx + 1] : null;
 
   // Keyboard navigation
   useEffect(() => {
+    if (idx === -1) return;
     function handleKey(e: KeyboardEvent) {
-      // Don't trigger when typing in inputs
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
       if (e.key === "ArrowLeft" && prev) router.push(prev.href);
       if (e.key === "ArrowRight" && next) router.push(next.href);
     }
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [prev, next, router]);
+  }, [idx, prev, next, router]);
+
+  if (idx === -1) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-30">

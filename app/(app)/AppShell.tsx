@@ -56,7 +56,7 @@ interface AppShellProps {
   children: React.ReactNode;
 }
 
-function ArticleLayout({ onBack, children }: { onBack: () => void; children: React.ReactNode }) {
+function ArticleLayout({ onBack, children }: { onBack: () => void; children: React.ReactNode; }) {
   const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
@@ -81,20 +81,25 @@ function ArticleLayout({ onBack, children }: { onBack: () => void; children: Rea
         />
       </div>
 
-      <nav className="mx-auto max-w-[680px] px-6 pt-6 flex items-center justify-between">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-1.5 text-[13px] text-black/40 hover:text-black/70 transition-colors"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
-          Back
-        </button>
-        <span className="font-heading text-[15px] italic font-extralight tracking-[-0.02em] text-black/30">
-          1P
-        </span>
+      <nav className="sticky top-[2px] z-40 bg-white/90 backdrop-blur-sm">
+        <div className="mx-auto max-w-[680px] px-6 py-4 flex items-center justify-between">
+          <button
+            onClick={onBack}
+            className="flex items-center gap-1.5 text-[13px] text-black/40 hover:text-black/70 transition-colors"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Dashboard
+          </button>
+          <button
+            onClick={onBack}
+            className="font-heading text-[15px] italic font-extralight tracking-[-0.02em] text-black/30 hover:text-black/60 transition-colors"
+          >
+            1P
+          </button>
+        </div>
       </nav>
       <main className="flex-1 overflow-y-auto pb-16">
         {children}
@@ -303,10 +308,10 @@ function AppShell({ headerProps, agents, sidebarCounts, children }: AppShellProp
     );
   };
 
-  const isArticlePage = pathname === "/launch" || pathname === "/company/founders" || pathname === "/company/ideation" || pathname === "/company/equity" || pathname === "/company/incorporation" || pathname === "/company/founder-wellness" || pathname === "/business/traction" || pathname === "/money/fundraising" || pathname === "/business/pricing";
+  const isArticlePage = pathname === "/company/founders" || pathname === "/company/ideation" || pathname === "/company/equity" || pathname === "/company/incorporation" || pathname === "/company/founder-wellness" || pathname === "/business/traction" || pathname === "/money/fundraising" || pathname === "/business/pricing" || pathname === "/legal";
 
   if (isArticlePage) {
-    return <ArticleLayout onBack={() => router.back()}>{children}</ArticleLayout>;
+    return <ArticleLayout onBack={() => router.push("/launch")}>{children}</ArticleLayout>;
   }
 
   return (
