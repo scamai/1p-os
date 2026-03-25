@@ -1,5 +1,28 @@
 # PROGRESS
 
+## 2026-03-25 — Review Round 6
+
+### What was fixed
+- **ESLint 8 → 9**: `eslint-config-next@16` requires ESLint >=9.0.0 — upgraded ESLint and migrated from `.eslintrc.json` to `eslint.config.mjs` (flat config). The compat layer (`FlatCompat`) caused circular JSON errors; direct import of `eslint-config-next/core-web-vitals` (which exports a flat config array) was the fix.
+- **React 19 lint errors (11)**: New `react-hooks/set-state-in-effect`, `react-hooks/purity`, and `react-hooks/refs` rules from React 19's plugin. Fixed:
+  - `Date.now()` in render → `useMemo` (`legal/ip/page.tsx`)
+  - `ref.current = value` in render → `useEffect` (`AlwaysOnVoice.tsx`) or eslint-disable (`VoiceOverlay.tsx`)
+  - `setState` in mount effects (localStorage hydration) → eslint-disable with comment (5 pages + Sidebar)
+- **Type safety**: Replaced `any` → `SupabaseClient` in `heartbeat.ts` (4 params), `morning-brief.ts` (2 params), `business-templates.ts` (1 param). Replaced `any[]` with `HeartbeatRunRecord[]` return type. Fixed `(result as any).cost_usd` with proper type assertion. Typed `MessageParam` array in `runner.ts`.
+- **CLAUDE.md**: Updated "Next.js 15" → "Next.js 16" to match actual `package.json`
+
+### Status after Round 6
+- tsc: 0 errors
+- eslint: 0 errors
+- build: passes clean
+- npm audit: 0 vulnerabilities
+
+### Lessons learned
+- `eslint-config-next@16` exports a flat config array directly — don't use `FlatCompat` wrapper, just `import ... from "eslint-config-next/core-web-vitals"` and spread
+- React 19's `react-hooks/set-state-in-effect` rule flags the universal "load localStorage in useEffect" pattern. No clean SSR-safe alternative exists — `useState` lazy initializer causes hydration mismatch. Suppress with comment for now; `useSyncExternalStore` is the long-term fix
+- `react-hooks/refs` prohibits `ref.current = value` during render. For "keep ref in sync" patterns, use `useEffect` unless the ref is read synchronously in the same render (then suppress)
+- When changing optional params to required, TypeScript's "required after optional" rule kicks in — use `param: Type | undefined` instead of `param?: Type` for positional args
+
 ## 2026-03-25 — TODO Cleanup
 
 ### What was done

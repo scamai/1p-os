@@ -4,7 +4,7 @@
 An open-source, AI-native operating system where solo founders hire unlimited AI agents to run their business. AGPLv3 licensed.
 
 ## Tech Stack
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript (strict mode)
 - **Styling**: Tailwind CSS (dark mode, `class` strategy)
 - **Database**: Supabase Postgres with RLS
