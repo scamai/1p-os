@@ -477,7 +477,10 @@ export class AgentRunner {
     let iterations = 0;
 
     // Working copy of messages for the loop
-    const workingMessages: any[] = [...anthropicMessages]; // Anthropic MessageParam[]
+    // Messages accumulate assistant responses + tool results; typed loosely
+    // because content blocks come back as Record<string, unknown> from session history.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const workingMessages: any[] = [...anthropicMessages];
 
     while (iterations < MAX_TOOL_ITERATIONS) {
       iterations++;

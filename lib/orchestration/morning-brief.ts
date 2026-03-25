@@ -12,6 +12,7 @@ import {
   MOCK_GOALS,
   MOCK_BUSINESS,
 } from "@/lib/supabase/dev-bypass";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 // ── Types ──
 
@@ -107,7 +108,7 @@ function generateMockBrief(): MorningBrief {
 
 // ── Real Brief (Supabase) ──
 
-async function generateRealBrief(businessId: string, supabase: any): Promise<MorningBrief> {
+async function generateRealBrief(businessId: string, supabase: SupabaseClient): Promise<MorningBrief> {
   const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString();
   const yesterdayStart = new Date();
   yesterdayStart.setDate(yesterdayStart.getDate() - 1);

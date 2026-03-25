@@ -7,6 +7,7 @@
  */
 
 import { ensureCEOAgent } from "@/lib/orchestration/ceo";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 // ── Types ──
 
@@ -387,7 +388,7 @@ export const BUSINESS_TEMPLATES: BusinessTemplate[] = [
 export async function applyTemplate(
   templateId: string,
   businessId: string,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<{ agents: Array<{ id: string; name: string }>; ceoId: string; goalId: string }> {
   const template = BUSINESS_TEMPLATES.find((t) => t.id === templateId);
   if (!template) {

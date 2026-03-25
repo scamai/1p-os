@@ -10,6 +10,7 @@
 import { checkoutTask, releaseTask, updateGoalStatus, getGoalsByAgent } from "./goals";
 import { runCEOHeartbeat, ensureCEOAgent } from "./ceo";
 import { DEV_BYPASS } from "@/lib/supabase/dev-bypass";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 const MAX_TASKS_PER_HEARTBEAT = 5;
 
@@ -30,7 +31,7 @@ export async function triggerHeartbeat(
   businessId: string,
   agentId: string,
   triggerType: "scheduled" | "event" | "manual" | "ceo_delegation",
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<HeartbeatResult> {
   // Get agent info
   const { data: agent } = await supabase
@@ -153,7 +154,7 @@ export async function triggerHeartbeat(
           summaryParts.push(`Failed: ${task.title}`);
         }
 
-        totalCost += (result as any).cost_usd ?? 0;
+        totalCost += (result as { cost_usd?: number }).cost_usd ?? 0;
         tasksProcessed++;
       } finally {
         await releaseTask(task.id, agentId, supabase);
@@ -201,7 +202,7 @@ export async function triggerHeartbeat(
 
 export async function triggerAllHeartbeats(
   businessId: string,
-  supabase: any
+  supabase: SupabaseClient
 ): Promise<HeartbeatResult[]> {
   const results: HeartbeatResult[] = [];
 
@@ -235,12 +236,27 @@ export async function triggerAllHeartbeats(
 
 // ── Get Recent Heartbeats ──
 
+interface HeartbeatRunRecord {
+  id: string;
+  business_id: string;
+  agent_id: string;
+  trigger_type: string;
+  status: string;
+  started_at: string;
+  completed_at: string | null;
+  tasks_processed: number;
+  cost_usd: number;
+  summary: string | null;
+  error: string | null;
+  agents: { name: string; role: string } | null;
+}
+
 export async function getRecentHeartbeats(
   businessId: string,
-  agentId?: string,
-  limit = 20,
-  supabase?: any
-): Promise<any[]> {
+  agentId: string | undefined,
+  limit: number,
+  supabase: SupabaseClient
+): Promise<HeartbeatRunRecord[]> {
   let query = supabase
     .from("heartbeat_runs")
     .select("*, agents(name, role)")

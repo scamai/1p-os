@@ -79,7 +79,7 @@ export function bulkCreate<T extends { id?: string }>(table: string, records: T[
   const items = getAll<T & { id: string }>(table);
   const created = records.map((data) => ({
     ...data,
-    id: (data as any).id ?? crypto.randomUUID(),
+    id: (data as T & { id?: string }).id ?? crypto.randomUUID(),
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   })) as (T & { id: string })[];
