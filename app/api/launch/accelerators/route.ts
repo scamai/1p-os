@@ -52,6 +52,10 @@ function scoreAccelerator(
 
 export async function POST(request: Request) {
   const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   const body: MatchInput = await request.json();
 
   const { data: programs, error } = await supabase

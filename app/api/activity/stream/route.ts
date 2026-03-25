@@ -5,6 +5,7 @@ import {
   type ActivityEvent,
   type ActivityEventType,
 } from "@/lib/activity/feed";
+import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -178,6 +179,11 @@ function randomInterval(): number {
 }
 
 export async function GET(): Promise<Response> {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({
