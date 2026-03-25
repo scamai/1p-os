@@ -5,11 +5,19 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
   allowedDevOrigins: ['1p-os.internal.scam.ai'],
   experimental: {
-    serverActions: {
-      bodySizeLimit: '2mb',
-    },
     optimizePackageImports: ['@supabase/supabase-js'],
   },
+  headers: async () => [
+    {
+      source: '/:path*',
+      headers: [
+        {
+          key: 'Cache-Control',
+          value: 'no-store, must-revalidate',
+        },
+      ],
+    },
+  ],
 };
 
 // Auto-start PTY server in dev mode

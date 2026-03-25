@@ -130,7 +130,7 @@ export async function GET() {
   );
 
   // Load agent names for display
-  const agentIds = [...new Set(recentMemories.map((m: { agentId: string }) => m.agentId).filter((id: string) => id !== "unknown" && id !== "system" && id !== "core-chat"))];
+  const agentIds = Array.from(new Set(recentMemories.map((m) => String(m.agentId)).filter((id) => id !== "unknown" && id !== "system" && id !== "core-chat")));
   const { data: agentRows } = agentIds.length > 0
     ? await supabase.from("agents").select("id, name").in("id", agentIds)
     : { data: [] };
